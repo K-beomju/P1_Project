@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 831570056}
   - component: {fileID: 831570055}
   - component: {fileID: 831570057}
+  - component: {fileID: 831570059}
   - component: {fileID: 831570058}
   m_Layer: 0
   m_Name: Hero
@@ -353,6 +354,27 @@ MonoBehaviour:
   ChaseDistance: 3
   AttackDistance: 1
   moveSpeed: 1
+--- !u!95 &831570059
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831570054}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 377c0956d62694a90877494a0459c61b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1521410607
 GameObject:
   m_ObjectHideFlags: 0

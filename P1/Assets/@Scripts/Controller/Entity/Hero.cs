@@ -14,9 +14,11 @@ public class Hero : MonoBehaviour
     #endregion
 
     #region Config
-    private Box Target;
     private CircleCollider2D Collider;
     private SpriteRenderer Sprite;
+    private Animator Anim;
+    
+    private Box Target;
     private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
     #endregion
 
@@ -33,7 +35,8 @@ public class Hero : MonoBehaviour
     {
         Collider = GetComponent<CircleCollider2D>();
         Sprite = GetComponent<SpriteRenderer>();
-
+        Anim = GetComponent<Animator>();
+        
         HeroState = EHeroState.Idle;
     }
 
