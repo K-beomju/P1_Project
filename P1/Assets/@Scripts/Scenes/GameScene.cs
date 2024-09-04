@@ -14,7 +14,13 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowBaseUI<UI_Joystick>();
 
-        Managers.Object.Spawn<Box>(new Vector3(3,3,0));
+        for (int i = 0; i < 10; i++)
+        {
+            int randX = Random.Range(-5, 5);
+            int randY = Random.Range(-5, 5);
+            Managers.Object.Spawn<Monster>(new Vector3(randX, randY, 0));
+        }
+
         return true;
     }
 

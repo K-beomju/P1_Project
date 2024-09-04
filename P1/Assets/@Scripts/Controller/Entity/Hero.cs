@@ -41,7 +41,7 @@ public class Hero : InitBase
     private SpriteRenderer Sprite;
     private Animator Anim;
 
-    private Box Target;
+    private Monster Target;
     private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
     private Vector2 MoveDir = Vector2.zero;
 
@@ -118,7 +118,7 @@ public class Hero : InitBase
             return;
         }
 
-        Box target = FindClosestInRange(SearchDistance, Managers.Object.boxes);
+        Monster target = FindClosestInRange(SearchDistance, Managers.Object.Monsters);
         if (target != null)
         {
             Target = target;
@@ -183,13 +183,13 @@ public class Hero : InitBase
     #endregion
 
     #region Target Search & Movement
-    private Box FindClosestInRange(float range, IEnumerable<Box> objs)
+    private Monster FindClosestInRange(float range, IEnumerable<Monster> objs)
     {
-        Box target = null;
+        Monster target = null;
         float bestDistanceSqr = float.MaxValue;
         float searchDistanceSqr = range * range;
 
-        foreach (Box obj in objs)
+        foreach (Monster obj in objs)
         {
             Vector3 dir = obj.transform.position - CenterPosition;
             float distToTargetSqr = dir.sqrMagnitude;

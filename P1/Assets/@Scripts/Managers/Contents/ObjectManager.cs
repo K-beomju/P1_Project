@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class ObjectManager
 {
-    public List<Box> boxes { get; set; } = new List<Box>();
+    public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
 
+    #region Roots
+    public Transform GetRootTransform(string name)
+    {
+        GameObject root = GameObject.Find(name);
+        if (root == null)
+            root = new GameObject { name = name };
+
+        return root.transform;
+    }
+
+    public Transform MonsterRoot { get { return GetRootTransform("@Monsters"); } }
+    #endregion
+    
     public T Spawn<T>(Vector3 position) where T : MonoBehaviour
     {
         string prefabName = typeof(T).Name;
@@ -14,10 +27,10 @@ public class ObjectManager
         go.name = prefabName;
         go.transform.position = position;
 
-        if(typeof(T) == typeof(Box))
+        if (typeof(T) == typeof(Monster))
         {
-            Box box = go.GetComponent<Box>();
-            boxes.Add(box);
+            Monster monster = go.GetComponent<Monster>();
+            Monsters.Add(monster);
         }
 
         return go as T;
