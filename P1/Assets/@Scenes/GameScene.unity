@@ -458,10 +458,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SearchDistance: 5
-  ChaseDistance: 3
   AttackDistance: 1
   MoveSpeed: 3
   AttackSpeed: 1
+  AttackDelay: 3
 --- !u!95 &831570059
 Animator:
   serializedVersion: 5

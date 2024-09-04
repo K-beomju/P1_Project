@@ -26,27 +26,25 @@ public class Hero : InitBase
     {
         get { return _heroMoveState; }
         set { _heroMoveState = value; }
-
     }
     #endregion
 
     #region Variable
     [SerializeField] private float SearchDistance;
-    [SerializeField] private float ChaseDistance;
     [SerializeField] private float AttackDistance;
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AttackSpeed;
+    [SerializeField] private float AttackDelay;
 
     private CircleCollider2D Collider;
     private SpriteRenderer Sprite;
     private Animator Anim;
 
     private Monster Target;
+
     private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
     private Vector2 MoveDir = Vector2.zero;
-
-    private readonly int hashIsAttackAnimation = Animator.StringToHash("IsAttack");
-    private readonly int hashAttackSpeedAnimation = Animator.StringToHash("AttackSpeed");
+    private Coroutine comboDelayCo = null;
     #endregion
 
     protected override bool Init()
@@ -70,23 +68,43 @@ public class Hero : InitBase
         return true;
     }
 
+    #region Anim
     private void UpdateAnimation()
-	{
-		switch (HeroState)
-		{
-			case EHeroState.Idle:
-                Anim.SetBool(hashIsAttackAnimation, false);
-				break;
-			case EHeroState.Move:
-                Anim.SetBool(hashIsAttackAnimation, false);
-				break;
-			case EHeroState.Attack:
-                Anim.SetBool(hashIsAttackAnimation, true);
-				break;
-			default:
-				break;
-		}
-	}
+    {
+        switch (HeroState)
+        {
+            case EHeroState.Idle:
+                Anim.SetBool(HeroAnimation.HashAttack, false);
+                break;
+            case EHeroState.Move:
+                Anim.SetBool(HeroAnimation.HashAttack, false);
+                Anim.SetBool(HeroAnimation.HashMove, true);
+                break;
+            case EHeroState.Attack:
+                Anim.SetBool(HeroAnimation.HashAttack, true);
+                Anim.SetBool(HeroAnimation.HashMove, false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ComboAttackDelay()
+    {
+        if (comboDelayCo != null)
+            StopCoroutine(comboDelayCo);
+        comboDelayCo = StartCoroutine(ComboDelayCo());
+    }
+
+
+    private IEnumerator ComboDelayCo()
+    {
+        Anim.SetBool(HeroAnimation.HashCombo, false);
+        yield return new WaitForSeconds(AttackDelay);
+        Anim.SetBool(HeroAnimation.HashCombo, true);
+        comboDelayCo = null;
+    }
+    #endregion
 
     #region AI Update
     private IEnumerator CoUpdateAI()
@@ -126,6 +144,10 @@ public class Hero : InitBase
             HeroMoveState = EHeroMoveState.TargetMonster;
             return;
         }
+        else
+        {
+            Anim.SetBool(HeroAnimation.HashMove, false);
+        }
     }
 
     private void UpdateMove()
@@ -146,7 +168,7 @@ public class Hero : InitBase
                 HeroState = EHeroState.Idle;
                 return;
             }
-            ChaseOrAttackTarget(AttackDistance, ChaseDistance);
+            ChaseOrAttackTarget(AttackDistance, SearchDistance);
             return;
         }
 
@@ -177,8 +199,7 @@ public class Hero : InitBase
             return;
         }
 
-        Anim.SetFloat(hashAttackSpeedAnimation, AttackSpeed);
-        Anim.SetBool(hashIsAttackAnimation, true);
+        Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeed);
     }
     #endregion
 
@@ -227,7 +248,6 @@ public class Hero : InitBase
                 transform.position = Target.transform.position;
                 return;
             }
-
             float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
             TranslateEx(dir.normalized * moveDist);
         }
@@ -248,7 +268,11 @@ public class Hero : InitBase
 
 
     #region Input Handlers
-    private void HandleOnMoveDirChanged(Vector2 dir) => MoveDir = dir;
+    private void HandleOnMoveDirChanged(Vector2 dir)
+    {
+        MoveDir = dir;
+        Anim.SetFloat(HeroAnimation.HashMoveDir,  Mathf.Abs(MoveDir.x));
+    }
 
     private void HandleOnJoystickStateChanged(EJoystickState joystickState)
     {
@@ -256,7 +280,7 @@ public class Hero : InitBase
         {
             case EJoystickState.PointerDown:
                 HeroMoveState = EHeroMoveState.ForceMove;
-                break; 
+                break;
             case EJoystickState.Drag:
                 HeroMoveState = EHeroMoveState.ForceMove;
                 break;
@@ -272,11 +296,10 @@ public class Hero : InitBase
     void OnDrawGizmos()
     {
         Vector3 gizmoVec = transform.position + new Vector3(0, 0.35f);
-        Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(gizmoVec, SearchDistance);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(gizmoVec, ChaseDistance);
+        Gizmos.DrawWireSphere(gizmoVec, SearchDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(gizmoVec, AttackDistance);
     }
+
 }
