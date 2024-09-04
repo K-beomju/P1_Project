@@ -11,15 +11,23 @@ public class Managers : MonoBehaviour
 
     #region Contents 
     private ObjectManager _object = new ObjectManager();
+    private GameManager _game = new GameManager();
 
     public static ObjectManager Object { get { return Instance?._object; } }
+    public static GameManager Game { get { return Instance?._game; } }
     #endregion
 
     #region Core
-    private ResourceManager _resource = new ResourceManager();
+	private ResourceManager _resource = new ResourceManager();
+	private SceneManagerEx _scene = new SceneManagerEx();
+	private SoundManager _sound = new SoundManager();
+	private UIManager _ui = new UIManager();
 
-    public static ResourceManager Resource { get { return Instance?._resource; } }
-    #endregion
+	public static ResourceManager Resource { get { return Instance?._resource; } }
+	public static SceneManagerEx Scene { get { return Instance?._scene; } }
+	public static SoundManager Sound { get { return Instance?._sound; } }
+	public static UIManager UI { get { return Instance?._ui; } }
+	#endregion
 
     public static void Init()
     {

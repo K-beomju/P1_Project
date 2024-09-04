@@ -1,43 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 
-public class Hero : MonoBehaviour
+public class Hero : InitBase
 {
     #region Variable
     [SerializeField] private float SearchDistance;
-    [SerializeField] private int ChaseDistance;
-    [SerializeField] private int AttackDistance;
-    [SerializeField] private int moveSpeed;
-
+    [SerializeField] private float ChaseDistance;
+    [SerializeField] private float AttackDistance;
+    [SerializeField] private float MoveSpeed;
+    [SerializeField] private float AttackSpeed;
+    [SerializeField] private int ComboCount;
     #endregion
 
     #region Config
     private CircleCollider2D Collider;
     private SpriteRenderer Sprite;
     private Animator Anim;
-    
+
     private Box Target;
     private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
+    private Vector2 _moveDir = Vector2.zero;
+
+    private readonly int hashIsAttackAnimation = Animator.StringToHash("IsAttack");
+    private readonly int hashAttackSpeedAnimation = Animator.StringToHash("AttackSpeed");
     #endregion
 
-    public enum EHeroState
+    #region State
+    protected EHeroState _heroState = EHeroState.Idle;
+    public virtual EHeroState HeroState
     {
-        Idle,
-        Move,
-        Attack
+        get { return _heroState; }
+        set
+        {
+            if (_heroState != value)
+            {
+                _heroState = value;
+            }
+        }
     }
-    private EHeroState HeroState = EHeroState.Idle;
+    #endregion
 
-
-    private void Awake()
+    protected override bool Init()
     {
+        if (base.Init() == false)
+            return false;
+
         Collider = GetComponent<CircleCollider2D>();
         Sprite = GetComponent<SpriteRenderer>();
         Anim = GetComponent<Animator>();
-        
+
         HeroState = EHeroState.Idle;
+
+        Managers.Game.OnMoveDirChanged -= HandleOnMoveDirChanged;
+		Managers.Game.OnMoveDirChanged += HandleOnMoveDirChanged;
+		Managers.Game.OnJoystickStateChanged -= HandleOnJoystickStateChanged;
+		Managers.Game.OnJoystickStateChanged += HandleOnJoystickStateChanged;
+
+        return true;
     }
 
     private void Start()
@@ -71,19 +93,18 @@ public class Hero : MonoBehaviour
         if (target != null)
         {
             Target = target;
-            Debug.Log("ASd");
             HeroState = EHeroState.Move;
         }
     }
 
     private void UpdateMove()
     {
-       if (Target == null)
-    {
-        // 타겟이 없으면 Idle 상태로 전환
-        HeroState = EHeroState.Idle;
-        return;
-    }
+        if (Target == null)
+        {
+            // 타겟이 없으면 Idle 상태로 전환
+            HeroState = EHeroState.Idle;
+            return;
+        }
         ChaseOrAttackTarget(AttackDistance, ChaseDistance);
         return;
     }
@@ -91,6 +112,7 @@ public class Hero : MonoBehaviour
     {
         if (Target == null)
         {
+            Anim.SetBool(hashIsAttackAnimation, false);
             HeroState = EHeroState.Idle;
             return;
         }
@@ -102,10 +124,12 @@ public class Hero : MonoBehaviour
         // 공격 범위를 벗어나면 이동 상태로 전환
         if (distToTargetSqr > attackDistanceSqr)
         {
+            Anim.SetBool(hashIsAttackAnimation, false);
             HeroState = EHeroState.Idle;
             return;
         }
 
+        Anim.SetBool(hashIsAttackAnimation, true);
     }
 
     private Box FindClosestInRange(float range, IEnumerable<Box> objs)
@@ -159,13 +183,47 @@ public class Hero : MonoBehaviour
                 return;
             }
 
-            float moveDist = Mathf.Min(dir.magnitude, moveSpeed * Time.deltaTime);
+            float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
             transform.position += dir.normalized * moveDist;
         }
         else
         {
             Target = null;
             HeroState = EHeroState.Idle;
+        }
+    }
+
+    void Update()
+    {
+        TranslateEx(_moveDir * Time.deltaTime * MoveSpeed);
+    }
+
+    public void TranslateEx(Vector3 dir)
+    {
+        transform.Translate(dir);
+        Sprite.flipX = dir.x < 0;
+    }
+
+    private void HandleOnMoveDirChanged(Vector2 dir)
+    {
+        _moveDir = dir;
+        Debug.Log(dir);
+    }
+
+    private void HandleOnJoystickStateChanged(EJoystickState joystickState)
+    {
+        switch (joystickState)
+        {
+            case EJoystickState.PointerDown:
+                HeroState = EHeroState.Move;
+                break;
+            case EJoystickState.Drag:
+                break;
+            case EJoystickState.PointerUp:
+                HeroState = EHeroState.Idle;
+                break;
+            default:
+                break;
         }
     }
 

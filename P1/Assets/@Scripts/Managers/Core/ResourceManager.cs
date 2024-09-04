@@ -11,14 +11,17 @@ public class ResourceManager
 		return Resources.Load<T>(path);
 	}
 
-	public GameObject Instantiate(string path, Transform parent = null)
+	public GameObject Instantiate(string path, Transform parent = null, bool pooling = false)
 	{
-		GameObject prefab = Load<GameObject>($"Prefabs/{path}");
+		GameObject prefab = Load<GameObject>($"Prefabs/Object{path}");
 		if (prefab == null)
 		{
 			Debug.Log($"Failed to load prefab : {path}");
 			return null;
 		}
+
+			// if (pooling)
+			// return Managers.Pool.Pop(prefab);
 
 		return Instantiate(prefab, parent);
 	}

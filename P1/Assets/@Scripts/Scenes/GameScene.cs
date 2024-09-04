@@ -1,13 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
-public class GameScene : MonoBehaviour
+public class GameScene : BaseScene
 {
-    private void Awake() 
+    protected override bool Init()
     {
-        Managers.Object.Spawn<Box>(new Vector3(10,10,0));    
+        if (base.Init() == false)
+            return false;
+
+        SceneType = EScene.GameScene;
+
+        Managers.UI.ShowBaseUI<UI_Joystick>();
+
+
+        return true;
     }
 
+    public override void Clear()
+    {
 
+    }
 }

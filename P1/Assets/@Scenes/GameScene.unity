@@ -353,7 +353,9 @@ MonoBehaviour:
   SearchDistance: 5
   ChaseDistance: 3
   AttackDistance: 1
-  moveSpeed: 1
+  MoveSpeed: 1
+  AttackSpeed: 1
+  ComboCount: 0
 --- !u!95 &831570059
 Animator:
   serializedVersion: 5
@@ -470,7 +472,7 @@ GameObject:
   - component: {fileID: 1734182321}
   - component: {fileID: 1734182320}
   m_Layer: 0
-  m_Name: GameScene
+  m_Name: '@GameScene'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
