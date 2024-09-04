@@ -21,6 +21,14 @@ public static class Extension
 		return go != null && go.activeSelf;
 	}
 
+	public static bool IsValid(this Monster mo)
+	{
+		if (mo == null || mo.isActiveAndEnabled == false)
+			return false;
+
+		return true;
+	}
+
 	public static void DestroyChilds(this GameObject go)
 	{
 		foreach (Transform child in go.transform)

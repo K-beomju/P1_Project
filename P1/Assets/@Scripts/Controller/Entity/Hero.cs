@@ -32,9 +32,12 @@ public class Hero : InitBase
     #region Variable
     [SerializeField] private float SearchDistance;
     [SerializeField] private float AttackDistance;
+
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AttackSpeed;
+
     [SerializeField] private float AttackDelay;
+    [SerializeField] private float AttackPower;
 
     private CircleCollider2D Collider;
     private SpriteRenderer Sprite;
@@ -56,6 +59,8 @@ public class Hero : InitBase
         Sprite = GetComponent<SpriteRenderer>();
         Anim = GetComponent<Animator>();
 
+        Anim.SetBool(HeroAnimation.HashCombo, true);
+
         HeroState = EHeroState.Idle;
         HeroMoveState = EHeroMoveState.None;
 
@@ -75,6 +80,8 @@ public class Hero : InitBase
         {
             case EHeroState.Idle:
                 Anim.SetBool(HeroAnimation.HashAttack, false);
+                Anim.SetBool(HeroAnimation.HashMove, false);
+
                 break;
             case EHeroState.Move:
                 Anim.SetBool(HeroAnimation.HashAttack, false);
@@ -103,6 +110,15 @@ public class Hero : InitBase
         yield return new WaitForSeconds(AttackDelay);
         Anim.SetBool(HeroAnimation.HashCombo, true);
         comboDelayCo = null;
+    }
+
+    public void OnAnimEventHandler()
+    {
+        if (Target.IsValid() == false)
+            return;
+        Target.OnDamage(AttackPower);
+
+        HeroState = EHeroState.Move;
     }
     #endregion
 
@@ -162,12 +178,19 @@ public class Hero : InitBase
         // 1. 주변 몬스터 서치
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
-            if (Target == null)
+            Monster target = FindClosestInRange(SearchDistance, Managers.Object.Monsters);
+            if (target == null)
             {
                 // 타겟이 없으면 Idle 상태로 전환
+                Debug.Log("ASd");
                 HeroState = EHeroState.Idle;
                 return;
             }
+            else
+            {
+                Target = target;
+            }
+
             ChaseOrAttackTarget(AttackDistance, SearchDistance);
             return;
         }
@@ -266,12 +289,10 @@ public class Hero : InitBase
     }
     #endregion
 
-
     #region Input Handlers
     private void HandleOnMoveDirChanged(Vector2 dir)
     {
         MoveDir = dir;
-        Anim.SetFloat(HeroAnimation.HashMoveDir,  Mathf.Abs(MoveDir.x));
     }
 
     private void HandleOnJoystickStateChanged(EJoystickState joystickState)

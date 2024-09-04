@@ -462,6 +462,7 @@ MonoBehaviour:
   MoveSpeed: 3
   AttackSpeed: 1
   AttackDelay: 3
+  AttackPower: 2
 --- !u!95 &831570059
 Animator:
   serializedVersion: 5

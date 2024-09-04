@@ -18,7 +18,7 @@ public class ObjectManager
 
     public Transform MonsterRoot { get { return GetRootTransform("@Monsters"); } }
     #endregion
-    
+
     public T Spawn<T>(Vector3 position) where T : MonoBehaviour
     {
         string prefabName = typeof(T).Name;
@@ -34,5 +34,16 @@ public class ObjectManager
         }
 
         return go as T;
+    }
+
+    public void Despawn<T>(T obj) where T : MonoBehaviour
+    {
+        if (typeof(T) == typeof(Monster))
+        {
+            Monster monster = obj.GetComponent<Monster>();
+            Monsters.Remove(monster);
+
+        }
+        Managers.Resource.Destroy(obj.gameObject);
     }
 }

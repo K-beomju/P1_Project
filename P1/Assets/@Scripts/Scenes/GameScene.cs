@@ -14,7 +14,7 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowBaseUI<UI_Joystick>();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             int randX = Random.Range(-5, 5);
             int randY = Random.Range(-5, 5);

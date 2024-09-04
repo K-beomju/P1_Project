@@ -41,10 +41,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: IsAttack
+    m_ConditionEvent: IsMove
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: IsMove
+    m_ConditionEvent: IsAttack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5486536924564368794}
@@ -308,12 +308,12 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 4
-    m_ConditionEvent: MoveDir
-    m_EventTreshold: 0.1
   - m_ConditionMode: 2
     m_ConditionEvent: IsMove
     m_EventTreshold: 0
+  - m_ConditionMode: 4
+    m_ConditionEvent: MoveDir
+    m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5486536924564368794}
   m_Solo: 0

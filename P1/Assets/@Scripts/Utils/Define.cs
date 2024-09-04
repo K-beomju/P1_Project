@@ -54,7 +54,6 @@ public static class Define
         public readonly static int HashAttack = Animator.StringToHash("IsAttack");
         public readonly static int HashMove = Animator.StringToHash("IsMove");
         public readonly static int HashAttackSpeed = Animator.StringToHash("AttackSpeed");
-        public readonly static int HashMoveDir = Animator.StringToHash("MoveDir");
     }
 
 }
