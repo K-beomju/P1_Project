@@ -10,7 +10,7 @@ public class Hero : InitBase
     private EHeroState _heroState = EHeroState.Idle;
     public virtual EHeroState HeroState
     {
-        get { return _heroState; }
+        get => _heroState;
         set
         {
             if (_heroState != value)
@@ -32,22 +32,20 @@ public class Hero : InitBase
     #region Variable
     [SerializeField] private float SearchDistance;
     [SerializeField] private float AttackDistance;
-
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AttackSpeed;
-
     [SerializeField] private float AttackDelay;
     [SerializeField] private float AttackPower;
 
-    private CircleCollider2D Collider;
-    private SpriteRenderer Sprite;
-    private Animator Anim;
+    
+    private CircleCollider2D _collider;
+    private SpriteRenderer _sprite;
+    private Animator _anim;
+    private Monster _target;
+    private Vector2 _moveDir = Vector2.zero;
+    private Coroutine _comboDelayCoroutine = null;
 
-    private Monster Target;
-
-    private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
-    private Vector2 MoveDir = Vector2.zero;
-    private Coroutine comboDelayCo = null;
+    private Vector3 CenterPosition => _collider.bounds.center;
     #endregion
 
     protected override bool Init()
@@ -55,11 +53,11 @@ public class Hero : InitBase
         if (base.Init() == false)
             return false;
 
-        Collider = GetComponent<CircleCollider2D>();
-        Sprite = GetComponent<SpriteRenderer>();
-        Anim = GetComponent<Animator>();
+        _collider = GetComponent<CircleCollider2D>();
+        _sprite = GetComponent<SpriteRenderer>();
+        _anim = GetComponent<Animator>();
 
-        Anim.SetBool(HeroAnimation.HashCombo, true);
+        _anim.SetBool(HeroAnimation.HashCombo, true);
 
         HeroState = EHeroState.Idle;
         HeroMoveState = EHeroMoveState.None;
@@ -76,47 +74,30 @@ public class Hero : InitBase
     #region Anim
     private void UpdateAnimation()
     {
-        switch (HeroState)
-        {
-            case EHeroState.Idle:
-                Anim.SetBool(HeroAnimation.HashAttack, false);
-                Anim.SetBool(HeroAnimation.HashMove, false);
-
-                break;
-            case EHeroState.Move:
-                Anim.SetBool(HeroAnimation.HashAttack, false);
-                Anim.SetBool(HeroAnimation.HashMove, true);
-                break;
-            case EHeroState.Attack:
-                Anim.SetBool(HeroAnimation.HashAttack, true);
-                Anim.SetBool(HeroAnimation.HashMove, false);
-                break;
-            default:
-                break;
-        }
+        _anim.SetBool(HeroAnimation.HashAttack, HeroState == EHeroState.Attack);
+        _anim.SetBool(HeroAnimation.HashMove, HeroState == EHeroState.Move);
     }
 
     public void ComboAttackDelay()
     {
-        if (comboDelayCo != null)
-            StopCoroutine(comboDelayCo);
-        comboDelayCo = StartCoroutine(ComboDelayCo());
+        if (_comboDelayCoroutine != null)
+            StopCoroutine(_comboDelayCoroutine);
+        _comboDelayCoroutine = StartCoroutine(ComboDelayCo());
     }
-
 
     private IEnumerator ComboDelayCo()
     {
-        Anim.SetBool(HeroAnimation.HashCombo, false);
+        _anim.SetBool(HeroAnimation.HashCombo, false);
         yield return new WaitForSeconds(AttackDelay);
-        Anim.SetBool(HeroAnimation.HashCombo, true);
-        comboDelayCo = null;
+        _anim.SetBool(HeroAnimation.HashCombo, true);
+        _comboDelayCoroutine = null;
     }
 
     public void OnAnimEventHandler()
     {
-        if (Target.IsValid() == false)
+        if (_target.IsValid() == false)
             return;
-        Target.OnDamage(AttackPower);
+        _target.OnDamage(AttackPower);
 
         HeroState = EHeroState.Move;
     }
@@ -155,14 +136,14 @@ public class Hero : InitBase
         Monster target = FindClosestInRange(SearchDistance, Managers.Object.Monsters);
         if (target != null)
         {
-            Target = target;
+            _target = target;
             HeroState = EHeroState.Move;
             HeroMoveState = EHeroMoveState.TargetMonster;
             return;
         }
         else
         {
-            Anim.SetBool(HeroAnimation.HashMove, false);
+            _anim.SetBool(HeroAnimation.HashMove, false);
         }
     }
 
@@ -171,7 +152,7 @@ public class Hero : InitBase
         // 0. 누르고 있다면, 강제 이동
         if (HeroMoveState == EHeroMoveState.ForceMove)
         {
-            TranslateEx(MoveDir * Time.deltaTime * MoveSpeed);
+            TranslateEx(_moveDir * Time.deltaTime * MoveSpeed);
             return;
         }
 
@@ -181,14 +162,12 @@ public class Hero : InitBase
             Monster target = FindClosestInRange(SearchDistance, Managers.Object.Monsters);
             if (target == null)
             {
-                // 타겟이 없으면 Idle 상태로 전환
-                Debug.Log("ASd");
                 HeroState = EHeroState.Idle;
                 return;
             }
             else
             {
-                Target = target;
+                _target = target;
             }
 
             ChaseOrAttackTarget(AttackDistance, SearchDistance);
@@ -205,13 +184,13 @@ public class Hero : InitBase
             return;
         }
 
-        if (Target == null)
+        if (_target == null)
         {
             HeroState = EHeroState.Idle;
             return;
         }
 
-        Vector3 dir = (Target.transform.position - CenterPosition);
+        Vector3 dir = (_target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = AttackDistance * AttackDistance;
 
@@ -222,7 +201,7 @@ public class Hero : InitBase
             return;
         }
 
-        Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeed);
+        _anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeed);
     }
     #endregion
 
@@ -252,7 +231,7 @@ public class Hero : InitBase
 
     private void ChaseOrAttackTarget(float attackRange, float chaseRange)
     {
-        Vector3 dir = (Target.transform.position - CenterPosition);
+        Vector3 dir = (_target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = attackRange * attackRange;
         float chaseDistanceSqr = chaseRange * chaseRange;
@@ -264,11 +243,11 @@ public class Hero : InitBase
         }
         else if (distToTargetSqr <= chaseDistanceSqr)
         {
-            Sprite.flipX = dir.x < 0;
+            _sprite.flipX = dir.x < 0;
 
             if (dir.magnitude < 0.01f)
             {
-                transform.position = Target.transform.position;
+                transform.position = _target.transform.position;
                 return;
             }
             float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
@@ -276,7 +255,7 @@ public class Hero : InitBase
         }
         else
         {
-            Target = null;
+            _target = null;
             HeroMoveState = EHeroMoveState.None;
             HeroState = EHeroState.Idle;
         }
@@ -285,14 +264,14 @@ public class Hero : InitBase
     private void TranslateEx(Vector3 dir)
     {
         transform.Translate(dir);
-        Sprite.flipX = dir.x < 0;
+        _sprite.flipX = dir.x < 0;
     }
     #endregion
 
     #region Input Handlers
     private void HandleOnMoveDirChanged(Vector2 dir)
     {
-        MoveDir = dir;
+        _moveDir = dir;
     }
 
     private void HandleOnJoystickStateChanged(EJoystickState joystickState)
