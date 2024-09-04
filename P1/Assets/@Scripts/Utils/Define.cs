@@ -28,10 +28,18 @@ public static class Define
 
     public enum EHeroState
     {
+        None,
         Idle,
         Move,
         Attack
     }
+
+    public enum EHeroMoveState
+	{
+		None,
+		TargetMonster,
+		ForceMove
+	}
 
 	public enum ESound
 	{

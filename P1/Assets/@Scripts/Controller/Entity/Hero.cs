@@ -6,30 +6,8 @@ using static Define;
 
 public class Hero : InitBase
 {
-    #region Variable
-    [SerializeField] private float SearchDistance;
-    [SerializeField] private float ChaseDistance;
-    [SerializeField] private float AttackDistance;
-    [SerializeField] private float MoveSpeed;
-    [SerializeField] private float AttackSpeed;
-    [SerializeField] private int ComboCount;
-    #endregion
-
-    #region Config
-    private CircleCollider2D Collider;
-    private SpriteRenderer Sprite;
-    private Animator Anim;
-
-    private Box Target;
-    private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
-    private Vector2 _moveDir = Vector2.zero;
-
-    private readonly int hashIsAttackAnimation = Animator.StringToHash("IsAttack");
-    private readonly int hashAttackSpeedAnimation = Animator.StringToHash("AttackSpeed");
-    #endregion
-
     #region State
-    protected EHeroState _heroState = EHeroState.Idle;
+    private EHeroState _heroState = EHeroState.Idle;
     public virtual EHeroState HeroState
     {
         get { return _heroState; }
@@ -38,9 +16,37 @@ public class Hero : InitBase
             if (_heroState != value)
             {
                 _heroState = value;
+                UpdateAnimation();
             }
         }
     }
+
+    private EHeroMoveState _heroMoveState = EHeroMoveState.None;
+    public EHeroMoveState HeroMoveState
+    {
+        get { return _heroMoveState; }
+        set { _heroMoveState = value; }
+
+    }
+    #endregion
+
+    #region Variable
+    [SerializeField] private float SearchDistance;
+    [SerializeField] private float ChaseDistance;
+    [SerializeField] private float AttackDistance;
+    [SerializeField] private float MoveSpeed;
+    [SerializeField] private float AttackSpeed;
+
+    private CircleCollider2D Collider;
+    private SpriteRenderer Sprite;
+    private Animator Anim;
+
+    private Box Target;
+    private Vector3 CenterPosition { get => Collider.bounds.center; set => CenterPosition = value; }
+    private Vector2 MoveDir = Vector2.zero;
+
+    private readonly int hashIsAttackAnimation = Animator.StringToHash("IsAttack");
+    private readonly int hashAttackSpeedAnimation = Animator.StringToHash("AttackSpeed");
     #endregion
 
     protected override bool Init()
@@ -53,20 +59,36 @@ public class Hero : InitBase
         Anim = GetComponent<Animator>();
 
         HeroState = EHeroState.Idle;
+        HeroMoveState = EHeroMoveState.None;
 
         Managers.Game.OnMoveDirChanged -= HandleOnMoveDirChanged;
-		Managers.Game.OnMoveDirChanged += HandleOnMoveDirChanged;
-		Managers.Game.OnJoystickStateChanged -= HandleOnJoystickStateChanged;
-		Managers.Game.OnJoystickStateChanged += HandleOnJoystickStateChanged;
+        Managers.Game.OnMoveDirChanged += HandleOnMoveDirChanged;
+        Managers.Game.OnJoystickStateChanged -= HandleOnJoystickStateChanged;
+        Managers.Game.OnJoystickStateChanged += HandleOnJoystickStateChanged;
 
+        StartCoroutine(CoUpdateAI());
         return true;
     }
 
-    private void Start()
-    {
-        StartCoroutine(CoUpdateAI());
-    }
+    private void UpdateAnimation()
+	{
+		switch (HeroState)
+		{
+			case EHeroState.Idle:
+                Anim.SetBool(hashIsAttackAnimation, false);
+				break;
+			case EHeroState.Move:
+                Anim.SetBool(hashIsAttackAnimation, false);
+				break;
+			case EHeroState.Attack:
+                Anim.SetBool(hashIsAttackAnimation, true);
+				break;
+			default:
+				break;
+		}
+	}
 
+    #region AI Update
     private IEnumerator CoUpdateAI()
     {
         while (true)
@@ -89,30 +111,57 @@ public class Hero : InitBase
 
     private void UpdateIdle()
     {
+        // 0. 이동 상태라면 강제 변경
+        if (HeroMoveState == EHeroMoveState.ForceMove)
+        {
+            HeroState = EHeroState.Move;
+            return;
+        }
+
         Box target = FindClosestInRange(SearchDistance, Managers.Object.boxes);
         if (target != null)
         {
             Target = target;
             HeroState = EHeroState.Move;
+            HeroMoveState = EHeroMoveState.TargetMonster;
+            return;
         }
     }
 
     private void UpdateMove()
     {
-        if (Target == null)
+        // 0. 누르고 있다면, 강제 이동
+        if (HeroMoveState == EHeroMoveState.ForceMove)
         {
-            // 타겟이 없으면 Idle 상태로 전환
-            HeroState = EHeroState.Idle;
+            TranslateEx(MoveDir * Time.deltaTime * MoveSpeed);
             return;
         }
-        ChaseOrAttackTarget(AttackDistance, ChaseDistance);
-        return;
+
+        // 1. 주변 몬스터 서치
+        if (HeroMoveState == EHeroMoveState.TargetMonster)
+        {
+            if (Target == null)
+            {
+                // 타겟이 없으면 Idle 상태로 전환
+                HeroState = EHeroState.Idle;
+                return;
+            }
+            ChaseOrAttackTarget(AttackDistance, ChaseDistance);
+            return;
+        }
+
+        HeroState = EHeroState.Idle;
     }
     private void UpdateAttack()
     {
+        if (HeroMoveState == EHeroMoveState.ForceMove)
+        {
+            HeroState = EHeroState.Move;
+            return;
+        }
+
         if (Target == null)
         {
-            Anim.SetBool(hashIsAttackAnimation, false);
             HeroState = EHeroState.Idle;
             return;
         }
@@ -124,14 +173,16 @@ public class Hero : InitBase
         // 공격 범위를 벗어나면 이동 상태로 전환
         if (distToTargetSqr > attackDistanceSqr)
         {
-            Anim.SetBool(hashIsAttackAnimation, false);
             HeroState = EHeroState.Idle;
             return;
         }
 
+        Anim.SetFloat(hashAttackSpeedAnimation, AttackSpeed);
         Anim.SetBool(hashIsAttackAnimation, true);
     }
+    #endregion
 
+    #region Target Search & Movement
     private Box FindClosestInRange(float range, IEnumerable<Box> objs)
     {
         Box target = null;
@@ -164,71 +215,59 @@ public class Hero : InitBase
 
         if (distToTargetSqr <= attackDistanceSqr)
         {
-            // 공격 범위 이내로 들어옴 
-            Debug.Log(" 공격 범위 이내로 들어옴 ");
-
             HeroState = EHeroState.Attack;
             return;
         }
         else if (distToTargetSqr <= chaseDistanceSqr)
         {
             Sprite.flipX = dir.x < 0;
-            Debug.Log(" chaseDistanceSqr ");
 
             if (dir.magnitude < 0.01f)
             {
-                Debug.Log(" dir.magnitude < 0.01f) ");
-
                 transform.position = Target.transform.position;
                 return;
             }
 
             float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
-            transform.position += dir.normalized * moveDist;
+            TranslateEx(dir.normalized * moveDist);
         }
         else
         {
             Target = null;
+            HeroMoveState = EHeroMoveState.None;
             HeroState = EHeroState.Idle;
         }
     }
 
-    void Update()
-    {
-        TranslateEx(_moveDir * Time.deltaTime * MoveSpeed);
-    }
-
-    public void TranslateEx(Vector3 dir)
+    private void TranslateEx(Vector3 dir)
     {
         transform.Translate(dir);
         Sprite.flipX = dir.x < 0;
     }
+    #endregion
 
-    private void HandleOnMoveDirChanged(Vector2 dir)
-    {
-        _moveDir = dir;
-        Debug.Log(dir);
-    }
+
+    #region Input Handlers
+    private void HandleOnMoveDirChanged(Vector2 dir) => MoveDir = dir;
 
     private void HandleOnJoystickStateChanged(EJoystickState joystickState)
     {
         switch (joystickState)
         {
             case EJoystickState.PointerDown:
-                HeroState = EHeroState.Move;
-                break;
+                HeroMoveState = EHeroMoveState.ForceMove;
+                break; 
             case EJoystickState.Drag:
+                HeroMoveState = EHeroMoveState.ForceMove;
                 break;
             case EJoystickState.PointerUp:
-                HeroState = EHeroState.Idle;
+                HeroMoveState = EHeroMoveState.None;
                 break;
             default:
                 break;
         }
     }
-
-
-
+    #endregion
 
     void OnDrawGizmos()
     {

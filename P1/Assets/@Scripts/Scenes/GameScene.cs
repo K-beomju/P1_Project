@@ -14,7 +14,7 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowBaseUI<UI_Joystick>();
 
-
+        Managers.Object.Spawn<Box>(new Vector3(3,3,0));
         return true;
     }
 
