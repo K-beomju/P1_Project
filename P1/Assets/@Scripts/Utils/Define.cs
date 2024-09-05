@@ -11,6 +11,19 @@ public static class Define
         GameScene,
     }
 
+    
+    public enum EGameSceneState
+    {
+        None,
+        Play,
+        Pause,
+        Boss,
+        Over,
+        Clear,
+    }
+
+    
+
     public enum EUIEvent
     {
         Click,

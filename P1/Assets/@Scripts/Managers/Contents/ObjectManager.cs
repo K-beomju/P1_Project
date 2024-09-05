@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectManager
 {
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
+    public HashSet<Hero> Heroes { get; set; } = new HashSet<Hero>();
 
     #region Roots
     public Transform GetRootTransform(string name)
@@ -16,6 +17,7 @@ public class ObjectManager
         return root.transform;
     }
 
+    public Transform HeroRoot { get { return GetRootTransform("@Heroes"); } }
     public Transform MonsterRoot { get { return GetRootTransform("@Monsters"); } }
     #endregion
 
@@ -23,17 +25,26 @@ public class ObjectManager
     {
         string prefabName = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate(prefabName);
+        GameObject go = Managers.Resource.Instantiate("Object/" + prefabName);
         go.name = prefabName;
         go.transform.position = position;
+
+        MonoBehaviour obj =  go.GetComponent<MonoBehaviour>();
 
         if (typeof(T) == typeof(Monster))
         {
             Monster monster = go.GetComponent<Monster>();
+            monster.transform.parent = MonsterRoot;
             Monsters.Add(monster);
         }
+        if (typeof(T) == typeof(Hero))
+        {
+            Hero hero = go.GetComponent<Hero>();
+            hero.transform.parent = HeroRoot;
+            Heroes.Add(hero);
+        }
 
-        return go as T;
+        return obj as T;
     }
 
     public void Despawn<T>(T obj) where T : MonoBehaviour
@@ -42,7 +53,11 @@ public class ObjectManager
         {
             Monster monster = obj.GetComponent<Monster>();
             Monsters.Remove(monster);
-
+        }
+        if (typeof(T) == typeof(Hero))
+        {
+            Hero hero = obj.GetComponent<Hero>();
+            Heroes.Remove(hero);
         }
         Managers.Resource.Destroy(obj.gameObject);
     }

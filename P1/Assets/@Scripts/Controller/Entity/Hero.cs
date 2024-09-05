@@ -45,7 +45,7 @@ public class Hero : InitBase
     private Vector2 _moveDir = Vector2.zero;
     private Coroutine _comboDelayCoroutine = null;
 
-    private Vector3 CenterPosition => _collider.bounds.center;
+    public Vector3 CenterPosition => _collider.bounds.center;
     #endregion
 
     protected override bool Init()
