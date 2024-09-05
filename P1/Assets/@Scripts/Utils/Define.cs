@@ -33,12 +33,13 @@ public static class Define
     }
 
 
-    public enum EHeroState
+    public enum ECreatureState
     {
         None,
         Idle,
         Move,
-        Attack
+        Attack,
+        Dead
     }
 
     public enum EHeroMoveState

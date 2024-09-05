@@ -5,23 +5,9 @@ using UnityEngine;
 using static Define;
 
 
-public class Hero : InitBase
+public class Hero : Creature
 {
     #region State
-    private EHeroState _heroState = EHeroState.Idle;
-    public virtual EHeroState HeroState
-    {
-        get => _heroState;
-        set
-        {
-            if (_heroState != value)
-            {
-                _heroState = value;
-                UpdateAnimation();
-            }
-        }
-    }
-
     private EHeroMoveState _heroMoveState = EHeroMoveState.None;
     public EHeroMoveState HeroMoveState
     {
@@ -37,15 +23,9 @@ public class Hero : InitBase
     [SerializeField] private float AttackDelay;
     [SerializeField] private float AttackPower;
 
-
-    private CircleCollider2D _collider;
-    private SpriteRenderer _sprite;
-    private Animator _anim;
-    public Monster _target;
-    private Vector2 _moveDir = Vector2.zero;
+    public BaseObject _target;
     private Coroutine _comboDelayCoroutine = null;
 
-    public Vector3 CenterPosition => _collider.bounds.center;
     #endregion
 
     protected override bool Init()
@@ -53,29 +33,20 @@ public class Hero : InitBase
         if (base.Init() == false)
             return false;
 
-        _collider = GetComponent<CircleCollider2D>();
-        _sprite = GetComponent<SpriteRenderer>();
-        _anim = GetComponent<Animator>();
-
         _anim.SetBool(HeroAnimation.HashCombo, true);
 
-        HeroState = EHeroState.Idle;
+        CreatureState = ECreatureState.Idle;
         HeroMoveState = EHeroMoveState.None;
-
-        // Managers.Game.OnMoveDirChanged -= HandleOnMoveDirChanged;
-        // Managers.Game.OnMoveDirChanged += HandleOnMoveDirChanged;
-        // Managers.Game.OnJoystickStateChanged -= HandleOnJoystickStateChanged;
-        // Managers.Game.OnJoystickStateChanged += HandleOnJoystickStateChanged;
 
         StartCoroutine(CoUpdateAI());
         return true;
     }
 
     #region Anim
-    private void UpdateAnimation()
+    protected override void UpdateAnimation()
     {
-        _anim.SetBool(HeroAnimation.HashAttack, HeroState == EHeroState.Attack);
-    _anim.SetBool(HeroAnimation.HashMove, HeroState == EHeroState.Move && _target != null);
+        _anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
+        _anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && _target != null);
     }
 
     public void ComboAttackDelay()
@@ -97,71 +68,49 @@ public class Hero : InitBase
     {
         if (_target.IsValid() == false)
             return;
-        _target.OnDamage(AttackPower);
+        _target.GetComponent<IDamageable>().OnDamage(AttackPower);
 
-        HeroState = EHeroState.Move;
+        CreatureState = ECreatureState.Move;
     }
     #endregion
 
     #region AI Update
-    private IEnumerator CoUpdateAI()
+    protected override void UpdateIdle()
     {
-        while (true)
-        {
-            switch (HeroState)
-            {
-                case EHeroState.Idle:
-                    UpdateIdle();
-                    break;
-                case EHeroState.Move:
-                    UpdateMove();
-                    break;
-                case EHeroState.Attack:
-                    UpdateAttack();
-                    break;
-            }
-            yield return null;
-        }
-    }
-
-    private void UpdateIdle()
-    {
-        _target = FindClosestInRange(Managers.Object.Monsters);
+        _target = FindClosestTarget(Managers.Object.Monsters);
         if (_target != null)
         {
-            HeroState = EHeroState.Move;
+            CreatureState = ECreatureState.Move;
             HeroMoveState = EHeroMoveState.TargetMonster;
             return;
         }
     }
 
-    private void UpdateMove()
+    protected override void UpdateMove()
     {
-        // 1. 주변 몬스터 서치
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
-            Monster target = FindClosestInRange(Managers.Object.Monsters);
+            BaseObject target = FindClosestTarget(Managers.Object.Monsters);
             if (target == null)
             {
-                HeroState = EHeroState.Idle;
+                CreatureState = ECreatureState.Idle;
                 return;
             }
-            else
-            {
-                _target = target;
-            }
 
+            _target = target;
             ChaseOrAttackTarget(AttackDistance);
-            return;
         }
-
-        HeroState = EHeroState.Idle;
+        else
+        {
+            CreatureState = ECreatureState.Idle;
+        }
     }
-    private void UpdateAttack()
+
+    protected override void UpdateAttack()
     {
         if (_target == null)
         {
-            HeroState = EHeroState.Idle;
+            CreatureState = ECreatureState.Idle;
             return;
         }
 
@@ -172,7 +121,7 @@ public class Hero : InitBase
         // 공격 범위를 벗어나면 이동 상태로 전환
         if (distToTargetSqr > attackDistanceSqr)
         {
-            HeroState = EHeroState.Idle;
+            CreatureState = ECreatureState.Idle;
             return;
         }
 
@@ -181,12 +130,12 @@ public class Hero : InitBase
     #endregion
 
     #region Target Search & Movement
-    private Monster FindClosestInRange(IEnumerable<Monster> objs)
+    private BaseObject FindClosestTarget(IEnumerable<BaseObject> objs)
     {
-        Monster target = null;
+        BaseObject target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
 
-        foreach (Monster obj in objs)
+        foreach (BaseObject obj in objs)
         {
             Vector3 dir = obj.transform.position - CenterPosition;
             float distToTargetSqr = dir.sqrMagnitude; // 제곱된 거리 계산
@@ -210,7 +159,7 @@ public class Hero : InitBase
 
         if (distToTargetSqr <= attackDistanceSqr)
         {
-            HeroState = EHeroState.Attack;
+            CreatureState = ECreatureState.Attack;
             return;
         }
         else
@@ -233,7 +182,7 @@ public class Hero : InitBase
         _sprite.flipX = dir.x < 0;
     }
     #endregion
-    
+
     void OnDrawGizmos()
     {
         Vector3 gizmoVec = transform.position + new Vector3(0, 0.35f);

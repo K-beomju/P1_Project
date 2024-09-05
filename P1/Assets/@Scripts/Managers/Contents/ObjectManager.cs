@@ -21,7 +21,7 @@ public class ObjectManager
     public Transform MonsterRoot { get { return GetRootTransform("@Monsters"); } }
     #endregion
 
-    public T Spawn<T>(Vector3 position) where T : MonoBehaviour
+    public T Spawn<T>(Vector3 position) where T : BaseObject
     {
         string prefabName = typeof(T).Name;
 
@@ -29,8 +29,7 @@ public class ObjectManager
         go.name = prefabName;
         go.transform.position = position;
 
-        MonoBehaviour obj =  go.GetComponent<MonoBehaviour>();
-
+        BaseObject obj = go.GetComponent<BaseObject>();
         if (typeof(T) == typeof(Monster))
         {
             Monster monster = go.GetComponent<Monster>();

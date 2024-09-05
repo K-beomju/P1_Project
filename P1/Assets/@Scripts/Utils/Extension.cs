@@ -21,9 +21,9 @@ public static class Extension
 		return go != null && go.activeSelf;
 	}
 
-	public static bool IsValid(this Monster mo)
+	public static bool IsValid(this BaseObject bo)
 	{
-		if (mo == null || mo.isActiveAndEnabled == false)
+		if (bo == null || bo.isActiveAndEnabled == false)
 			return false;
 
 		return true;

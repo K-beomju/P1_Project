@@ -60,26 +60,38 @@ public class GameScene : BaseScene
             return false;
 
         SceneType = EScene.GameScene;
-        
+
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero);
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         cc.Target = hero;
-            
+
         GameSceneState = EGameSceneState.Play;
         return true;
     }
 
     private IEnumerator CoPlayStage()
     {
-        Managers.Game.SpawnMonster(3);
+        int initialSpawnCount = 5;  // 처음에 스폰할 몬스터 수
+        int respawnCount = 3;       // 리스폰할 몬스터 수
+        float respawnDelay = 2.0f;  // 리스폰 사이의 시간 간격
+
+        WaitForSeconds respawnWait = new WaitForSeconds(respawnDelay);
+        WaitForSeconds frameWait = new WaitForSeconds(0.2f); // 0.2초 대기 시간
+
+        // 처음에 몬스터 스폰
+        Managers.Game.SpawnMonster(initialSpawnCount);
+
         while (true)
         {
+            // 현재 남아있는 몬스터 수가 respawnThreshold 이하일 때 새로운 몬스터를 스폰
             if (Managers.Object.Monsters.Count == 0)
             {
-                Debug.Log("ASd");
-                yield break;
+                yield return respawnWait; // 리스폰 전 딜레이
+                Managers.Game.SpawnMonster(respawnCount);  // 몬스터 리스폰
             }
-            yield return null;
+
+            // 반복적으로 체크
+            yield return frameWait;
         }
     }
 
