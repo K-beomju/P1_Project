@@ -69,7 +69,8 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"{name}");
+        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/WorldSpace/{name}");
+		GameObject go = Managers.Resource.Instantiate(prefab);
 		if (parent != null)
 			go.transform.SetParent(parent);
 
@@ -85,7 +86,7 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate(name, parent, pooling);
+		GameObject go = Managers.Resource.Instantiate($"Prefabs/UI/SubItem", parent, pooling);
 		go.transform.SetParent(parent);
 
 		return Util.GetOrAddComponent<T>(go);

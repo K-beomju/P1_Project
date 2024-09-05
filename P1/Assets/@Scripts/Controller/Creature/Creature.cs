@@ -5,6 +5,9 @@ using static Define;
 
 public class Creature : BaseObject
 {
+    public float Hp;
+    public float MaxHp;
+
     protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
     {

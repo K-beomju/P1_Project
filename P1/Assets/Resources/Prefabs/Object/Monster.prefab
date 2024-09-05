@@ -99,7 +99,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hp: 5
-  MaxHp: 4.66
+  MaxHp: 5
+  patrolRange: 5
+  patrolSpeed: 2
+  idleWaitTime: 3
 --- !u!61 &7184541864559025466
 BoxCollider2D:
   m_ObjectHideFlags: 0
