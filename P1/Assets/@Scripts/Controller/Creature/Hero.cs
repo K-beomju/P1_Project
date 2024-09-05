@@ -17,11 +17,11 @@ public class Hero : Creature
     #endregion
 
     #region Variable
-    [SerializeField] private float AttackDistance;
-    [SerializeField] private float MoveSpeed;
-    [SerializeField] private float AttackSpeed;
-    [SerializeField] private float AttackDelay;
-    [SerializeField] private float AttackPower;
+    private CreatureStat _attackDamage;
+    private CreatureStat _attackSpeed;
+    private CreatureStat _attackDelay;
+    private CreatureStat _moveSpeed;
+    private CreatureStat _attackDistance;
 
     public BaseObject _target;
     private Coroutine _comboDelayCoroutine = null;
@@ -37,6 +37,12 @@ public class Hero : Creature
 
         CreatureState = ECreatureState.Idle;
         HeroMoveState = EHeroMoveState.None;
+
+        _attackDamage = new CreatureStat(1);
+        _attackSpeed = new CreatureStat(1);
+        _attackDelay = new CreatureStat(1);
+        _attackDistance = new CreatureStat(1);
+        _moveSpeed = new CreatureStat(3);
 
         StartCoroutine(CoUpdateAI());
         return true;
@@ -59,7 +65,7 @@ public class Hero : Creature
     private IEnumerator ComboDelayCo()
     {
         _anim.SetBool(HeroAnimation.HashCombo, false);
-        yield return new WaitForSeconds(AttackDelay);
+        yield return new WaitForSeconds(_attackDelay.Value);
         _anim.SetBool(HeroAnimation.HashCombo, true);
         _comboDelayCoroutine = null;
     }
@@ -68,7 +74,7 @@ public class Hero : Creature
     {
         if (_target.IsValid() == false)
             return;
-        _target.GetComponent<IDamageable>().OnDamage(AttackPower);
+        _target.GetComponent<IDamageable>().OnDamage(_attackDamage.Value);
 
         CreatureState = ECreatureState.Move;
     }
@@ -98,7 +104,7 @@ public class Hero : Creature
             }
 
             _target = target;
-            ChaseOrAttackTarget(AttackDistance);
+            ChaseOrAttackTarget(_attackDistance.Value);
         }
         else
         {
@@ -116,7 +122,7 @@ public class Hero : Creature
 
         Vector3 dir = (_target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
-        float attackDistanceSqr = AttackDistance * AttackDistance;
+        float attackDistanceSqr = _attackDistance.Value * _attackDistance.Value;
 
         // 공격 범위를 벗어나면 이동 상태로 전환
         if (distToTargetSqr > attackDistanceSqr)
@@ -125,7 +131,7 @@ public class Hero : Creature
             return;
         }
 
-        _anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeed);
+        _anim.SetFloat(HeroAnimation.HashAttackSpeed, _attackSpeed.Value);
     }
     #endregion
 
@@ -171,7 +177,7 @@ public class Hero : Creature
                 transform.position = _target.transform.position;
                 return;
             }
-            float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
+            float moveDist = Mathf.Min(dir.magnitude, _moveSpeed.Value * Time.deltaTime);
             TranslateEx(dir.normalized * moveDist);
         }
     }
@@ -187,7 +193,7 @@ public class Hero : Creature
     {
         Vector3 gizmoVec = transform.position + new Vector3(0, 0.35f);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(gizmoVec, AttackDistance);
+        Gizmos.DrawWireSphere(gizmoVec, _attackDistance.Value);
     }
 
 }
