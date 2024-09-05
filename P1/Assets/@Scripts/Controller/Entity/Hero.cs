@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
@@ -75,7 +76,7 @@ public class Hero : InitBase
     private void UpdateAnimation()
     {
         _anim.SetBool(HeroAnimation.HashAttack, HeroState == EHeroState.Attack);
-        _anim.SetBool(HeroAnimation.HashMove, HeroState == EHeroState.Move);
+        _anim.SetBool(HeroAnimation.HashMove, HeroState == EHeroState.Move || _target != null);
     }
 
     public void ComboAttackDelay()
