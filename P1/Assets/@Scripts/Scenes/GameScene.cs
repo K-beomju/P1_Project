@@ -64,24 +64,22 @@ public class GameScene : BaseScene
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero);
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         cc.Target = hero;
-        
-        Managers.UI.ShowBaseUI<UI_Joystick>();
-    
+            
         GameSceneState = EGameSceneState.Play;
         return true;
     }
 
     private IEnumerator CoPlayStage()
     {
-        Managers.Game.SpawnMonster(10);
+        Managers.Game.SpawnMonster(3);
         while (true)
         {
             if (Managers.Object.Monsters.Count == 0)
             {
                 Debug.Log("ASd");
-                yield return null;
+                yield break;
             }
-               yield return null;
+            yield return null;
         }
     }
 

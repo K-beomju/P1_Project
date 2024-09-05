@@ -240,9 +240,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65103a72d7d2040c5b08fded2a9f5413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SearchDistance: 5
   AttackDistance: 1
   MoveSpeed: 3
   AttackSpeed: 1
   AttackDelay: 1
-  AttackPower: 2
+  AttackPower: 1
+  _target: {fileID: 0}

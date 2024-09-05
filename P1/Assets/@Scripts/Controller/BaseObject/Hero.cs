@@ -31,18 +31,17 @@ public class Hero : InitBase
     #endregion
 
     #region Variable
-    [SerializeField] private float SearchDistance;
     [SerializeField] private float AttackDistance;
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AttackSpeed;
     [SerializeField] private float AttackDelay;
     [SerializeField] private float AttackPower;
 
-    
+
     private CircleCollider2D _collider;
     private SpriteRenderer _sprite;
     private Animator _anim;
-    private Monster _target;
+    public Monster _target;
     private Vector2 _moveDir = Vector2.zero;
     private Coroutine _comboDelayCoroutine = null;
 
@@ -63,10 +62,10 @@ public class Hero : InitBase
         HeroState = EHeroState.Idle;
         HeroMoveState = EHeroMoveState.None;
 
-        Managers.Game.OnMoveDirChanged -= HandleOnMoveDirChanged;
-        Managers.Game.OnMoveDirChanged += HandleOnMoveDirChanged;
-        Managers.Game.OnJoystickStateChanged -= HandleOnJoystickStateChanged;
-        Managers.Game.OnJoystickStateChanged += HandleOnJoystickStateChanged;
+        // Managers.Game.OnMoveDirChanged -= HandleOnMoveDirChanged;
+        // Managers.Game.OnMoveDirChanged += HandleOnMoveDirChanged;
+        // Managers.Game.OnJoystickStateChanged -= HandleOnJoystickStateChanged;
+        // Managers.Game.OnJoystickStateChanged += HandleOnJoystickStateChanged;
 
         StartCoroutine(CoUpdateAI());
         return true;
@@ -76,7 +75,7 @@ public class Hero : InitBase
     private void UpdateAnimation()
     {
         _anim.SetBool(HeroAnimation.HashAttack, HeroState == EHeroState.Attack);
-        _anim.SetBool(HeroAnimation.HashMove, HeroState == EHeroState.Move || _target != null);
+    _anim.SetBool(HeroAnimation.HashMove, HeroState == EHeroState.Move && _target != null);
     }
 
     public void ComboAttackDelay()
@@ -127,40 +126,21 @@ public class Hero : InitBase
 
     private void UpdateIdle()
     {
-        // 0. 이동 상태라면 강제 변경
-        if (HeroMoveState == EHeroMoveState.ForceMove)
+        _target = FindClosestInRange(Managers.Object.Monsters);
+        if (_target != null)
         {
-            HeroState = EHeroState.Move;
-            return;
-        }
-
-        Monster target = FindClosestInRange(SearchDistance, Managers.Object.Monsters);
-        if (target != null)
-        {
-            _target = target;
             HeroState = EHeroState.Move;
             HeroMoveState = EHeroMoveState.TargetMonster;
             return;
-        }
-        else
-        {
-            _anim.SetBool(HeroAnimation.HashMove, false);
         }
     }
 
     private void UpdateMove()
     {
-        // 0. 누르고 있다면, 강제 이동
-        if (HeroMoveState == EHeroMoveState.ForceMove)
-        {
-            TranslateEx(_moveDir * Time.deltaTime * MoveSpeed);
-            return;
-        }
-
         // 1. 주변 몬스터 서치
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
-            Monster target = FindClosestInRange(SearchDistance, Managers.Object.Monsters);
+            Monster target = FindClosestInRange(Managers.Object.Monsters);
             if (target == null)
             {
                 HeroState = EHeroState.Idle;
@@ -171,7 +151,7 @@ public class Hero : InitBase
                 _target = target;
             }
 
-            ChaseOrAttackTarget(AttackDistance, SearchDistance);
+            ChaseOrAttackTarget(AttackDistance);
             return;
         }
 
@@ -179,12 +159,6 @@ public class Hero : InitBase
     }
     private void UpdateAttack()
     {
-        if (HeroMoveState == EHeroMoveState.ForceMove)
-        {
-            HeroState = EHeroState.Move;
-            return;
-        }
-
         if (_target == null)
         {
             HeroState = EHeroState.Idle;
@@ -207,42 +181,39 @@ public class Hero : InitBase
     #endregion
 
     #region Target Search & Movement
-    private Monster FindClosestInRange(float range, IEnumerable<Monster> objs)
+    private Monster FindClosestInRange(IEnumerable<Monster> objs)
     {
         Monster target = null;
-        float bestDistanceSqr = float.MaxValue;
-        float searchDistanceSqr = range * range;
+        float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
 
         foreach (Monster obj in objs)
         {
             Vector3 dir = obj.transform.position - CenterPosition;
-            float distToTargetSqr = dir.sqrMagnitude;
+            float distToTargetSqr = dir.sqrMagnitude; // 제곱된 거리 계산
 
-            if (distToTargetSqr > searchDistanceSqr)
-                continue;
-
-            if (distToTargetSqr > bestDistanceSqr)
-                continue;
-
-            target = obj;
-            bestDistanceSqr = distToTargetSqr;
+            // 가장 가까운 몬스터를 찾음
+            if (distToTargetSqr < bestDistanceSqr)
+            {
+                target = obj;
+                bestDistanceSqr = distToTargetSqr;
+            }
         }
+
         return target;
     }
 
-    private void ChaseOrAttackTarget(float attackRange, float chaseRange)
+    private void ChaseOrAttackTarget(float attackRange)
     {
         Vector3 dir = (_target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = attackRange * attackRange;
-        float chaseDistanceSqr = chaseRange * chaseRange;
 
         if (distToTargetSqr <= attackDistanceSqr)
         {
             HeroState = EHeroState.Attack;
             return;
         }
-        else if (distToTargetSqr <= chaseDistanceSqr)
+        else
         {
             _sprite.flipX = dir.x < 0;
 
@@ -254,12 +225,6 @@ public class Hero : InitBase
             float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
             TranslateEx(dir.normalized * moveDist);
         }
-        else
-        {
-            _target = null;
-            HeroMoveState = EHeroMoveState.None;
-            HeroState = EHeroState.Idle;
-        }
     }
 
     private void TranslateEx(Vector3 dir)
@@ -268,37 +233,10 @@ public class Hero : InitBase
         _sprite.flipX = dir.x < 0;
     }
     #endregion
-
-    #region Input Handlers
-    private void HandleOnMoveDirChanged(Vector2 dir)
-    {
-        _moveDir = dir;
-    }
-
-    private void HandleOnJoystickStateChanged(EJoystickState joystickState)
-    {
-        switch (joystickState)
-        {
-            case EJoystickState.PointerDown:
-                HeroMoveState = EHeroMoveState.ForceMove;
-                break;
-            case EJoystickState.Drag:
-                HeroMoveState = EHeroMoveState.ForceMove;
-                break;
-            case EJoystickState.PointerUp:
-                HeroMoveState = EHeroMoveState.None;
-                break;
-            default:
-                break;
-        }
-    }
-    #endregion
-
+    
     void OnDrawGizmos()
     {
         Vector3 gizmoVec = transform.position + new Vector3(0, 0.35f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(gizmoVec, SearchDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(gizmoVec, AttackDistance);
     }

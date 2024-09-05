@@ -22,7 +22,7 @@ public static class Define
         Clear,
     }
 
-    
+
 
     public enum EUIEvent
     {
@@ -32,12 +32,6 @@ public static class Define
         Drag,
     }
 
-    public enum EJoystickState
-    {
-        PointerDown,
-        PointerUp,
-        Drag,
-    }
 
     public enum EHeroState
     {
@@ -50,8 +44,7 @@ public static class Define
     public enum EHeroMoveState
     {
         None,
-        TargetMonster,
-        ForceMove
+        TargetMonster
     }
 
     public enum ESound
