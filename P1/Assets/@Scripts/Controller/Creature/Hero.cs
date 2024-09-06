@@ -33,6 +33,8 @@ public class Hero : Creature
         if (base.Init() == false)
             return false;
 
+        gameObject.layer = (int)ELayer.Hero;
+
         _anim.SetBool(HeroAnimation.HashCombo, true);
 
         CreatureState = ECreatureState.Idle;

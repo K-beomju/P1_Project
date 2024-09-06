@@ -30,6 +30,8 @@ public class Creature : BaseObject
             return false;
 
         _anim = GetComponent<Animator>();
+        if(_sprite != null)
+        _sprite.sortingOrder = SortingLayers.CREATURE;
         return true;
     }
 

@@ -24,11 +24,15 @@ public class Monster : Creature, IDamageable
     if (base.Init() == false)
       return false;
 
+
+    gameObject.layer = (int)ELayer.Monster;
+
+
     MaxHp = Hp;
     CreatureState = ECreatureState.Idle;
 
     _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
-    _hpBar.transform.localPosition = new Vector3(0.0f, 1f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
+    _hpBar.transform.localPosition = new Vector3(0.0f, -0.9f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
     _hpBar.SetSliderInfo(this);
 
     _initialPosition = transform.position;  // 몬스터의 초기 위치 저장

@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Define;
 
 public class UI_HpBarWorldSpace : UI_Base
 {
     private enum Sliders
     {
         HpSlider,
-        SkillCoolSlider,
+        DamageSlider,
     }
 
     private Creature _owner;
     private Slider _hpBarSlider;
+    private Slider _damageSlider;
+    public float smoothSpeed = 0.1f;  // DamageSlider가 천천히 줄어들도록 하는 속도
 
     protected override bool Init()
     {
@@ -20,7 +23,11 @@ public class UI_HpBarWorldSpace : UI_Base
             return false;
         BindSliders(typeof(Sliders));
         _hpBarSlider = GetSlider((int)Sliders.HpSlider);
-
+        _damageSlider = GetSlider((int)Sliders.DamageSlider);
+        
+        Canvas canvas = GetComponent<Canvas>();
+        // 애매함 
+        canvas.sortingOrder = SortingLayers.UI_HPBAR;
         return true;
     }
 
@@ -38,5 +45,11 @@ public class UI_HpBarWorldSpace : UI_Base
 
         float hpAmount = _owner.Hp / _owner.MaxHp;
         _hpBarSlider.value = hpAmount;
+
+            // DamageSlider는 천천히 HpSlider를 따라가며 감소
+        if (_damageSlider.value > _hpBarSlider.value)
+        {
+            _damageSlider.value = Mathf.Lerp(_damageSlider.value, _hpBarSlider.value, smoothSpeed * Time.deltaTime);
+        }
     }
 }

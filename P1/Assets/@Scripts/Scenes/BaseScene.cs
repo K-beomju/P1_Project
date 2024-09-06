@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using static Define;
 
 public abstract class BaseScene : InitBase
@@ -20,6 +21,14 @@ public abstract class BaseScene : InitBase
 			go.AddComponent<EventSystem>();
 			go.AddComponent<StandaloneInputModule>();
 		}
+
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+        GraphicsSettings.transparencySortMode = TransparencySortMode.CustomAxis;
+        GraphicsSettings.transparencySortAxis = new Vector3(0.0f, 1.0f, 0.0f);
+
+
 
 		return true;
 	}
