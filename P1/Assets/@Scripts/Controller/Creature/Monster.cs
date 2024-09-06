@@ -26,19 +26,19 @@ public class Monster : Creature, IDamageable
 
 
         gameObject.layer = (int)ELayer.Monster;
+        _initialPosition = transform.position;  // 몬스터의 초기 위치 저장
+        SetNewPatrolTarget();  // 첫 번째 목표 지점 설정
 
+        return true;
+    }
 
+    protected override void SetCreatureInfo()
+    {
         MaxHp = Hp;
-        CreatureState = ECreatureState.Idle;
 
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.9f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
         _hpBar.SetSliderInfo(this);
-
-        _initialPosition = transform.position;  // 몬스터의 초기 위치 저장
-        SetNewPatrolTarget();  // 첫 번째 목표 지점 설정
-        StartCoroutine(CoUpdateAI());
-        return true;
     }
 
     private void SetNewPatrolTarget()
@@ -129,6 +129,10 @@ public class Monster : Creature, IDamageable
         {
             OnDead();
         }
+
+         // DmageText
+        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
+        damageText.SetInfo(CenterPosition, damage, false);
     }
 
     public void OnDead()

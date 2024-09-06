@@ -33,21 +33,22 @@ public class Hero : Creature
         if (base.Init() == false)
             return false;
 
-        gameObject.layer = (int)ELayer.Hero;
+        SetCreatureInfo();
 
+        gameObject.layer = (int)ELayer.Hero;
         _anim.SetBool(HeroAnimation.HashCombo, true);
 
-        CreatureState = ECreatureState.Idle;
         HeroMoveState = EHeroMoveState.None;
+        return true;
+    }
 
+    protected override void SetCreatureInfo()
+    {
         _attackDamage = new CreatureStat(1);
         _attackSpeed = new CreatureStat(1);
         _attackDelay = new CreatureStat(1);
         _attackDistance = new CreatureStat(1);
         _moveSpeed = new CreatureStat(3);
-
-        StartCoroutine(CoUpdateAI());
-        return true;
     }
 
     #region Anim

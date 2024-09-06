@@ -7,6 +7,7 @@ public class Creature : BaseObject
 {
     public float Hp;
     public float MaxHp;
+    public Animator _anim { get; protected set; }
 
     protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
@@ -22,17 +23,28 @@ public class Creature : BaseObject
         }
     }
 
-    public Animator _anim { get; protected set; }
-
     protected override bool Init()
     {
         if (base.Init() == false)
             return false;
 
+        // Stat
+        SetCreatureInfo();
+
+        // Rendering
         _anim = GetComponent<Animator>();
-        if(_sprite != null)
         _sprite.sortingOrder = SortingLayers.CREATURE;
+
+        // State
+        CreatureState = ECreatureState.Idle;
+
+        // AI
+        StartCoroutine(CoUpdateAI());
         return true;
+    }
+
+    protected virtual void SetCreatureInfo()
+    {
     }
 
     protected virtual void UpdateAnimation()

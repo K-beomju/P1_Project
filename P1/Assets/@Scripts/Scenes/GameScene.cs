@@ -71,8 +71,7 @@ public class GameScene : BaseScene
 
     private IEnumerator CoPlayStage()
     {
-        int initialSpawnCount = 5;  // 처음에 스폰할 몬스터 수
-        int respawnCount = 3;       // 리스폰할 몬스터 수
+        int initialSpawnCount = 10;  // 처음에 스폰할 몬스터 수
         float respawnDelay = 2.0f;  // 리스폰 사이의 시간 간격
 
         WaitForSeconds respawnWait = new WaitForSeconds(respawnDelay);
@@ -87,7 +86,7 @@ public class GameScene : BaseScene
             if (Managers.Object.Monsters.Count == 0)
             {
                 yield return respawnWait; // 리스폰 전 딜레이
-                Managers.Game.SpawnMonster(respawnCount);  // 몬스터 리스폰
+                Managers.Game.SpawnMonster(initialSpawnCount);  // 몬스터 리스폰
             }
 
             // 반복적으로 체크

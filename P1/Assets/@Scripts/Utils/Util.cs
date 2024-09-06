@@ -58,4 +58,14 @@ public static class Util
 	{
 		return (T)Enum.Parse(typeof(T), value, true);
 	}
+
+	public static Color HexToColor(string color)
+	{
+		if (color.Contains("#") == false)
+			color = $"#{color}";
+
+		ColorUtility.TryParseHtmlString(color, out Color parsedColor);
+
+		return parsedColor;
+	}
 }
