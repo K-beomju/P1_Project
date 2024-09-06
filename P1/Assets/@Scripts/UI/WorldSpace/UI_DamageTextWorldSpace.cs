@@ -7,7 +7,7 @@ using static Define;
 
 public class UI_DamageTextWorldSpace : UI_Base
 {
-    private enum Texts
+    private enum TMPTexts
     {
         DamageText,
     }
@@ -20,8 +20,8 @@ public class UI_DamageTextWorldSpace : UI_Base
             return false;
 
         // Bind
-        BindTexts(typeof(Texts));
-        _damageText = GetText((int)Texts.DamageText);
+        BindTMPTexts(typeof(TMPTexts));
+        _damageText = GetTMPText((int)TMPTexts.DamageText);
            
         Canvas canvas = GetComponent<Canvas>();
         // 애매함 

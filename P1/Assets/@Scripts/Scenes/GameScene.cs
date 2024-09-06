@@ -61,9 +61,12 @@ public class GameScene : BaseScene
 
         SceneType = EScene.GameScene;
 
-        Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero);
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
+        Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero);
         cc.Target = hero;
+
+        Managers.UI.CacheAllPopups();
+        Managers.UI.ShowSceneUI<UI_GameScene>();
 
         GameSceneState = EGameSceneState.Play;
         return true;

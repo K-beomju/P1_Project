@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class UIManager
 	private int _order = 10;
 
 	private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    private Dictionary<string, UI_Popup> _popups = new Dictionary<string, UI_Popup>();
 
 	private UI_Scene _sceneUI = null;
 	public UI_Scene SceneUI
@@ -29,6 +31,21 @@ public class UIManager
 			return root;
 		}
 	}
+
+	public void CacheAllPopups()
+    {
+        var list = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsSubclassOf(typeof(UI_Popup)));
+
+        foreach (Type type in list)
+        {
+			Debug.Log(type.Name);
+            CachePopupUI(type);
+        }
+        CloseAllPopupUI();
+    }
+
 
 	public void SetCanvas(GameObject go, bool sort = true, int sortOrder = 0)
 	{
@@ -69,7 +86,7 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/WorldSpace/{name}");
+		GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/WorldSpace/{name}");
 		GameObject go = Managers.Resource.Instantiate(prefab);
 		if (parent != null)
 			go.transform.SetParent(parent);
@@ -86,9 +103,10 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"Prefabs/UI/SubItem", parent, pooling);
+		GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/SubItem/{name}");
+		GameObject go = Managers.Resource.Instantiate(prefab);
 		go.transform.SetParent(parent);
-
+		go.transform.localScale = Vector3.one;
 		return Util.GetOrAddComponent<T>(go);
 	}
 
@@ -97,7 +115,7 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/{name}");
+		GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/{name}");
 		GameObject go = Managers.Resource.Instantiate(prefab);
 		T baseUI = Util.GetOrAddComponent<T>(go);
 
@@ -111,7 +129,8 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"Prefabs/UI/Scene/{name}");
+		GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Scene/{name}");
+		GameObject go = Managers.Resource.Instantiate(prefab);
 		T sceneUI = Util.GetOrAddComponent<T>(go);
 		_sceneUI = sceneUI;
 
@@ -124,15 +143,36 @@ public class UIManager
 	{
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
+		
+		if(_popups.TryGetValue(name, out UI_Popup popup) == false)
+        {
+			GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
+			GameObject go = Managers.Resource.Instantiate(prefab);
 
-		GameObject go = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
-		T popup = Util.GetOrAddComponent<T>(go);
+            popup = Util.GetOrAddComponent<T>(go);
+            _popups[name] = popup;
+        }
+
 		_popupStack.Push(popup);
+        popup.gameObject.SetActive(true);
 
-		go.transform.SetParent(Root.transform);
-
-		return popup;
+		return popup as T;
 	}
+	
+	public void CachePopupUI(Type type)
+    {
+        string name = type.Name;
+
+        if(_popups.TryGetValue(name, out UI_Popup popup) == false)
+        {
+			GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
+			GameObject go = Managers.Resource.Instantiate(prefab);
+            popup = go.GetComponent<UI_Popup>();
+            _popups[name] = popup;
+        }
+        popup.transform.SetParent(Root.transform);
+        _popupStack.Push(popup);
+    }
 
 	public void ClosePopupUI(UI_Popup popup)
 	{
@@ -154,7 +194,7 @@ public class UIManager
 			return;
 
 		UI_Popup popup = _popupStack.Pop();
-		Managers.Resource.Destroy(popup.gameObject);
+		popup.gameObject.SetActive(false);
 		_order--;
 	}
 

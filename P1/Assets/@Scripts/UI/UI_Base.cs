@@ -35,7 +35,8 @@ public class UI_Base : InitBase
 
 	protected void BindObjects(Type type) { Bind<GameObject>(type); }
 	protected void BindImages(Type type) { Bind<Image>(type); }
-	protected void BindTexts(Type type) { Bind<TMP_Text>(type); }
+	protected void BindTexts (Type type) { Bind<Text>(type); }
+	protected void BindTMPTexts(Type type) { Bind<TMP_Text>(type); }
 	protected void BindButtons(Type type) { Bind<Button>(type); }
 	protected void BindToggles(Type type) { Bind<Toggle>(type); }
 	protected void BindSliders(Type type) { Bind<Slider>(type); }
@@ -50,13 +51,14 @@ public class UI_Base : InitBase
 	}
 
 	protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
-	protected TMP_Text GetText(int idx) { return Get<TMP_Text>(idx); }
+	protected Text GetText(int idx) { return Get<Text>(idx); }
+	protected TMP_Text GetTMPText(int idx) { return Get<TMP_Text>(idx); }
 	protected Button GetButton(int idx) { return Get<Button>(idx); }
 	protected Image GetImage(int idx) { return Get<Image>(idx); }
 	protected Toggle GetToggle(int idx) { return Get<Toggle>(idx); }
 	protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
 
-	public static void BindEvent(GameObject go, Action<PointerEventData> action = null, Define.EUIEvent type = Define.EUIEvent.Click)
+	public static void BindEvent(GameObject go, Action action = null, Define.EUIEvent type = Define.EUIEvent.Click)
 	{
 		UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
@@ -73,10 +75,6 @@ public class UI_Base : InitBase
 			case Define.EUIEvent.PointerUp:
 				evt.OnPointerUpHandler -= action;
 				evt.OnPointerUpHandler += action;
-				break;
-			case Define.EUIEvent.Drag:
-				evt.OnDragHandler -= action;
-				evt.OnDragHandler += action;
 				break;
 		}
 	}
