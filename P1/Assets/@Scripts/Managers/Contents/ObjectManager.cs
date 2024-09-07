@@ -52,6 +52,9 @@ public class ObjectManager
         {
             Monster monster = obj.GetComponent<Monster>();
             Monsters.Remove(monster);
+
+            Managers.Game.OnMonsterDestroyed(); 
+
         }
         if (typeof(T) == typeof(Hero))
         {
@@ -59,5 +62,11 @@ public class ObjectManager
             Heroes.Remove(hero);
         }
         Managers.Resource.Destroy(obj.gameObject);
+    }
+
+    public void Clear()
+    {
+        Monsters.Clear();
+        Heroes.Clear();
     }
 }

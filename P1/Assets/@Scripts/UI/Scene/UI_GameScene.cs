@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class UI_GameScene : UI_Scene
 {
@@ -24,6 +25,11 @@ public class UI_GameScene : UI_Scene
         ExpValueText
     }
 
+    enum Texts
+    {
+        RemainMonsterValueText
+    }
+
     public enum PlayTab
     {
         None = -1,
@@ -43,6 +49,8 @@ public class UI_GameScene : UI_Scene
 
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(TMPTexts));
+        BindTexts(typeof(Texts));
+
         BindSliders(typeof(Sliders));
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
@@ -52,6 +60,9 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
 
 
+        Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
+
+        RefreshUI();
         return true;
     }
 
@@ -59,9 +70,25 @@ public class UI_GameScene : UI_Scene
     {
         if (_init == false)
             return;
-            
+
         ShowTab(_tab);
     }
+
+
+
+    #region Stage UI
+
+    public void RefreshShowRemainMonster(int currentMonster, int maxMonster)
+    {
+        GetText((int)Texts.RemainMonsterValueText).text = $"{currentMonster} / {maxMonster}";
+    }
+
+
+
+    #endregion
+
+
+    #region Tab
 
     public void ShowTab(PlayTab tab)
     {
@@ -111,5 +138,7 @@ public class UI_GameScene : UI_Scene
         else
             Managers.UI.ClosePopupUI();
     }
+
+    #endregion
 
 }

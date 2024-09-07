@@ -29,6 +29,11 @@ public static class Define
         Drag,
     }
 
+    public enum EEventType 
+    {
+        MonsterCountChanged
+    }
+
     public enum ECreatureState
     {
         None,

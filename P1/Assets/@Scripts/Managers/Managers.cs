@@ -12,9 +12,11 @@ public class Managers : MonoBehaviour
     #region Contents 
     private ObjectManager _object = new ObjectManager();
     private GameManager _game = new GameManager();
+    private EventManager _event = new EventManager();
 
     public static ObjectManager Object { get { return Instance?._object; } }
     public static GameManager Game { get { return Instance?._game; } }
+    public static EventManager Event { get { return Instance?._event;} }
     #endregion
 
     #region Core
@@ -45,5 +47,13 @@ public class Managers : MonoBehaviour
 
             s_instacne = go.GetComponent<Managers>();
         }
+    }
+
+    public static void Clear()
+    {
+        Event.Clear();
+        Scene.Clear();
+        UI.Clear();
+        Object.Clear();
     }
 }

@@ -3,12 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Define;
 
 public class GameManager
 {
+	private int _currentMonsters;
+	private int _maxMonsters;
 	#region MonsterSpawn
+
+	public void SetMonsterCount(int currentMonsters, int maxMonsters)
+	{
+		_currentMonsters = currentMonsters;
+		_maxMonsters = maxMonsters;
+
+		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _currentMonsters, _maxMonsters);
+	}
+	
 	public void SpawnMonster(int spawnCount)
 	{
+		(Managers.UI.SceneUI as UI_GameScene).RefreshShowRemainMonster(spawnCount, spawnCount);
 		Vector3 heroPos = Managers.Object.Heroes.FirstOrDefault().transform.position;
 		for (int i = 0; i < spawnCount; i++)
 		{
@@ -21,8 +34,16 @@ public class GameManager
 
 			Managers.Object.Spawn<Monster>(spawnPosition);
 		}
+
+		SetMonsterCount(spawnCount, spawnCount);
 	}
 
 	#endregion
 
+	public void OnMonsterDestroyed()
+	{
+		_currentMonsters = Managers.Object.Monsters.Count;
+		// 몬스터가 파괴될 때마다 UI를 업데이트
+		SetMonsterCount(_currentMonsters, _maxMonsters);
+	}
 }
