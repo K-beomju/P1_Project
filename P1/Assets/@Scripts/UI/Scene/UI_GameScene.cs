@@ -30,6 +30,11 @@ public class UI_GameScene : UI_Scene
         RemainMonsterValueText
     }
 
+    enum GameObjects 
+    {
+        TopStage
+    }
+
     public enum PlayTab
     {
         None = -1,
@@ -50,8 +55,8 @@ public class UI_GameScene : UI_Scene
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(TMPTexts));
         BindTexts(typeof(Texts));
-
         BindSliders(typeof(Sliders));
+        BindObjects(typeof(GameObjects));
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.SpiritButton).gameObject.BindEvent(() => ShowTab(PlayTab.Spirit));
@@ -134,9 +139,14 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_ShopPopup>();
                     break;
             }
+            GetObject((int)GameObjects.TopStage).SetActive(false);
         }
         else
+        {
             Managers.UI.ClosePopupUI();
+            GetObject((int)GameObjects.TopStage).SetActive(true);
+
+        }
     }
 
     #endregion

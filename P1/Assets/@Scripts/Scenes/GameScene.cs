@@ -66,7 +66,8 @@ public class GameScene : BaseScene
         cc.Target = hero;
 
         Managers.UI.CacheAllPopups();
-        Managers.UI.ShowSceneUI<UI_GameScene>();
+        var sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
+        Managers.UI.SetCanvas(sceneUI.gameObject, false, 100);
 
         GameSceneState = EGameSceneState.Play;
         return true;
