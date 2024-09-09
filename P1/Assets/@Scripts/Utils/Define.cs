@@ -21,6 +21,20 @@ public static class Define
         Clear,
     }
 
+    public enum EStageType
+    {
+        NormalStage,
+        BossStage
+    }
+
+    public enum EObjectType
+    {
+        None,
+        Hero,
+        Monster,
+        BossMonster
+    }
+
     public enum EUIEvent
     {
         Click,

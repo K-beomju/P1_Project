@@ -17,7 +17,10 @@ public class UI_GameScene : UI_Scene
 
     enum Sliders
     {
-        ExpSlider
+        ExpSlider,
+        CurrentStageSlider,
+        BossHpSlider,
+        BossStageTimer
     }
 
     enum TMPTexts
@@ -30,9 +33,10 @@ public class UI_GameScene : UI_Scene
         RemainMonsterValueText
     }
 
-    enum GameObjects 
+    enum GameObjects
     {
-        TopStage
+        TopStage,
+        RemainMonster
     }
 
     public enum PlayTab
@@ -83,12 +87,42 @@ public class UI_GameScene : UI_Scene
 
     #region Stage UI
 
+    public void ShowNormalOrBossStageUI(bool isBoss = false)
+    {
+        SetActiveSlider(Sliders.BossHpSlider, isBoss, 1f);
+        SetActiveSlider(Sliders.BossStageTimer, isBoss, 1f);
+        GetObject((int)GameObjects.RemainMonster).SetActive(!isBoss);
+    }
+
+    private void SetActiveSlider(Sliders slider, bool active, float value)
+    {
+        var sliderObj = GetSlider((int)slider);
+        sliderObj.gameObject.SetActive(active);
+        sliderObj.value = value;
+    }
+
     public void RefreshShowRemainMonster(int currentMonster, int maxMonster)
     {
         GetText((int)Texts.RemainMonsterValueText).text = $"{currentMonster} / {maxMonster}";
     }
 
+    public void RefreshShowCurrentStage(int currentStage, int maxStage)
+    {
+        GetSlider((int)Sliders.CurrentStageSlider).value = currentStage;
+        GetSlider((int)Sliders.CurrentStageSlider).maxValue = maxStage;
+    }
 
+    public void RefreshBossMonsterHp(BossMonster boss)
+    {
+        float hpAmount = boss.Hp / boss.MaxHp;
+        GetSlider((int)Sliders.BossHpSlider).value = hpAmount;
+    }
+
+    public void RefreshBossStageTimer(float currentTime, float maxTime)
+    {
+        float timePercentage = currentTime / maxTime;
+        GetSlider((int)Sliders.BossStageTimer).value = timePercentage;
+    }
 
     #endregion
 

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class BaseObject : InitBase
 {
+    public EObjectType ObjectType { get; protected set; } = EObjectType.None;
     public Collider2D _collider { get; protected set; }
     public SpriteRenderer _sprite { get; protected set; }
 

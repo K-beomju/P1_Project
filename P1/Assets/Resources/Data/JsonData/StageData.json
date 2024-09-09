@@ -1,0 +1,604 @@
+{
+  "heroes": [
+    {
+      "StageNumber": 1,
+      "StageType": 0,
+      "MonsterCount": 10,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 2,
+      "StageType": 0,
+      "MonsterCount": 10,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 3,
+      "StageType": 0,
+      "MonsterCount": 10,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 4,
+      "StageType": 0,
+      "MonsterCount": 10,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 5,
+      "StageType": 1,
+      "MonsterCount": 10,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 6,
+      "StageType": 0,
+      "MonsterCount": 15,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 7,
+      "StageType": 0,
+      "MonsterCount": 15,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 8,
+      "StageType": 0,
+      "MonsterCount": 15,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 9,
+      "StageType": 0,
+      "MonsterCount": 15,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 10,
+      "StageType": 1,
+      "MonsterCount": 15,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 11,
+      "StageType": 0,
+      "MonsterCount": 20,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 12,
+      "StageType": 0,
+      "MonsterCount": 20,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 13,
+      "StageType": 0,
+      "MonsterCount": 20,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 14,
+      "StageType": 0,
+      "MonsterCount": 20,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 15,
+      "StageType": 1,
+      "MonsterCount": 20,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 16,
+      "StageType": 0,
+      "MonsterCount": 25,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 17,
+      "StageType": 0,
+      "MonsterCount": 25,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 18,
+      "StageType": 0,
+      "MonsterCount": 25,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 19,
+      "StageType": 0,
+      "MonsterCount": 25,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 20,
+      "StageType": 1,
+      "MonsterCount": 25,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 21,
+      "StageType": 0,
+      "MonsterCount": 30,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 22,
+      "StageType": 0,
+      "MonsterCount": 30,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 23,
+      "StageType": 0,
+      "MonsterCount": 30,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 24,
+      "StageType": 0,
+      "MonsterCount": 30,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 25,
+      "StageType": 1,
+      "MonsterCount": 30,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 26,
+      "StageType": 0,
+      "MonsterCount": 35,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 27,
+      "StageType": 0,
+      "MonsterCount": 35,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 28,
+      "StageType": 0,
+      "MonsterCount": 35,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 29,
+      "StageType": 0,
+      "MonsterCount": 35,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 30,
+      "StageType": 1,
+      "MonsterCount": 35,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 31,
+      "StageType": 0,
+      "MonsterCount": 40,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 32,
+      "StageType": 0,
+      "MonsterCount": 40,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 33,
+      "StageType": 0,
+      "MonsterCount": 40,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 34,
+      "StageType": 0,
+      "MonsterCount": 40,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 35,
+      "StageType": 1,
+      "MonsterCount": 45,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 36,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 37,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 38,
+      "StageType": 1,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 39,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 40,
+      "StageType": 1,
+      "MonsterCount": 45,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 41,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 42,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 43,
+      "StageType": 1,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 44,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 45,
+      "StageType": 1,
+      "MonsterCount": 45,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 46,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 47,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 48,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 49,
+      "StageType": 0,
+      "MonsterCount": 45,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 50,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 51,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 52,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 53,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 54,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 55,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 56,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 57,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 58,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 59,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 60,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 61,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 62,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 63,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 64,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 65,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 66,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 67,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 68,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 69,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 70,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 71,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 72,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 73,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 74,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 75,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 76,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 77,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 78,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 79,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 80,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 81,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 82,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 83,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 84,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 85,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 86,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 87,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 88,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 89,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 90,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 91,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 92,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 93,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 94,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 95,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    },
+    {
+      "StageNumber": 96,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 97,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 98,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 99,
+      "StageType": 0,
+      "MonsterCount": 50,
+      "BossStage": false
+    },
+    {
+      "StageNumber": 100,
+      "StageType": 1,
+      "MonsterCount": 50,
+      "BossStage": true
+    }
+  ]
+}

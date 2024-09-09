@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using UnityEngine;
 using static Define;
 
@@ -9,6 +10,7 @@ public class GameManager
 {
 	private int _currentMonsters;
 	private int _maxMonsters;
+
 	#region MonsterSpawn
 
 	public void SetMonsterCount(int currentMonsters, int maxMonsters)
@@ -18,12 +20,14 @@ public class GameManager
 
 		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _currentMonsters, _maxMonsters);
 	}
-	
-	public void SpawnMonster(int spawnCount)
+
+	public void SpawnMonster(StageData stageData, bool isBoss = false)
 	{
-		(Managers.UI.SceneUI as UI_GameScene).RefreshShowRemainMonster(spawnCount, spawnCount);
+		var sceneUI = (Managers.UI.SceneUI as UI_GameScene);
+		sceneUI.RefreshShowCurrentStage(stageData.StageNumber, 100);
+		sceneUI.RefreshShowRemainMonster(stageData.MonsterCount, stageData.MonsterCount);
 		Vector3 heroPos = Managers.Object.Heroes.FirstOrDefault().transform.position;
-		for (int i = 0; i < spawnCount; i++)
+		for (int i = 0; i < stageData.MonsterCount; i++)
 		{
 			float minDistance = 5.0f;
 			float randomDistance = UnityEngine.Random.Range(minDistance, 10.0f);  // 최소 5 이상, 최대 10 이하의 랜덤 거리
@@ -35,7 +39,13 @@ public class GameManager
 			Managers.Object.Spawn<Monster>(spawnPosition);
 		}
 
-		SetMonsterCount(spawnCount, spawnCount);
+		SetMonsterCount(stageData.MonsterCount, stageData.MonsterCount);
+
+
+		if (isBoss)
+		{
+			Managers.Object.Spawn<BossMonster>(Vector3.zero);
+		}
 	}
 
 	#endregion

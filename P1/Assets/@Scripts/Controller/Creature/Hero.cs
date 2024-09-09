@@ -35,6 +35,7 @@ public class Hero : Creature
 
         SetCreatureInfo();
 
+        ObjectType = EObjectType.Hero;
         gameObject.layer = (int)ELayer.Hero;
         _anim.SetBool(HeroAnimation.HashCombo, true);
 
@@ -77,7 +78,7 @@ public class Hero : Creature
     {
         if (_target.IsValid() == false)
             return;
-        _target.GetComponent<IDamageable>().OnDamage(_attackDamage.Value);
+        _target.GetComponent<IDamageable>().OnDamaged(_attackDamage.Value);
 
         CreatureState = ECreatureState.Move;
     }
@@ -141,6 +142,9 @@ public class Hero : Creature
     #region Target Search & Movement
     private BaseObject FindClosestTarget(IEnumerable<BaseObject> objs)
     {
+        if (Managers.Object.BossMonster != null)
+            return  Managers.Object.BossMonster;
+
         BaseObject target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
 

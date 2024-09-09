@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Data;
 using UnityEngine;
 using static Define;
 
 public class GameScene : BaseScene
 {
+    public StageData Data { get; private set; }
+    public int StageLevel { get; private set; }
+    public float BossBattleTimer { get; private set; }
+    public float BossBattleTimeLimit { get; private set; }
+
     private EGameSceneState _gameSceneState = EGameSceneState.None;
     public EGameSceneState GameSceneState
     {
@@ -20,7 +26,13 @@ public class GameScene : BaseScene
         }
     }
 
-    private IEnumerator _currentCoroutine = null;
+    private IEnumerator CurrentCoroutine = null;
+    private WaitForSeconds FrameWait;
+    private WaitForSeconds StartWait;
+
+    private UI_GameScene sceneUI;
+    private bool isClear;
+
     private void SwitchCoroutine()
     {
         IEnumerator coroutine = null;
@@ -44,13 +56,13 @@ public class GameScene : BaseScene
                 break;
         }
 
-        if (_currentCoroutine != null)
+        if (CurrentCoroutine != null)
         {
-            StopCoroutine(_currentCoroutine);
+            StopCoroutine(CurrentCoroutine);
         }
 
-        _currentCoroutine = coroutine;
-        StartCoroutine(_currentCoroutine);
+        CurrentCoroutine = coroutine;
+        StartCoroutine(CurrentCoroutine);
     }
 
 
@@ -61,41 +73,53 @@ public class GameScene : BaseScene
 
         SceneType = EScene.GameScene;
 
+        Managers.Data.Init();
+
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero);
         cc.Target = hero;
 
         Managers.UI.CacheAllPopups();
-        var sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
+        sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, 100);
 
+
+
+        isClear = false;
+        FrameWait = new WaitForSeconds(0.2f);
+        StartWait = new WaitForSeconds(1f);
+
+        SetupStage(1);
+        sceneUI.ShowNormalOrBossStageUI(false);
         GameSceneState = EGameSceneState.Play;
         return true;
     }
 
+    private void SetupStage(int stageLevel)
+    {
+        isClear = false;
+        StageLevel = stageLevel;
+        Data = Managers.Data.StageDic[StageLevel];
+        BossBattleTimeLimit = 10;//Data.BossBattleTimeLimit;
+        BossBattleTimer = BossBattleTimeLimit;
+    }
+
     private IEnumerator CoPlayStage()
     {
-        int initialSpawnCount = 10;  // 처음에 스폰할 몬스터 수
-        float respawnDelay = 2.0f;  // 리스폰 사이의 시간 간격
+        yield return StartWait;
+        sceneUI.ShowNormalOrBossStageUI(false);
 
-        WaitForSeconds respawnWait = new WaitForSeconds(respawnDelay);
-        WaitForSeconds frameWait = new WaitForSeconds(0.2f); // 0.2초 대기 시간
+        Managers.Game.SpawnMonster(Data);
 
-        // 처음에 몬스터 스폰
-        Managers.Game.SpawnMonster(initialSpawnCount);
-
-        while (true)
+        while (!isClear)
         {
-            // 현재 남아있는 몬스터 수가 respawnThreshold 이하일 때 새로운 몬스터를 스폰
             if (Managers.Object.Monsters.Count == 0)
-            {
-                yield return respawnWait; // 리스폰 전 딜레이
-                Managers.Game.SpawnMonster(initialSpawnCount);  // 몬스터 리스폰
-            }
+                isClear = true;
 
-            // 반복적으로 체크
-            yield return frameWait;
+            yield return FrameWait;
         }
+
+        GameSceneState = EGameSceneState.Clear;
     }
 
     private IEnumerator CoPauseStage()
@@ -103,11 +127,32 @@ public class GameScene : BaseScene
         yield return null;
     }
 
-    private IEnumerator CoBossStage()
+    private void UpdateBossBattleTimer()
     {
-        yield return null;
+        BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
+        sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
+
+        if (BossBattleTimer <= 0)
+        {
+            GameSceneState = EGameSceneState.Over;
+        }
     }
 
+    private IEnumerator CoBossStage()
+    {
+        yield return StartWait;
+        sceneUI.ShowNormalOrBossStageUI(true);
+
+        Managers.Game.SpawnMonster(Data, true);
+        while (Managers.Object.BossMonster != null)
+        {
+            UpdateBossBattleTimer(); // 보스 타이머 업데이트 메서드 호출
+            yield return null;
+        }
+
+        GameSceneState = EGameSceneState.Clear;
+    }
+    
     private IEnumerator CoStageOver()
     {
         yield return null;
@@ -115,9 +160,46 @@ public class GameScene : BaseScene
 
     private IEnumerator CoStageClear()
     {
+        KillAllMonsters();
+        yield return new WaitForSeconds(0.5f);
 
-        yield return null;
+        ++StageLevel;
+        Debug.LogWarning($"다음 스테이지 {StageLevel} 입니다!");
+        SetupStage(StageLevel);
+        GameSceneState = StageLevel % 5 == 0
+        ? EGameSceneState.Boss : EGameSceneState.Play;
     }
+
+
+    private void KillAllMonsters()
+    {
+        foreach (Monster monster in Managers.Object.Monsters)
+        {
+            monster.CreatureState = ECreatureState.Dead;
+        }
+        if (Managers.Object.BossMonster != null)
+            Managers.Object.BossMonster.CreatureState = ECreatureState.Dead;
+    }
+
+
+    #region ContextMenu Methods
+
+    [ContextMenu("Stage/StageClear")]
+    public void StageClearCM()
+    {
+        GameSceneState = EGameSceneState.Clear;
+    }
+
+    [ContextMenu("Stage/NextBossStage")]
+    public void NextBossStageCM()
+    {
+        StageLevel = (Mathf.FloorToInt(StageLevel / 5.0f) * 5) + 4;
+
+        Debug.Log(StageLevel);
+        GameSceneState = EGameSceneState.Clear;
+    }
+
+    #endregion
 
     public override void Clear()
     {

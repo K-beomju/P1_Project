@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectManager
 {
+    public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
     public HashSet<Hero> Heroes { get; set; } = new HashSet<Hero>();
 
@@ -19,6 +20,7 @@ public class ObjectManager
 
     public Transform HeroRoot { get { return GetRootTransform("@Heroes"); } }
     public Transform MonsterRoot { get { return GetRootTransform("@Monsters"); } }
+    public Transform BossMonsterRoot { get { return GetRootTransform("@BossMonster"); } }
     #endregion
 
     public T Spawn<T>(Vector3 position) where T : BaseObject
@@ -36,6 +38,12 @@ public class ObjectManager
             monster.transform.parent = MonsterRoot;
             Monsters.Add(monster);
         }
+        if (typeof(T) == typeof(BossMonster))
+        {
+            BossMonster bossMonster = go.GetComponent<BossMonster>();
+            bossMonster.transform.parent = BossMonsterRoot;
+            BossMonster = bossMonster;
+        }
         if (typeof(T) == typeof(Hero))
         {
             Hero hero = go.GetComponent<Hero>();
@@ -52,9 +60,11 @@ public class ObjectManager
         {
             Monster monster = obj.GetComponent<Monster>();
             Monsters.Remove(monster);
-
-            Managers.Game.OnMonsterDestroyed(); 
-
+            Managers.Game.OnMonsterDestroyed();
+        }
+        if (typeof(T) == typeof(BossMonster))
+        {
+            BossMonster = null;
         }
         if (typeof(T) == typeof(Hero))
         {
@@ -66,6 +76,7 @@ public class ObjectManager
 
     public void Clear()
     {
+        BossMonster = null;
         Monsters.Clear();
         Heroes.Clear();
     }

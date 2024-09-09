@@ -5,9 +5,9 @@ using static Define;
 
 public class Monster : Creature, IDamageable
 {
-    [SerializeField] private float patrolRange = 5.0f;  // 패트롤 범위
-    [SerializeField] private float patrolSpeed = 2.0f;  // 패트롤 속도
-    [SerializeField] private float idleWaitTime = 3.0f; // Idle 상태에서 대기하는 시간
+    protected float MoveRange = 5.0f;  // 패트롤 범위
+    protected float MoveSpeed = 2.0f;  // 패트롤 속도
+    protected float IdleWaitTime = 3.0f; // Idle 상태에서 대기하는 시간
 
     private Vector3 _initialPosition;  // 패트롤 시작 위치
     private Vector3 _targetPosition;   // 패트롤 목표 위치
@@ -24,7 +24,7 @@ public class Monster : Creature, IDamageable
         if (base.Init() == false)
             return false;
 
-
+        ObjectType = EObjectType.Monster;
         gameObject.layer = (int)ELayer.Monster;
         _initialPosition = transform.position;  // 몬스터의 초기 위치 저장
         SetNewPatrolTarget();  // 첫 번째 목표 지점 설정
@@ -36,6 +36,10 @@ public class Monster : Creature, IDamageable
     {
         MaxHp = Hp;
 
+        MoveRange = 5;
+        MoveSpeed = 2;
+        IdleWaitTime = 3;
+
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.9f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
         _hpBar.SetSliderInfo(this);
@@ -44,7 +48,7 @@ public class Monster : Creature, IDamageable
     private void SetNewPatrolTarget()
     {
         // 패트롤 범위 내에서 새로운 목표 위치 설정
-        _targetPosition = _initialPosition + new Vector3(Random.Range(-patrolRange, patrolRange), Random.Range(-patrolRange, patrolRange), 0);
+        _targetPosition = _initialPosition + new Vector3(Random.Range(-MoveRange, MoveRange), Random.Range(-MoveRange, MoveRange), 0);
         _isMovingToTarget = true;
     }
 
@@ -69,7 +73,7 @@ public class Monster : Creature, IDamageable
     private IEnumerator WaitInIdle()
     {
         // 3초 대기
-        yield return new WaitForSeconds(idleWaitTime);
+        yield return new WaitForSeconds(IdleWaitTime);
 
         // 대기 후 다음 패트롤 지점 설정 (공격받지 않은 경우에만)
         if (!_isDamaged)
@@ -105,7 +109,7 @@ public class Monster : Creature, IDamageable
             {
                 // 목표 지점을 향해 이동
                 Vector3 moveDir = direction.normalized;
-                transform.Translate(moveDir * patrolSpeed * Time.deltaTime);
+                transform.Translate(moveDir * MoveSpeed * Time.deltaTime);
                 _sprite.flipX = moveDir.x < 0;  // 좌우 이동 시 스프라이트 방향 전환
             }
         }
@@ -116,7 +120,7 @@ public class Monster : Creature, IDamageable
         OnDead();
     }
 
-    public void OnDamage(float damage)
+    public virtual void OnDamaged(float damage)
     {
         float finalDamage = damage; // TODO: 방어력이나 다른 계산이 있을 경우 적용
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
@@ -135,7 +139,7 @@ public class Monster : Creature, IDamageable
         damageText.SetInfo(CenterPosition, damage, false);
     }
 
-    public void OnDead()
+    public virtual void OnDead()
     {
         Managers.Object.Despawn(this);
     }
