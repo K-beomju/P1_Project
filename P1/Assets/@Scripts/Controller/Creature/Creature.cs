@@ -20,8 +20,9 @@ public class Creature : BaseObject
     #endregion
 
     #region Config
-    public Animator _anim { get; protected set; }
-    public BaseObject _target { get; protected set; }
+    public Animator Anim { get; protected set; }
+    public Rigidbody2D Rigid { get; protected set; }
+    public BaseObject Target { get; protected set; }
     #endregion
 
 
@@ -45,7 +46,8 @@ public class Creature : BaseObject
             return false;
 
         // Rendering
-        _anim = GetComponent<Animator>();
+        Anim = GetComponent<Animator>();
+        Rigid = GetComponent<Rigidbody2D>();    
         _sprite.sortingOrder = SortingLayers.CREATURE;
         return true;
     }

@@ -67,6 +67,30 @@ namespace Data
         }
     }
 
+    #region BossMonsterData
+    [Serializable]
+    public class BossMonsterInfoData : MonsterInfoData
+    {
+    }
+
+    [Serializable]
+    public class BossMonsterInfoDataLoader : ILoader<int, BossMonsterInfoData>
+    {
+        public List<BossMonsterInfoData> BossMonsterInfoDataList = new List<BossMonsterInfoData>();
+
+        public Dictionary<int, BossMonsterInfoData> MakeDict()
+        {
+            Dictionary<int, BossMonsterInfoData> dict = new Dictionary<int, BossMonsterInfoData>();
+            foreach (BossMonsterInfoData infoData in BossMonsterInfoDataList)
+            {
+                dict.Add(infoData.DataId, infoData);
+            }
+
+            return dict;
+        }
+    }
+    #endregion
+
     #endregion
     #endregion
 

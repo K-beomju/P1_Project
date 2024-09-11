@@ -1,0 +1,12 @@
+{
+  "BossMonsterInfoDataList": [
+    {
+      "MoveSpeed": 1.0,
+      "DataId": 60001000,
+      "Name": "보스1",
+      "ObjectType": 3,
+      "PrefabKey": "Enemy_Gana",
+      "MaxHp": 400.0
+    }
+  ]
+}

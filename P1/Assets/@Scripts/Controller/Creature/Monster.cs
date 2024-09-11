@@ -37,8 +37,8 @@ public class Monster : Creature, IDamageable
 
         MaxHp = new CreatureStat(data.MaxHp + Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp * (Level - 1));
         Hp = MaxHp.Value;
-        Debug.Log($"MaxHp = 원래 체력: {data.MaxHp} + (업그레이드 체력: {Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp} * 레벨: {Level - 1})");
-        Debug.Log($"MaxHp 계산 결과: {MaxHp.Value}");
+        // Debug.Log($"MaxHp = 원래 체력: {data.MaxHp} + (업그레이드 체력: {Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp} * 레벨: {Level - 1})");
+        // Debug.Log($"MaxHp 계산 결과: {MaxHp.Value}");
         MoveSpeed = new CreatureStat(data.MoveSpeed);
 
         MoveRange = 5;
@@ -47,6 +47,7 @@ public class Monster : Creature, IDamageable
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.9f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
         _hpBar.SetSliderInfo(this);
+        _hpBar.gameObject.SetActive(false);
     }
 
     private void SetNewPatrolTarget()
@@ -115,10 +116,12 @@ public class Monster : Creature, IDamageable
         OnDead();
     }
 
-    public virtual void OnDamaged(float damage)
+    public virtual void OnDamaged(Creature attacker)
     {
-        float finalDamage = damage; // TODO: 방어력이나 다른 계산이 있을 경우 적용
+        float finalDamage = attacker.Atk.Value; // TODO: 방어력이나 다른 계산이 있을 경우 적용
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp.Value);
+        if(_hpBar != null && !_hpBar.gameObject.activeSelf)
+        _hpBar.gameObject.SetActive(true);
 
         // 공격을 받으면 움직이지 않도록 Idle 상태로 유지
         _isDamaged = true;
@@ -131,7 +134,7 @@ public class Monster : Creature, IDamageable
 
         // DmageText
         UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, damage, false);
+        damageText.SetInfo(CenterPosition, finalDamage, false);
     }
 
     public virtual void OnDead()

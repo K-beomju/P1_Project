@@ -151,7 +151,7 @@ public class GameScene : BaseScene
         yield return StartWait;
         sceneUI.ShowNormalOrBossStageUI(true);
 
-        Managers.Game.SpawnMonster(Data);
+        Managers.Game.SpawnMonster(Data, true);
         while (Managers.Object.BossMonster != null)
         {
             UpdateBossBattleTimer(); // 보스 타이머 업데이트 메서드 호출

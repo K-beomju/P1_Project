@@ -26,7 +26,7 @@ public class Hero : Creature
 
         ObjectType = EObjectType.Hero;
         gameObject.layer = (int)ELayer.Hero;
-        _anim.SetBool(HeroAnimation.HashCombo, true);
+        Anim.SetBool(HeroAnimation.HashCombo, true);
 
         HeroMoveState = EHeroMoveState.None;
         return true;
@@ -34,7 +34,7 @@ public class Hero : Creature
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        Atk = new CreatureStat(1);
+        Atk = new CreatureStat(5);
         AttackSpeedRate = new CreatureStat(1);
         AttackDelay = new CreatureStat(1);
         AttackRange = new CreatureStat(1);
@@ -44,8 +44,8 @@ public class Hero : Creature
     #region Anim
     protected override void UpdateAnimation()
     {
-        _anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
-        _anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && _target != null);
+        Anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
+        Anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && Target != null);
     }
 
     public void ComboAttackDelay()
@@ -57,27 +57,28 @@ public class Hero : Creature
 
     private IEnumerator ComboDelayCo()
     {
-        _anim.SetBool(HeroAnimation.HashCombo, false);
+        Anim.SetBool(HeroAnimation.HashCombo, false);
         yield return new WaitForSeconds(AttackDelay.Value);
-        _anim.SetBool(HeroAnimation.HashCombo, true);
+        Anim.SetBool(HeroAnimation.HashCombo, true);
         _comboDelayCoroutine = null;
     }
 
     public void OnAnimEventHandler()
     {
-        if (_target.IsValid() == false)
+        if (Target.IsValid() == false)
             return;
-        _target.GetComponent<IDamageable>().OnDamaged(Atk.Value);
+        Target.GetComponent<IDamageable>().OnDamaged(this);
 
         CreatureState = ECreatureState.Move;
     }
     #endregion
 
+
     #region AI Update
     protected override void UpdateIdle()
     {
-        _target = FindClosestTarget(Managers.Object.Monsters);
-        if (_target != null)
+        Target = FindClosestTarget(Managers.Object.Monsters);
+        if (Target != null)
         {
             CreatureState = ECreatureState.Move;
             HeroMoveState = EHeroMoveState.TargetMonster;
@@ -96,7 +97,7 @@ public class Hero : Creature
                 return;
             }
 
-            _target = target;
+            Target = target;
             ChaseOrAttackTarget(AttackRange.Value);
         }
         else
@@ -107,13 +108,13 @@ public class Hero : Creature
 
     protected override void UpdateAttack()
     {
-        if (_target == null)
+        if (Target == null)
         {
             CreatureState = ECreatureState.Idle;
             return;
         }
 
-        Vector3 dir = (_target.transform.position - CenterPosition);
+        Vector3 dir = (Target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = AttackRange.Value * AttackRange.Value;
 
@@ -124,7 +125,7 @@ public class Hero : Creature
             return;
         }
 
-        _anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate.Value);
+        Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate.Value);
     }
     #endregion
 
@@ -155,7 +156,7 @@ public class Hero : Creature
 
     private void ChaseOrAttackTarget(float attackRange)
     {
-        Vector3 dir = (_target.transform.position - CenterPosition);
+        Vector3 dir = (Target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = attackRange * attackRange;
 
@@ -170,7 +171,7 @@ public class Hero : Creature
 
             if (dir.magnitude < 0.01f)
             {
-                transform.position = _target.transform.position;
+                transform.position = Target.transform.position;
                 return;
             }
             float moveDist = Mathf.Min(dir.magnitude, MoveSpeed.Value * Time.deltaTime);
