@@ -12,6 +12,11 @@ public class UI_HpBarWorldSpace : UI_Base
         DamageSlider,
     }
 
+    private enum Images
+    {
+        HpFill
+    }
+
     private Creature _owner;
     private Slider _hpBarSlider;
     private Slider _damageSlider;
@@ -22,9 +27,11 @@ public class UI_HpBarWorldSpace : UI_Base
         if (base.Init() == false)
             return false;
         BindSliders(typeof(Sliders));
+        BindImages(typeof(Images));
+
         _hpBarSlider = GetSlider((int)Sliders.HpSlider);
         _damageSlider = GetSlider((int)Sliders.DamageSlider);
-        
+
         Canvas canvas = GetComponent<Canvas>();
         // 애매함 
         canvas.sortingOrder = SortingLayers.UI_HPBAR;
@@ -34,6 +41,10 @@ public class UI_HpBarWorldSpace : UI_Base
     public void SetSliderInfo(Creature owner)
     {
         _owner = owner;
+        if (owner.ObjectType == EObjectType.Hero)
+            GetImage((int)Images.HpFill).color = Util.HexToColor("#58FF58");
+        else if (owner.ObjectType == EObjectType.Monster)
+            GetImage((int)Images.HpFill).color = Util.HexToColor("#FF5858");
     }
 
     private void LateUpdate()
@@ -46,7 +57,7 @@ public class UI_HpBarWorldSpace : UI_Base
         float hpAmount = _owner.Hp / _owner.MaxHp.Value;
         _hpBarSlider.value = hpAmount;
 
-            // DamageSlider는 천천히 HpSlider를 따라가며 감소
+        // DamageSlider는 천천히 HpSlider를 따라가며 감소
         if (_damageSlider.value > _hpBarSlider.value)
         {
             _damageSlider.value = Mathf.Lerp(_damageSlider.value, _hpBarSlider.value, smoothSpeed * Time.deltaTime);

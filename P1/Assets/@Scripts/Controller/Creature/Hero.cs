@@ -17,6 +17,7 @@ public class Hero : Creature
     #endregion
 
     private Coroutine _comboDelayCoroutine = null;
+    private UI_HpBarWorldSpace _hpBar;
 
 
     protected override bool Init()
@@ -34,11 +35,18 @@ public class Hero : Creature
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
+        MaxHp = new CreatureStat(100);
+        Hp = MaxHp.Value;
         Atk = new CreatureStat(5);
         AttackSpeedRate = new CreatureStat(1);
         AttackDelay = new CreatureStat(1);
         AttackRange = new CreatureStat(1);
         MoveSpeed = new CreatureStat(3);
+
+        _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
+        _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f);
+        _hpBar.SetSliderInfo(this);
+        _hpBar.gameObject.SetActive(true);
     }
 
     #region Anim
