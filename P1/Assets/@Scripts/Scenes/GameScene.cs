@@ -100,9 +100,24 @@ public class GameScene : BaseScene
         isClear = false;
         StageLevel = stageLevel;
         Data = Managers.Data.StageDic[StageLevel];
-        BossBattleTimeLimit = 10;//Data.BossBattleTimeLimit;
-        BossBattleTimer = BossBattleTimeLimit;
+        Debug.Log($"{stageLevel} 스테이지 진입");
+
+        if (Data.StageType == EStageType.NormalStage)
+        {
+            Debug.Log($"노말 스테이지 로드");
+        }
+        else if (Data.StageType == EStageType.BossStage)
+        {
+            Debug.Log($"보스 스테이지 로드");
+            BossBattleTimeLimit = Data.BossBattleTimeLimit;
+            BossBattleTimer = BossBattleTimeLimit;
+
+        }
+        GameSceneState = Data.StageType == EStageType.NormalStage ?
+        EGameSceneState.Play : EGameSceneState.Boss;
     }
+
+    #region GameSceneState
 
     private IEnumerator CoPlayStage()
     {
@@ -127,23 +142,12 @@ public class GameScene : BaseScene
         yield return null;
     }
 
-    private void UpdateBossBattleTimer()
-    {
-        BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
-        sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
-
-        if (BossBattleTimer <= 0)
-        {
-            GameSceneState = EGameSceneState.Over;
-        }
-    }
-
     private IEnumerator CoBossStage()
     {
         yield return StartWait;
         sceneUI.ShowNormalOrBossStageUI(true);
 
-        Managers.Game.SpawnMonster(Data, true);
+        Managers.Game.SpawnMonster(Data);
         while (Managers.Object.BossMonster != null)
         {
             UpdateBossBattleTimer(); // 보스 타이머 업데이트 메서드 호출
@@ -152,10 +156,17 @@ public class GameScene : BaseScene
 
         GameSceneState = EGameSceneState.Clear;
     }
-    
+
     private IEnumerator CoStageOver()
     {
-        yield return null;
+        KillAllMonsters();
+        yield return new WaitForSeconds(0.5f);
+        --StageLevel;
+        Debug.LogWarning($"다음 스테이지 {StageLevel} 입니다!");
+        SetupStage(StageLevel);
+        GameSceneState = StageLevel % 5 == 0
+        ? EGameSceneState.Boss : EGameSceneState.Play;
+
     }
 
     private IEnumerator CoStageClear()
@@ -166,10 +177,20 @@ public class GameScene : BaseScene
         ++StageLevel;
         Debug.LogWarning($"다음 스테이지 {StageLevel} 입니다!");
         SetupStage(StageLevel);
-        GameSceneState = StageLevel % 5 == 0
-        ? EGameSceneState.Boss : EGameSceneState.Play;
     }
 
+    #endregion
+
+    private void UpdateBossBattleTimer()
+    {
+        BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
+        sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
+
+        if (BossBattleTimer <= 0)
+        {
+            GameSceneState = EGameSceneState.Over;
+        }
+    }
 
     private void KillAllMonsters()
     {
@@ -194,8 +215,6 @@ public class GameScene : BaseScene
     public void NextBossStageCM()
     {
         StageLevel = (Mathf.FloorToInt(StageLevel / 5.0f) * 5) + 4;
-
-        Debug.Log(StageLevel);
         GameSceneState = EGameSceneState.Clear;
     }
 

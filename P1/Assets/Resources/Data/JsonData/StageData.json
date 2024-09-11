@@ -4,601 +4,1401 @@
       "StageNumber": 1,
       "StageType": 0,
       "MonsterCount": 10,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 2,
       "StageType": 0,
       "MonsterCount": 10,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 3,
       "StageType": 0,
       "MonsterCount": 10,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 4,
       "StageType": 0,
       "MonsterCount": 10,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 5,
       "StageType": 1,
       "MonsterCount": 10,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 6,
       "StageType": 0,
       "MonsterCount": 15,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 7,
       "StageType": 0,
       "MonsterCount": 15,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 8,
       "StageType": 0,
       "MonsterCount": 15,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 9,
       "StageType": 0,
       "MonsterCount": 15,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 10,
       "StageType": 1,
       "MonsterCount": 15,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 10,
+      "MonsterGoldReward": 10
     },
     {
       "StageNumber": 11,
       "StageType": 0,
       "MonsterCount": 20,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 12,
       "StageType": 0,
       "MonsterCount": 20,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 13,
       "StageType": 0,
       "MonsterCount": 20,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 14,
       "StageType": 0,
       "MonsterCount": 20,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 15,
       "StageType": 1,
       "MonsterCount": 20,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 16,
       "StageType": 0,
       "MonsterCount": 25,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 17,
       "StageType": 0,
       "MonsterCount": 25,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 18,
       "StageType": 0,
       "MonsterCount": 25,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 19,
       "StageType": 0,
       "MonsterCount": 25,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 20,
       "StageType": 1,
       "MonsterCount": 25,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 20,
+      "MonsterGoldReward": 20
     },
     {
       "StageNumber": 21,
       "StageType": 0,
       "MonsterCount": 30,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 22,
       "StageType": 0,
       "MonsterCount": 30,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 23,
       "StageType": 0,
       "MonsterCount": 30,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 24,
       "StageType": 0,
       "MonsterCount": 30,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 25,
       "StageType": 1,
       "MonsterCount": 30,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 26,
       "StageType": 0,
       "MonsterCount": 35,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 27,
       "StageType": 0,
       "MonsterCount": 35,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 28,
       "StageType": 0,
       "MonsterCount": 35,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 29,
       "StageType": 0,
       "MonsterCount": 35,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 30,
       "StageType": 1,
       "MonsterCount": 35,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 30,
+      "MonsterGoldReward": 30
     },
     {
       "StageNumber": 31,
       "StageType": 0,
       "MonsterCount": 40,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 32,
       "StageType": 0,
       "MonsterCount": 40,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 33,
       "StageType": 0,
       "MonsterCount": 40,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 34,
       "StageType": 0,
       "MonsterCount": 40,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 35,
       "StageType": 1,
       "MonsterCount": 45,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 36,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 37,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 38,
       "StageType": 1,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 39,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 40,
       "StageType": 1,
       "MonsterCount": 45,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 40,
+      "MonsterGoldReward": 40
     },
     {
       "StageNumber": 41,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 42,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 43,
       "StageType": 1,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 44,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 45,
       "StageType": 1,
       "MonsterCount": 45,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 46,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 47,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 48,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 49,
       "StageType": 0,
       "MonsterCount": 45,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 50,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 50,
+      "MonsterGoldReward": 50
     },
     {
       "StageNumber": 51,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 52,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 53,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 54,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 55,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 56,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 57,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 58,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 59,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 60,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 60,
+      "MonsterGoldReward": 60
     },
     {
       "StageNumber": 61,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 62,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 63,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 64,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 65,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 66,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 67,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 68,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 69,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 70,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 70,
+      "MonsterGoldReward": 70
     },
     {
       "StageNumber": 71,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 72,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 73,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 74,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 75,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 76,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 77,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 78,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 79,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 80,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 80,
+      "MonsterGoldReward": 80
     },
     {
       "StageNumber": 81,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 82,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 83,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 84,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 85,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 86,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 87,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 88,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 89,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 90,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 90,
+      "MonsterGoldReward": 90
     },
     {
       "StageNumber": 91,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 92,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 93,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 94,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 95,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 96,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 97,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 98,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 99,
       "StageType": 0,
       "MonsterCount": 50,
-      "BossStage": false
+      "BossStage": false,
+      "BossDataId": 0,
+      "BossBattleTimeLimit": 0,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     },
     {
       "StageNumber": 100,
       "StageType": 1,
       "MonsterCount": 50,
-      "BossStage": true
+      "BossStage": true,
+      "BossDataId": 60001000,
+      "BossBattleTimeLimit": 30,
+      "MonsterDataIdList": [
+        1000,
+        2000
+      ],
+      "MonsterLevel": 100,
+      "MonsterGoldReward": 100
     }
   ]
 }
