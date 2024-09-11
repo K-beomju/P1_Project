@@ -43,7 +43,7 @@ public class UI_HpBarWorldSpace : UI_Base
             return;
         }
 
-        float hpAmount = _owner.Hp / _owner.MaxHp;
+        float hpAmount = _owner.Hp / _owner.MaxHp.Value;
         _hpBarSlider.value = hpAmount;
 
             // DamageSlider는 천천히 HpSlider를 따라가며 감소

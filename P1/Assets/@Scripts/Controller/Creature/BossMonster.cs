@@ -16,12 +16,15 @@ public class BossMonster : Monster
         return true;
     }
 
-    protected override void SetCreatureInfo()
+    public override void SetCreatureInfo(int dataTemplateID)
     {
-        MaxHp = Hp;
+        Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
+        
+        MaxHp = new CreatureStat(5);
+        Hp = MaxHp.Value;
+        MoveSpeed = new CreatureStat(2);
 
         MoveRange = 5;
-        MoveSpeed = 2;
         IdleWaitTime = 3;
     }
 

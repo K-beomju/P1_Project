@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using static Define;
 
 public class Monster : Creature, IDamageable
 {
     protected float MoveRange = 5.0f;  // 패트롤 범위
-    protected float MoveSpeed = 2.0f;  // 패트롤 속도
     protected float IdleWaitTime = 3.0f; // Idle 상태에서 대기하는 시간
 
     private Vector3 _initialPosition;  // 패트롤 시작 위치
@@ -14,10 +14,8 @@ public class Monster : Creature, IDamageable
     private bool _isMovingToTarget;    // 목표 지점으로 이동 중인지 여부
     private Coroutine _idleCoroutine;  // Idle 상태에서 대기 시간을 처리할 코루틴
     private bool _isDamaged;           // 공격을 받은 상태인지 여부
-    private bool _isFirstSpawn = true; // 처음 소환된 상태인지 여부
 
     private UI_HpBarWorldSpace _hpBar;
-
 
     protected override bool Init()
     {
@@ -32,12 +30,18 @@ public class Monster : Creature, IDamageable
         return true;
     }
 
-    protected override void SetCreatureInfo()
+    public override void SetCreatureInfo(int dataTemplateID)
     {
-        MaxHp = Hp;
+        MonsterInfoData data = Managers.Data.MonsterDic[dataTemplateID];
+        Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
+
+        MaxHp = new CreatureStat(data.MaxHp + Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp * (Level - 1));
+        Hp = MaxHp.Value;
+        Debug.Log($"MaxHp = 원래 체력: {data.MaxHp} + (업그레이드 체력: {Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp} * 레벨: {Level - 1})");
+        Debug.Log($"MaxHp 계산 결과: {MaxHp.Value}");
+        MoveSpeed = new CreatureStat(data.MoveSpeed);
 
         MoveRange = 5;
-        MoveSpeed = 2;
         IdleWaitTime = 3;
 
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
@@ -54,15 +58,6 @@ public class Monster : Creature, IDamageable
 
     protected override void UpdateIdle()
     {
-        // 처음 소환되었을 때는 바로 이동 시작
-        if (_isFirstSpawn)
-        {
-            _isFirstSpawn = false;
-            SetNewPatrolTarget();
-            CreatureState = ECreatureState.Move;
-            return;
-        }
-
         if (_idleCoroutine == null && !_isDamaged)  // 공격을 받지 않았을 때만 대기
         {
             // Idle 상태에서 3초 대기 후 다음 패트롤 지점으로 이동
@@ -109,7 +104,7 @@ public class Monster : Creature, IDamageable
             {
                 // 목표 지점을 향해 이동
                 Vector3 moveDir = direction.normalized;
-                transform.Translate(moveDir * MoveSpeed * Time.deltaTime);
+                transform.Translate(moveDir * MoveSpeed.Value * Time.deltaTime);
                 _sprite.flipX = moveDir.x < 0;  // 좌우 이동 시 스프라이트 방향 전환
             }
         }
@@ -123,7 +118,7 @@ public class Monster : Creature, IDamageable
     public virtual void OnDamaged(float damage)
     {
         float finalDamage = damage; // TODO: 방어력이나 다른 계산이 있을 경우 적용
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp.Value);
 
         // 공격을 받으면 움직이지 않도록 Idle 상태로 유지
         _isDamaged = true;
@@ -134,7 +129,7 @@ public class Monster : Creature, IDamageable
             OnDead();
         }
 
-         // DmageText
+        // DmageText
         UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
         damageText.SetInfo(CenterPosition, damage, false);
     }

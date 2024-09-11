@@ -7,7 +7,7 @@ using static Define;
 
 public class GameScene : BaseScene
 {
-    public StageData Data { get; private set; }
+    public StageInfoData Data { get; private set; }
     public int StageLevel { get; private set; }
     public float BossBattleTimer { get; private set; }
     public float BossBattleTimeLimit { get; private set; }
@@ -72,13 +72,17 @@ public class GameScene : BaseScene
             return false;
 
         SceneType = EScene.GameScene;
+        Managers.Scene.SetCurrentScene(this);
 
+        // Data
         Managers.Data.Init();
 
+        // Scene Setting
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
-        Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero);
+        Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;
 
+        // UI
         Managers.UI.CacheAllPopups();
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, 100);

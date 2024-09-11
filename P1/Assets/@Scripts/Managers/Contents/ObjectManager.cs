@@ -23,7 +23,7 @@ public class ObjectManager
     public Transform BossMonsterRoot { get { return GetRootTransform("@BossMonster"); } }
     #endregion
 
-    public T Spawn<T>(Vector3 position) where T : BaseObject
+    public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
         string prefabName = typeof(T).Name;
 
@@ -36,7 +36,7 @@ public class ObjectManager
         {
             Monster monster = go.GetComponent<Monster>();
             monster.transform.parent = MonsterRoot;
-            Monsters.Add(monster);
+            Monsters.Add(monster); 
         }
         if (typeof(T) == typeof(BossMonster))
         {
@@ -49,7 +49,8 @@ public class ObjectManager
             Hero hero = go.GetComponent<Hero>();
             hero.transform.parent = HeroRoot;
             Heroes.Add(hero);
-        }
+        }        
+        obj.SetInfo(dataTemplateID);
 
         return obj as T;
     }

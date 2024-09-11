@@ -21,12 +21,12 @@ public class GameManager
 		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _currentMonsters, _maxMonsters);
 	}
 
-	public void SpawnMonster(StageData stageData)
+	public void SpawnMonster(StageInfoData stageData, bool isBoss = false)
 	{
 		var sceneUI = (Managers.UI.SceneUI as UI_GameScene);
 		sceneUI.RefreshShowCurrentStage(stageData.StageNumber, 100);
 
-		if (!stageData.BossStage)
+		if (!isBoss) // 노말 스테이지
 		{
 			sceneUI.RefreshShowRemainMonster(stageData.MonsterCount, stageData.MonsterCount);
 
@@ -40,14 +40,14 @@ public class GameManager
 				// 랜덤 방향에 거리를 곱하여 플레이어로부터 일정 거리만큼 떨어진 위치 계산
 				Vector3 spawnPosition = heroPos + new Vector3(randomDirection.x, randomDirection.y, 0) * randomDistance;
 
-				Managers.Object.Spawn<Monster>(spawnPosition);
+				Managers.Object.Spawn<Monster>(spawnPosition,stageData.MonsterDataIdList[UnityEngine.Random.Range(0, stageData.MonsterDataIdList.Count)]);
 			}
 
 			SetMonsterCount(stageData.MonsterCount, stageData.MonsterCount);
 		}
-		else
+		else // 보스 스테이지
 		{
-			Managers.Object.Spawn<BossMonster>(Vector3.zero);
+			Managers.Object.Spawn<BossMonster>(Vector3.zero, stageData.BossDataId);
 		}
 	}
 

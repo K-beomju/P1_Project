@@ -10,13 +10,16 @@ public interface ILoader<Key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, Data.StageData> StageDic { get; private set; } = new Dictionary<int, Data.StageData>();
+    public Dictionary<int, Data.StageInfoData> StageDic { get; private set; } = new Dictionary<int, Data.StageInfoData>();
+    public Dictionary<int, Data.MonsterInfoData> MonsterDic { get; private set; } = new Dictionary<int, Data.MonsterInfoData>();
+    public Dictionary<int, Data.CreatureUpgradeStatInfoData> CreatureUpgradeDic { get; private set; } = new Dictionary<int, Data.CreatureUpgradeStatInfoData>();
 
 
     public void Init()
     {
-        StageDic = LoadJson<Data.StageDataLoader, int, Data.StageData>("Data/JsonData/StageData").MakeDict();
-
+        StageDic = LoadJson<Data.StageInfoDataLoader, int, Data.StageInfoData>("Data/JsonData/StageInfoData").MakeDict();
+        MonsterDic = LoadJson<Data.MonsterInfoDataLoader, int, Data.MonsterInfoData>("Data/JsonData/MonsterInfoData").MakeDict();
+        CreatureUpgradeDic= LoadJson<Data.CreatureUpgradeStatInfoDataLoader, int, Data.CreatureUpgradeStatInfoData>("Data/JsonData/CreatureUpgradeStatInfoData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

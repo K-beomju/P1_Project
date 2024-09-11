@@ -5,9 +5,25 @@ using static Define;
 
 public class Creature : BaseObject
 {
-    public float Hp;
-    public float MaxHp;
+    #region Stat
+    public int Level { get; protected set; }
+    public CreatureStat Atk { get; protected set; }
+    public CreatureStat Def { get; protected set; }
+    public CreatureStat AttackRange { get; protected set; }
+    public CreatureStat AttackDelay { get; protected set; }
+    public CreatureStat AttackSpeedRate { get; protected set; }
+
+    public CreatureStat MoveSpeed { get; protected set; }
+
+	public float Hp { get; set; }
+    public CreatureStat MaxHp { get; protected set; }
+    #endregion
+
+    #region Config
     public Animator _anim { get; protected set; }
+    public BaseObject _target { get; protected set; }
+    #endregion
+
 
     protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
@@ -28,22 +44,27 @@ public class Creature : BaseObject
         if (base.Init() == false)
             return false;
 
-        // Stat
-        SetCreatureInfo();
-
         // Rendering
         _anim = GetComponent<Animator>();
         _sprite.sortingOrder = SortingLayers.CREATURE;
+        return true;
+    }
+
+    public override void SetInfo(int dataTemplateID)
+    {
+        base.SetInfo(dataTemplateID);
+
+         // InfoSetting
+        SetCreatureInfo(dataTemplateID);
 
         // State
         CreatureState = ECreatureState.Idle;
 
-        // AI
+          // AI
         StartCoroutine(CoUpdateAI());
-        return true;
     }
 
-    protected virtual void SetCreatureInfo()
+    public virtual void SetCreatureInfo(int dataTemplateID)
     {
     }
 

@@ -1,0 +1,28 @@
+{
+  "monsters": [
+    {
+      "MoveSpeed": 1.0,
+      "DataId": 50001000,
+      "Name": "가나",
+      "ObjectType": 2,
+      "PrefabKey": "Enemy_Gana",
+      "MaxHp": 10.0
+    },
+    {
+      "MoveSpeed": 1.0,
+      "DataId": 50002000,
+      "Name": "대한",
+      "ObjectType": 2,
+      "PrefabKey": "Enemy_Dahan",
+      "MaxHp": 10.0
+    },
+    {
+      "MoveSpeed": 1.0,
+      "DataId": 50003000,
+      "Name": "콩고",
+      "ObjectType": 2,
+      "PrefabKey": "Enemy_Konggo",
+      "MaxHp": 10.0
+    }
+  ]
+}

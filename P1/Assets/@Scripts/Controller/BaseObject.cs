@@ -11,6 +11,7 @@ public class BaseObject : InitBase
 
     public Vector3 CenterPosition => _collider.bounds.center;
 
+    public int DataTemplateID { get; set; }
 
     protected override bool Init()
     {
@@ -20,6 +21,11 @@ public class BaseObject : InitBase
         _collider = GetComponent<Collider2D>();
         _sprite = GetComponent<SpriteRenderer>();
         return true;
+    }
+
+    public virtual void SetInfo(int dataTemplateID)
+    { 
+        DataTemplateID = dataTemplateID;
     }
 
 }

@@ -1,26 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using UnityEngine.SceneManagement;
+using static Define;
 
 public class SceneManagerEx
 {
-	public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
+    private BaseScene _currentScene;
 
-	public void LoadScene(Define.EScene type)
-	{
-		//Managers.Clear();
-		SceneManager.LoadScene(GetSceneName(type));
-	}
+    public T GetCurrentScene<T>() where T : BaseScene
+    {
+        return _currentScene as T;
+    }
 
-	private string GetSceneName(Define.EScene type)
-	{
-		string name = System.Enum.GetName(typeof(Define.EScene), type);
-		return name;
-	}
+    public void SetCurrentScene(BaseScene scene)
+    {
+        _currentScene = scene;
+    }
 
-	public void Clear()
-	{
-		//CurrentScene.Clear();
-	}
+    public void LoadScene(EScene type, bool isAsync = true)
+    {
+        Managers.Clear();
+
+        if (isAsync)
+        {
+            SceneManager.LoadSceneAsync(GetSceneName(type));
+        }
+        else
+        {
+            SceneManager.LoadScene(GetSceneName(type));
+        }
+    }
+
+    private string GetSceneName(EScene type)
+    {
+        string name = Enum.GetName(typeof(EScene), type);
+        return name;
+    }
+
+    public void Clear()
+    {
+        _currentScene.Clear();
+    }
 }

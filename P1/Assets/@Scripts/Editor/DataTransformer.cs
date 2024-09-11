@@ -17,7 +17,9 @@ public class DataTransformer : EditorWindow
 	public static void ParseExcelDataToJson()
 	{
 		Debug.Log("DataTransformer Completed");
-		ParseExcelDataToJson<StageDataLoader, StageData>("Stage");
+		ParseExcelDataToJson<StageInfoDataLoader, StageInfoData>("StageInfo");
+		ParseExcelDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
+		ParseExcelDataToJson<CreatureUpgradeStatInfoDataLoader, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfo");
 	}
 
 	#region Helpers
