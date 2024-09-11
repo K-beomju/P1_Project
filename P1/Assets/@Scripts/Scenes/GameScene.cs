@@ -115,10 +115,11 @@ public class GameScene : BaseScene
             Debug.Log($"보스 스테이지 로드");
             BossBattleTimeLimit = Data.BossBattleTimeLimit;
             BossBattleTimer = BossBattleTimeLimit;
-
         }
         GameSceneState = Data.StageType == EStageType.NormalStage ?
         EGameSceneState.Play : EGameSceneState.Boss;
+
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(StageLevel);
     }
 
     #region GameSceneState
