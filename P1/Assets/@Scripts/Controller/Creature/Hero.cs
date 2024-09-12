@@ -46,7 +46,7 @@ public class Hero : Creature
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f);
         _hpBar.SetSliderInfo(this);
-        _hpBar.gameObject.SetActive(true);
+        _hpBar.gameObject.SetActive(false);
     }
 
     #region Anim

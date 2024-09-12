@@ -8,6 +8,8 @@ using static Define;
 
 public class GameManager
 {
+	private Dictionary<EGoodType, int> _purseDic = new Dictionary<EGoodType, int>();
+
 	private int _currentMonsters;
 	private int _maxMonsters;
 
@@ -40,7 +42,7 @@ public class GameManager
 				// 랜덤 방향에 거리를 곱하여 플레이어로부터 일정 거리만큼 떨어진 위치 계산
 				Vector3 spawnPosition = heroPos + new Vector3(randomDirection.x, randomDirection.y, 0) * randomDistance;
 
-				Managers.Object.Spawn<Monster>(spawnPosition,stageData.MonsterDataIdList[UnityEngine.Random.Range(0, stageData.MonsterDataIdList.Count)]);
+				Managers.Object.Spawn<Monster>(spawnPosition, stageData.MonsterDataIdList[UnityEngine.Random.Range(0, stageData.MonsterDataIdList.Count)]);
 			}
 
 			SetMonsterCount(stageData.MonsterCount, stageData.MonsterCount);
@@ -51,12 +53,34 @@ public class GameManager
 		}
 	}
 
-	#endregion
-
 	public void OnMonsterDestroyed()
 	{
 		_currentMonsters = Managers.Object.Monsters.Count;
 		// 몬스터가 파괴될 때마다 UI를 업데이트
 		SetMonsterCount(_currentMonsters, _maxMonsters);
 	}
+
+	#endregion
+
+	#region Good 
+	public void AddAmount(EGoodType goodType, int amount)
+	{
+		if (!_purseDic.ContainsKey(goodType))
+		{
+			_purseDic.Add(goodType, amount);
+		}
+		else
+		{
+			_purseDic[goodType] += amount;
+		}
+
+		Managers.Event.TriggerEvent(EEventType.UpdateCurrency);
+	}
+
+	public int GetAmount(EGoodType goodType)
+	{
+		_purseDic.TryGetValue(goodType, out int amount);
+		return amount;
+	}
+	#endregion
 }

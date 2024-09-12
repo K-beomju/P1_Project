@@ -139,6 +139,18 @@ public class Monster : Creature, IDamageable
 
     public virtual void OnDead()
     {
+        GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
+
+        if (ObjectType == EObjectType.Monster)
+        {
+            Managers.Game.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward);
+        }
+        else if (ObjectType == EObjectType.BossMonster)
+        {
+            //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
+            //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
+        }
         Managers.Object.Despawn(this);
+
     }
 }

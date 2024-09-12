@@ -49,6 +49,13 @@ public class UI_GameScene : UI_Scene
         Shop
     }
 
+    public enum UI_GoodItems
+    {
+        UI_GoodItem_Gold,
+        //UI_GoodItem_Dia,
+        //UI_GoodItem_Money
+    }
+
     private PlayTab _tab = PlayTab.None;
 
     protected override bool Init()
@@ -61,6 +68,7 @@ public class UI_GameScene : UI_Scene
         BindTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindObjects(typeof(GameObjects));
+        Bind<UI_GoodItem>(typeof(UI_GoodItems));
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.SpiritButton).gameObject.BindEvent(() => ShowTab(PlayTab.Spirit));
@@ -68,6 +76,9 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
 
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EGoodType.Gold);
+        //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
+        //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money).SetInfo(EGoodType.Money);
 
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
 
@@ -126,6 +137,8 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
+
+    
 
     #region Tab
 

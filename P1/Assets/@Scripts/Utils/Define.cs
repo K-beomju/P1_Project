@@ -45,7 +45,8 @@ public static class Define
 
     public enum EEventType 
     {
-        MonsterCountChanged
+        MonsterCountChanged,
+        UpdateCurrency
     }
 
     public enum ECreatureState
@@ -75,6 +76,14 @@ public static class Define
         Add,
         PercentAdd,
         PercentMult,
+    }
+
+    public enum EGoodType
+    {
+        None,
+        Gold,
+        Money,
+        Dia
     }
 
     public enum ELayer
