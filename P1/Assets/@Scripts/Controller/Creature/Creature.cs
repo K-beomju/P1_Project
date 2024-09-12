@@ -48,7 +48,7 @@ public class Creature : BaseObject
         // Rendering
         Anim = GetComponent<Animator>();
         Rigid = GetComponent<Rigidbody2D>();    
-        _sprite.sortingOrder = SortingLayers.CREATURE;
+        Sprite.sortingOrder = SortingLayers.CREATURE;
         return true;
     }
 

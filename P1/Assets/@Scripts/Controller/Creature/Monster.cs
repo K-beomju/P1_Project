@@ -106,7 +106,7 @@ public class Monster : Creature, IDamageable
                 // 목표 지점을 향해 이동
                 Vector3 moveDir = direction.normalized;
                 transform.Translate(moveDir * MoveSpeed.Value * Time.deltaTime);
-                _sprite.flipX = moveDir.x < 0;  // 좌우 이동 시 스프라이트 방향 전환
+                Sprite.flipX = moveDir.x < 0;  // 좌우 이동 시 스프라이트 방향 전환
             }
         }
     }

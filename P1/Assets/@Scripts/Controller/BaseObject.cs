@@ -6,10 +6,10 @@ using static Define;
 public class BaseObject : InitBase
 {
     public EObjectType ObjectType { get; protected set; } = EObjectType.None;
-    public Collider2D _collider { get; protected set; }
-    public SpriteRenderer _sprite { get; protected set; }
+    public Collider2D Collider { get; protected set; }
+    public SpriteRenderer Sprite { get; protected set; }
 
-    public Vector3 CenterPosition => _collider.bounds.center;
+    public Vector3 CenterPosition => Collider.bounds.center;
 
     public int DataTemplateID { get; set; }
 
@@ -18,8 +18,8 @@ public class BaseObject : InitBase
         if (base.Init() == false)
             return false;
 
-        _collider = GetComponent<Collider2D>();
-        _sprite = GetComponent<SpriteRenderer>();
+        Collider = GetComponent<Collider2D>();
+        Sprite = GetComponent<SpriteRenderer>();
         return true;
     }
 

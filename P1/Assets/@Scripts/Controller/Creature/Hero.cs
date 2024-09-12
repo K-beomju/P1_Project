@@ -175,7 +175,7 @@ public class Hero : Creature
         }
         else
         {
-            _sprite.flipX = dir.x < 0;
+            Sprite.flipX = dir.x < 0;
 
             if (dir.magnitude < 0.01f)
             {
@@ -190,7 +190,7 @@ public class Hero : Creature
     private void TranslateEx(Vector3 dir)
     {
         transform.Translate(dir);
-        _sprite.flipX = dir.x < 0;
+        Sprite.flipX = dir.x < 0;
     }
     #endregion
 
