@@ -45,7 +45,7 @@ public class Monster : Creature, IDamageable
         IdleWaitTime = 3;
 
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
-        _hpBar.transform.localPosition = new Vector3(0.0f, -0.9f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
+        _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
         _hpBar.SetSliderInfo(this);
         _hpBar.gameObject.SetActive(false);
     }
@@ -144,6 +144,8 @@ public class Monster : Creature, IDamageable
         if (ObjectType == EObjectType.Monster)
         {
             Managers.Game.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward);
+            UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
+            goldIcon.SetGoldIconAtPosition(transform.position);
         }
         else if (ObjectType == EObjectType.BossMonster)
         {

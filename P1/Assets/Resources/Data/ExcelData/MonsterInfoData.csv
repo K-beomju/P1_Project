@@ -1,4 +1,4 @@
 DataId,Name,ObjectType,PrefabKey,MaxHp,MoveSpeed
-50001000,가나,Monster,Enemy_Gana,10,1
-50002000,대한,Monster,Enemy_Dahan,10,1
-50003000,콩고,Monster,Enemy_Konggo,10,1
+50001000,Slime,Monster,Enemy_Slime,10,1
+50002000,대한,Monster,Enemy_Slime,10,1
+50003000,콩고,Monster,Enemy_Slime,10,1

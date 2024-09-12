@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 
 public class ObjectManager
@@ -26,27 +27,28 @@ public class ObjectManager
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
         string prefabName = typeof(T).Name;
+        if(prefabName == "Monster")
+        prefabName += "/" + Managers.Data.MonsterDic[dataTemplateID].PrefabKey;
+        else if(prefabName == "BossMonster")
+                prefabName += "/" + Managers.Data.BossMonsterDic[dataTemplateID].PrefabKey;
 
         GameObject go = Managers.Resource.Instantiate("Object/" + prefabName);
         go.name = prefabName;
         go.transform.position = position;
 
         BaseObject obj = go.GetComponent<BaseObject>();
-        if (typeof(T) == typeof(Monster))
+        if (obj is Monster monster)
         {
-            Monster monster = go.GetComponent<Monster>();
             monster.transform.parent = MonsterRoot;
             Monsters.Add(monster); 
         }
-        if (typeof(T) == typeof(BossMonster))
+        if (obj is BossMonster bossMonster)
         {
-            BossMonster bossMonster = go.GetComponent<BossMonster>();
             bossMonster.transform.parent = BossMonsterRoot;
             BossMonster = bossMonster;
         }
-        if (typeof(T) == typeof(Hero))
+        if (obj is Hero hero)
         {
-            Hero hero = go.GetComponent<Hero>();
             hero.transform.parent = HeroRoot;
             Heroes.Add(hero);
         }        

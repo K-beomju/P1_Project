@@ -3,9 +3,9 @@
     {
       "MoveSpeed": 1.0,
       "DataId": 50001000,
-      "Name": "가나",
+      "Name": "Slime",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Gana",
+      "PrefabKey": "Enemy_Slime",
       "MaxHp": 10.0
     },
     {
@@ -13,7 +13,7 @@
       "DataId": 50002000,
       "Name": "대한",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Dahan",
+      "PrefabKey": "Enemy_Slime",
       "MaxHp": 10.0
     },
     {
@@ -21,7 +21,7 @@
       "DataId": 50003000,
       "Name": "콩고",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Konggo",
+      "PrefabKey": "Enemy_Slime",
       "MaxHp": 10.0
     }
   ]

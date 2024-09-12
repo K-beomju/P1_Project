@@ -137,8 +137,26 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
+    public UI_GoodItem GetGoodItem(EGoodType goodType)
+    {
+        switch (goodType)
+        {
+            case EGoodType.Gold:
+                return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold);
 
-    
+            case EGoodType.Money:
+            //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money); // Assuming correct mapping
+
+            case EGoodType.Dia:
+            //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia); // Assuming correct mapping
+
+            default:
+                return null;
+        }
+    }
+
+
+
 
     #region Tab
 

@@ -78,6 +78,7 @@ public class GameScene : BaseScene
         Managers.Data.Init();
 
         // Scene Setting
+        Managers.Resource.Instantiate("BaseMap");
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;

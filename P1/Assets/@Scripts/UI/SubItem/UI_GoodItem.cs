@@ -11,6 +11,11 @@ public class UI_GoodItem : UI_Base
         GoodText
     }
 
+    private enum RectTransforms
+    {
+        GoodIcon
+    }
+
     private EGoodType goodType;
 
     protected override bool Init()
@@ -19,6 +24,7 @@ public class UI_GoodItem : UI_Base
             return false;
 
         BindTexts(typeof(Texts));
+        Bind<RectTransform>(typeof(RectTransforms));
         return true;
     }
 
@@ -43,5 +49,22 @@ public class UI_GoodItem : UI_Base
             return;
 
         GetText((int)Texts.GoodText).text = $"{Managers.Game.GetAmount(goodType):N0}";
+    }
+
+    public RectTransform GetGoodIcon()
+    {
+        return Get<RectTransform>((int)RectTransforms.GoodIcon);
+    }
+
+    public Vector2 GetGoodIconWorldToCanvasLocalPosition()
+    {
+        Vector2 canvasLocalPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            (Managers.UI.SceneUI).transform as RectTransform,                // 기준이 되는 캔버스의 RectTransform
+            RectTransformUtility.WorldToScreenPoint(Camera.main, GetGoodIcon().position), // 월드 좌표를 스크린 좌표로 변환
+            Camera.main,                                                  // 사용되는 카메라
+            out canvasLocalPos);                                          // 결과로 얻는 캔버스 기준 로컬 좌표
+
+        return canvasLocalPos;
     }
 }
