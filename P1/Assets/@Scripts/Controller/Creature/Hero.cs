@@ -18,12 +18,16 @@ public class Hero : Creature
 
     private Coroutine _comboDelayCoroutine = null;
     private UI_HpBarWorldSpace _hpBar;
+    private HeroGhost _ghost;
 
+    private bool isDash = false;
 
     protected override bool Init()
     {
         if (base.Init() == false)
             return false;
+
+        _ghost = GetComponent<HeroGhost>();
 
         ObjectType = EObjectType.Hero;
         gameObject.layer = (int)ELayer.Hero;
@@ -132,7 +136,8 @@ public class Hero : Creature
             CreatureState = ECreatureState.Idle;
             return;
         }
-
+        
+        LookAt(dir);
         Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate.Value);
     }
     #endregion
@@ -141,7 +146,7 @@ public class Hero : Creature
     private BaseObject FindClosestTarget(IEnumerable<BaseObject> objs)
     {
         if (Managers.Object.BossMonster != null)
-            return  Managers.Object.BossMonster;
+            return Managers.Object.BossMonster;
 
         BaseObject target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
@@ -167,30 +172,51 @@ public class Hero : Creature
         Vector3 dir = (Target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = attackRange * attackRange;
+        LookAt(dir);
+
 
         if (distToTargetSqr <= attackDistanceSqr)
         {
             CreatureState = ECreatureState.Attack;
+            _ghost.makeGhost = false;
+            isDash = false; // 대쉬 종료
             return;
         }
         else
         {
-            Sprite.flipX = dir.x < 0;
-
-            if (dir.magnitude < 0.01f)
+            // 대쉬 상태가 아닌 경우에만 조건을 검사
+            if (!isDash && distToTargetSqr > 9)
             {
-                transform.position = Target.transform.position;
-                return;
+                isDash = true; // 대쉬 시작
+                _ghost.makeGhost = true; // 고스트 효과 활성화
             }
-            float moveDist = Mathf.Min(dir.magnitude, MoveSpeed.Value * Time.deltaTime);
-            TranslateEx(dir.normalized * moveDist);
+
+            // 대쉬 중일 때 대쉬를 진행
+            if (isDash)
+            {
+                // 대쉬 목표 위치 계산
+                Vector3 targetPosition = transform.position + dir.normalized * dir.magnitude;
+                transform.position = Vector3.Lerp(transform.position, targetPosition, 0.1f);
+            }
+            else
+            {
+                if (dir.magnitude < 0.01f)
+                {
+                    transform.position = Target.transform.position;
+                    return;
+                }
+
+                // 추적 이동
+                float moveDist = Mathf.Min(dir.magnitude, MoveSpeed.Value * Time.deltaTime);
+                TranslateEx(dir.normalized * moveDist);
+            }
         }
     }
 
     private void TranslateEx(Vector3 dir)
     {
         transform.Translate(dir);
-        Sprite.flipX = dir.x < 0;
+
     }
     #endregion
 
