@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Data;
+using DG.Tweening;
 using UnityEngine;
 using static Define;
 
@@ -135,6 +136,11 @@ public class Monster : Creature, IDamageable
         // DmageText
         UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
         damageText.SetInfo(CenterPosition, finalDamage, false);
+
+        Color originalColor = Sprite.color;
+        
+        Sprite.DOColor(Color.red, 0.05f)
+            .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
     }
 
     public virtual void OnDead()
@@ -143,9 +149,8 @@ public class Monster : Creature, IDamageable
 
         if (ObjectType == EObjectType.Monster)
         {
-            Managers.Game.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward);
             UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
-            goldIcon.SetGoldIconAtPosition(transform.position);
+            goldIcon.SetGoldIconAtPosition(transform.position, () => Managers.Game.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward));
         }
         else if (ObjectType == EObjectType.BossMonster)
         {

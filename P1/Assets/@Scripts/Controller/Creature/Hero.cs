@@ -136,7 +136,7 @@ public class Hero : Creature
             CreatureState = ECreatureState.Idle;
             return;
         }
-        
+
         LookAt(dir);
         Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate.Value);
     }
@@ -179,7 +179,7 @@ public class Hero : Creature
         {
             CreatureState = ECreatureState.Attack;
             _ghost.makeGhost = false;
-            isDash = false; // 대쉬 종료
+            isDash = false;
             return;
         }
         else
@@ -187,14 +187,12 @@ public class Hero : Creature
             // 대쉬 상태가 아닌 경우에만 조건을 검사
             if (!isDash && distToTargetSqr > 9)
             {
-                isDash = true; // 대쉬 시작
-                _ghost.makeGhost = true; // 고스트 효과 활성화
+                isDash = true; 
+                _ghost.makeGhost = true; 
             }
 
-            // 대쉬 중일 때 대쉬를 진행
             if (isDash)
             {
-                // 대쉬 목표 위치 계산
                 Vector3 targetPosition = transform.position + dir.normalized * dir.magnitude;
                 transform.position = Vector3.Lerp(transform.position, targetPosition, 0.1f);
             }
@@ -206,7 +204,6 @@ public class Hero : Creature
                     return;
                 }
 
-                // 추적 이동
                 float moveDist = Mathf.Min(dir.magnitude, MoveSpeed.Value * Time.deltaTime);
                 TranslateEx(dir.normalized * moveDist);
             }
@@ -216,7 +213,6 @@ public class Hero : Creature
     private void TranslateEx(Vector3 dir)
     {
         transform.Translate(dir);
-
     }
     #endregion
 
