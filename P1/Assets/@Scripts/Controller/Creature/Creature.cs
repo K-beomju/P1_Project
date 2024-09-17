@@ -6,7 +6,7 @@ using static Define;
 public class Creature : BaseObject
 {
     #region Stat
-    public int Level { get; protected set; }
+    public int Level;
     public CreatureStat Atk { get; protected set; }
     public CreatureStat Def { get; protected set; }
     public CreatureStat AttackRange { get; protected set; }
@@ -15,7 +15,7 @@ public class Creature : BaseObject
 
     public CreatureStat MoveSpeed { get; protected set; }
 
-	public float Hp { get; set; }
+    public float Hp { get; set; }
     public CreatureStat MaxHp { get; protected set; }
     #endregion
 
@@ -47,7 +47,7 @@ public class Creature : BaseObject
 
         // Rendering
         Anim = GetComponent<Animator>();
-        Rigid = GetComponent<Rigidbody2D>();    
+        Rigid = GetComponent<Rigidbody2D>();
         Sprite.sortingOrder = SortingLayers.CREATURE;
         return true;
     }
@@ -56,13 +56,13 @@ public class Creature : BaseObject
     {
         base.SetInfo(dataTemplateID);
 
-         // InfoSetting
+        // InfoSetting
         SetCreatureInfo(dataTemplateID);
 
         // State
         CreatureState = ECreatureState.Idle;
 
-          // AI
+        // AI
         StartCoroutine(CoUpdateAI());
     }
 
@@ -104,7 +104,7 @@ public class Creature : BaseObject
     protected virtual void UpdateAttack() { }
     protected virtual void UpdateDead() { }
 
-    protected void LookAt(Vector2 dir) 
+    protected void LookAt(Vector2 dir)
     {
         Vector3 scale = transform.localScale;
         scale.x = dir.x < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static Define;
 
 public class UI_GameScene : UI_Scene
@@ -23,14 +24,10 @@ public class UI_GameScene : UI_Scene
         BossStageTimer
     }
 
-    enum TMPTexts
-    {
-        ExpValueText
-    }
-
     enum Texts
     {
-        RemainMonsterValueText
+        RemainMonsterValueText,
+        ExpValueText
     }
 
     enum GameObjects
@@ -64,7 +61,6 @@ public class UI_GameScene : UI_Scene
             return false;
 
         BindButtons(typeof(Buttons));
-        BindTMPTexts(typeof(TMPTexts));
         BindTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindObjects(typeof(GameObjects));
@@ -80,7 +76,18 @@ public class UI_GameScene : UI_Scene
         //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
         //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money).SetInfo(EGoodType.Money);
 
+        // 초기화 
+        {
+            GetSlider((int)Sliders.ExpSlider).value = 0;
+            GetSlider((int)Sliders.BossHpSlider).value = 0;
+            GetSlider((int)Sliders.BossStageTimer).value = 0;
+            GetSlider((int)Sliders.CurrentStageSlider).value = 0;
+
+            GetText((int)Texts.ExpValueText).text = string.Empty;
+            GetText((int)Texts.RemainMonsterValueText).text = string.Empty;
+        }
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
+        Managers.Event.AddEvent(EEventType.UpdateExp, new Action<int, int, int>(RefreshShowExp));
 
         RefreshUI();
         return true;
@@ -137,6 +144,8 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
+    #region Good, Exp
+
     public UI_GoodItem GetGoodItem(EGoodType goodType)
     {
         switch (goodType)
@@ -155,8 +164,27 @@ public class UI_GameScene : UI_Scene
         }
     }
 
+    public void RefreshShowExp(int currentLevel, int currentExp, int expToNextLevel)
+    {
+        // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
+        if (expToNextLevel > 0)
+        {
+            // 경험치 슬라이더와 텍스트 갱신
+            GetSlider((int)Sliders.ExpSlider).value = (float)currentExp / expToNextLevel;
 
+            float expPercentage = ((float)currentExp / expToNextLevel) * 100;
+            // 텍스트에 반영 (소수점 2자리로 표시)
+            GetText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
+        }
+        else
+        {
+            // 경험치 슬라이더가 0인 경우 처리 (경험치가 없거나 초기화 상황)
+            GetSlider((int)Sliders.ExpSlider).value = 0;
+            GetText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
+        }
+    }
 
+    #endregion
 
     #region Tab
 

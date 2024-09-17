@@ -46,7 +46,9 @@ public static class Define
     public enum EEventType 
     {
         MonsterCountChanged,
-        UpdateCurrency
+        UpdateCurrency,
+        UpdateExp,
+        LevelUp
     }
 
     public enum ECreatureState

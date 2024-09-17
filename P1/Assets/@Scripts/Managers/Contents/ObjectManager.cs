@@ -7,7 +7,7 @@ public class ObjectManager
 {
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
-    public HashSet<Hero> Heroes { get; set; } = new HashSet<Hero>();
+    public Hero Hero { get; private set; }
 
     #region Roots
     public Transform GetRootTransform(string name)
@@ -50,7 +50,7 @@ public class ObjectManager
         if (obj is Hero hero)
         {
             hero.transform.parent = HeroRoot;
-            Heroes.Add(hero);
+            Hero = hero;
         }        
         obj.SetInfo(dataTemplateID);
 
@@ -71,8 +71,7 @@ public class ObjectManager
         }
         if (typeof(T) == typeof(Hero))
         {
-            Hero hero = obj.GetComponent<Hero>();
-            Heroes.Remove(hero);
+            Hero = null;
         }
         Managers.Resource.Destroy(obj.gameObject);
     }
@@ -81,6 +80,6 @@ public class ObjectManager
     {
         BossMonster = null;
         Monsters.Clear();
-        Heroes.Clear();
+        Hero = null;
     }
 }

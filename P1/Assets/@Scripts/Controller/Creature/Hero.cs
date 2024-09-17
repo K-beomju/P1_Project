@@ -39,6 +39,7 @@ public class Hero : Creature
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
+        Level = Managers.Game._currentLevel;
         MaxHp = new CreatureStat(100);
         Hp = MaxHp.Value;
         Atk = new CreatureStat(5);
@@ -51,6 +52,12 @@ public class Hero : Creature
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f);
         _hpBar.SetSliderInfo(this);
         _hpBar.gameObject.SetActive(false);
+    }
+
+    // 레벨업 시 스탯을 다시 계산하는 함수
+    public void RecalculateStats()
+    {
+        Debug.Log($"레벨 {Level}에서 스탯이 재계산되었습니다.");
     }
 
     #region Anim
