@@ -27,7 +27,8 @@ public class UI_GameScene : UI_Scene
     enum Texts
     {
         RemainMonsterValueText,
-        ExpValueText
+        ExpValueText,
+        CurrentStageText
     }
 
     enum GameObjects
@@ -128,6 +129,7 @@ public class UI_GameScene : UI_Scene
     {
         GetSlider((int)Sliders.CurrentStageSlider).value = currentStage;
         GetSlider((int)Sliders.CurrentStageSlider).maxValue = maxStage;
+        GetText((int)Texts.CurrentStageText).text = currentStage.ToString();
     }
 
     public void RefreshBossMonsterHp(BossMonster boss)
