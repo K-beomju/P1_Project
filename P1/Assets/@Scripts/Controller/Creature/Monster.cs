@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Data;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
@@ -97,7 +98,7 @@ public class Monster : Creature, IDamageable
             float distanceToTarget = direction.magnitude;
 
             // 목표 지점에 가까워지면 이동 멈추고 Idle 상태로 전환
-            if (distanceToTarget < 0.1f)
+            if (distanceToTarget < 0.1f || (Vector2.Distance(transform.position, Managers.Object.Hero.transform.position) < 2))
             {
                 _isMovingToTarget = false;
                 CreatureState = ECreatureState.Idle;

@@ -65,7 +65,7 @@ public class UIManager
 
 		if (sort)
 		{
-			canvas.sortingOrder = _order;
+			canvas.sortingOrder = _order + Define.SortingLayers.UI_POPUP;
 			_order++;
 		}
 		else
