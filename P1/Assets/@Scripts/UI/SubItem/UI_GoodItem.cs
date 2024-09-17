@@ -48,7 +48,7 @@ public class UI_GoodItem : UI_Base
         if (goodType == EGoodType.None)
             return;
 
-        GetText((int)Texts.GoodText).text = $"{Managers.Game.GetAmount(goodType):N0}";
+        GetText((int)Texts.GoodText).text = $"{Managers.Purse.GetAmount(goodType):N0}";
     }
 
     public RectTransform GetGoodIcon()

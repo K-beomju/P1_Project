@@ -13,10 +13,13 @@ public class Managers : MonoBehaviour
     private ObjectManager _object = new ObjectManager();
     private GameManager _game = new GameManager();
     private EventManager _event = new EventManager();
+    private PurseManager _purse = new PurseManager();
 
     public static ObjectManager Object { get { return Instance?._object; } }
     public static GameManager Game { get { return Instance?._game; } }
     public static EventManager Event { get { return Instance?._event; } }
+    public static PurseManager Purse { get { return Instance?._purse; } }
+
     #endregion
 
     #region Core

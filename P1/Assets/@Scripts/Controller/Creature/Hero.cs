@@ -39,7 +39,7 @@ public class Hero : Creature
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        Level = Managers.Game._currentLevel;
+        Level = Managers.Purse._currentLevel;
         MaxHp = new CreatureStat(100);
         Hp = MaxHp.Value;
         Atk = new CreatureStat(5);
@@ -55,9 +55,10 @@ public class Hero : Creature
     }
 
     // 레벨업 시 스탯을 다시 계산하는 함수
-    public void RecalculateStats()
+    public override void ReSetStats()
     {
-        Debug.Log($"레벨 {Level}에서 스탯이 재계산되었습니다.");
+        base.ReSetStats();
+        Debug.Log($"{Level} 레벨에서 공식계산 다시합니다.");
     }
 
     #region Anim
@@ -192,7 +193,7 @@ public class Hero : Creature
         else
         {
             // 대쉬 상태가 아닌 경우에만 조건을 검사
-            if (!isDash && distToTargetSqr > 9)
+            if (!isDash && distToTargetSqr > DASH_DISTANCE_THRESHOLD)
             {
                 isDash = true; 
                 _ghost.makeGhost = true; 
@@ -201,7 +202,7 @@ public class Hero : Creature
             if (isDash)
             {
                 Vector3 targetPosition = transform.position + dir.normalized * dir.magnitude;
-                transform.position = Vector3.Lerp(transform.position, targetPosition, 0.1f);
+                transform.position = Vector3.Lerp(transform.position, targetPosition, LERP_SPEED);
             }
             else
             {

@@ -70,6 +70,11 @@ public class Creature : BaseObject
     {
     }
 
+    public virtual void ReSetStats()
+    {
+        // TODO: Some Setting
+    }
+
     protected virtual void UpdateAnimation()
     {
 

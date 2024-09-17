@@ -148,20 +148,28 @@ public class UI_GameScene : UI_Scene
 
     public UI_GoodItem GetGoodItem(EGoodType goodType)
     {
+        UI_GoodItem getGoodItem = null;
+
         switch (goodType)
         {
             case EGoodType.Gold:
-                return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold);
-
+                getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold);
+                break;
             case EGoodType.Money:
-            //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money); // Assuming correct mapping
-
+                //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money); // Assuming correct mapping
+                break;
             case EGoodType.Dia:
-            //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia); // Assuming correct mapping
+                //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia); // Assuming correct mapping
+                break;
 
             default:
                 return null;
         }
+
+        if (getGoodItem == null)
+            return null;
+
+        return getGoodItem;
     }
 
     public void RefreshShowExp(int currentLevel, int currentExp, int expToNextLevel)

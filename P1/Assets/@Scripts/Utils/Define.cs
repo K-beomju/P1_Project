@@ -43,7 +43,7 @@ public static class Define
         Drag,
     }
 
-    public enum EEventType 
+    public enum EEventType
     {
         MonsterCountChanged,
         UpdateCurrency,
@@ -102,6 +102,9 @@ public static class Define
         Obstacle = 9,
         Projectile = 10,
     }
+
+    public const float DASH_DISTANCE_THRESHOLD = 9f;
+    public const float LERP_SPEED = 0.1f;
 
 
     public static class HeroAnimation

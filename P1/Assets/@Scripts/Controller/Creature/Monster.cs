@@ -148,11 +148,11 @@ public class Monster : Creature, IDamageable
         GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
 
         int expReward = gameScene.Data.MonsterGoldReward;  // 몬스터 처치 시 획득하는 경험치
-        Managers.Game.AddExp(expReward);  // 경험치 추가
+        Managers.Purse.AddExp(expReward);  // 경험치 추가
         if (ObjectType == EObjectType.Monster)
         {
             UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
-            goldIcon.SetGoldIconAtPosition(transform.position, () => Managers.Game.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward));
+            goldIcon.SetGoldIconAtPosition(transform.position, () => Managers.Purse.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward));
         }
         else if (ObjectType == EObjectType.BossMonster)
         {

@@ -87,7 +87,7 @@ public class GameScene : BaseScene
         Managers.UI.CacheAllPopups();
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, 100);
-        Managers.Game.Init();
+        Managers.Purse.Init();
 
 
 
