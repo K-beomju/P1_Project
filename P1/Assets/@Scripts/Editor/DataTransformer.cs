@@ -21,8 +21,8 @@ public class DataTransformer : EditorWindow
 		ParseExcelDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
 		ParseExcelDataToJson<BossMonsterInfoDataLoader, BossMonsterInfoData>("BossMonsterInfo");
 		ParseExcelDataToJson<CreatureUpgradeStatInfoDataLoader, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfo");
-		ParseExcelDataToJson<AttackLevelDataLoader, AttackLevelData>("AttackLevel");
-		ParseExcelDataToJson<HpLevelDataLoader, HpLevelData>("HpLevel");
+		ParseExcelDataToJson<HeroUpgradeInfoDataLoader, HeroUpgradeInfoData>("HeroUpgradeInfo");
+		ParseExcelDataToJson<HeroUpgradeCostInfoDataLoader, HeroUpgradeCostInfoData>("HeroUpgradeCostInfo");
 
 	}
 

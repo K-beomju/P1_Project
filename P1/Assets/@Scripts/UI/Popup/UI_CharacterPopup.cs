@@ -9,10 +9,10 @@ public class UI_CharacterPopup : UI_Popup
         Content
     }
 
-    public enum UI_AbilityItems
+    public enum UI_HeroGrowthInvenSlots
     {
-        UI_AbilityItem_Atk,
-        UI_AbilityItem_Hp
+        UI_HeroGrowthInvenSlot_Atk,
+        UI_HeroGrowthInvenSlot_Hp
     }
     protected override bool Init()
     {
@@ -20,9 +20,11 @@ public class UI_CharacterPopup : UI_Popup
             return false;
 
         BindObjects(typeof(GameObjects));
-        Bind<UI_AbilityItem>(typeof(UI_AbilityItems));
+        Bind<UI_HeroGrowthInvenSlot>(typeof(UI_HeroGrowthInvenSlots));
 
-        
+        Get<UI_HeroGrowthInvenSlot>((int)UI_HeroGrowthInvenSlots.UI_HeroGrowthInvenSlot_Atk).SetInfo(Define.EHeroUpgradeType.Growth_Atk);
+        Get<UI_HeroGrowthInvenSlot>((int)UI_HeroGrowthInvenSlots.UI_HeroGrowthInvenSlot_Hp).SetInfo(Define.EHeroUpgradeType.Growth_Hp);
+
         CreateCompanionSlot();
         return true;
     }

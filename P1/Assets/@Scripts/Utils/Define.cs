@@ -46,9 +46,16 @@ public static class Define
 
     public enum EEventType
     {
+        None,
+        /// <summary>몬스터 마리 갱신</summary>
         MonsterCountChanged,
+        /// <summary>재화 갱신</summary>
         UpdateCurrency,
+        /// <summary>경험치 갱신</summary>
         UpdateExp,
+        /// <summary>영웅 업데이트(성장) 갱신</summary>
+        UpdateHeroUpgrade,
+        /// <summary>레벨업 갱신</summary>
         LevelUp
     }
 
@@ -81,10 +88,10 @@ public static class Define
         PercentMult,
     }
 
-    public enum EAbilityType
+    public enum EHeroUpgradeType
     {
-        Atk,
-        Hp
+        Growth_Atk,
+        Growth_Hp
     }
 
     public enum EGoodType

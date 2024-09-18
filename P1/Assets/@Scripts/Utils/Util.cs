@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static Define;
 
 public static class Util
 {
@@ -67,5 +67,44 @@ public static class Util
 		ColorUtility.TryParseHtmlString(color, out Color parsedColor);
 
 		return parsedColor;
+	}
+
+	public static int GetUpgradeCost(EHeroUpgradeType upgradeType, int level)
+    {
+        List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].ReferenceLevelList;
+        List<int> StartCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].StartCostList;
+        List<int> IncreaseCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].IncreaseCostList;
+
+        int startCost = 0;
+        int increaseCost = 0;
+
+        int i = 0;
+        for (i = 0; i < ReferenceLevelList.Count; i++)
+        {
+            if (level <= ReferenceLevelList[i])
+            {
+                startCost = StartCostList[i];
+                increaseCost = IncreaseCostList[i];
+                break;
+            }
+        }
+
+        int increaseCount = level - (i == 0 ? 0 : ReferenceLevelList[i - 1]) - 1;
+        return startCost + increaseCount * increaseCost;
+    }
+
+	public static string GetHeroUpgradeString(EHeroUpgradeType type)
+	{
+		string heroUpgradeString = string.Empty;
+		switch (type)
+		{
+			case EHeroUpgradeType.Growth_Atk:
+				heroUpgradeString = "공격력";
+				break;
+			case EHeroUpgradeType.Growth_Hp:
+				heroUpgradeString = "체력";
+				break;
+		}
+		return heroUpgradeString;
 	}
 }

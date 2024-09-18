@@ -126,31 +126,26 @@ namespace Data
     }
     #endregion
 
-    #region StatData
+    #region HeroUpgradeData
     [Serializable]
-    public class StatData
-    {
-        public int Level;
-        public int IncreaseStat;
-        public int Price;
+    public class HeroUpgradeInfoData
+    { 
+        public EHeroUpgradeType HeroUpgradeType;
+        public string Remark;
+        public float Value;
     }
 
     [Serializable]
-    public class AttackLevelData : StatData
+    public class HeroUpgradeInfoDataLoader : ILoader<EHeroUpgradeType, HeroUpgradeInfoData>
     {
-    }
+        public List<HeroUpgradeInfoData> HeroUpgradeInfoDataList = new List<HeroUpgradeInfoData>();
 
-    [Serializable]
-    public class AttackLevelDataLoader : ILoader<int, AttackLevelData>
-    {
-        public List<AttackLevelData> attackLevelDatas = new List<AttackLevelData>();
-
-        public Dictionary<int, AttackLevelData> MakeDict()
+        public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> MakeDict()
         {
-            Dictionary<int, AttackLevelData> dict = new Dictionary<int, AttackLevelData>();
-            foreach (AttackLevelData infoData in attackLevelDatas)
+            Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> dict = new Dictionary<EHeroUpgradeType, HeroUpgradeInfoData>();
+            foreach (HeroUpgradeInfoData infoData in HeroUpgradeInfoDataList)
             {
-                dict.Add(infoData.Level, infoData);
+                dict.Add(infoData.HeroUpgradeType, infoData);
             }
 
             return dict;
@@ -158,21 +153,28 @@ namespace Data
     }
 
     [Serializable]
-    public class HpLevelData : StatData
+    public class HeroUpgradeCostInfoData
     {
+        public EHeroUpgradeType HeroUpgradeType;
+        public string Remark;
+        public List<int> ReferenceLevelList = new List<int>();
+        public List<EGoodType> GoodList = new List<EGoodType>();
+        public List<int>StartCostList = new List<int>();
+        public List<int>IncreaseCostList = new List<int>();
+        public List<float> SuccessPercentageList = new List<float>();
     }
 
     [Serializable]
-    public class HpLevelDataLoader : ILoader<int, HpLevelData>
+    public class HeroUpgradeCostInfoDataLoader : ILoader<EHeroUpgradeType, HeroUpgradeCostInfoData>
     {
-        public List<HpLevelData> hpLevelDatas = new List<HpLevelData>();
+        public List<HeroUpgradeCostInfoData> HeroUpgradeCostInfoDataList = new List<HeroUpgradeCostInfoData>();
 
-        public Dictionary<int, HpLevelData> MakeDict()
+        public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> MakeDict()
         {
-            Dictionary<int, HpLevelData> dict = new Dictionary<int, HpLevelData>();
-            foreach (HpLevelData infoData in hpLevelDatas)
+            Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> dict = new Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData>();
+            foreach (HeroUpgradeCostInfoData infoData in HeroUpgradeCostInfoDataList)
             {
-                dict.Add(infoData.Level, infoData);
+                dict.Add(infoData.HeroUpgradeType, infoData);
             }
 
             return dict;

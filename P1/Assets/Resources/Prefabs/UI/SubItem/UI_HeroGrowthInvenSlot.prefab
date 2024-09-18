@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 3840317675729736667}
   - component: {fileID: 4831920153627957202}
   m_Layer: 5
-  m_Name: AtkUpgradeButton
+  m_Name: Btn_Upgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 7284189949546534550}
   - component: {fileID: 7546311663042250667}
   m_Layer: 5
-  m_Name: UI_AbilityItem
+  m_Name: UI_HeroGrowthInvenSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 6524773794698558720}
   - component: {fileID: 3483040866366439247}
   m_Layer: 5
-  m_Name: AtkUpgradeCostText
+  m_Name: Text_Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 4688311590536361756}
   - component: {fileID: 2773547808642108472}
   m_Layer: 5
-  m_Name: AtkUpgradeLevelText
+  m_Name: Text_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +512,7 @@ GameObject:
   - component: {fileID: 1253270435103381629}
   - component: {fileID: 7886388380317763258}
   m_Layer: 5
-  m_Name: AtkDescText
+  m_Name: Text_Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 2684770939618170994}
   - component: {fileID: 1229230073626167010}
   m_Layer: 5
-  m_Name: UpgradeDescText
+  m_Name: Text_UpgradeDesc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 1109111529691883295}
   - component: {fileID: 2925391979807057636}
   m_Layer: 5
-  m_Name: AtkValueText
+  m_Name: Text_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

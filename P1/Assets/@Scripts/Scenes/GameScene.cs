@@ -71,13 +71,15 @@ public class GameScene : BaseScene
         if (base.Init() == false)
             return false;
 
+        // Scene
         SceneType = EScene.GameScene;
         Managers.Scene.SetCurrentScene(this);
 
         // Data
         Managers.Data.Init();
+        Managers.Hero.Init();
 
-        // Scene Setting
+        // Game
         Managers.Resource.Instantiate("BaseMap");
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
@@ -89,8 +91,7 @@ public class GameScene : BaseScene
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_GAMESCENE);
         Managers.Purse.Init();
 
-
-
+        // Stage
         isClear = false;
         FrameWait = new WaitForSeconds(0.2f);
         StartWait = new WaitForSeconds(1f);
