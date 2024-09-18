@@ -38,6 +38,7 @@ public static class Define
     public enum EUIEvent
     {
         Click,
+        Pressed,
         PointerDown,
         PointerUp,
         Drag,
@@ -78,6 +79,12 @@ public static class Define
         Add,
         PercentAdd,
         PercentMult,
+    }
+
+    public enum EAbilityType
+    {
+        Atk,
+        Hp
     }
 
     public enum EGoodType

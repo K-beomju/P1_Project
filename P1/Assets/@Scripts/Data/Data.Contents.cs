@@ -8,7 +8,7 @@ namespace Data
 {
     #region CreatureData
     [Serializable]
-    public class CreatureInfoData 
+    public class CreatureInfoData
     {
         public int DataId;
         public string Name;
@@ -102,14 +102,14 @@ namespace Data
         public int StageNumber;
         public EStageType StageType;
         public int MonsterCount;
-        
+
         public bool BossStage;
         public int BossDataId;
         public int BossBattleTimeLimit;
 
         public List<int> MonsterDataIdList = new List<int>();
-        public int MonsterLevel; 
-        public int MonsterGoldReward; 
+        public int MonsterLevel;
+        public int MonsterGoldReward;
     }
 
     [Serializable]
@@ -121,6 +121,60 @@ namespace Data
             Dictionary<int, StageInfoData> dict = new Dictionary<int, StageInfoData>();
             foreach (StageInfoData stage in stages)
                 dict.Add(stage.StageNumber, stage);
+            return dict;
+        }
+    }
+    #endregion
+
+    #region StatData
+    [Serializable]
+    public class StatData
+    {
+        public int Level;
+        public int IncreaseStat;
+        public int Price;
+    }
+
+    [Serializable]
+    public class AttackLevelData : StatData
+    {
+    }
+
+    [Serializable]
+    public class AttackLevelDataLoader : ILoader<int, AttackLevelData>
+    {
+        public List<AttackLevelData> attackLevelDatas = new List<AttackLevelData>();
+
+        public Dictionary<int, AttackLevelData> MakeDict()
+        {
+            Dictionary<int, AttackLevelData> dict = new Dictionary<int, AttackLevelData>();
+            foreach (AttackLevelData infoData in attackLevelDatas)
+            {
+                dict.Add(infoData.Level, infoData);
+            }
+
+            return dict;
+        }
+    }
+
+    [Serializable]
+    public class HpLevelData : StatData
+    {
+    }
+
+    [Serializable]
+    public class HpLevelDataLoader : ILoader<int, HpLevelData>
+    {
+        public List<HpLevelData> hpLevelDatas = new List<HpLevelData>();
+
+        public Dictionary<int, HpLevelData> MakeDict()
+        {
+            Dictionary<int, HpLevelData> dict = new Dictionary<int, HpLevelData>();
+            foreach (HpLevelData infoData in hpLevelDatas)
+            {
+                dict.Add(infoData.Level, infoData);
+            }
+
             return dict;
         }
     }

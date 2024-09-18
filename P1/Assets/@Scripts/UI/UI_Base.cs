@@ -35,7 +35,7 @@ public class UI_Base : InitBase
 
 	protected void BindObjects(Type type) { Bind<GameObject>(type); }
 	protected void BindImages(Type type) { Bind<Image>(type); }
-	protected void BindTexts (Type type) { Bind<Text>(type); }
+	protected void BindTexts(Type type) { Bind<Text>(type); }
 	protected void BindTMPTexts(Type type) { Bind<TMP_Text>(type); }
 	protected void BindButtons(Type type) { Bind<Button>(type); }
 	protected void BindToggles(Type type) { Bind<Toggle>(type); }
@@ -67,6 +67,10 @@ public class UI_Base : InitBase
 			case Define.EUIEvent.Click:
 				evt.OnClickHandler -= action;
 				evt.OnClickHandler += action;
+				break;
+			case Define.EUIEvent.Pressed:
+				evt.OnPressedHandler -= action;
+				evt.OnPressedHandler += action;
 				break;
 			case Define.EUIEvent.PointerDown:
 				evt.OnPointerDownHandler -= action;
