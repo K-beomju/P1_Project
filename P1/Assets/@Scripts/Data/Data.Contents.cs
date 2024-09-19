@@ -47,6 +47,35 @@ namespace Data
         }
     }
 
+    
+    #region HeroData
+    [Serializable]
+    public class HeroInfoData : CreatureInfoData
+    {
+        public float Atk;
+        public float AttackRange;
+        public float AttackDelay;
+        public float AttackSpeedRate;
+    }
+
+    [Serializable]
+    public class HeroInfoDataLoader : ILoader<int, HeroInfoData>
+    {
+        public List<HeroInfoData> HeroInfoDatas = new List<HeroInfoData>();
+
+        public Dictionary<int, HeroInfoData> MakeDict()
+        {
+            Dictionary<int, HeroInfoData> dict = new Dictionary<int, HeroInfoData>();
+            foreach (HeroInfoData infoData in HeroInfoDatas)
+            {
+                dict.Add(infoData.DataId, infoData);
+            }
+
+            return dict;
+        }
+    }
+    #endregion
+
     #region MonsterData
     [Serializable]
     public class MonsterInfoData : CreatureInfoData

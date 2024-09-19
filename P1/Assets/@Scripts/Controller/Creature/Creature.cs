@@ -7,16 +7,15 @@ public class Creature : BaseObject
 {
     #region Stat
     public int Level;
-    public CreatureStat Atk { get; protected set; }
-    public CreatureStat Def { get; protected set; }
-    public CreatureStat AttackRange { get; protected set; }
-    public CreatureStat AttackDelay { get; protected set; }
-    public CreatureStat AttackSpeedRate { get; protected set; }
-
-    public CreatureStat MoveSpeed { get; protected set; }
-
+    public float Atk { get; protected set; }
+    public float Def { get; protected set; }
+    public float MaxHp { get; protected set; }
     public float Hp { get; set; }
-    public CreatureStat MaxHp { get; protected set; }
+    public float AttackRange { get; protected set; }
+    public float AttackDelay { get; protected set; }
+    public float AttackSpeedRate { get; protected set; }
+
+    public float MoveSpeed { get; protected set; }
     #endregion
 
     #region Config

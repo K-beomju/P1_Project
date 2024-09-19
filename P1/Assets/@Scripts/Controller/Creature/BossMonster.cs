@@ -18,14 +18,14 @@ public class BossMonster : Monster
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        BossMonsterInfoData data = Managers.Data.BossMonsterDic[dataTemplateID];
+        BossMonsterInfoData data = Managers.Data.BossMonsterDataDic[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
 
-        MaxHp = new CreatureStat(data.MaxHp + Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp * (Level - 1));
-        Hp = MaxHp.Value;
+        MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
+        Hp = MaxHp;
         // Debug.Log($"MaxHp = 원래 체력: {data.MaxHp} + (업그레이드 체력: {Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp} * 레벨: {Level - 1})");
         // Debug.Log($"MaxHp 계산 결과: {MaxHp.Value}");
-        MoveSpeed = new CreatureStat(data.MoveSpeed);
+        MoveSpeed = data.MoveSpeed;
 
         MoveRange = 5;
         IdleWaitTime = 3;

@@ -34,15 +34,13 @@ public class Monster : Creature, IDamageable
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        MonsterInfoData data = Managers.Data.MonsterDic[dataTemplateID];
+        MonsterInfoData data = Managers.Data.MonsterDataDic[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
 
-        MaxHp = new CreatureStat(data.MaxHp + Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp * (Level - 1));
-        Hp = MaxHp.Value;
-        // Debug.Log($"MaxHp = 원래 체력: {data.MaxHp} + (업그레이드 체력: {Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp} * 레벨: {Level - 1})");
-        // Debug.Log($"MaxHp 계산 결과: {MaxHp.Value}");
-        MoveSpeed = new CreatureStat(data.MoveSpeed);
+        MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
+        Hp = MaxHp;
 
+        MoveSpeed = data.MoveSpeed;
         MoveRange = 5;
         IdleWaitTime = 3;
 
@@ -107,7 +105,7 @@ public class Monster : Creature, IDamageable
             {
                 // 목표 지점을 향해 이동
                 Vector3 moveDir = direction.normalized;
-                transform.Translate(moveDir * MoveSpeed.Value * Time.deltaTime);
+                transform.Translate(moveDir * MoveSpeed * Time.deltaTime);
                 Sprite.flipX = moveDir.x < 0;  // 좌우 이동 시 스프라이트 방향 전환
             }
         }
@@ -120,8 +118,8 @@ public class Monster : Creature, IDamageable
 
     public virtual void OnDamaged(Creature attacker)
     {
-        float finalDamage = attacker.Atk.Value; // TODO: 방어력이나 다른 계산이 있을 경우 적용
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp.Value);
+        float finalDamage = attacker.Atk; // TODO: 방어력이나 다른 계산이 있을 경우 적용
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
         if(_hpBar != null && !_hpBar.gameObject.activeSelf)
         _hpBar.gameObject.SetActive(true);
 

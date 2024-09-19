@@ -28,9 +28,9 @@ public class ObjectManager
     {
         string prefabName = typeof(T).Name;
         if(prefabName == "Monster")
-        prefabName += "/" + Managers.Data.MonsterDic[dataTemplateID].PrefabKey;
+        prefabName += "/" + Managers.Data.MonsterDataDic[dataTemplateID].PrefabKey;
         else if(prefabName == "BossMonster")
-                prefabName += "/" + Managers.Data.BossMonsterDic[dataTemplateID].PrefabKey;
+                prefabName += "/" + Managers.Data.BossMonsterDataDic[dataTemplateID].PrefabKey;
 
         GameObject go = Managers.Resource.Instantiate("Object/" + prefabName);
         go.name = prefabName;

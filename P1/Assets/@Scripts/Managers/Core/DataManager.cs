@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using Newtonsoft.Json;
 using UnityEngine;
 using static Define;
@@ -11,22 +12,23 @@ public interface ILoader<Key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, Data.StageInfoData> StageDic { get; private set; } = new Dictionary<int, Data.StageInfoData>();
-    public Dictionary<int, Data.MonsterInfoData> MonsterDic { get; private set; } = new Dictionary<int, Data.MonsterInfoData>();
-    public Dictionary<int, Data.BossMonsterInfoData> BossMonsterDic { get; private set; } = new Dictionary<int, Data.BossMonsterInfoData>();
-    public Dictionary<int, Data.CreatureUpgradeStatInfoData> CreatureUpgradeDic { get; private set; } = new Dictionary<int, Data.CreatureUpgradeStatInfoData>();
-    public Dictionary<EHeroUpgradeType, Data.HeroUpgradeInfoData> HeroUpgradeInfoDataDic { get; private set; } = new Dictionary<EHeroUpgradeType, Data.HeroUpgradeInfoData>();
-    public Dictionary<EHeroUpgradeType, Data.HeroUpgradeCostInfoData> HeroUpgradeCostInfoDataDic { get; private set; } = new Dictionary<EHeroUpgradeType, Data.HeroUpgradeCostInfoData>();
-
+    public Dictionary<int, StageInfoData> StageDataDic { get; private set; } = new Dictionary<int, StageInfoData>();
+    public Dictionary<int, MonsterInfoData> MonsterDataDic { get; private set; } = new Dictionary<int, MonsterInfoData>();
+    public Dictionary<int, BossMonsterInfoData> BossMonsterDataDic { get; private set; } = new Dictionary<int, BossMonsterInfoData>();
+    public Dictionary<int, CreatureUpgradeStatInfoData> CreatureUpgradeStatInfoDataDic { get; private set; } = new Dictionary<int, CreatureUpgradeStatInfoData>();
+    public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> HeroUpgradeInfoDataDic { get; private set; } = new Dictionary<EHeroUpgradeType, HeroUpgradeInfoData>();
+    public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> HeroUpgradeCostInfoDataDic { get; private set; } = new Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData>();
+    public Dictionary<int, HeroInfoData> HeroInfoDataDic { get; private set; } = new Dictionary<int, HeroInfoData>();
 
     public void Init()
     {
-        StageDic = LoadJson<Data.StageInfoDataLoader, int, Data.StageInfoData>("StageInfoData").MakeDict();
-        MonsterDic = LoadJson<Data.MonsterInfoDataLoader, int, Data.MonsterInfoData>("MonsterInfoData").MakeDict();
-        BossMonsterDic = LoadJson<Data.BossMonsterInfoDataLoader, int, Data.BossMonsterInfoData>("BossMonsterInfoData").MakeDict();
-        CreatureUpgradeDic = LoadJson<Data.CreatureUpgradeStatInfoDataLoader, int, Data.CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfoData").MakeDict();
-        HeroUpgradeInfoDataDic = LoadJson<Data.HeroUpgradeInfoDataLoader, EHeroUpgradeType, Data.HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
-        HeroUpgradeCostInfoDataDic = LoadJson<Data.HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, Data.HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
+        StageDataDic = LoadJson<StageInfoDataLoader, int, StageInfoData>("StageInfoData").MakeDict();
+        MonsterDataDic = LoadJson<MonsterInfoDataLoader, int, MonsterInfoData>("MonsterInfoData").MakeDict();
+        BossMonsterDataDic = LoadJson<BossMonsterInfoDataLoader, int, BossMonsterInfoData>("BossMonsterInfoData").MakeDict();
+        HeroInfoDataDic = LoadJson<HeroInfoDataLoader, int, HeroInfoData>("HeroInfoData").MakeDict();
+        CreatureUpgradeStatInfoDataDic = LoadJson<CreatureUpgradeStatInfoDataLoader, int, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfoData").MakeDict();
+        HeroUpgradeInfoDataDic = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
+        HeroUpgradeCostInfoDataDic = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

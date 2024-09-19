@@ -106,7 +106,7 @@ public class GameScene : BaseScene
     {
         isClear = false;
         StageLevel = stageLevel;
-        Data = Managers.Data.StageDic[StageLevel];
+        Data = Managers.Data.StageDataDic[StageLevel];
         Debug.Log($"{stageLevel} 스테이지 진입");
 
         if (Data.StageType == EStageType.NormalStage)

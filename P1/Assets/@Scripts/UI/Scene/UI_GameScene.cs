@@ -134,7 +134,7 @@ public class UI_GameScene : UI_Scene
 
     public void RefreshBossMonsterHp(BossMonster boss)
     {
-        float hpAmount = boss.Hp / boss.MaxHp.Value;
+        float hpAmount = boss.Hp / boss.MaxHp;
         GetSlider((int)Sliders.BossHpSlider).value = hpAmount;
     }
 

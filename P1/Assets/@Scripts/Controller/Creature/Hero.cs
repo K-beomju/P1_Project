@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +17,7 @@ public class Hero : Creature
     }
     #endregion
 
+    public HeroInfo HeroInfo { get; private set; }
     private Coroutine _comboDelayCoroutine = null;
     private UI_HpBarWorldSpace _hpBar;
     private HeroGhost _ghost;
@@ -37,16 +39,29 @@ public class Hero : Creature
         return true;
     }
 
+    private void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.UpdateHeroUpgrade, new Action(ReSetStats));
+    }
+
+    private void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.UpdateHeroUpgrade, new Action(ReSetStats));
+    }
+
+
     public override void SetCreatureInfo(int dataTemplateID)
     {
+        HeroInfo = Managers.Hero.PlayerHeroInfo;
+
         Level = Managers.Purse._currentLevel;
-        MaxHp = new CreatureStat(100);
-        Hp = MaxHp.Value;
-        Atk = new CreatureStat(5);
-        AttackSpeedRate = new CreatureStat(1);
-        AttackDelay = new CreatureStat(1);
-        AttackRange = new CreatureStat(1);
-        MoveSpeed = new CreatureStat(3);
+        Atk = HeroInfo.Atk;
+        MaxHp = HeroInfo.MaxHp;
+        Hp = MaxHp;
+        AttackDelay = HeroInfo.AttackDelay;
+        AttackRange = HeroInfo.AttackRange;
+        AttackSpeedRate = HeroInfo.AttackSpeedRate;
+        MoveSpeed = 3;
 
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f);
@@ -57,7 +72,8 @@ public class Hero : Creature
     // 레벨업 시 스탯을 다시 계산하는 함수
     public override void ReSetStats()
     {
-        base.ReSetStats();
+        Atk = HeroInfo.Atk;
+        MaxHp = HeroInfo.MaxHp;
         Debug.Log($"{Level} 레벨에서 공식계산 다시합니다.");
     }
 
@@ -78,7 +94,7 @@ public class Hero : Creature
     private IEnumerator ComboDelayCo()
     {
         Anim.SetBool(HeroAnimation.HashCombo, false);
-        yield return new WaitForSeconds(AttackDelay.Value);
+        yield return new WaitForSeconds(AttackDelay);
         Anim.SetBool(HeroAnimation.HashCombo, true);
         _comboDelayCoroutine = null;
     }
@@ -118,7 +134,7 @@ public class Hero : Creature
             }
 
             Target = target;
-            ChaseOrAttackTarget(AttackRange.Value);
+            ChaseOrAttackTarget(AttackRange);
         }
         else
         {
@@ -136,7 +152,7 @@ public class Hero : Creature
 
         Vector3 dir = (Target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
-        float attackDistanceSqr = AttackRange.Value * AttackRange.Value;
+        float attackDistanceSqr = AttackRange * AttackRange;
 
         // 공격 범위를 벗어나면 이동 상태로 전환
         if (distToTargetSqr > attackDistanceSqr)
@@ -146,7 +162,7 @@ public class Hero : Creature
         }
 
         LookAt(dir);
-        Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate.Value);
+        Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate);
     }
     #endregion
 
@@ -212,7 +228,7 @@ public class Hero : Creature
                     return;
                 }
 
-                float moveDist = Mathf.Min(dir.magnitude, MoveSpeed.Value * Time.deltaTime);
+                float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
                 TranslateEx(dir.normalized * moveDist);
             }
         }
@@ -228,7 +244,7 @@ public class Hero : Creature
     {
         Vector3 gizmoVec = transform.position + new Vector3(0, 0.35f);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(gizmoVec, AttackRange.Value);
+        Gizmos.DrawWireSphere(gizmoVec, AttackRange);
     }
 
 }
