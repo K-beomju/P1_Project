@@ -55,35 +55,24 @@ public class UI_HeroGrowthInvenSlot : UI_Base
     public void SetInfo(EHeroUpgradeType statType)
     {
         _heroUpgradeType = statType;
-        Debug.Log(_heroUpgradeType);
+        if (_init == false)
+            return;
+        UpdateSlotInfoUI();
 
-        if (Init() == false)
-        {
-            UpdateSlotInfoUI();
-        }
     }
 
     public void UpdateSlotInfoUI()
     {
-        string titleText = string.Empty;
-        string levelText = string.Empty;
-        string valueText = string.Empty;
-        string amountText = string.Empty;
+        if (!Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
+        {
+            level = 0; // 레벨이 없으면 0으로 초기화
+        }
 
-        if (Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
-        {
-            titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
-            levelText = $"Lv {level}";
-            valueText = $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value * (level + 1)}";
-            amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, level + 1):N0}";
-        }
-        else
-        {
-            titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
-            levelText = $"Lv {0}";
-            valueText = $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value * (1)}";
-            amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, 1):N0}";
-        }
+        string titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
+        string levelText = $"Lv {level}";
+        string valueText = $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value * (level + 1)}";
+        string amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, level + 1):N0}";
+
         GetText((int)Texts.Text_Title).text = titleText;
         GetText((int)Texts.Text_Level).text = levelText;
         GetText((int)Texts.Text_Value).text = valueText;
@@ -92,16 +81,21 @@ public class UI_HeroGrowthInvenSlot : UI_Base
 
     private void OnPressUpgradeButton()
     {
-        Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
+        if (_coolTime != null)
+            return;
 
-        // if (_coolTime == null)
-        // {
 
-        //     Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
+        if (Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
+        {
+            int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
+            if (CanUpgrade(price))
+            {
+                Managers.Purse.AddAmount(EGoodType.Gold, -price);
+                Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
+            }
+        }
+        _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
 
-        //     _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
-
-        // }
     }
 
     private void OnPointerUp()
@@ -113,6 +107,10 @@ public class UI_HeroGrowthInvenSlot : UI_Base
         }
     }
 
+    bool CanUpgrade(int cost)
+    {
+        return Managers.Purse.GetAmount(EGoodType.Gold) >= cost;
+    }
 
     private IEnumerator CoStartUpgradeCoolTime(float seconds)
     {
