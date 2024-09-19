@@ -8,7 +8,7 @@ public class PurseManager
 {
     private Dictionary<EGoodType, int> _purseDic = new Dictionary<EGoodType, int>();
 
-    public int _currentLevel = 1;
+    public int _currentLevel { get; private set; }
     private int _currentExp = 0;
     private int _expToNextLevel;
 
@@ -21,9 +21,7 @@ public class PurseManager
 		{
 			// 히어로의 레벨 업데이트
 			Managers.Object.Hero.Level = level;
-
-			// 레벨업 시 스탯을 다시 계산하는 함수 호출
-			Managers.Object.Hero.ReSetStats();
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
 		}));
         Managers.Event.TriggerEvent(EEventType.LevelUp, _currentLevel); // 레벨업 이벤트 발생
 

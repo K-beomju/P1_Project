@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static Define;
 using Data;
+using System;
 
 public class HeroInfo
 {
@@ -28,15 +29,26 @@ public class HeroInfo
 
     public void CalculateInfoStat()
     {
+        // 업그레이드에 의한 공격력 증가 
         float increaseAtk = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Atk] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].Value;
-        Atk = (Data.Atk + increaseAtk);
+        // 레벨에 따른 공격력 증가 (2% 증가)
+        float levelMultiplierAtk = 1 + (Managers.Purse._currentLevel * 0.2f);
+        // 최종공격력 = (기본 공격력 + 업그레이드 공격력) * 레벨 %
+        Atk = (Data.Atk + increaseAtk) * levelMultiplierAtk;
 
+        // 업그레이드에 의한 체력 증가 
         float increaseMaxHp = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
-        MaxHp = (Data.MaxHp + increaseMaxHp);
+        // 레벨에 따른 체력 증가 (5% 증가)
+        float levelMultiplierHp = 1 + (Managers.Purse._currentLevel * 5f);
+        // 최종최대체력 = (기본 체력 + 업그레이드 체력) * 레벨 %
+        MaxHp = (Data.MaxHp + increaseMaxHp) * levelMultiplierHp;
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
         AttackSpeedRate = Data.AttackSpeedRate;
+
+        if( Managers.Object.Hero != null)
+        Managers.Object.Hero.ReSetStats();
     }
 }
 
