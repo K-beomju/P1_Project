@@ -16,7 +16,6 @@ public class Monster : Creature, IDamageable
     private bool _isMovingToTarget;    // 목표 지점으로 이동 중인지 여부
     private Coroutine _idleCoroutine;  // Idle 상태에서 대기 시간을 처리할 코루틴
     private bool _isDamaged;           // 공격을 받은 상태인지 여부
-    private bool _isLastStanded;
 
     private UI_HpBarWorldSpace _hpBar;
 
@@ -26,7 +25,6 @@ public class Monster : Creature, IDamageable
             return false;
 
         _isDamaged = false;
-        _isLastStanded = false;
         ObjectType = EObjectType.Monster;
         gameObject.layer = (int)ELayer.Monster;
         _initialPosition = transform.position;  // 몬스터의 초기 위치 저장
@@ -132,11 +130,6 @@ public class Monster : Creature, IDamageable
 
         if (Hp <= 0)
         {
-            if(!_isLastStanded)
-            {
-                _isLastStanded = true;
-                return;
-            }
             OnDead();
         }
 
