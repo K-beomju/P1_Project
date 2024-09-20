@@ -4,6 +4,19 @@ using Data;
 using UnityEngine;
 using static Define;
 
+public struct EquipmentDrawResult
+{
+    public ERareType RareType { get; }
+    public int EquipmentIndex { get; }
+
+    public EquipmentDrawResult(ERareType rareType, int equipmentIndex)
+    {
+        RareType = rareType;
+        EquipmentIndex = equipmentIndex;
+    }
+}
+
+
 public class UI_DrawPopup : UI_Popup
 {
     public enum Buttons
@@ -29,14 +42,22 @@ public class UI_DrawPopup : UI_Popup
     {
         int level = 1;
         var gachaData = Managers.Data.GachaDataDic[level];
+        List<EquipmentDrawResult> resultEqList = new List<EquipmentDrawResult>();
 
         for (int i = 0; i < count; i++)
         {
             ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
             int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
+            
+            resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
 
             Debug.Log($"{rareType} 뽑은 장비 인덱스 {equipmentIndex}");
         }
+
+        var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
+        popupUI.ResultDrawUI(resultEqList);
+
     }
 
     private ERareType GetRandomRareType(List<float> drawProbability)
