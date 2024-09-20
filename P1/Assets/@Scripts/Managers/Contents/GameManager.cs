@@ -30,17 +30,15 @@ public class GameManager
 		GameData gameData = new GameData();
 		PlayerGameData = gameData;
 
-		Managers.Event.AddEvent(EEventType.UpdateDraw, new Action<int>((count) => 
+		Managers.Event.AddEvent(EEventType.UpdateDraw, new Action(() => 
 		{
-			Managers.Game.PlayerGameData.DrawCount += count;
+			Managers.Game.PlayerGameData.DrawCount += 1;
 
 			while (PlayerGameData.DrawCount >= Managers.Data.GachaDataDic[PlayerGameData.DrawLevel].MaxExp)
 			{
 				PlayerGameData.DrawCount -= Managers.Data.GachaDataDic[PlayerGameData.DrawLevel].MaxExp;
 				PlayerGameData.DrawLevel++;
 			}
-
-			Managers.Event.TriggerEvent(EEventType.UpdateDrawUI);
 		}));
 	
 	}

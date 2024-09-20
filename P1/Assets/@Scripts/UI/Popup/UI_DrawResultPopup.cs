@@ -38,6 +38,7 @@ public class UI_DrawResultPopup : UI_Popup
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() => 
         {
             ClosePopupUI();
+            Managers.Event.TriggerEvent(EEventType.UpdateDrawUI);
         });
         GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawEquipment());
         for (int i = 0; i < 30; i++)
@@ -63,11 +64,8 @@ public class UI_DrawResultPopup : UI_Popup
 
     private void RetryDrawEquipment()
     {
-        Debug.LogWarning("뽑기 레벨은: " + Managers.Game.PlayerGameData.DrawLevel);
         List<EquipmentDrawResult> resultList = Util.GetEquipmentDrawResults(retryValue, Managers.Game.PlayerGameData.DrawLevel);
         RefreshUI(resultList);
-        Managers.Event.TriggerEvent(EEventType.UpdateDraw, retryValue);
-
     }
 
     private IEnumerator CreatreEquipmentItem(List<EquipmentDrawResult> resultList)

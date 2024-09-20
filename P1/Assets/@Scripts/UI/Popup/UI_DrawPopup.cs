@@ -89,7 +89,6 @@ public class UI_DrawPopup : UI_Popup
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
         popupUI.RefreshUI(Util.GetEquipmentDrawResults(count, gameData.DrawLevel));
-        Managers.Event.TriggerEvent(EEventType.UpdateDraw, count);
     }
 
 

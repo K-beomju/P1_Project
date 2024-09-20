@@ -133,7 +133,7 @@ public static class Util
 
 	public static ERareType GetRareType(int value)
 	{
-		return value switch 
+		return value switch
 		{
 			0 => ERareType.Normal,
 			1 => ERareType.Advanced,
@@ -146,48 +146,59 @@ public static class Util
 	}
 
 	public static int GetEquipmentIndexForRareType(DrawEquipmentGachaData gachaData, ERareType rareType)
-    {
-        switch (rareType)
-        {
-            case ERareType.Normal:
-                return GetDrawProbabilityType(gachaData.NormalDrawList);
-            case ERareType.Advanced:
-                return GetDrawProbabilityType(gachaData.AdvancedDrawList);
-            case ERareType.Rare:
-                return GetDrawProbabilityType(gachaData.RareDrawList);
-            case ERareType.Legendary:
-                return GetDrawProbabilityType(gachaData.LegendaryDrawList);
-            case ERareType.Mythical:
-                return GetDrawProbabilityType(gachaData.MythicalDrawList);
-            case ERareType.Celestial:
-                return GetDrawProbabilityType(gachaData.CelestialDrawList);
-            default:
-                Debug.LogWarning($"Unknown rare type: {rareType}");
-                return -1;
-        }
-    }
+	{
+		switch (rareType)
+		{
+			case ERareType.Normal:
+				return GetDrawProbabilityType(gachaData.NormalDrawList);
+			case ERareType.Advanced:
+				return GetDrawProbabilityType(gachaData.AdvancedDrawList);
+			case ERareType.Rare:
+				return GetDrawProbabilityType(gachaData.RareDrawList);
+			case ERareType.Legendary:
+				return GetDrawProbabilityType(gachaData.LegendaryDrawList);
+			case ERareType.Mythical:
+				return GetDrawProbabilityType(gachaData.MythicalDrawList);
+			case ERareType.Celestial:
+				return GetDrawProbabilityType(gachaData.CelestialDrawList);
+			default:
+				Debug.LogWarning($"Unknown rare type: {rareType}");
+				return -1;
+		}
+	}
 
 	public static List<EquipmentDrawResult> GetEquipmentDrawResults(int count, int level)
-    {
-        var resultEqList = new List<EquipmentDrawResult>();
-        var gachaData = Managers.Data.GachaDataDic[level];
+	{
+		var resultEqList = new List<EquipmentDrawResult>();
+		var gachaData = Managers.Data.GachaDataDic[level];
+		int initialLevel = level;
 
-        for (int i = 0; i < count; i++)
-        {
-            ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
-            int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
+		for (int i = 0; i < count; i++)
+		{
+			// 현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
+			if (Managers.Game.PlayerGameData.DrawLevel != initialLevel)
+			{
+				// 변경된 레벨에 맞는 데이터를 다시 가져옵니다.
+				initialLevel = Managers.Game.PlayerGameData.DrawLevel;
+				gachaData = Managers.Data.GachaDataDic[initialLevel];
+			}
 
-            resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
-            Debug.Log($"{rareType} 뽑은 장비 인덱스 {equipmentIndex}");
-        }
+			ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
+			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
 
-        return resultEqList;
-    }
+			resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
+			Debug.Log($"{rareType} 뽑은 장비 인덱스 {equipmentIndex}");
+			Managers.Event.TriggerEvent(EEventType.UpdateDraw);
+
+		}
+
+		return resultEqList;
+	}
 
 	public static ERareType GetRandomRareType(List<float> drawProbability)
-    {
-        return GetRareType(GetDrawProbabilityType(drawProbability));
-    }
+	{
+		return GetRareType(GetDrawProbabilityType(drawProbability));
+	}
 
 	#endregion
 }
