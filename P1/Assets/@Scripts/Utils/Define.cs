@@ -56,7 +56,11 @@ public static class Define
         /// <summary>영웅 업데이트(성장) 갱신</summary>
         UpdateHeroUpgrade,
         /// <summary>레벨업 갱신</summary>
-        LevelUp
+        LevelUp,
+        /// <summary>뽑기 레벨 업데이트</summary>
+        UpdateDraw,
+        /// <summary>뽑기 UI 업데이트</summary>
+        UpdateDrawUI
     }
 
     public enum ECreatureState
@@ -136,7 +140,7 @@ public static class Define
 
     public const float DASH_DISTANCE_THRESHOLD = 9f;
     public const float LERP_SPEED = 0.1f;
-
+    public const float CREATRE_EQUIPMENT_DELAY = 0.05f;
 
     public static class HeroAnimation
     {

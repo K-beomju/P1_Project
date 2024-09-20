@@ -77,6 +77,7 @@ public class GameScene : BaseScene
 
         // Data
         Managers.Data.Init();
+        Managers.Game.Init();
         Managers.Hero.Init();
 
         // Game

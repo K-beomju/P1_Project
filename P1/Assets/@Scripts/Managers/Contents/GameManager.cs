@@ -6,13 +6,44 @@ using Data;
 using UnityEngine;
 using static Define;
 
+public class GameData
+{
+	public int DrawLevel;
+	public int DrawCount;
+
+	public GameData()
+	{
+		DrawLevel = 1;
+		DrawCount = 0;
+	}
+}
+
 public class GameManager
 {
-	private Dictionary<EGoodType, int> _purseDic = new Dictionary<EGoodType, int>();
+	public GameData PlayerGameData { get; private set; }
 
 	private int _currentMonsters;
 	private int _maxMonsters;
 
+	public void Init()
+	{
+		GameData gameData = new GameData();
+		PlayerGameData = gameData;
+
+		Managers.Event.AddEvent(EEventType.UpdateDraw, new Action<int>((count) => 
+		{
+			Managers.Game.PlayerGameData.DrawCount += count;
+
+			while (PlayerGameData.DrawCount >= Managers.Data.GachaDataDic[PlayerGameData.DrawLevel].MaxExp)
+			{
+				PlayerGameData.DrawCount -= Managers.Data.GachaDataDic[PlayerGameData.DrawLevel].MaxExp;
+				PlayerGameData.DrawLevel++;
+			}
+
+			Managers.Event.TriggerEvent(EEventType.UpdateDrawUI);
+		}));
+	
+	}
 	#region MonsterSpawn
 
 	public void SetMonsterCount(int currentMonsters, int maxMonsters)

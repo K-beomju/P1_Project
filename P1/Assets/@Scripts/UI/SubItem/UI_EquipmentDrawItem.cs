@@ -32,9 +32,9 @@ public class UI_EquipmentDrawItem : UI_Base
         return true;
     }
 
-    public void SetInfo(ERareType rareType, int equipmentIndex)
+    public void SetInfo(EquipmentDrawResult equipmentData)
     {
-        _rareTypeText.text = $"{rareType.ToString()} - 장비 {equipmentIndex}번";
+        _rareTypeText.text = $"{equipmentData.RareType.ToString()} - 장비 {equipmentData.EquipmentIndex}번";
         // 여기에 장비 인덱스에 맞는 이미지를 설정하는 로직을 추가할 수 있습니다.
     }
 }

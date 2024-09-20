@@ -10,7 +10,7 @@ public class UIManager
 	private int _order = 10;
 
 	private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
-    private Dictionary<string, UI_Popup> _popups = new Dictionary<string, UI_Popup>();
+	private Dictionary<string, UI_Popup> _popups = new Dictionary<string, UI_Popup>();
 
 	private UI_Scene _sceneUI = null;
 	public UI_Scene SceneUI
@@ -31,18 +31,18 @@ public class UIManager
 	}
 
 	public void CacheAllPopups()
-    {
-        var list = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsSubclassOf(typeof(UI_Popup)));
+	{
+		var list = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(assembly => assembly.GetTypes())
+				.Where(type => type.IsSubclassOf(typeof(UI_Popup)));
 
-        foreach (Type type in list)
-        {
+		foreach (Type type in list)
+		{
 			Debug.Log(type.Name);
-            CachePopupUI(type);
-        }
-        CloseAllPopupUI();
-    }
+			CachePopupUI(type);
+		}
+		CloseAllPopupUI();
+	}
 
 
 	public void SetCanvas(GameObject go, bool sort = true, int sortOrder = 0)
@@ -141,36 +141,36 @@ public class UIManager
 	{
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
-		
-		if(_popups.TryGetValue(name, out UI_Popup popup) == false)
-        {
+
+		if (_popups.TryGetValue(name, out UI_Popup popup) == false)
+		{
 			GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
 			GameObject go = Managers.Resource.Instantiate(prefab);
 
-            popup = Util.GetOrAddComponent<T>(go);
-            _popups[name] = popup;
-        }
+			popup = Util.GetOrAddComponent<T>(go);
+			_popups[name] = popup;
+		}
 
 		_popupStack.Push(popup);
-        popup.gameObject.SetActive(true);
-
+		popup.gameObject.SetActive(true);
+		
 		return popup as T;
 	}
-	
-	public void CachePopupUI(Type type)
-    {
-        string name = type.Name;
 
-        if(_popups.TryGetValue(name, out UI_Popup popup) == false)
-        {
+	public void CachePopupUI(Type type)
+	{
+		string name = type.Name;
+
+		if (_popups.TryGetValue(name, out UI_Popup popup) == false)
+		{
 			GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
 			GameObject go = Managers.Resource.Instantiate(prefab);
-            popup = go.GetComponent<UI_Popup>();
-            _popups[name] = popup;
-        }
-        popup.transform.SetParent(Root.transform);
-        _popupStack.Push(popup);
-    }
+			popup = go.GetComponent<UI_Popup>();
+			_popups[name] = popup;
+		}
+		popup.transform.SetParent(Root.transform);
+		_popupStack.Push(popup);
+	}
 
 	public void ClosePopupUI(UI_Popup popup)
 	{

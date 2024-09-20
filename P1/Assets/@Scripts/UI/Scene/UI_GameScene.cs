@@ -239,7 +239,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_DungeonPopup>();
                     break;
                       case PlayTab.Draw:
-                    Managers.UI.ShowPopupUI<UI_DrawPopup>();
+                    Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();
                     break;
                 case PlayTab.Shop:
                     Managers.UI.ShowPopupUI<UI_ShopPopup>();

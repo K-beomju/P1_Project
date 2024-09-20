@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data;
@@ -19,6 +20,17 @@ public struct EquipmentDrawResult
 
 public class UI_DrawPopup : UI_Popup
 {
+    public enum Texts
+    {
+        Text_DrawLevel,
+        Text_DrawValue
+    }
+
+    public enum Sliders
+    {
+        Slider_DrawCount
+    }
+
     public enum Buttons
     {
         Btn_DrawOnce,
@@ -26,64 +38,61 @@ public class UI_DrawPopup : UI_Popup
         Btn_DrawThirty
     }
 
+    private GameData gameData;
+
     protected override bool Init()
     {
         if (base.Init() == false)
             return false;
 
+        BindTexts(typeof(Texts));
+        BindSliders(typeof(Sliders));
         BindButtons(typeof(Buttons));
         GetButton((int)Buttons.Btn_DrawOnce).onClick.AddListener(() => OnDrawEquipment(1));
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
+
         return true;
     }
 
+    private void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.UpdateDrawUI, new Action(RefreshUI));
+    }
+
+    private void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.UpdateDrawUI, new Action(RefreshUI));
+    }
+
+
+    public void RefreshUI()
+    {
+        if (gameData == null)
+            gameData = Managers.Game.PlayerGameData;
+
+        int level = gameData.DrawLevel;
+        int drawCount = gameData.DrawCount;
+
+        GetText((int)Texts.Text_DrawLevel).text = $"Lv. {Managers.Game.PlayerGameData.DrawLevel}";
+        GetText((int)Texts.Text_DrawValue).text = $"{drawCount} / {Managers.Data.GachaDataDic[level].MaxExp}";
+        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.GachaDataDic[level].MaxExp;
+        GetSlider((int)Sliders.Slider_DrawCount).value = drawCount;
+    }
+
+
     public void OnDrawEquipment(int count)
     {
-        int level = 1;
-        var gachaData = Managers.Data.GachaDataDic[level];
-        List<EquipmentDrawResult> resultEqList = new List<EquipmentDrawResult>();
-
-        for (int i = 0; i < count; i++)
-        {
-            ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
-            int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
-            
-            resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
-
-            Debug.Log($"{rareType} 뽑은 장비 인덱스 {equipmentIndex}");
-        }
+        if (gameData == null)
+            gameData = Managers.Game.PlayerGameData;
 
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
-        popupUI.ResultDrawUI(resultEqList);
-
+        popupUI.RefreshUI(Util.GetEquipmentDrawResults(count, gameData.DrawLevel));
+        Managers.Event.TriggerEvent(EEventType.UpdateDraw, count);
     }
 
-    private ERareType GetRandomRareType(List<float> drawProbability)
-    {
-        return Util.GetRareType(Util.GetDrawProbabilityType(drawProbability));
-    }
 
-    private int GetEquipmentIndexForRareType(DrawEquipmentGachaData gachaData, ERareType rareType)
-    {
-        switch (rareType)
-        {
-            case ERareType.Normal:
-                return Util.GetDrawProbabilityType(gachaData.NormalDrawList);
-            case ERareType.Advanced:
-                return Util.GetDrawProbabilityType(gachaData.AdvancedDrawList);
-            case ERareType.Rare:
-                return Util.GetDrawProbabilityType(gachaData.RareDrawList);
-            case ERareType.Legendary:
-                return Util.GetDrawProbabilityType(gachaData.LegendaryDrawList);
-            case ERareType.Mythical:
-                return Util.GetDrawProbabilityType(gachaData.MythicalDrawList);
-            case ERareType.Celestial:
-                return Util.GetDrawProbabilityType(gachaData.CelestialDrawList);
-            default:
-                Debug.LogWarning($"Unknown rare type: {rareType}");
-                return -1;
-        }
-    }
+
+
 }

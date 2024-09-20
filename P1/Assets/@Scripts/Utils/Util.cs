@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using static Define;
@@ -110,6 +111,9 @@ public static class Util
 		return heroUpgradeString;
 	}
 
+
+	#region DrawSystem
+
 	public static int GetDrawProbabilityType(List<float> drawList)
 	{
 		float total = drawList.Sum();
@@ -140,4 +144,50 @@ public static class Util
 			_ => throw new ArgumentException($"Unknown rare type value: {value}")
 		};
 	}
+
+	public static int GetEquipmentIndexForRareType(DrawEquipmentGachaData gachaData, ERareType rareType)
+    {
+        switch (rareType)
+        {
+            case ERareType.Normal:
+                return GetDrawProbabilityType(gachaData.NormalDrawList);
+            case ERareType.Advanced:
+                return GetDrawProbabilityType(gachaData.AdvancedDrawList);
+            case ERareType.Rare:
+                return GetDrawProbabilityType(gachaData.RareDrawList);
+            case ERareType.Legendary:
+                return GetDrawProbabilityType(gachaData.LegendaryDrawList);
+            case ERareType.Mythical:
+                return GetDrawProbabilityType(gachaData.MythicalDrawList);
+            case ERareType.Celestial:
+                return GetDrawProbabilityType(gachaData.CelestialDrawList);
+            default:
+                Debug.LogWarning($"Unknown rare type: {rareType}");
+                return -1;
+        }
+    }
+
+	public static List<EquipmentDrawResult> GetEquipmentDrawResults(int count, int level)
+    {
+        var resultEqList = new List<EquipmentDrawResult>();
+        var gachaData = Managers.Data.GachaDataDic[level];
+
+        for (int i = 0; i < count; i++)
+        {
+            ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
+            int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
+
+            resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
+            Debug.Log($"{rareType} 뽑은 장비 인덱스 {equipmentIndex}");
+        }
+
+        return resultEqList;
+    }
+
+	public static ERareType GetRandomRareType(List<float> drawProbability)
+    {
+        return GetRareType(GetDrawProbabilityType(drawProbability));
+    }
+
+	#endregion
 }
