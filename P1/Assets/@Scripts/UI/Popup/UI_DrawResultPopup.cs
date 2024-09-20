@@ -54,12 +54,12 @@ public class UI_DrawResultPopup : UI_Popup
 
     public void RefreshUI(List<EquipmentDrawResult> resultList)
     {
-        _drawItems.ForEach((item) => item.gameObject.SetActive(false));
         GetText((int)Texts.Text_DrawLevel).text = $"Lv. {Managers.Game.PlayerGameData.DrawLevel}";
         GetText((int)Texts.Text_Retry).text = $"{resultList.Count}회";
 
-        StartCoroutine(CreatreEquipmentItem(resultList));
         retryValue = resultList.Count;
+
+        StartCoroutine(CreatreEquipmentItem(resultList));
     }
 
     private void RetryDrawEquipment()
@@ -70,13 +70,13 @@ public class UI_DrawResultPopup : UI_Popup
 
     private IEnumerator CreatreEquipmentItem(List<EquipmentDrawResult> resultList)
     {
-        WaitForSeconds wait = new WaitForSeconds(Define.CREATRE_EQUIPMENT_DELAY);
+        _drawItems.ForEach((item) => item.gameObject.SetActive(false));
+        WaitForSeconds wait = new WaitForSeconds(CREATRE_EQUIPMENT_DELAY);
         for (int i = 0; i < resultList.Count; i++)
         {
-            int index = i;
-            UI_EquipmentDrawItem drawItem = _drawItems[index];
+            UI_EquipmentDrawItem drawItem = _drawItems[i];
             drawItem.gameObject.SetActive(true);
-            drawItem.SetInfo(resultList[index]);
+            drawItem.SetInfo(resultList[i]);
             yield return wait;
         }
     }

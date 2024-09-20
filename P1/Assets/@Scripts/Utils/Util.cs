@@ -145,6 +145,7 @@ public static class Util
 		};
 	}
 
+
 	public static int GetEquipmentIndexForRareType(DrawEquipmentGachaData gachaData, ERareType rareType)
 	{
 		switch (rareType)
@@ -167,32 +168,37 @@ public static class Util
 		}
 	}
 
-	public static List<EquipmentDrawResult> GetEquipmentDrawResults(int count, int level)
+	public static List<EquipmentDrawResult> GetEquipmentDrawResults(int count, int initialLevel)
 	{
 		var resultEqList = new List<EquipmentDrawResult>();
-		var gachaData = Managers.Data.GachaDataDic[level];
-		int initialLevel = level;
+		var gachaData = Managers.Data.GachaDataDic[initialLevel];
 
 		for (int i = 0; i < count; i++)
 		{
 			// 현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
-			if (Managers.Game.PlayerGameData.DrawLevel != initialLevel)
-			{
-				// 변경된 레벨에 맞는 데이터를 다시 가져옵니다.
-				initialLevel = Managers.Game.PlayerGameData.DrawLevel;
-				gachaData = Managers.Data.GachaDataDic[initialLevel];
-			}
+			gachaData = CheckAndUpdateGachaData(ref initialLevel);
 
+       		// 뽑기 확률에 따라 장비를 뽑습니다.
 			ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
 			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
 
 			resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
-			Debug.Log($"{rareType} 뽑은 장비 인덱스 {equipmentIndex}");
 			Managers.Event.TriggerEvent(EEventType.UpdateDraw);
 
 		}
 
 		return resultEqList;
+	}
+
+	private static DrawEquipmentGachaData CheckAndUpdateGachaData(ref int initialLevel)
+	{
+		// 현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
+		if (Managers.Game.PlayerGameData.DrawLevel != initialLevel)
+		{
+			initialLevel = Managers.Game.PlayerGameData.DrawLevel;
+		}
+
+		return Managers.Data.GachaDataDic[initialLevel];
 	}
 
 	public static ERareType GetRandomRareType(List<float> drawProbability)
