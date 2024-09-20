@@ -211,5 +211,34 @@ namespace Data
     }
     #endregion
 
+    #region DrawData
+    [Serializable]
+    public class DrawEquipmentGachaData
+    {
+        public int Level;
+        public int MaxExp;
+        public List<float> DrawProbability = new List<float>();
+        public List<float> NormalDrawList = new List<float>();
+        public List<float> AdvancedDrawList = new List<float>();
+        public List<float> RareDrawList = new List<float>();
+        public List<float> LegendaryDrawList = new List<float>();
+        public List<float> MythicalDrawList = new List<float>();
+        public List<float> CelestialDrawList = new List<float>();
+    }
+
+    [Serializable]
+    public class DrawEquipmentGachaDataLoader : ILoader<int, DrawEquipmentGachaData>
+    {
+        public List<DrawEquipmentGachaData> draws = new List<DrawEquipmentGachaData>();
+        public Dictionary<int, DrawEquipmentGachaData> MakeDict()
+        {
+            Dictionary<int, DrawEquipmentGachaData> dict = new Dictionary<int, DrawEquipmentGachaData>();
+            foreach (DrawEquipmentGachaData draw in draws)
+                dict.Add(draw.Level, draw);
+            return dict;
+        }
+    }
+    #endregion
+
 
 }

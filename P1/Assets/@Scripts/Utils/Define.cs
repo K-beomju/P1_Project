@@ -98,8 +98,25 @@ public static class Define
     {
         None,
         Gold,
-        Money,
+        Cookie,
         Dia
+    }
+
+    public enum ERareType
+    {
+        None,
+        /// <summary> 노말 </summary>
+        Normal,
+        /// <summary> 고급 </summary>
+        Advanced,
+        /// <summary> 희귀 </summary>
+        Rare,
+        /// <summary> 영웅 </summary>
+        Legendary,
+        /// <summary> 전설 </summary>
+        Mythical,
+        /// <summary> 천상 </summary>
+        Celestial
     }
 
     public enum ELayer

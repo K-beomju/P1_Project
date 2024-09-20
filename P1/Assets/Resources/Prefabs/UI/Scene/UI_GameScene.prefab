@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC0C1\uC810"
+  m_Text: "\uBF51\uAE30"
 --- !u!1 &609524005635402535
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +944,7 @@ GameObject:
   - component: {fileID: 2259642331052319991}
   - component: {fileID: 6662350732357608373}
   m_Layer: 5
-  m_Name: ShopButton
+  m_Name: DrawButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3615,7 +3615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4769445084515875719, guid: c12d49ec94ffa459b846f75c40272110, type: 3}
       propertyPath: m_Name
-      value: UI_GoodItem_??
+      value: UI_GoodItem_Cookie
       objectReference: {fileID: 0}
     - target: {fileID: 4769445084515875719, guid: c12d49ec94ffa459b846f75c40272110, type: 3}
       propertyPath: m_IsActive
@@ -3741,7 +3741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4769445084515875719, guid: c12d49ec94ffa459b846f75c40272110, type: 3}
       propertyPath: m_Name
-      value: UI_GoodItem_??
+      value: UI_GoodItem_Dia
       objectReference: {fileID: 0}
     - target: {fileID: 4769445084515875719, guid: c12d49ec94ffa459b846f75c40272110, type: 3}
       propertyPath: m_IsActive

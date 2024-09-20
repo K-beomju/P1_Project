@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using static Define;
 
@@ -70,28 +72,28 @@ public static class Util
 	}
 
 	public static int GetUpgradeCost(EHeroUpgradeType upgradeType, int level)
-    {
-        List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].ReferenceLevelList;
-        List<int> StartCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].StartCostList;
-        List<int> IncreaseCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].IncreaseCostList;
+	{
+		List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].ReferenceLevelList;
+		List<int> StartCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].StartCostList;
+		List<int> IncreaseCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].IncreaseCostList;
 
-        int startCost = 0;
-        int increaseCost = 0;
+		int startCost = 0;
+		int increaseCost = 0;
 
-        int i = 0;
-        for (i = 0; i < ReferenceLevelList.Count; i++)
-        {
-            if (level <= ReferenceLevelList[i])
-            {
-                startCost = StartCostList[i];
-                increaseCost = IncreaseCostList[i];
-                break;
-            }
-        }
+		int i = 0;
+		for (i = 0; i < ReferenceLevelList.Count; i++)
+		{
+			if (level <= ReferenceLevelList[i])
+			{
+				startCost = StartCostList[i];
+				increaseCost = IncreaseCostList[i];
+				break;
+			}
+		}
 
-        int increaseCount = level - (i == 0 ? 0 : ReferenceLevelList[i - 1]) - 1;
-        return startCost + increaseCount * increaseCost;
-    }
+		int increaseCount = level - (i == 0 ? 0 : ReferenceLevelList[i - 1]) - 1;
+		return startCost + increaseCount * increaseCost;
+	}
 
 	public static string GetHeroUpgradeString(EHeroUpgradeType type)
 	{
@@ -106,5 +108,36 @@ public static class Util
 				break;
 		}
 		return heroUpgradeString;
+	}
+
+	public static int GetDrawProbabilityType(List<float> drawList)
+	{
+		float total = drawList.Sum();
+		float randomPoint = UnityEngine.Random.value * total;
+
+		for (int i = 0; i < drawList.Count; i++)
+		{
+			if (randomPoint < drawList[i])
+			{
+				return i;
+			}
+			randomPoint -= drawList[i];
+		}
+		return drawList.Count - 1;
+	}
+
+
+	public static ERareType GetRareType(int value)
+	{
+		return value switch 
+		{
+			0 => ERareType.Normal,
+			1 => ERareType.Advanced,
+			2 => ERareType.Rare,
+			3 => ERareType.Legendary,
+			4 => ERareType.Mythical,
+			5 => ERareType.Celestial,
+			_ => throw new ArgumentException($"Unknown rare type value: {value}")
+		};
 	}
 }

@@ -19,6 +19,7 @@ public class DataManager
     public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> HeroUpgradeInfoDataDic { get; private set; } = new Dictionary<EHeroUpgradeType, HeroUpgradeInfoData>();
     public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> HeroUpgradeCostInfoDataDic { get; private set; } = new Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData>();
     public Dictionary<int, HeroInfoData> HeroInfoDataDic { get; private set; } = new Dictionary<int, HeroInfoData>();
+    public Dictionary<int, DrawEquipmentGachaData> GachaDataDic { get; private set; } = new Dictionary<int, DrawEquipmentGachaData>();
 
     public void Init()
     {
@@ -29,6 +30,7 @@ public class DataManager
         CreatureUpgradeStatInfoDataDic = LoadJson<CreatureUpgradeStatInfoDataLoader, int, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfoData").MakeDict();
         HeroUpgradeInfoDataDic = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
         HeroUpgradeCostInfoDataDic = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
+        GachaDataDic = LoadJson<DrawEquipmentGachaDataLoader, int, DrawEquipmentGachaData>("DrawEquipmentGachaData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

@@ -13,7 +13,7 @@ public class UI_GameScene : UI_Scene
         SpiritButton,
         SkillButton,
         DungeonButton,
-        ShopButton
+        DrawButton
     }
 
     enum Sliders
@@ -44,14 +44,15 @@ public class UI_GameScene : UI_Scene
         Spirit,
         Skill,
         Dungeon,
+        Draw,
         Shop
     }
 
     public enum UI_GoodItems
     {
         UI_GoodItem_Gold,
-        //UI_GoodItem_Dia,
-        //UI_GoodItem_Money
+        UI_GoodItem_Dia,
+        UI_GoodItem_Cookie
     }
 
     private PlayTab _tab = PlayTab.None;
@@ -71,7 +72,7 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.SpiritButton).gameObject.BindEvent(() => ShowTab(PlayTab.Spirit));
         GetButton((int)Buttons.SkillButton).gameObject.BindEvent(() => ShowTab(PlayTab.Skill));
         GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
-        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
+        GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EGoodType.Gold);
         //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
@@ -157,13 +158,12 @@ public class UI_GameScene : UI_Scene
             case EGoodType.Gold:
                 getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold);
                 break;
-            case EGoodType.Money:
-                //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money); // Assuming correct mapping
+            case EGoodType.Cookie:
+                getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Cookie);
                 break;
             case EGoodType.Dia:
-                //return Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia); // Assuming correct mapping
+                getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia);
                 break;
-
             default:
                 return null;
         }
@@ -238,9 +238,13 @@ public class UI_GameScene : UI_Scene
                 case PlayTab.Dungeon:
                     Managers.UI.ShowPopupUI<UI_DungeonPopup>();
                     break;
+                      case PlayTab.Draw:
+                    Managers.UI.ShowPopupUI<UI_DrawPopup>();
+                    break;
                 case PlayTab.Shop:
                     Managers.UI.ShowPopupUI<UI_ShopPopup>();
                     break;
+                    
             }
             GetObject((int)GameObjects.TopStage).SetActive(false);
         }
