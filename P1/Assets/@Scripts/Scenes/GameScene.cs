@@ -97,7 +97,7 @@ public class GameScene : BaseScene
         FrameWait = new WaitForSeconds(0.2f);
         StartWait = new WaitForSeconds(1f);
 
-        //SetupStage(1);
+        SetupStage(1);
         sceneUI.ShowNormalOrBossStageUI(false);
         return true;
     }

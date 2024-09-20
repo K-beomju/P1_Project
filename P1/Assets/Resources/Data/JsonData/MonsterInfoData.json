@@ -11,17 +11,17 @@
     {
       "MoveSpeed": 1.0,
       "DataId": 50002000,
-      "Name": "대한",
+      "Name": "Bat",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Slime",
+      "PrefabKey": "Enemy_Bat",
       "MaxHp": 10.0
     },
     {
       "MoveSpeed": 1.0,
       "DataId": 50003000,
-      "Name": "콩고",
+      "Name": "Goblin",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Slime",
+      "PrefabKey": "Enemy_Goblin",
       "MaxHp": 10.0
     }
   ]
