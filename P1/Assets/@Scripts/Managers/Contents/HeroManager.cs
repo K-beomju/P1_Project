@@ -90,7 +90,7 @@ public class HeroManager
 
         PlayerHeroInfo.CalculateInfoStat();
         
-        Managers.Event.TriggerEvent(EEventType.UpdateHeroUpgrade);
+        Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
     }
     #endregion
 }

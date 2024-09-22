@@ -145,6 +145,24 @@ public static class Util
 		};
 	}
 
+	public static string GetEquipmentString(EEquipmentType type)
+	{
+		string equipmentString = string.Empty;
+		switch (type)
+		{
+			case EEquipmentType.Sword:
+				equipmentString = "무기";
+				break;
+			case EEquipmentType.Armor:
+				equipmentString = "갑옷";
+				break;
+			case EEquipmentType.Ring:
+				equipmentString = "반지";
+				break;
+		}
+		return equipmentString;
+	}
+
 
 	public static int GetEquipmentIndexForRareType(DrawEquipmentGachaData gachaData, ERareType rareType)
 	{
@@ -168,34 +186,34 @@ public static class Util
 		}
 	}
 
-	public static List<EquipmentDrawResult> GetEquipmentDrawResults(int count, int initialLevel)
+	public static List<EquipmentDrawResult> GetEquipmentDrawResults(EEquipmentType type, int drawCount, int initialLevel)
 	{
 		var resultEqList = new List<EquipmentDrawResult>();
 		var gachaData = Managers.Data.GachaDataDic[initialLevel];
 
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < drawCount; i++)
 		{
 			// 현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
-			gachaData = CheckAndUpdateGachaData(ref initialLevel);
+			gachaData = CheckAndUpdateGachaData(type, ref initialLevel);
 
-       		// 뽑기 확률에 따라 장비를 뽑습니다.
+			// 뽑기 확률에 따라 장비를 뽑습니다.
 			ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
 			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
 
 			resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
-			Managers.Event.TriggerEvent(EEventType.UpdateDraw);
+			//Managers.Event.TriggerEvent(EEventType.UpdateDraw, type);
 
 		}
 
 		return resultEqList;
 	}
 
-	private static DrawEquipmentGachaData CheckAndUpdateGachaData(ref int initialLevel)
+	private static DrawEquipmentGachaData CheckAndUpdateGachaData(EEquipmentType type, ref int initialLevel)
 	{
-		// 현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
-		if (Managers.Game.PlayerGameData.DrawLevel != initialLevel)
+		//현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
+		if (Managers.Game.PlayerGameData.DrawData[type].Level != initialLevel)
 		{
-			initialLevel = Managers.Game.PlayerGameData.DrawLevel;
+			initialLevel = Managers.Game.PlayerGameData.DrawData[type].Level;
 		}
 
 		return Managers.Data.GachaDataDic[initialLevel];

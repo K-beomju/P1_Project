@@ -47,20 +47,30 @@ public static class Define
     public enum EEventType
     {
         None,
-        /// <summary>몬스터 마리 갱신</summary>
+
+        /// <summary>몬스터 마리 수 변화 시 호출</summary>
         MonsterCountChanged,
-        /// <summary>재화 갱신</summary>
-        UpdateCurrency,
-        /// <summary>경험치 갱신</summary>
-        UpdateExp,
-        /// <summary>영웅 업데이트(성장) 갱신</summary>
-        UpdateHeroUpgrade,
-        /// <summary>레벨업 갱신</summary>
-        LevelUp,
-        /// <summary>뽑기 레벨 업데이트</summary>
-        UpdateDraw,
-        /// <summary>뽑기 UI 업데이트</summary>
-        UpdateDrawUI
+
+        /// <summary>플레이어 재화 정보가 갱신될 때 호출</summary>
+        CurrencyUpdated,
+
+        /// <summary>플레이어 경험치 정보가 갱신될 때 호출</summary>
+        ExperienceUpdated,
+
+        /// <summary>영웅 성장 및 업그레이드 정보 갱신</summary>
+        HeroUpgradeUpdated,
+
+        /// <summary>플레이어 레벨업 시 호출</summary>
+        PlayerLevelUp,
+
+        /// <summary>뽑기 진행 중 레벨 정보가 업데이트될 때 호출</summary>
+        DrawDataUpdated,
+
+        /// <summary>뽑기 관련 UI가 갱신될 때 호출</summary>
+        DrawUIUpdated,
+
+        /// <summary>뽑기 레벨업 시 UI 갱신을 위해 호출</summary>
+        DrawLevelUpUIUpdated
     }
 
     public enum ECreatureState
@@ -102,7 +112,6 @@ public static class Define
     {
         None,
         Gold,
-        Cookie,
         Dia
     }
 
@@ -121,6 +130,14 @@ public static class Define
         Mythical,
         /// <summary> 천상 </summary>
         Celestial
+    }
+
+    public enum EEquipmentType
+    {
+        None,
+        Sword,
+        Armor,
+        Ring
     }
 
     public enum ELayer

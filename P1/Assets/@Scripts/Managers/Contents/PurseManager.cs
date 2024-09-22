@@ -16,14 +16,14 @@ public class PurseManager
     {
         _currentLevel = initialLevel;
         _expToNextLevel = CalculateRequiredExp(_currentLevel);
-        Managers.Event.TriggerEvent(EEventType.UpdateExp, _currentLevel, _currentExp, _expToNextLevel); // 경험치 갱신 이벤트
-        Managers.Event.AddEvent(EEventType.LevelUp, new Action<int>(level =>
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, _currentLevel, _currentExp, _expToNextLevel); // 경험치 갱신 이벤트
+        Managers.Event.AddEvent(EEventType.PlayerLevelUp, new Action<int>(level =>
 		{
 			// 히어로의 레벨 업데이트
 			Managers.Object.Hero.Level = level;
             Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
 		}));
-        Managers.Event.TriggerEvent(EEventType.LevelUp, _currentLevel); // 레벨업 이벤트 발생
+        Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, _currentLevel); // 레벨업 이벤트 발생
 
     }
 
@@ -40,7 +40,7 @@ public class PurseManager
             _purseDic[goodType] += amount;
         }
 
-        Managers.Event.TriggerEvent(EEventType.UpdateCurrency);
+        Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
     }
 
     public int GetAmount(EGoodType goodType)
@@ -63,10 +63,10 @@ public class PurseManager
             _currentExp -= _expToNextLevel;
             _currentLevel++;
             _expToNextLevel = CalculateRequiredExp(_currentLevel);
-            Managers.Event.TriggerEvent(EEventType.LevelUp, _currentLevel); // 레벨업 이벤트 발생
+            Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, _currentLevel); // 레벨업 이벤트 발생
         }
 
-        Managers.Event.TriggerEvent(EEventType.UpdateExp, _currentLevel, _currentExp, _expToNextLevel); // 경험치 갱신 이벤트
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, _currentLevel, _currentExp, _expToNextLevel); // 경험치 갱신 이벤트
     }
 
     private int CalculateRequiredExp(int level)

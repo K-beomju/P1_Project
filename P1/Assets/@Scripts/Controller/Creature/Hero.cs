@@ -41,12 +41,12 @@ public class Hero : Creature
 
     private void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.UpdateHeroUpgrade, new Action(ReSetStats));
+        Managers.Event.AddEvent(EEventType.HeroUpgradeUpdated, new Action(ReSetStats));
     }
 
     private void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.UpdateHeroUpgrade, new Action(ReSetStats));
+        Managers.Event.RemoveEvent(EEventType.HeroUpgradeUpdated, new Action(ReSetStats));
     }
 
 

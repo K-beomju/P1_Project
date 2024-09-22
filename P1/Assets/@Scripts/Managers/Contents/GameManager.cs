@@ -8,13 +8,40 @@ using static Define;
 
 public class GameData
 {
-	public int DrawLevel;
-	public int DrawCount;
+	public Dictionary<EEquipmentType, EquipmentDrawData> DrawData;
 
 	public GameData()
 	{
-		DrawLevel = 1;
+		DrawData = new Dictionary<EEquipmentType, EquipmentDrawData>
+		{
+			{EEquipmentType.Sword, new EquipmentDrawData()},
+			{EEquipmentType.Armor, new EquipmentDrawData()},
+			{EEquipmentType.Ring, new EquipmentDrawData()}
+		};
+	}
+}
+
+public class EquipmentDrawData
+{
+	public int Level { get; set; }
+	public int DrawCount { get; set; }
+
+	public EquipmentDrawData()
+	{
+		Level = 1;
 		DrawCount = 0;
+	}
+
+	public void AddDrawCount()
+	{
+		DrawCount++;
+
+		while (DrawCount >= Managers.Data.GachaDataDic[Level].MaxExp)
+		{
+			DrawCount -= Managers.Data.GachaDataDic[Level].MaxExp;
+			Level++;
+			Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, Level);
+		}
 	}
 }
 
@@ -30,17 +57,11 @@ public class GameManager
 		GameData gameData = new GameData();
 		PlayerGameData = gameData;
 
-		Managers.Event.AddEvent(EEventType.UpdateDraw, new Action(() => 
+		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EEquipmentType>((type) =>
 		{
-			Managers.Game.PlayerGameData.DrawCount += 1;
-
-			while (PlayerGameData.DrawCount >= Managers.Data.GachaDataDic[PlayerGameData.DrawLevel].MaxExp)
-			{
-				PlayerGameData.DrawCount -= Managers.Data.GachaDataDic[PlayerGameData.DrawLevel].MaxExp;
-				PlayerGameData.DrawLevel++;
-			}
+			PlayerGameData.DrawData[type].AddDrawCount();
 		}));
-	
+
 	}
 	#region MonsterSpawn
 

@@ -52,7 +52,6 @@ public class UI_GameScene : UI_Scene
     {
         UI_GoodItem_Gold,
         UI_GoodItem_Dia,
-        UI_GoodItem_Cookie
     }
 
     private PlayTab _tab = PlayTab.None;
@@ -89,7 +88,7 @@ public class UI_GameScene : UI_Scene
             GetText((int)Texts.RemainMonsterValueText).text = string.Empty;
         }
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
-        Managers.Event.AddEvent(EEventType.UpdateExp, new Action<int, int, int>(RefreshShowExp));
+        Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, int, int>(RefreshShowExp));
 
         RefreshUI();
         return true;
@@ -157,9 +156,6 @@ public class UI_GameScene : UI_Scene
         {
             case EGoodType.Gold:
                 getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold);
-                break;
-            case EGoodType.Cookie:
-                getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Cookie);
                 break;
             case EGoodType.Dia:
                 getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia);

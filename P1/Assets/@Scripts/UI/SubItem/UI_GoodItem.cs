@@ -35,12 +35,12 @@ public class UI_GoodItem : UI_Base
 
     private void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.UpdateCurrency, new Action(RefreshGoodDisplayUI));
+        Managers.Event.AddEvent(EEventType.CurrencyUpdated, new Action(RefreshGoodDisplayUI));
     }
 
     private void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.UpdateCurrency, new Action(RefreshGoodDisplayUI));
+        Managers.Event.RemoveEvent(EEventType.CurrencyUpdated, new Action(RefreshGoodDisplayUI));
     }
 
     public void RefreshGoodDisplayUI()

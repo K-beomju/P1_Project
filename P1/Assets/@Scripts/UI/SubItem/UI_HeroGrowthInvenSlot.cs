@@ -42,14 +42,14 @@ public class UI_HeroGrowthInvenSlot : UI_Base
 
     private void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.UpdateHeroUpgrade, new Action(UpdateSlotInfoUI));
+        Managers.Event.AddEvent(EEventType.HeroUpgradeUpdated, new Action(UpdateSlotInfoUI));
 
         UpdateSlotInfoUI();
     }
 
     private void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.UpdateHeroUpgrade, new Action(UpdateSlotInfoUI));
+        Managers.Event.RemoveEvent(EEventType.HeroUpgradeUpdated, new Action(UpdateSlotInfoUI));
     }
 
     public void SetInfo(EHeroUpgradeType statType)
