@@ -76,6 +76,7 @@ public class UI_DrawResultPopup : UI_Popup
         Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, level);
         GetText((int)Texts.Text_Retry).text = $"{_count}회";
 
+        InteractiveButtons(false);
         StartCoroutine(CreateEquipmentItem(resultList));
     }
 
@@ -104,6 +105,15 @@ public class UI_DrawResultPopup : UI_Popup
             Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, _type);
 
             yield return wait;
+        }
+        InteractiveButtons(true);
+    }
+
+    public void InteractiveButtons(bool active)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GetButton(i).interactable = active;
         }
     }
 
