@@ -223,7 +223,7 @@ public class UI_GameScene : UI_Scene
             switch (tab)
             {
                 case PlayTab.Character:
-                    Managers.UI.ShowPopupUI<UI_CharacterPopup>();
+                    Managers.UI.ShowPopupUI<UI_CharacterPopup>().RefreshUI();
                     break;
                 case PlayTab.Spirit:
                     Managers.UI.ShowPopupUI<UI_SpiritPopup>();

@@ -38,6 +38,14 @@ public class EquipmentManager
 
     public void Init()
     {
+        foreach(var equipmentInfo in AllEquipmentInfos)
+        {
+            if(equipmentInfo.Value.IsEquipped)
+            {
+                EquppedEquipments.Add(equipmentInfo.Value.Data.EquipmentType, equipmentInfo.Value);
+            }
+        }
+
         // 무기
         int index = 100100;
         for (int i = 0; i < 24; i++)

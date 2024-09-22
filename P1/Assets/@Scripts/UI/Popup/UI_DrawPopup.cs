@@ -6,17 +6,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Define;
 
-public struct EquipmentDrawResult
-{
-    public int DataID { get; } 
-    public ERareType RareType { get; }
+// public struct EquipmentDrawResult
+// {
+//     public int DataID { get; } 
+//     public ERareType RareType { get; }
 
-    public EquipmentDrawResult(int dataId, ERareType rareType)
-    {
-        DataID = dataId;
-        RareType = rareType;
-    }
-}
+//     public EquipmentDrawResult(int dataId, ERareType rareType)
+//     {
+//         DataID = dataId;
+//         RareType = rareType;
+//     }
+// }
 
 
 public class UI_DrawPopup : UI_Popup
@@ -142,9 +142,14 @@ public class UI_DrawPopup : UI_Popup
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
 
-        List<EquipmentDrawResult> drawResults = Util.GetEquipmentDrawResults(_type, drawCount, _drawlevel);
+        List<int> equipmentIdList = Util.GetEquipmentDrawResults(_type, drawCount, _drawlevel);
 
-        popupUI.RefreshUI(_type, drawCount, drawResults);
+        for (int i = 0; i < equipmentIdList.Count; i++)
+        {
+            Managers.Equipment.AddEquipment(equipmentIdList[i]);
+        }
+
+        popupUI.RefreshUI(_type, drawCount, equipmentIdList);
     }
 
 

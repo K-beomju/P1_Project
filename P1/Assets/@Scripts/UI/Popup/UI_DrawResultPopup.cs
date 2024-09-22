@@ -67,7 +67,7 @@ public class UI_DrawResultPopup : UI_Popup
          GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
     }
 
-    public void RefreshUI(EEquipmentType type, int drawCount, List<EquipmentDrawResult> resultList)
+    public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList)
     {
         _type = type;
         _level = Managers.Game.PlayerGameData.DrawData[_type].Level;  // 최신 레벨 가져오기
@@ -82,11 +82,11 @@ public class UI_DrawResultPopup : UI_Popup
 
     private void RetryDrawEquipment()
     {
-        List<EquipmentDrawResult> resultList = Util.GetEquipmentDrawResults(_type, _drawCount, _level);
+        List<int> resultList = Util.GetEquipmentDrawResults(_type, _drawCount, _level);
         RefreshUI(_type, _drawCount, resultList);
     }
 
-    private IEnumerator CreateEquipmentItem(List<EquipmentDrawResult> resultList)
+    private IEnumerator CreateEquipmentItem(List<int> resultList)
     {
         for (int i = 0; i < _drawItems.Count; i++)
         {

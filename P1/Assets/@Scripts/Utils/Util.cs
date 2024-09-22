@@ -162,9 +162,9 @@ public static class Util
 	}
 
 
-	public static List<EquipmentDrawResult> GetEquipmentDrawResults(EEquipmentType type, int drawCount, int initialLevel)
+	public static List<int> GetEquipmentDrawResults(EEquipmentType type, int drawCount, int initialLevel)
 	{
-		var resultEqList = new List<EquipmentDrawResult>();
+		var resultEqList = new List<int>();
 		var gachaData = Managers.Data.GachaDataDic[initialLevel];
 		int weightValue = GetWeightValueByType(type);
 
@@ -175,15 +175,12 @@ public static class Util
 
 			// 뽑기 확률에 따라 장비를 뽑습니다.
 			ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
-
 			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
 			int dataID = GetEquipmentDataID(gachaData, rareType, equipmentIndex, weightValue);
 			if (weightValue != 0)
 				dataID += weightValue;
-
-			Debug.Log(Managers.Data.EquipmentDic[dataID].Name);
-
-			resultEqList.Add(new EquipmentDrawResult(dataID, rareType));
+			
+			resultEqList.Add(dataID);
 			Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, type);
 
 		}

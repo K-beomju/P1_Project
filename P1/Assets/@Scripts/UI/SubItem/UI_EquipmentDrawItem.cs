@@ -35,12 +35,12 @@ public class UI_EquipmentDrawItem : UI_Base
         return true;
     }
 
-    public void SetInfo(EquipmentDrawResult equipmentData)
+    public void SetInfo(int equipmentDataId)
     {
         _fadeImage.color = Color.white;
         _fadeImage.DOFade(0, 0.1f);
-        _rareTypeText.text = $"{Util.GetRareTypeString(equipmentData.RareType)}";
+        _rareTypeText.text = $"{Util.GetRareTypeString(Managers.Equipment.GetEquipmentInfo(equipmentDataId).Data.RareType)}";
         // 여기에 장비 인덱스에 맞는 이미지를 설정하는 로직을 추가할 수 있습니다.
-
+        Debug.Log(Managers.Equipment.GetEquipmentInfo(equipmentDataId).Data.RareType);
     }
 }
