@@ -145,6 +145,20 @@ public static class Util
 		};
 	}
 
+	public static string GetRareTypeString(ERareType type)
+{
+    return type switch
+    {
+        ERareType.Normal => "일반",
+        ERareType.Advanced => "고급",
+        ERareType.Rare => "희귀",
+        ERareType.Legendary => "전설",
+        ERareType.Mythical => "신화",
+        ERareType.Celestial => "천상",
+        _ => throw new ArgumentException($"Unknown rare type: {type}")
+    };
+}
+
 	public static string GetEquipmentString(EEquipmentType type)
 	{
 		string equipmentString = string.Empty;

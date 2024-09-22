@@ -46,13 +46,18 @@ public class UI_DrawPopup : UI_Popup
     {
         BG_IconSword,
         BG_IconArmor,
-        BG_IconRing
+        BG_IconRing,
+        Image_PortalEquipment
     }
 
     private Dictionary<EEquipmentType, Image> _iconImages;
+    private Dictionary<EEquipmentType, Sprite> _portalEqIconDic;
+
     private EquipmentDrawData _equipmentData;
     private EEquipmentType _type = EEquipmentType.None;
+
     private Color _selectedColor;
+    private Image _portalImage;
 
     private int _drawlevel;
     private int _totalCount;
@@ -69,11 +74,19 @@ public class UI_DrawPopup : UI_Popup
         BindImages(typeof(Images));
 
         _iconImages = new Dictionary<EEquipmentType, Image>
-    {
-        { EEquipmentType.Sword, GetImage((int)Images.BG_IconSword) },
-        { EEquipmentType.Armor, GetImage((int)Images.BG_IconArmor) },
-        { EEquipmentType.Ring, GetImage((int)Images.BG_IconRing) }
-    };
+        {
+            { EEquipmentType.Sword, GetImage((int)Images.BG_IconSword) },
+            { EEquipmentType.Armor, GetImage((int)Images.BG_IconArmor) },
+            { EEquipmentType.Ring, GetImage((int)Images.BG_IconRing) }
+        };
+
+        _portalEqIconDic = new Dictionary<EEquipmentType, Sprite>
+        {
+            { EEquipmentType.Sword,   Managers.Resource.Load<Sprite>($"Sprites/PortalSwordIcon") },
+            { EEquipmentType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/PortalArmorIcon") },
+            { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/PortalRingIcon") }
+        };
+        _portalImage = GetImage((int)Images.Image_PortalEquipment);
 
         GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
@@ -143,6 +156,7 @@ public class UI_DrawPopup : UI_Popup
             icon.Value.color = Color.white;
         }
         _iconImages[type].color = _selectedColor;
+        _portalImage.sprite = _portalEqIconDic[type];
         _type = type;
         UpdateUI();
     }
