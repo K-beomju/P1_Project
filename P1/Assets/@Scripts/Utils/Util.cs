@@ -215,7 +215,7 @@ public static class Util
 			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
 
 			resultEqList.Add(new EquipmentDrawResult(rareType, equipmentIndex));
-			//Managers.Event.TriggerEvent(EEventType.UpdateDraw, type);
+			Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, type);
 
 		}
 

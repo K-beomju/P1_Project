@@ -28,7 +28,7 @@ public class UI_DrawResultPopup : UI_Popup
     private EEquipmentType _type;
 
     private int _level;
-    private int _count;
+    private int _drawCount;
 
     protected override bool Init()
     {
@@ -67,14 +67,14 @@ public class UI_DrawResultPopup : UI_Popup
          GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
     }
 
-    public void RefreshUI(EEquipmentType type, int level, int count, List<EquipmentDrawResult> resultList)
+    public void RefreshUI(EEquipmentType type, int drawCount, List<EquipmentDrawResult> resultList)
     {
         _type = type;
-        _level = level;
-        _count = count;
+        _level = Managers.Game.PlayerGameData.DrawData[_type].Level;  // 최신 레벨 가져오기
+        _drawCount = drawCount;
 
-        Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, level);
-        GetText((int)Texts.Text_Retry).text = $"{_count}회";
+        GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
+        GetText((int)Texts.Text_Retry).text = $"{_drawCount}회";
 
         InteractiveButtons(false);
         StartCoroutine(CreateEquipmentItem(resultList));
@@ -82,8 +82,8 @@ public class UI_DrawResultPopup : UI_Popup
 
     private void RetryDrawEquipment()
     {
-        List<EquipmentDrawResult> resultList = Util.GetEquipmentDrawResults(_type, _count, _level);
-        RefreshUI(_type, _level, _count, resultList);
+        List<EquipmentDrawResult> resultList = Util.GetEquipmentDrawResults(_type, _drawCount, _level);
+        RefreshUI(_type, _drawCount, resultList);
     }
 
     private IEnumerator CreateEquipmentItem(List<EquipmentDrawResult> resultList)
@@ -100,9 +100,6 @@ public class UI_DrawResultPopup : UI_Popup
             UI_EquipmentDrawItem drawItem = _drawItems[i];
             drawItem.gameObject.SetActive(true);
             drawItem.SetInfo(resultList[i]);
-
-            // 이벤트 호출
-            Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, _type);
 
             yield return wait;
         }

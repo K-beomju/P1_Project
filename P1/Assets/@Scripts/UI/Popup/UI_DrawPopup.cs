@@ -144,7 +144,7 @@ public class UI_DrawPopup : UI_Popup
 
         List<EquipmentDrawResult> drawResults = Util.GetEquipmentDrawResults(_type, drawCount, _drawlevel);
 
-        popupUI.RefreshUI(_type, _drawlevel, drawCount, drawResults);
+        popupUI.RefreshUI(_type, drawCount, drawResults);
     }
 
 
