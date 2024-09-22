@@ -217,6 +217,7 @@ namespace Data
     {
         public int Level;
         public int MaxExp;
+        
         public List<float> DrawProbability = new List<float>();
         public List<float> NormalDrawList = new List<float>();
         public List<float> AdvancedDrawList = new List<float>();
@@ -224,6 +225,14 @@ namespace Data
         public List<float> LegendaryDrawList = new List<float>();
         public List<float> MythicalDrawList = new List<float>();
         public List<float> CelestialDrawList = new List<float>();
+
+        public List<int> NormalEqIdList = new List<int>();
+        public List<int> AdvancedEqIdList = new List<int>();
+        public List<int> RareEqIdList = new List<int>();
+        public List<int> LegendaryEqIdList = new List<int>();
+        public List<int> MythicalEqIdList = new List<int>();
+        public List<int> CelestialEqIdList = new List<int>();
+
     }
 
     [Serializable]
@@ -235,6 +244,30 @@ namespace Data
             Dictionary<int, DrawEquipmentGachaData> dict = new Dictionary<int, DrawEquipmentGachaData>();
             foreach (DrawEquipmentGachaData draw in draws)
                 dict.Add(draw.Level, draw);
+            return dict;
+        }
+    }
+    #endregion
+
+    #region EquipmentData 
+    [Serializable]
+    public class EquipmentSwordData
+    {
+        public int DataId;
+        public ERareType RareType;
+        public string SpriteKey;
+        public string Name; 
+    }
+
+    [Serializable]
+    public class EquipmentSwordDataDataLoader : ILoader<int, EquipmentSwordData>
+    {
+        public List<EquipmentSwordData> equipmentDatas = new List<EquipmentSwordData>();
+        public Dictionary<int, EquipmentSwordData> MakeDict()
+        {
+            Dictionary<int, EquipmentSwordData> dict = new Dictionary<int, EquipmentSwordData>();
+            foreach (EquipmentSwordData equipment in equipmentDatas)
+                dict.Add(equipment.DataId, equipment);
             return dict;
         }
     }

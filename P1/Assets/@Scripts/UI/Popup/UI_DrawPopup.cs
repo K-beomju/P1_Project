@@ -8,13 +8,13 @@ using static Define;
 
 public struct EquipmentDrawResult
 {
+    public int DataID { get; } 
     public ERareType RareType { get; }
-    public int EquipmentIndex { get; }
 
-    public EquipmentDrawResult(ERareType rareType, int equipmentIndex)
+    public EquipmentDrawResult(int dataId, ERareType rareType)
     {
+        DataID = dataId;
         RareType = rareType;
-        EquipmentIndex = equipmentIndex;
     }
 }
 
