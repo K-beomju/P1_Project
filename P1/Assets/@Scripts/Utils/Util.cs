@@ -166,6 +166,7 @@ public static class Util
 	{
 		var resultEqList = new List<EquipmentDrawResult>();
 		var gachaData = Managers.Data.GachaDataDic[initialLevel];
+		int weightValue = GetWeightValueByType(type);
 
 		for (int i = 0; i < drawCount; i++)
 		{
@@ -176,9 +177,11 @@ public static class Util
 			ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
 
 			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
-			int dataID = GetEquipmentDataID(gachaData, rareType, equipmentIndex);
+			int dataID = GetEquipmentDataID(gachaData, rareType, equipmentIndex, weightValue);
+			if (weightValue != 0)
+				dataID += weightValue;
 
-			Debug.Log(Managers.Data.EqSwordDic[dataID].Name);
+			Debug.Log(Managers.Data.EquipmentDic[dataID].Name);
 
 			resultEqList.Add(new EquipmentDrawResult(dataID, rareType));
 			Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, type);
@@ -186,6 +189,19 @@ public static class Util
 		}
 
 		return resultEqList;
+	}
+
+	private static int GetWeightValueByType(EEquipmentType type)
+	{
+		switch (type)
+		{
+			case EEquipmentType.Armor:
+				return 100000;
+			case EEquipmentType.Ring:
+				return 200000;
+			default:
+				return 0;
+		}
 	}
 
 	private static DrawEquipmentGachaData CheckAndUpdateGachaData(EEquipmentType type, ref int initialLevel)
@@ -229,26 +245,37 @@ public static class Util
 	}
 
 	// 등급과 인덱스에 맞는 장비 ID 반환 
-	public static int GetEquipmentDataID(DrawEquipmentGachaData gachaData, ERareType rareType, int equipmentIndex)
+	public static int GetEquipmentDataID(DrawEquipmentGachaData gachaData, ERareType rareType, int equipmentIndex, int weightValue)
 	{
+		List<int> equipmentIdList;
+
 		switch (rareType)
 		{
 			case ERareType.Normal:
-				return gachaData.NormalEqIdList[equipmentIndex];
+				equipmentIdList = gachaData.NormalEqIdList;
+				break;
 			case ERareType.Advanced:
-				return gachaData.AdvancedEqIdList[equipmentIndex];
+				equipmentIdList = gachaData.AdvancedEqIdList;
+				break;
 			case ERareType.Rare:
-				return gachaData.RareEqIdList[equipmentIndex];
+				equipmentIdList = gachaData.RareEqIdList;
+				break;
 			case ERareType.Legendary:
-				return gachaData.LegendaryEqIdList[equipmentIndex];
+				equipmentIdList = gachaData.LegendaryEqIdList;
+				break;
 			case ERareType.Mythical:
-				return gachaData.MythicalEqIdList[equipmentIndex];
+				equipmentIdList = gachaData.MythicalEqIdList;
+				break;
 			case ERareType.Celestial:
-				return gachaData.CelestialEqIdList[equipmentIndex];
+				equipmentIdList = gachaData.CelestialEqIdList;
+				break;
 			default:
 				Debug.LogWarning($"Unknown rare type: {rareType}");
 				return -1;
 		}
+
+		int dataID = equipmentIdList[equipmentIndex];
+		return dataID + weightValue;  // weightValue를 더해서 반환
 	}
 
 	// 랜덤 

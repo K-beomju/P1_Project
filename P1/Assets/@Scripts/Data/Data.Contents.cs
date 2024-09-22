@@ -251,22 +251,23 @@ namespace Data
 
     #region EquipmentData 
     [Serializable]
-    public class EquipmentSwordData
+    public class EquipmentData
     {
         public int DataId;
         public ERareType RareType;
+        public EEquipmentType EquipmentType;
         public string SpriteKey;
         public string Name; 
     }
 
     [Serializable]
-    public class EquipmentSwordDataDataLoader : ILoader<int, EquipmentSwordData>
+    public class EquipmentDataLoader : ILoader<int, EquipmentData>
     {
-        public List<EquipmentSwordData> equipmentDatas = new List<EquipmentSwordData>();
-        public Dictionary<int, EquipmentSwordData> MakeDict()
+        public List<EquipmentData> equipmentDatas = new List<EquipmentData>();
+        public Dictionary<int, EquipmentData> MakeDict()
         {
-            Dictionary<int, EquipmentSwordData> dict = new Dictionary<int, EquipmentSwordData>();
-            foreach (EquipmentSwordData equipment in equipmentDatas)
+            Dictionary<int, EquipmentData> dict = new Dictionary<int, EquipmentData>();
+            foreach (EquipmentData equipment in equipmentDatas)
                 dict.Add(equipment.DataId, equipment);
             return dict;
         }

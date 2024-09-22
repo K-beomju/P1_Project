@@ -70,7 +70,16 @@ public static class Define
         DrawUIUpdated,
 
         /// <summary>뽑기 레벨업 시 UI 갱신을 위해 호출</summary>
-        DrawLevelUpUIUpdated
+        DrawLevelUpUIUpdated,
+
+        /// <summary>장비 장착 해제할 때 호출</summary>
+        UpdateEquipment
+    }
+
+    public enum EOwningState
+    {
+        Unowned,
+        Owned,
     }
 
     public enum ECreatureState
@@ -158,7 +167,6 @@ public static class Define
     public const float DASH_DISTANCE_THRESHOLD = 9f;
     public const float LERP_SPEED = 0.1f;
     public const float CREATRE_EQUIPMENT_DELAY = 0.03f;
-    public const int EQUIPMENT_DATA_ID = 100100; 
 
     public static class HeroAnimation
     {

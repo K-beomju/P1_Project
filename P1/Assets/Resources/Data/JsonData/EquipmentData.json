@@ -1,0 +1,508 @@
+{
+  "equipmentDatas": [
+    {
+      "DataId": 100100,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": "나무 검 "
+    },
+    {
+      "DataId": 100101,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": "돌 검"
+    },
+    {
+      "DataId": 100102,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": "철 검"
+    },
+    {
+      "DataId": 100103,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": "금 검"
+    },
+    {
+      "DataId": 100104,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100105,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100106,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100107,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100108,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100109,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100110,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100111,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100112,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100113,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100114,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100115,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100116,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100117,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100118,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100119,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100120,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100121,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100122,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 100123,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200100,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": "나무 갑옷"
+    },
+    {
+      "DataId": 200101,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": "돌 갑옷"
+    },
+    {
+      "DataId": 200102,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": "철 갑옷 "
+    },
+    {
+      "DataId": 200103,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": "금 갑옷 "
+    },
+    {
+      "DataId": 200104,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200105,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200106,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200107,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200108,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200109,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200110,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200111,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200112,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200113,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200114,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200115,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200116,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200117,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200118,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200119,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200120,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200121,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200122,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 200123,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300100,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": "나무 반지"
+    },
+    {
+      "DataId": 300101,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": "돌 반지"
+    },
+    {
+      "DataId": 300102,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": "철 반지"
+    },
+    {
+      "DataId": 300103,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": "금 반지"
+    },
+    {
+      "DataId": 300104,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300105,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300106,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300107,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300108,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300109,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300110,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300111,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300112,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300113,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300114,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300115,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300116,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300117,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300118,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300119,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300120,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300121,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300122,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    },
+    {
+      "DataId": 300123,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Null",
+      "Name": null
+    }
+  ]
+}

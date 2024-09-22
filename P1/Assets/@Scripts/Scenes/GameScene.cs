@@ -79,6 +79,7 @@ public class GameScene : BaseScene
         Managers.Data.Init();
         Managers.Game.Init();
         Managers.Hero.Init();
+        Managers.Equipment.Init();
 
         // Game
         Managers.Resource.Instantiate("BaseMap");
