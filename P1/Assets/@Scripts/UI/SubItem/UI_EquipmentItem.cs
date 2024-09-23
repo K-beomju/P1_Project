@@ -21,6 +21,7 @@ public class UI_EquipmentItem : UI_Base
     private Text _rareTypeText;
     private Image _equipmentImage;
     private Image _fadeImage;
+    public Button _equipmentButton { get; private set; }
 
 
     protected override bool Init()
@@ -32,6 +33,7 @@ public class UI_EquipmentItem : UI_Base
         _rareTypeText = GetText((int)Texts.Text_RareType);
         _equipmentImage = GetImage((int)Images.Image_Equipment);
         _fadeImage = GetImage((int)Images.Image_Fade);
+        _equipmentButton = GetComponent<Button>();
         return true;
     }
 

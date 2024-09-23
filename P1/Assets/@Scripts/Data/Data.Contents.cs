@@ -258,6 +258,8 @@ namespace Data
         public EEquipmentType EquipmentType;
         public string SpriteKey;
         public string Name; 
+        public float OwnedValue;
+        public float EquippedValue;
     }
 
     [Serializable]

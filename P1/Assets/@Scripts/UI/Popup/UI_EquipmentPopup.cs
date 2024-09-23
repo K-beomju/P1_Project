@@ -17,8 +17,12 @@ public class UI_EquipmentPopup : UI_Popup
         Btn_Ring
     }
 
-    private List<UI_EquipmentItem> equipmentItems = new List<UI_EquipmentItem>();
+    public enum EquipemntInven 
+    {
+        EquipemntInven 
+    }
 
+    private List<UI_EquipmentItem> equipmentItems = new List<UI_EquipmentItem>();
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -33,9 +37,9 @@ public class UI_EquipmentPopup : UI_Popup
             equipmentItems.Add(item);
         }
 
-        GetButton(((int)Buttons.Btn_Weapon)).onClick.AddListener(() => RefreshUI(EEquipmentType.Weapon));
-        GetButton(((int)Buttons.Btn_Armor)).onClick.AddListener(() => RefreshUI(EEquipmentType.Armor));
-        GetButton(((int)Buttons.Btn_Ring)).onClick.AddListener(() => RefreshUI(EEquipmentType.Ring));
+        GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => RefreshUI(EEquipmentType.Weapon));
+        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => RefreshUI(EEquipmentType.Armor));
+        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => RefreshUI(EEquipmentType.Ring));
 
         RefreshUI(EEquipmentType.Weapon);
         return true;
