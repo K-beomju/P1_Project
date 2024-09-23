@@ -10,7 +10,7 @@ public class UI_GameScene : UI_Scene
     enum Buttons
     {
         CharacterButton,
-        SpiritButton,
+        EquipmentButton,
         SkillButton,
         DungeonButton,
         DrawButton
@@ -41,7 +41,7 @@ public class UI_GameScene : UI_Scene
     {
         None = -1,
         Character,
-        Spirit,
+        Equipment,
         Skill,
         Dungeon,
         Draw,
@@ -68,7 +68,7 @@ public class UI_GameScene : UI_Scene
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
-        GetButton((int)Buttons.SpiritButton).gameObject.BindEvent(() => ShowTab(PlayTab.Spirit));
+        GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
         GetButton((int)Buttons.SkillButton).gameObject.BindEvent(() => ShowTab(PlayTab.Skill));
         GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
@@ -225,8 +225,8 @@ public class UI_GameScene : UI_Scene
                 case PlayTab.Character:
                     Managers.UI.ShowPopupUI<UI_CharacterPopup>().RefreshUI();
                     break;
-                case PlayTab.Spirit:
-                    Managers.UI.ShowPopupUI<UI_SpiritPopup>();
+                case PlayTab.Equipment:
+                    Managers.UI.ShowPopupUI<UI_EquipmentPopup>();
                     break;
                 case PlayTab.Skill:
                     Managers.UI.ShowPopupUI<UI_SkillPopup>();

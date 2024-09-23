@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,37 +8,34 @@ public class UI_CharacterPopup : UI_Popup
 {
     public enum GameObjects
     {
-        Panel_Character,
-        Panel_Equipment,
-        Panel_Attribute,
-        Panel_Relics
+        Character,
+        Attribute,
+        Relics
+    }
+
+    public enum CharacterInven
+    {
+        None = -1,
+        Character,
+        Attribute,
+        Relics
     }
 
     public enum Buttons 
     {
         Btn_Character,
-        Btn_Equipment,
         Btn_Attribute,
         Btn_Relics
     }
 
-    public enum UI_HeroGrowthInvenSlots
+    public enum Texts 
     {
-        UI_HeroGrowthInvenSlot_Atk,
-        UI_HeroGrowthInvenSlot_Hp
+        Text_CharacterTitle
     }
 
-    public enum CharacterTab
-    {
-        None = -1,
-        Character,
-        Equipment,
-        Attribute,
-        Relics
-    }
 
-    private CharacterTab _tab = CharacterTab.None;
-    private Dictionary<CharacterTab, (Button, GameObject)> _characterPanels;
+    private CharacterInven _inven = CharacterInven.None;
+    private Dictionary<CharacterInven, (Button, GameObject)> _characterPanels;
     
     protected override bool Init()
     {
@@ -46,56 +44,53 @@ public class UI_CharacterPopup : UI_Popup
 
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
-        Bind<UI_HeroGrowthInvenSlot>(typeof(UI_HeroGrowthInvenSlots));
-
+        BindTexts(typeof(Texts));
 
         // 버튼과 패널을 함께 딕셔너리로 관리
-        _characterPanels = new Dictionary<CharacterTab, (Button, GameObject)>
+        _characterPanels = new Dictionary<CharacterInven, (Button, GameObject)>
         {
-            { CharacterTab.Character, (GetButton((int)Buttons.Btn_Character), GetObject((int)GameObjects.Panel_Character)) },
-            { CharacterTab.Equipment, (GetButton((int)Buttons.Btn_Equipment), GetObject((int)GameObjects.Panel_Equipment)) },
-            { CharacterTab.Attribute, (GetButton((int)Buttons.Btn_Attribute),  GetObject((int)GameObjects.Panel_Attribute)) },
-            { CharacterTab.Relics, (GetButton((int)Buttons.Btn_Relics),  GetObject((int)GameObjects.Panel_Relics)) }
+            { CharacterInven.Character, (GetButton((int)Buttons.Btn_Character), GetObject((int)GameObjects.Character)) },
+            { CharacterInven.Attribute, (GetButton((int)Buttons.Btn_Attribute),  GetObject((int)GameObjects.Attribute)) },
+            { CharacterInven.Relics, (GetButton((int)Buttons.Btn_Relics),  GetObject((int)GameObjects.Relics)) }
         };
 
-
-        Get<UI_HeroGrowthInvenSlot>((int)UI_HeroGrowthInvenSlots.UI_HeroGrowthInvenSlot_Atk).SetInfo(Define.EHeroUpgradeType.Growth_Atk);
-        Get<UI_HeroGrowthInvenSlot>((int)UI_HeroGrowthInvenSlots.UI_HeroGrowthInvenSlot_Hp).SetInfo(Define.EHeroUpgradeType.Growth_Hp);
-
         // 버튼에 클릭 이벤트 할당
-        foreach (var (tab, (button, _)) in _characterPanels)
+        foreach (var (inven, (button, _)) in _characterPanels)
         {
-            button.onClick.AddListener(() => ShowTab(tab));
+            button.onClick.AddListener(() => ShowTab(inven));
         }
         return true;
     }
 
     public void RefreshUI()
     {
-        _tab = CharacterTab.Character;
-        ShowTab(_tab);
+        _inven = CharacterInven.Character;
+        ShowTab(_inven);
     }
 
-    public void ShowTab(CharacterTab tab)
+    public void ShowTab(CharacterInven inven)
     {
         foreach (var (button, panel) in _characterPanels.Values)
         {
             button.interactable = true;
             panel.SetActive(false);
         }
-        var (selectedButton, selectedPanel) = _characterPanels[tab];
+        var (selectedButton, selectedPanel) = _characterPanels[inven];
         selectedButton.interactable = false;
         selectedPanel.SetActive(true);
-
+        GetText((int)Texts.Text_CharacterTitle).text = GetCharacterTabString(inven);
         
     }
 
-    // private void CreateCompanionSlot(int defaultCount = 15)
-    // {
-    //     var slot = GetObject((int)GameObjects.Content);
-    //     for (int i = 0; i < defaultCount; i++)
-    //     {
-    //         Managers.UI.MakeSubItem<UI_CompanionSlot>(slot.transform);
-    //     }
-    // }
+    private string GetCharacterTabString(CharacterInven inven)
+    {
+        return inven switch
+		{
+			CharacterInven.Character => "캐릭터",
+			CharacterInven.Attribute => "특성",
+			CharacterInven.Relics => "유물",
+			_ => throw new ArgumentException($"Unknown rare type String: {inven}")
+		};
+	}
+    
 }

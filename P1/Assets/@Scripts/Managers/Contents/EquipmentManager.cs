@@ -34,13 +34,28 @@ public class EquipmentManager
         get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Unowned).ToList(); }
     }
 
+    public List<EquipmentInfo> WeaponEquipments
+    {
+        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == EEquipmentType.Weapon).ToList(); }
+    }
+
+    public List<EquipmentInfo> ArmorEquipments
+    {
+        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == EEquipmentType.Armor).ToList(); }
+    }
+
+    public List<EquipmentInfo> RingEquipments
+    {
+        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == EEquipmentType.Ring).ToList(); }
+    }
+
     public Dictionary<EEquipmentType, EquipmentInfo> EquppedEquipments = new Dictionary<EEquipmentType, EquipmentInfo>();
 
     public void Init()
     {
-        foreach(var equipmentInfo in AllEquipmentInfos)
+        foreach (var equipmentInfo in AllEquipmentInfos)
         {
-            if(equipmentInfo.Value.IsEquipped)
+            if (equipmentInfo.Value.IsEquipped)
             {
                 EquppedEquipments.Add(equipmentInfo.Value.Data.EquipmentType, equipmentInfo.Value);
             }
@@ -70,12 +85,12 @@ public class EquipmentManager
             AllEquipmentInfos.Add(equipmentInfo.DataTemplateID, equipmentInfo);
             index += 1;
         }
-        
+
     }
 
     public EquipmentInfo GetEquipmentInfo(int dataTemplateID)
     {
-        if(AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipmentInfo))
+        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipmentInfo))
         {
             return equipmentInfo;
         }
@@ -92,9 +107,9 @@ public class EquipmentManager
 
     public void EquipEquipment(int dataTemplateID)
     {
-        if(AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipEquipmentInfo))
+        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipEquipmentInfo))
         {
-            if(EquppedEquipments.TryGetValue(equipEquipmentInfo.Data.EquipmentType, out EquipmentInfo 
+            if (EquppedEquipments.TryGetValue(equipEquipmentInfo.Data.EquipmentType, out EquipmentInfo
             unEquipEquipmentInfo))
             {
                 unEquipEquipmentInfo.IsEquipped = false;
@@ -113,7 +128,7 @@ public class EquipmentManager
 
     public void UnEquipEquipment(EEquipmentType equipmentType)
     {
-        if(EquppedEquipments.TryGetValue(equipmentType, out EquipmentInfo equipmentInfo))
+        if (EquppedEquipments.TryGetValue(equipmentType, out EquipmentInfo equipmentInfo))
         {
             equipmentInfo.IsEquipped = false;
             EquppedEquipments.Remove(equipmentType);

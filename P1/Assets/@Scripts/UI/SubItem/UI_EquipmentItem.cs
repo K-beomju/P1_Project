@@ -6,7 +6,7 @@ using static Define;
 using DG.Tweening;
 
 
-public class UI_EquipmentDrawItem : UI_Base
+public class UI_EquipmentItem : UI_Base
 {
     public enum Texts
     {
@@ -35,12 +35,18 @@ public class UI_EquipmentDrawItem : UI_Base
         return true;
     }
 
-    public void SetInfo(int equipmentDataId)
+    public void SetInfo(EquipmentInfo equipmentData, bool isDraw = false)
     {
-        _fadeImage.color = Color.white;
-        _fadeImage.DOFade(0, 0.1f);
-        _rareTypeText.text = $"{Util.GetRareTypeString(Managers.Equipment.GetEquipmentInfo(equipmentDataId).Data.RareType)}";
+        if(isDraw)
+        {
+            _fadeImage.color = Color.white;
+            _fadeImage.DOFade(0, 0.1f);
+        }
+        else
+        {
+            _fadeImage.gameObject.SetActive(false);
+        }
+        _rareTypeText.text = $"{Util.GetRareTypeString(equipmentData.Data.RareType)}";
         // 여기에 장비 인덱스에 맞는 이미지를 설정하는 로직을 추가할 수 있습니다.
-        Debug.Log(Managers.Equipment.GetEquipmentInfo(equipmentDataId).Data.RareType);
     }
 }

@@ -144,7 +144,7 @@ public static class Define
     public enum EEquipmentType
     {
         None,
-        Sword,
+        Weapon,
         Armor,
         Ring
     }

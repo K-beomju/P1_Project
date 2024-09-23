@@ -1419,7 +1419,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC815\uB839"
+  m_Text: "\uC7A5\uBE44"
 --- !u!1 &2749135155053542050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2613,7 +2613,7 @@ GameObject:
   - component: {fileID: 16734362289387183}
   - component: {fileID: 7949622621514328326}
   m_Layer: 5
-  m_Name: SpiritButton
+  m_Name: EquipmentButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

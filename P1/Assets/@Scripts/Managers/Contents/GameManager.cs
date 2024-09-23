@@ -14,7 +14,7 @@ public class GameData
 	{
 		DrawData = new Dictionary<EEquipmentType, EquipmentDrawData>
 		{
-			{EEquipmentType.Sword, new EquipmentDrawData()},
+			{EEquipmentType.Weapon, new EquipmentDrawData()},
 			{EEquipmentType.Armor, new EquipmentDrawData()},
 			{EEquipmentType.Ring, new EquipmentDrawData()}
 		};

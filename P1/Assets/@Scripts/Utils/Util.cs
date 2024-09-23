@@ -148,7 +148,7 @@ public static class Util
 		string equipmentString = string.Empty;
 		switch (type)
 		{
-			case EEquipmentType.Sword:
+			case EEquipmentType.Weapon:
 				equipmentString = "무기";
 				break;
 			case EEquipmentType.Armor:
@@ -167,7 +167,6 @@ public static class Util
 		var resultEqList = new List<int>();
 		var gachaData = Managers.Data.GachaDataDic[initialLevel];
 		int weightValue = GetWeightValueByType(type);
-
 		for (int i = 0; i < drawCount; i++)
 		{
 			// 현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
@@ -177,9 +176,6 @@ public static class Util
 			ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
 			int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
 			int dataID = GetEquipmentDataID(gachaData, rareType, equipmentIndex, weightValue);
-			if (weightValue != 0)
-				dataID += weightValue;
-			
 			resultEqList.Add(dataID);
 			Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, type);
 

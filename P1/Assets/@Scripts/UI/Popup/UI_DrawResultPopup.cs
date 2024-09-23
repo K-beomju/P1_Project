@@ -24,7 +24,7 @@ public class UI_DrawResultPopup : UI_Popup
         Btn_RetryDraw
     }
 
-    private List<UI_EquipmentDrawItem> _drawItems = new List<UI_EquipmentDrawItem>();
+    private List<UI_EquipmentItem> _drawItems = new List<UI_EquipmentItem>();
     private EEquipmentType _type;
 
     private int _level;
@@ -47,7 +47,7 @@ public class UI_DrawResultPopup : UI_Popup
         GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawEquipment());
         for (int i = 0; i < 30; i++)
         {
-            var item = Managers.UI.MakeSubItem<UI_EquipmentDrawItem>(GetObject((int)GameObjects.DrawItemGroup).transform);
+            var item = Managers.UI.MakeSubItem<UI_EquipmentItem>(GetObject((int)GameObjects.DrawItemGroup).transform);
             item.gameObject.SetActive(false);
             _drawItems.Add(item);
         }
@@ -97,9 +97,9 @@ public class UI_DrawResultPopup : UI_Popup
 
         for (int i = 0; i < resultList.Count; i++)
         {
-            UI_EquipmentDrawItem drawItem = _drawItems[i];
+            UI_EquipmentItem drawItem = _drawItems[i];
             drawItem.gameObject.SetActive(true);
-            drawItem.SetInfo(resultList[i]);
+            drawItem.SetInfo(Managers.Equipment.GetEquipmentInfo(resultList[i]), true);
 
             yield return wait;
         }

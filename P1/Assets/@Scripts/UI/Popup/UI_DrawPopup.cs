@@ -75,14 +75,14 @@ public class UI_DrawPopup : UI_Popup
 
         _iconImages = new Dictionary<EEquipmentType, Image>
         {
-            { EEquipmentType.Sword, GetImage((int)Images.BG_IconSword) },
+            { EEquipmentType.Weapon, GetImage((int)Images.BG_IconSword) },
             { EEquipmentType.Armor, GetImage((int)Images.BG_IconArmor) },
             { EEquipmentType.Ring, GetImage((int)Images.BG_IconRing) }
         };
 
         _portalEqIconDic = new Dictionary<EEquipmentType, Sprite>
         {
-            { EEquipmentType.Sword,   Managers.Resource.Load<Sprite>($"Sprites/PortalSwordIcon") },
+            { EEquipmentType.Weapon,   Managers.Resource.Load<Sprite>($"Sprites/PortalWeaponIcon") },
             { EEquipmentType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/PortalArmorIcon") },
             { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/PortalRingIcon") }
         };
@@ -91,7 +91,7 @@ public class UI_DrawPopup : UI_Popup
         GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
-        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Sword));
+        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Ring));
 
@@ -114,7 +114,7 @@ public class UI_DrawPopup : UI_Popup
         if (_init == false)
             return;
 
-        OnSelectEquipmentIcon(EEquipmentType.Sword);
+        OnSelectEquipmentIcon(EEquipmentType.Weapon);
     }
 
     public void UpdateUI()
