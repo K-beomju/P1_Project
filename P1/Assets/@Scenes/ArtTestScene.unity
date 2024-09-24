@@ -5018,7 +5018,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7b24af807e2654898be9567bc6943045, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dfc1c22360b8541b58430ba05c4fe1c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6150,14 +6150,14 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 744551029}
-  - {fileID: 333820425}
-  - {fileID: 403780716}
   - {fileID: 140403084}
-  - {fileID: 1451047161}
-  - {fileID: 1458287244}
-  - {fileID: 343972849}
+  - {fileID: 403780716}
+  - {fileID: 333820425}
+  - {fileID: 744551029}
   - {fileID: 386477699}
+  - {fileID: 343972849}
+  - {fileID: 1458287244}
+  - {fileID: 1451047161}
   - {fileID: 446908073}
   - {fileID: 351980138}
   - {fileID: 971460015}

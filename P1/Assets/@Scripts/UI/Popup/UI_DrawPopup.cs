@@ -69,9 +69,9 @@ public class UI_DrawPopup : UI_Popup
 
         _portalEqIconDic = new Dictionary<EEquipmentType, Sprite>
         {
-            { EEquipmentType.Weapon,   Managers.Resource.Load<Sprite>($"Sprites/PortalWeaponIcon") },
-            { EEquipmentType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/PortalArmorIcon") },
-            { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/PortalRingIcon") }
+            { EEquipmentType.Weapon,   Managers.Resource.Load<Sprite>($"Sprites/WeaponIcon") },
+            { EEquipmentType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/Armor/Armor_24") },
+            { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/RingIcon") }
         };
         _portalImage = GetImage((int)Images.Image_PortalEquipment);
 
