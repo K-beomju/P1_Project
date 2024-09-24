@@ -13,6 +13,7 @@ public class UI_EquipmentItem : UI_Base
         Text_RareType
     }
 
+
     public enum Images
     {
         Image_Equipment,
@@ -47,6 +48,9 @@ public class UI_EquipmentItem : UI_Base
         else
         {
             _fadeImage.gameObject.SetActive(false);
+            _equipmentButton.onClick.RemoveAllListeners();
+            _equipmentButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
+
         }
         _rareTypeText.text = $"{Util.GetRareTypeString(equipmentData.Data.RareType)}";
         // 여기에 장비 인덱스에 맞는 이미지를 설정하는 로직을 추가할 수 있습니다.

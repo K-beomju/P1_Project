@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,15 +15,32 @@ public class UI_EquipmentPopup : UI_Popup
     {
         Btn_Weapon,
         Btn_Armor,
-        Btn_Ring
+        Btn_Ring,
+        
+        Btn_Equip,
+        Btn_Enhance
     }
 
-    public enum EquipemntInven 
+    public enum EquipemntInven
     {
-        EquipemntInven 
+        EquipemntInven
     }
 
     private List<UI_EquipmentItem> equipmentItems = new List<UI_EquipmentItem>();
+    private EquipmentInfo equipmentInfo;
+    public EquipmentInfo EquipmentInfo
+    {
+        get { return equipmentInfo; }
+        set
+        {
+            if(equipmentInfo != value)
+            {
+                equipmentInfo = value;
+                GetButton((int)Buttons.Btn_Equip).interactable = !equipmentInfo.IsEquipped;
+            }
+        }
+    }
+
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -40,36 +58,52 @@ public class UI_EquipmentPopup : UI_Popup
         GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => RefreshUI(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => RefreshUI(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => RefreshUI(EEquipmentType.Ring));
+        GetButton((int)Buttons.Btn_Equip).onClick.AddListener(() => OnEquipEquipment());
+        GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(() => OnEnhanceEquipment());
 
         RefreshUI(EEquipmentType.Weapon);
         return true;
     }
 
+    void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
+    }
+
+    void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
+    }
     public void RefreshUI(EEquipmentType type)
     {
         for (int i = 0; i < equipmentItems.Count; i++)
         {
-            equipmentItems[i].SetInfo(Managers.Equipment.GetEquipmentInfo(GetEquipmentInfos(type)[i].DataTemplateID), false);
+            List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentInfos(type);
+            equipmentItems[i].SetInfo(equipmentInfos[i], false);
         }
     }
 
-    private List<EquipmentInfo> GetEquipmentInfos(EEquipmentType type)
+    public void ShowEquipmentDetailUI(EquipmentInfo _equipmentInfo)
     {
-        List<EquipmentInfo> equipmentInfos = new List<EquipmentInfo>();
-        switch (type)
+        EquipmentInfo = _equipmentInfo;
+        Debug.Log(equipmentInfo.Data.EquipmentType);
+    }
+
+    private void OnEquipEquipment()
+    {
+        Managers.Equipment.EquipEquipment(equipmentInfo.DataTemplateID);
+
+        foreach (var item in Managers.Equipment.EquppedEquipments)
         {
-            case EEquipmentType.Weapon:
-                equipmentInfos = Managers.Equipment.WeaponEquipments;
-                break;
-            case EEquipmentType.Armor:
-                equipmentInfos = Managers.Equipment.ArmorEquipments;
-                break;
-            case EEquipmentType.Ring:
-                equipmentInfos = Managers.Equipment.RingEquipments;
-                break;
+            Debug.Log(item.Key + " " + item.Value.Data.Name);
         }
 
-        return equipmentInfos;
+        GetButton((int)Buttons.Btn_Equip).interactable = false;
+    }
+
+    private void OnEnhanceEquipment()
+    {
+
     }
 
 }

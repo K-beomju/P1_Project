@@ -73,7 +73,9 @@ public static class Define
         DrawLevelUpUIUpdated,
 
         /// <summary>장비 장착 해제할 때 호출</summary>
-        UpdateEquipment
+        UpdateEquipment,
+
+        EquipmentItemClick 
     }
 
     public enum EOwningState

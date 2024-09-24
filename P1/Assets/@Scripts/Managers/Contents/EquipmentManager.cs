@@ -34,33 +34,10 @@ public class EquipmentManager
         get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Unowned).ToList(); }
     }
 
-    public List<EquipmentInfo> WeaponEquipments
-    {
-        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == EEquipmentType.Weapon).ToList(); }
-    }
-
-    public List<EquipmentInfo> ArmorEquipments
-    {
-        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == EEquipmentType.Armor).ToList(); }
-    }
-
-    public List<EquipmentInfo> RingEquipments
-    {
-        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == EEquipmentType.Ring).ToList(); }
-    }
-
     public Dictionary<EEquipmentType, EquipmentInfo> EquppedEquipments = new Dictionary<EEquipmentType, EquipmentInfo>();
 
     public void Init()
     {
-        foreach (var equipmentInfo in AllEquipmentInfos)
-        {
-            if (equipmentInfo.Value.IsEquipped)
-            {
-                EquppedEquipments.Add(equipmentInfo.Value.Data.EquipmentType, equipmentInfo.Value);
-            }
-        }
-
         // 무기
         int index = 100100;
         for (int i = 0; i < 24; i++)
@@ -112,6 +89,10 @@ public class EquipmentManager
             if (EquppedEquipments.TryGetValue(equipEquipmentInfo.Data.EquipmentType, out EquipmentInfo
             unEquipEquipmentInfo))
             {
+                // 똑같은 장비 예외처리 
+                if (equipEquipmentInfo == unEquipEquipmentInfo)
+                    return;
+
                 unEquipEquipmentInfo.IsEquipped = false;
                 equipEquipmentInfo.IsEquipped = true;
                 EquppedEquipments[equipEquipmentInfo.Data.EquipmentType] = equipEquipmentInfo;
@@ -135,5 +116,10 @@ public class EquipmentManager
 
             Managers.Event.TriggerEvent(EEventType.UpdateEquipment);
         }
+    }
+
+    public List<EquipmentInfo> GetEquipmentInfos(EEquipmentType type)
+    {
+        return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type).ToList();
     }
 }

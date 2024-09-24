@@ -6,19 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Define;
 
-// public struct EquipmentDrawResult
-// {
-//     public int DataID { get; } 
-//     public ERareType RareType { get; }
-
-//     public EquipmentDrawResult(int dataId, ERareType rareType)
-//     {
-//         DataID = dataId;
-//         RareType = rareType;
-//     }
-// }
-
-
 public class UI_DrawPopup : UI_Popup
 {
     public enum Texts
