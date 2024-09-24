@@ -142,6 +142,20 @@ public static class Util
 		};
 	}
 
+	public static Color GetRareTypeColor(ERareType type)
+	{
+		return type switch
+		{
+			ERareType.Normal => HexToColor("#9F9F9F"),
+			ERareType.Advanced =>  HexToColor("#81CA85"),
+			ERareType.Rare =>  HexToColor("#81C0CA"),
+			ERareType.Legendary =>  HexToColor("#CA9381"),
+			ERareType.Mythical =>  HexToColor("#FF624E"),
+			ERareType.Celestial =>  HexToColor("#FFE74E"),
+			_ => throw new ArgumentException($"Unknown rare type String: {type}")
+		};
+	}
+
 
 	public static string GetEquipmentString(EEquipmentType type)
 	{

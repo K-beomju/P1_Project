@@ -8,18 +8,14 @@ using DG.Tweening;
 
 public class UI_EquipmentItem : UI_Base
 {
-    public enum Texts
-    {
-        Text_RareType
-    }
 
 
     public enum Images
     {
         Image_Equipment,
-        Image_Fade
+        Image_Fade,
+        BG_Rare
     }
-    private Text _rareTypeText;
     private Image _equipmentImage;
     private Image _fadeImage;
     public Button _equipmentButton { get; private set; }
@@ -29,9 +25,7 @@ public class UI_EquipmentItem : UI_Base
     {
         if (base.Init() == false)
             return false;
-        BindTexts(typeof(Texts));
         BindImages(typeof(Images));
-        _rareTypeText = GetText((int)Texts.Text_RareType);
         _equipmentImage = GetImage((int)Images.Image_Equipment);
         _fadeImage = GetImage((int)Images.Image_Fade);
         _equipmentButton = GetComponent<Button>();
@@ -53,8 +47,7 @@ public class UI_EquipmentItem : UI_Base
 
         }
 
+        GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
         _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
-        _rareTypeText.text = $"{Util.GetRareTypeString(equipmentData.Data.RareType)}";
-        // 여기에 장비 인덱스에 맞는 이미지를 설정하는 로직을 추가할 수 있습니다.
     }
 }
