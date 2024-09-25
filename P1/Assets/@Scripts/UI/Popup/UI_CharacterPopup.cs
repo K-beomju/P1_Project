@@ -139,7 +139,7 @@ public class UI_CharacterPopup : UI_Popup
 
     private void UpdateEquipmentUI(EEquipmentType type, EquipmentItems uiItem)
     {
-        int equipmentId = Managers.Equipment.GetEquipded(type);
+        int equipmentId = Managers.Equipment.GetEquippedId(type);
         var equipmentItem = Get<UI_EquipmentItem>((int)uiItem);
 
         if (equipmentId != 0)
@@ -152,7 +152,7 @@ public class UI_CharacterPopup : UI_Popup
             equipmentItem.gameObject.SetActive(false);
         }
     }
-    
+
     #endregion
 
 }

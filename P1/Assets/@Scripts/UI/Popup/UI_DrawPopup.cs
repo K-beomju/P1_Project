@@ -130,12 +130,6 @@ public class UI_DrawPopup : UI_Popup
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
 
         List<int> equipmentIdList = Util.GetEquipmentDrawResults(_type, drawCount, _drawlevel);
-
-        for (int i = 0; i < equipmentIdList.Count; i++)
-        {
-            Managers.Equipment.AddEquipment(equipmentIdList[i]);
-        }
-
         popupUI.RefreshUI(_type, drawCount, equipmentIdList);
     }
 

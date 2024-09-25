@@ -117,7 +117,7 @@ public class UI_EquipmentPopup : UI_Popup
     {
         Managers.Event.RemoveEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
     }
-    
+
     public void RefreshUI(EEquipmentType type = EEquipmentType.None)
     {
         if (type != EEquipmentType.None)
@@ -131,7 +131,7 @@ public class UI_EquipmentPopup : UI_Popup
     {
         EquipmentType = type;
         // 장착된 장비를 우선 확인
-        EquipmentInfo equippedInfo = Managers.Equipment.EquppedEquipments.Values
+        EquipmentInfo equippedInfo = Managers.Equipment.EquippedEquipments.Values
             .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == type);
 
         List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(type);
@@ -203,7 +203,7 @@ public class UI_EquipmentPopup : UI_Popup
     {
         Managers.Equipment.EquipEquipment(equipmentInfo.DataTemplateID);
 
-        foreach (var item in Managers.Equipment.EquppedEquipments)
+        foreach (var item in Managers.Equipment.EquippedEquipments)
         {
             Debug.Log(item.Key + " " + item.Value.Data.Name);
         }

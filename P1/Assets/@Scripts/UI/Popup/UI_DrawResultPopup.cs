@@ -100,6 +100,7 @@ public class UI_DrawResultPopup : UI_Popup
             UI_EquipmentItem drawItem = _drawItems[i];
             drawItem.gameObject.SetActive(true);
             drawItem.SetDrawInfo(Managers.Equipment.GetEquipmentInfo(resultList[i]));
+            Managers.Equipment.AddEquipment(resultList[i]);
 
             yield return wait;
         }

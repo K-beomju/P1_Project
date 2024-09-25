@@ -39,7 +39,7 @@ public class EquipmentManager
         get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Unowned).ToList(); }
     }
 
-    public Dictionary<EEquipmentType, EquipmentInfo> EquppedEquipments = new Dictionary<EEquipmentType, EquipmentInfo>();
+    public Dictionary<EEquipmentType, EquipmentInfo> EquippedEquipments = new Dictionary<EEquipmentType, EquipmentInfo>();
 
     public void Init()
     {
@@ -76,6 +76,7 @@ public class EquipmentManager
         {
             equipEquipmentInfo.OwningState = EOwningState.Owned;
             equipEquipmentInfo.Count += 1;
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
         }
     }
 
@@ -83,7 +84,7 @@ public class EquipmentManager
     {
         if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipEquipmentInfo))
         {
-            if (EquppedEquipments.TryGetValue(equipEquipmentInfo.Data.EquipmentType, out EquipmentInfo
+            if (EquippedEquipments.TryGetValue(equipEquipmentInfo.Data.EquipmentType, out EquipmentInfo
             unEquipEquipmentInfo))
             {
                 // 똑같은 장비 예외처리 
@@ -92,23 +93,26 @@ public class EquipmentManager
 
                 unEquipEquipmentInfo.IsEquipped = false;
                 equipEquipmentInfo.IsEquipped = true;
-                EquppedEquipments[equipEquipmentInfo.Data.EquipmentType] = equipEquipmentInfo;
+                EquippedEquipments[equipEquipmentInfo.Data.EquipmentType] = equipEquipmentInfo;
             }
             else
             {
                 equipEquipmentInfo.IsEquipped = true;
-                EquppedEquipments.Add(equipEquipmentInfo.Data.EquipmentType, equipEquipmentInfo);
+                EquippedEquipments.Add(equipEquipmentInfo.Data.EquipmentType, equipEquipmentInfo);
             }
+
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
         }
     }
 
     public void UnEquipEquipment(EEquipmentType equipmentType)
     {
-        if (EquppedEquipments.TryGetValue(equipmentType, out EquipmentInfo equipmentInfo))
+        if (EquippedEquipments.TryGetValue(equipmentType, out EquipmentInfo equipmentInfo))
         {
             equipmentInfo.IsEquipped = false;
-            EquppedEquipments.Remove(equipmentType);
+            EquippedEquipments.Remove(equipmentType);
         }
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
     }
 
 
@@ -131,22 +135,53 @@ public class EquipmentManager
 
     public bool GetOwneded(int dataTemplateID)
     {
-        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipmentInfo))
+        return OwnedEquipments.Any(equipment => equipment.DataTemplateID == dataTemplateID);
+    }
+
+    public int GetEquippedId(EEquipmentType type)
+    {
+        // 장착된 장비 딕셔너리에서 해당 타입의 장비가 있는지 확인
+        if (EquippedEquipments.TryGetValue(type, out EquipmentInfo equippedItem))
         {
-            return equipmentInfo.OwningState == EOwningState.Owned;
+            // 장착된 장비가 있으면 dataTemplateID 반환
+            return equippedItem.DataTemplateID;
         }
 
-        return false; // 데이터가 존재하지 않으면 소유하지 않은 것으로 처리
+        // 장착된 장비가 없으면 0 반환
+        return 0;
     }
 
 
-    public int GetEquipded(EEquipmentType type)
+    public float OwnedEquipmentValues(EEquipmentType type)
     {
-        // 해당 장비 타입 중에서 장착된 장비를 찾고, 있으면 dataTemplateID를 반환
-        var equippedItem = AllEquipmentInfos.Values
-            .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == type && equipmentInfo.IsEquipped);
+        float ownedValues = 0;
 
-        // 장착된 장비가 있으면 dataTemplateID 반환, 없으면 0 반환
-        return equippedItem != null ? equippedItem.DataTemplateID : 0;
+        // 소유 중인 장비 중 해당 타입의 장비 효과 합산
+        foreach (var equipment in OwnedEquipments)
+        {
+            if (equipment.Data.EquipmentType == type)
+            {
+                ownedValues += equipment.Data.OwnedValue;
+            }
+        }
+
+        return ownedValues;
     }
+
+    public float EquipEquipmentValue(EEquipmentType type)
+    {
+        float equipValue = 0;
+
+        // 장착된 장비 중 해당 타입의 장비 효과 합산
+        foreach (var equipment in EquippedEquipments.Values)
+        {
+            if (equipment.Data.EquipmentType == type)
+            {
+                equipValue += equipment.Data.EquippedValue;
+            }
+        }
+
+        return equipValue;
+    }
+
 }
