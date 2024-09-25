@@ -19,7 +19,7 @@ public class UI_GameScene : UI_Scene
     enum Sliders
     {
         ExpSlider,
-        CurrentStageSlider,
+        MonsterKillSlider,
         BossHpSlider,
         BossStageTimer
     }
@@ -27,8 +27,7 @@ public class UI_GameScene : UI_Scene
     enum Texts
     {
         RemainMonsterValueText,
-        ExpValueText,
-        CurrentStageText
+        ExpValueText
     }
 
     enum GameObjects
@@ -82,7 +81,7 @@ public class UI_GameScene : UI_Scene
             GetSlider((int)Sliders.ExpSlider).value = 0;
             GetSlider((int)Sliders.BossHpSlider).value = 0;
             GetSlider((int)Sliders.BossStageTimer).value = 0;
-            GetSlider((int)Sliders.CurrentStageSlider).value = 0;
+            GetSlider((int)Sliders.MonsterKillSlider).value = 0;
 
             GetText((int)Texts.ExpValueText).text = string.Empty;
             GetText((int)Texts.RemainMonsterValueText).text = string.Empty;
@@ -120,17 +119,14 @@ public class UI_GameScene : UI_Scene
         sliderObj.value = value;
     }
 
-    public void RefreshShowRemainMonster(int currentMonster, int maxMonster)
+    public void RefreshShowRemainMonster(int killMonster, int maxMonster)
     {
-        GetText((int)Texts.RemainMonsterValueText).text = $"{currentMonster} / {maxMonster}";
+        GetText((int)Texts.RemainMonsterValueText).text = $"{killMonster} / {maxMonster}";
+
+        GetSlider((int)Sliders.MonsterKillSlider).value = killMonster;
+        GetSlider((int)Sliders.MonsterKillSlider).maxValue = maxMonster;
     }
 
-    public void RefreshShowCurrentStage(int currentStage, int maxStage)
-    {
-        GetSlider((int)Sliders.CurrentStageSlider).value = currentStage;
-        GetSlider((int)Sliders.CurrentStageSlider).maxValue = maxStage;
-        GetText((int)Texts.CurrentStageText).text = currentStage.ToString();
-    }
 
     public void RefreshBossMonsterHp(BossMonster boss)
     {

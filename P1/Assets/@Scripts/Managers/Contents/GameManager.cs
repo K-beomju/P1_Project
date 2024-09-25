@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Data;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static Define;
 
 public class GameData
@@ -51,7 +52,8 @@ public class GameManager
 {
 	public GameData PlayerGameData { get; private set; }
 
-	private int _currentMonsters;
+	private Tilemap _tileMap;
+	private int _killMonsters;
 	private int _maxMonsters;
 
 	public void Init()
@@ -67,37 +69,30 @@ public class GameManager
 	}
 	#region MonsterSpawn
 
-	public void SetMonsterCount(int currentMonsters, int maxMonsters)
+	public void SetMonsterCount(int killMonsters, int maxMonsters)
 	{
-		_currentMonsters = currentMonsters;
+		_killMonsters = killMonsters;
 		_maxMonsters = maxMonsters;
 
-		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _currentMonsters, _maxMonsters);
+		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _killMonsters, _maxMonsters);
 	}
 
 	public void SpawnMonster(StageInfoData stageData, bool isBoss = false)
 	{
-		var sceneUI = (Managers.UI.SceneUI as UI_GameScene);
-		sceneUI.RefreshShowCurrentStage(stageData.StageNumber, 100);
+		if (_tileMap == null)
+		{
+			_tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
+			_tileMap.CompressBounds();
+		}
 
 		if (!isBoss) // 노말 스테이지
 		{
-			sceneUI.RefreshShowRemainMonster(stageData.MonsterCount, stageData.MonsterCount);
-
-			Vector3 heroPos = Managers.Object.Hero.transform.position;
-			for (int i = 0; i < stageData.MonsterCount; i++)
+			SetMonsterCount(0, stageData.KillMonsterCount);
+			for (int i = 0; i < stageData.KillMonsterCount; i++)
 			{
-				float minDistance = 5.0f;
-				float randomDistance = UnityEngine.Random.Range(minDistance, 10.0f);  // 최소 5 이상, 최대 10 이하의 랜덤 거리
-				Vector2 randomDirection = UnityEngine.Random.insideUnitCircle.normalized;  // 랜덤 방향을 얻습니다.
-
-				// 랜덤 방향에 거리를 곱하여 플레이어로부터 일정 거리만큼 떨어진 위치 계산
-				Vector3 spawnPosition = heroPos + new Vector3(randomDirection.x, randomDirection.y, 0) * randomDistance;
-
+				Vector3 spawnPosition = GetRandomPositionInTileMap(_tileMap.cellBounds); // 타일맵 안의 랜덤 위치 얻기
 				Managers.Object.Spawn<Monster>(spawnPosition, stageData.MonsterDataIdList[UnityEngine.Random.Range(0, stageData.MonsterDataIdList.Count)]);
 			}
-
-			SetMonsterCount(stageData.MonsterCount, stageData.MonsterCount);
 		}
 		else // 보스 스테이지
 		{
@@ -107,9 +102,29 @@ public class GameManager
 
 	public void OnMonsterDestroyed()
 	{
-		_currentMonsters = Managers.Object.Monsters.Count;
+		_killMonsters += 1;
 		// 몬스터가 파괴될 때마다 UI를 업데이트
-		SetMonsterCount(_currentMonsters, _maxMonsters);
+		SetMonsterCount(_killMonsters, _maxMonsters);
+	}
+
+	public bool ClearStage()
+	{
+		return _killMonsters >= _maxMonsters;
+	}
+
+	// 타일맵 안에서 랜덤한 위치를 얻는 함수
+	private Vector3 GetRandomPositionInTileMap(BoundsInt bounds)
+	{
+		// 타일맵의 셀 범위 안에서 랜덤한 X, Y 좌표 선택
+		int randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax); // 타일맵의 셀 X 범위에서 랜덤 값
+		int randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax); // 타일맵의 셀 Y 범위에서 랜덤 값
+
+		// 랜덤 셀 좌표를 월드 좌표로 변환
+		Vector3Int randomCellPosition = new Vector3Int(randomX, randomY, 0);
+		Vector3 worldPosition = _tileMap.CellToWorld(randomCellPosition);
+
+		// 반환할 때 Z 좌표는 0으로 고정
+		return new Vector3(worldPosition.x, worldPosition.y, 0);
 	}
 
 	#endregion

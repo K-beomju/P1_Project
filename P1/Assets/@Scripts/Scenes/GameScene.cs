@@ -110,18 +110,11 @@ public class GameScene : BaseScene
         Data = Managers.Data.StageDataDic[StageLevel];
         Debug.Log($"{stageLevel} 스테이지 진입");
 
-        if (Data.StageType == EStageType.NormalStage)
-        {
-            Debug.Log($"노말 스테이지 로드");
-        }
-        else if (Data.StageType == EStageType.BossStage)
-        {
-            Debug.Log($"보스 스테이지 로드");
-            BossBattleTimeLimit = Data.BossBattleTimeLimit;
-            BossBattleTimer = BossBattleTimeLimit;
-        }
-        GameSceneState = Data.StageType == EStageType.NormalStage ?
-        EGameSceneState.Play : EGameSceneState.Boss;
+     
+        BossBattleTimeLimit = Data.BossBattleTimeLimit;
+        BossBattleTimer = BossBattleTimeLimit;
+        
+        GameSceneState = EGameSceneState.Play;
 
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(StageLevel);
     }
@@ -135,15 +128,12 @@ public class GameScene : BaseScene
 
         Managers.Game.SpawnMonster(Data);
 
-        while (!isClear)
+        while (!Managers.Game.ClearStage())
         {
-            if (Managers.Object.Monsters.Count == 0)
-                isClear = true;
-
             yield return FrameWait;
         }
 
-        GameSceneState = EGameSceneState.Clear;
+        GameSceneState = EGameSceneState.Boss;
     }
 
     private IEnumerator CoPauseStage()
@@ -173,8 +163,7 @@ public class GameScene : BaseScene
         --StageLevel;
         Debug.LogWarning($"다음 스테이지 {StageLevel} 입니다!");
         SetupStage(StageLevel);
-        GameSceneState = StageLevel % 5 == 0
-        ? EGameSceneState.Boss : EGameSceneState.Play;
+        GameSceneState = EGameSceneState.Play;
 
     }
 
@@ -217,13 +206,6 @@ public class GameScene : BaseScene
     [ContextMenu("Stage/StageClear")]
     public void StageClearCM()
     {
-        GameSceneState = EGameSceneState.Clear;
-    }
-
-    [ContextMenu("Stage/NextBossStage")]
-    public void NextBossStageCM()
-    {
-        StageLevel = (Mathf.FloorToInt(StageLevel / 5.0f) * 5) + 4;
         GameSceneState = EGameSceneState.Clear;
     }
 

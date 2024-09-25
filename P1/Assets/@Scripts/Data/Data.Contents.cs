@@ -129,16 +129,15 @@ namespace Data
     public class StageInfoData
     {
         public int StageNumber;
-        public EStageType StageType;
-        public int MonsterCount;
+        public int KillMonsterCount;
 
-        public bool BossStage;
         public int BossDataId;
         public int BossBattleTimeLimit;
 
         public List<int> MonsterDataIdList = new List<int>();
         public int MonsterLevel;
         public int MonsterGoldReward;
+        public int MonsterExpReward;
     }
 
     [Serializable]

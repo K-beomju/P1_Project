@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Data;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
 public class Monster : Creature, IDamageable
 {
-    protected float MoveRange = 5.0f;  // 패트롤 범위
-    protected float IdleWaitTime = 3.0f; // Idle 상태에서 대기하는 시간
+    protected float MoveRange;  // 패트롤 범위
+    protected float IdleWaitTime; // Idle 상태에서 대기하는 시간
 
     private Vector3 _initialPosition;  // 패트롤 시작 위치
     private Vector3 _targetPosition;   // 패트롤 목표 위치
@@ -28,6 +27,7 @@ public class Monster : Creature, IDamageable
         ObjectType = EObjectType.Monster;
         gameObject.layer = (int)ELayer.Monster;
         _initialPosition = transform.position;  // 몬스터의 초기 위치 저장
+
         SetNewPatrolTarget();  // 첫 번째 목표 지점 설정
 
         return true;
@@ -43,7 +43,10 @@ public class Monster : Creature, IDamageable
 
         MoveSpeed = data.MoveSpeed;
         MoveRange = 5;
-        IdleWaitTime = 3;
+        IdleWaitTime = 1;
+
+        Sprite.DOFade(0, 0);
+        Sprite.DOFade(1, 1f);
 
         _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
         _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
