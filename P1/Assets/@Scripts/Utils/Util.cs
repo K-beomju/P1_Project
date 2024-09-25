@@ -72,6 +72,7 @@ public static class Util
 		return parsedColor;
 	}
 
+	#region Upgrade System 
 	public static int GetUpgradeCost(EHeroUpgradeType upgradeType, int level)
 	{
 		List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].ReferenceLevelList;
@@ -110,7 +111,15 @@ public static class Util
 		}
 		return heroUpgradeString;
 	}
+	#endregion
 
+	#region Equipment System
+
+	public static int GetUpgradeEquipmentMaxCount(int level)
+	{
+		return level + 1;
+	}
+	#endregion
 
 	#region DrawSystem
 
@@ -147,11 +156,11 @@ public static class Util
 		return type switch
 		{
 			ERareType.Normal => HexToColor("#9F9F9F"),
-			ERareType.Advanced =>  HexToColor("#81CA85"),
-			ERareType.Rare =>  HexToColor("#81C0CA"),
-			ERareType.Legendary =>  HexToColor("#CA9381"),
-			ERareType.Mythical =>  HexToColor("#FF624E"),
-			ERareType.Celestial =>  HexToColor("#FFE74E"),
+			ERareType.Advanced => HexToColor("#81CA85"),
+			ERareType.Rare => HexToColor("#81C0CA"),
+			ERareType.Legendary => HexToColor("#CA9381"),
+			ERareType.Mythical => HexToColor("#FF624E"),
+			ERareType.Celestial => HexToColor("#FFE74E"),
 			_ => throw new ArgumentException($"Unknown rare type String: {type}")
 		};
 	}

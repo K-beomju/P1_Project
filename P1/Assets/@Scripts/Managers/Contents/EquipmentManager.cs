@@ -10,10 +10,15 @@ public class EquipmentInfo
     public int DataTemplateID { get; private set; }
     public EquipmentData Data { get; private set; }
     public EOwningState OwningState { get; set; }
+
+    public int Level { get; set; }
     public bool IsEquipped { get; set; }
+    public int Count { get; set; }
 
     public EquipmentInfo(int dataTemplateID)
     {
+        Level = 1;
+        IsEquipped = false;
         DataTemplateID = dataTemplateID;
         Data = Managers.Data.EquipmentDic[dataTemplateID];
         OwningState = EOwningState.Unowned;
@@ -79,7 +84,11 @@ public class EquipmentManager
 
     public void AddEquipment(int dataTemplateID)
     {
-        AllEquipmentInfos[dataTemplateID].OwningState = EOwningState.Owned;
+        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipEquipmentInfo))
+        {
+            equipEquipmentInfo.OwningState = EOwningState.Owned;
+            equipEquipmentInfo.Count += 1;
+        }
     }
 
     public void EquipEquipment(int dataTemplateID)
