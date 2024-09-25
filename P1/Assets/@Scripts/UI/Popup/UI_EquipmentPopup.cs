@@ -45,22 +45,15 @@ public class UI_EquipmentPopup : UI_Popup
     private UI_EquipmentItem equipmentItem;
     private List<UI_EquipmentItem> equipmentItems = new List<UI_EquipmentItem>();
 
-    private EquipmentInfo equipmentInfo;
-    public EquipmentInfo EquipmentInfo
+    private EquipmentInfo selectEquipmentInfo;
+    public EquipmentInfo SelectEquipmentInfo
     {
-        get { return equipmentInfo; }
+        get { return selectEquipmentInfo; }
         set
         {
-            if (equipmentInfo != value)
+            if (selectEquipmentInfo != value)
             {
-                equipmentInfo = value;
-
-                // 장착 버튼은 장착된 장비 였을 때 , 가지고 있지 않은 장비일 때 -> 비활
-                // 강화 버튼은 장착된 장비가 강화 갯수만큼 가지고 있지 않을 때 , 가지고 있지 않은 장비 일 때 -> 비활  
-                GetButton((int)Buttons.Btn_Equip).interactable =
-                !equipmentInfo.IsEquipped && equipmentInfo.OwningState == EOwningState.Owned;
-                GetButton((int)Buttons.Btn_Enhance).interactable =
-                equipmentInfo.OwningState == EOwningState.Owned && equipmentInfo.Count >= Util.GetUpgradeEquipmentMaxCount(EquipmentInfo.Level);
+                selectEquipmentInfo = value;
             }
         }
     }
@@ -176,23 +169,28 @@ public class UI_EquipmentPopup : UI_Popup
     // 장비 Item을 클릭했을 때 보여주는 부분 
     public void ShowEquipmentDetailUI(EquipmentInfo _equipmentInfo)
     {
-        EquipmentInfo = _equipmentInfo;
-        if (EquipmentInfo == null)
+        SelectEquipmentInfo = _equipmentInfo;
+        if (SelectEquipmentInfo == null)
             return;
 
-        equipmentItem.SetEquipmentInfo(EquipmentInfo);
-        GetText((int)Texts.Text_EquipmentName).text = EquipmentInfo.Data.Name;
-        GetText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(EquipmentInfo.Data.RareType);
+        equipmentItem.SetEquipmentInfo(SelectEquipmentInfo);
+        GetText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
+        GetText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
+        GetText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
         GetText((int)Texts.Text_EquipmentValueText).text
-        = $"<color=#FFA500>장착 효과 : {EquipmentInfo.Data.EquippedValue}%</color> \n <color=#00FF00>보유 효과 : {EquipmentInfo.Data.OwnedValue}%</color>";
+        = $"<color=#FFA500>장착 효과 : {SelectEquipmentInfo.Data.EquippedValue}%</color> \n <color=#00FF00>보유 효과 : {SelectEquipmentInfo.Data.OwnedValue}%</color>";
 
-        int currentCount = EquipmentInfo.Count;
-        int maxCount = Util.GetUpgradeEquipmentMaxCount(EquipmentInfo.Level);
-        GetSlider((int)Sliders.Slider_EquipmentCount).value = currentCount;
+        int currentCount = SelectEquipmentInfo.Count;
+        int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
         GetSlider((int)Sliders.Slider_EquipmentCount).maxValue = maxCount;
+        GetSlider((int)Sliders.Slider_EquipmentCount).value = currentCount;  // 슬라이더의 현재 값도 업데이트
         GetText((int)Texts.Text_OwendAmount).text = $"{currentCount} / {maxCount}";
 
-        Debug.Log(equipmentInfo.Data.EquipmentType);
+
+
+        GetButton((int)Buttons.Btn_Equip).interactable = !SelectEquipmentInfo.IsEquipped && SelectEquipmentInfo.OwningState == EOwningState.Owned;
+        GetButton((int)Buttons.Btn_Enhance).interactable =
+        SelectEquipmentInfo.OwningState == EOwningState.Owned && SelectEquipmentInfo.Count >= Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
     }
 
 
@@ -201,40 +199,41 @@ public class UI_EquipmentPopup : UI_Popup
     // 장착 
     private void OnEquipEquipment()
     {
-        Managers.Equipment.EquipEquipment(equipmentInfo.DataTemplateID);
-
-        foreach (var item in Managers.Equipment.EquippedEquipments)
-        {
-            Debug.Log(item.Key + " " + item.Value.Data.Name);
-        }
-
+        Managers.Equipment.EquipEquipment(SelectEquipmentInfo.DataTemplateID);
         GetButton((int)Buttons.Btn_Equip).interactable = false;
     }
 
     // 강화
     private void OnEnhanceEquipment()
     {
+        int maxCount = Util.GetUpgradeEquipmentMaxCount(selectEquipmentInfo.Level);
+        if(SelectEquipmentInfo.Count >= maxCount)
+        {
+            SelectEquipmentInfo.Level++;
+            SelectEquipmentInfo.Count -= maxCount;
 
+            ShowEquipmentDetailUI(SelectEquipmentInfo);
+        }
     }
 
     // 자동 장착 
     private void OnAutoEquipment()
     {
         // 추후에 생각
-        // List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
+        List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
-        // EquipmentInfo bestEquipment = equipmentInfos
-        // .Where(info => info.OwningState == EOwningState.Owned)
-        // .OrderByDescending(info => info.Data.RareType)
-        // .ThenByDescending(info => info.Level)
-        // .FirstOrDefault();
+        EquipmentInfo bestEquipment = equipmentInfos
+        .Where(info => info.OwningState == EOwningState.Owned)
+        .OrderByDescending(info => info.Data.RareType)
+        .ThenByDescending(info => info.Data.DataId)
+        .FirstOrDefault();
 
-        // if (bestEquipment != null)
-        // {
-        //     Managers.Equipment.EquipEquipment(bestEquipment.DataTemplateID);
-        //     ShowEquipmentDetailUI(bestEquipment);
-        //     GetButton((int)Buttons.Btn_Equip).interactable = false;
-        // }
+        if (bestEquipment != null)
+        {
+            Managers.Equipment.EquipEquipment(bestEquipment.DataTemplateID);
+            ShowEquipmentDetailUI(bestEquipment);
+            GetButton((int)Buttons.Btn_Equip).interactable = false;
+        }
     }
 
     // 일괄 강화 
