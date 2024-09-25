@@ -72,9 +72,7 @@ public static class Define
         /// <summary>뽑기 레벨업 시 UI 갱신을 위해 호출</summary>
         DrawLevelUpUIUpdated,
 
-        /// <summary>장비 장착 해제할 때 호출</summary>
-        UpdateEquipment,
-
+        /// <summary>장비 아이템 클릭할 때 호출</summary>
         EquipmentItemClick 
     }
 

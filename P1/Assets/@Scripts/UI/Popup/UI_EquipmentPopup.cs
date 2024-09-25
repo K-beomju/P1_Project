@@ -57,8 +57,10 @@ public class UI_EquipmentPopup : UI_Popup
 
                 // 장착 버튼은 장착된 장비 였을 때 , 가지고 있지 않은 장비일 때 -> 비활
                 // 강화 버튼은 장착된 장비가 강화 갯수만큼 가지고 있지 않을 때 , 가지고 있지 않은 장비 일 때 -> 비활  
-                GetButton((int)Buttons.Btn_Equip).interactable = !equipmentInfo.IsEquipped && equipmentInfo.OwningState == EOwningState.Owned;
-                GetButton((int)Buttons.Btn_Enhance).interactable = equipmentInfo.OwningState == EOwningState.Owned;
+                GetButton((int)Buttons.Btn_Equip).interactable =
+                !equipmentInfo.IsEquipped && equipmentInfo.OwningState == EOwningState.Owned;
+                GetButton((int)Buttons.Btn_Enhance).interactable =
+                equipmentInfo.OwningState == EOwningState.Owned && equipmentInfo.Count >= Util.GetUpgradeEquipmentMaxCount(EquipmentInfo.Level);
             }
         }
     }
@@ -115,8 +117,12 @@ public class UI_EquipmentPopup : UI_Popup
     {
         Managers.Event.RemoveEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
     }
-    public void RefreshUI()
+    
+    public void RefreshUI(EEquipmentType type = EEquipmentType.None)
     {
+        if (type != EEquipmentType.None)
+            EquipmentType = type;
+
         ShowEquipmentAllUI(EquipmentType);
     }
 
@@ -128,7 +134,7 @@ public class UI_EquipmentPopup : UI_Popup
         EquipmentInfo equippedInfo = Managers.Equipment.EquppedEquipments.Values
             .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == type);
 
-        List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentInfos(type);
+        List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(type);
 
         if (equippedInfo != null)
         {
@@ -214,7 +220,21 @@ public class UI_EquipmentPopup : UI_Popup
     // 자동 장착 
     private void OnAutoEquipment()
     {
+        // 추후에 생각
+        // List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
+        // EquipmentInfo bestEquipment = equipmentInfos
+        // .Where(info => info.OwningState == EOwningState.Owned)
+        // .OrderByDescending(info => info.Data.RareType)
+        // .ThenByDescending(info => info.Level)
+        // .FirstOrDefault();
+
+        // if (bestEquipment != null)
+        // {
+        //     Managers.Equipment.EquipEquipment(bestEquipment.DataTemplateID);
+        //     ShowEquipmentDetailUI(bestEquipment);
+        //     GetButton((int)Buttons.Btn_Equip).interactable = false;
+        // }
     }
 
     // 일괄 강화 

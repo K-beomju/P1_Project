@@ -54,7 +54,7 @@ public class UI_GameScene : UI_Scene
         UI_GoodItem_Dia,
     }
 
-    private PlayTab _tab = PlayTab.None;
+    public PlayTab _tab = PlayTab.None;
 
     protected override bool Init()
     {

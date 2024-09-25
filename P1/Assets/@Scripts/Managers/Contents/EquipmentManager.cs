@@ -70,18 +70,6 @@ public class EquipmentManager
 
     }
 
-    public EquipmentInfo GetEquipmentInfo(int dataTemplateID)
-    {
-        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipmentInfo))
-        {
-            return equipmentInfo;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public void AddEquipment(int dataTemplateID)
     {
         if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipEquipmentInfo))
@@ -111,8 +99,6 @@ public class EquipmentManager
                 equipEquipmentInfo.IsEquipped = true;
                 EquppedEquipments.Add(equipEquipmentInfo.Data.EquipmentType, equipEquipmentInfo);
             }
-
-            Managers.Event.TriggerEvent(EEventType.UpdateEquipment);
         }
     }
 
@@ -122,12 +108,23 @@ public class EquipmentManager
         {
             equipmentInfo.IsEquipped = false;
             EquppedEquipments.Remove(equipmentType);
-
-            Managers.Event.TriggerEvent(EEventType.UpdateEquipment);
         }
     }
 
-    public List<EquipmentInfo> GetEquipmentInfos(EEquipmentType type)
+
+    public EquipmentInfo GetEquipmentInfo(int dataTemplateID)
+    {
+        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipmentInfo))
+        {
+            return equipmentInfo;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public List<EquipmentInfo> GetEquipmentTypeInfos(EEquipmentType type)
     {
         return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type).ToList();
     }
@@ -140,5 +137,16 @@ public class EquipmentManager
         }
 
         return false; // 데이터가 존재하지 않으면 소유하지 않은 것으로 처리
+    }
+
+
+    public int GetEquipded(EEquipmentType type)
+    {
+        // 해당 장비 타입 중에서 장착된 장비를 찾고, 있으면 dataTemplateID를 반환
+        var equippedItem = AllEquipmentInfos.Values
+            .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == type && equipmentInfo.IsEquipped);
+
+        // 장착된 장비가 있으면 dataTemplateID 반환, 없으면 0 반환
+        return equippedItem != null ? equippedItem.DataTemplateID : 0;
     }
 }

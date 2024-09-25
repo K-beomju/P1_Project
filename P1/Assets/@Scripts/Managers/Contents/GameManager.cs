@@ -8,6 +8,7 @@ using static Define;
 
 public class GameData
 {
+
 	public Dictionary<EEquipmentType, EquipmentDrawData> DrawData;
 
 	public GameData()
@@ -18,6 +19,7 @@ public class GameData
 			{EEquipmentType.Armor, new EquipmentDrawData()},
 			{EEquipmentType.Ring, new EquipmentDrawData()}
 		};
+
 	}
 }
 
