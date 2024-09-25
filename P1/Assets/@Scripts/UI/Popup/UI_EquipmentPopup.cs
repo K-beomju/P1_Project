@@ -128,6 +128,8 @@ public class UI_EquipmentPopup : UI_Popup
         EquipmentInfo equippedInfo = Managers.Equipment.EquppedEquipments.Values
             .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == type);
 
+        List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentInfos(type);
+
         if (equippedInfo != null)
         {
             // 장착된 장비가 있으면 해당 장비를 보여줍니다.
@@ -135,21 +137,18 @@ public class UI_EquipmentPopup : UI_Popup
         }
         else
         {
-            // 장착된 장비가 없으면 해당 타입의 장비 목록을 가져옵니다.
-            List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentInfos(type);
+            // 장착된 장비가 없으면 소유한 장비나 가장 낮은 등급의 장비를 보여줍니다.
+            EquipmentInfo ownedEquipment = equipmentInfos
+                .Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned)
+                .LastOrDefault();
 
-            if (equipmentInfos.Any(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned))
+            if (ownedEquipment != null)
             {
-                // 장비를 하나라도 가지고 있다면 가장 먼저 소유한 장비를 보여줍니다.
-                EquipmentInfo ownedEquipment = equipmentInfos
-                    .Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned)
-                    .LastOrDefault();
-
                 ShowEquipmentDetailUI(ownedEquipment);
             }
             else
             {
-                // 장비를 가지고 있지 않다면, 가장 낮은 등급의 첫 번째 장비를 보여줍니다.
+                // 소유한 장비가 없을 때 가장 낮은 등급의 장비를 보여줍니다.
                 EquipmentInfo lowestRareEquipment = equipmentInfos
                     .OrderBy(equipmentInfo => equipmentInfo.Data.RareType)
                     .FirstOrDefault();
@@ -161,9 +160,9 @@ public class UI_EquipmentPopup : UI_Popup
             }
         }
 
+
         for (int i = 0; i < equipmentItems.Count; i++)
         {
-            List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentInfos(type);
             equipmentItems[i].SetEquipmentInfo(equipmentInfos[i]);
         }
     }
