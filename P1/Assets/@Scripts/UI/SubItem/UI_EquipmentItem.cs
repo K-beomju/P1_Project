@@ -14,6 +14,7 @@ public class UI_EquipmentItem : UI_Base
     {
         Image_Equipment,
         Image_Fade,
+        Image_Unowned,
         BG_Rare
     }
     private Image _equipmentImage;
@@ -32,22 +33,29 @@ public class UI_EquipmentItem : UI_Base
         return true;
     }
 
-    public void SetInfo(EquipmentInfo equipmentData, bool isDraw = false)
+
+    public void SetDrawInfo(EquipmentInfo equipmentData)
     {
-        if(isDraw)
-        {
-            _fadeImage.color = Color.white;
-            _fadeImage.DOFade(0, 0.1f);
-        }
-        else
-        {
-            _fadeImage.gameObject.SetActive(false);
-            _equipmentButton.onClick.RemoveAllListeners();
-            _equipmentButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
+        GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
+        
+        _fadeImage.color = Color.white;
+        _fadeImage.DOFade(0, 0.1f);
 
-        }
-
-        GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
+         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
         _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+    }
+
+    public void SetEquipmentInfo(EquipmentInfo equipmentData)
+    {
+        _fadeImage.gameObject.SetActive(false);
+        _equipmentButton.onClick.RemoveAllListeners();
+        _equipmentButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
+
+        bool isOwned = Managers.Equipment.GetOwneded(equipmentData.DataTemplateID);
+        GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
+        GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
+
+        _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+
     }
 }

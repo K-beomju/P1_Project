@@ -16,7 +16,7 @@ public class EquipmentInfo
     {
         DataTemplateID = dataTemplateID;
         Data = Managers.Data.EquipmentDic[dataTemplateID];
-        OwningState = EOwningState.Owned;
+        OwningState = EOwningState.Unowned;
     }
 }
 
@@ -121,5 +121,15 @@ public class EquipmentManager
     public List<EquipmentInfo> GetEquipmentInfos(EEquipmentType type)
     {
         return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type).ToList();
+    }
+
+    public bool GetOwneded(int dataTemplateID)
+    {
+        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfo equipmentInfo))
+        {
+            return equipmentInfo.OwningState == EOwningState.Owned;
+        }
+
+        return false; // 데이터가 존재하지 않으면 소유하지 않은 것으로 처리
     }
 }

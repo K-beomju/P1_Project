@@ -99,7 +99,7 @@ public class UI_DrawResultPopup : UI_Popup
         {
             UI_EquipmentItem drawItem = _drawItems[i];
             drawItem.gameObject.SetActive(true);
-            drawItem.SetInfo(Managers.Equipment.GetEquipmentInfo(resultList[i]), true);
+            drawItem.SetDrawInfo(Managers.Equipment.GetEquipmentInfo(resultList[i]));
 
             yield return wait;
         }
