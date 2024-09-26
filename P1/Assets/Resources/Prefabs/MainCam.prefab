@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1510180356881398492}
   - component: {fileID: 4831849335030444643}
   - component: {fileID: 833734106061973940}
+  - component: {fileID: 5090870739334619575}
   m_Layer: 0
   m_Name: MainCam
   m_TagString: Untagged
@@ -86,6 +87,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _virtualCam: {fileID: 4831849335030444643}
+--- !u!114 &5090870739334619575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467416195232112338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2fba25a5cd15594e8f050a11e386c80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ConfineMode: 0
+  m_BoundingVolume: {fileID: 0}
+  m_BoundingShape2D: {fileID: 0}
+  m_ConfineScreenEdges: 1
+  m_Damping: 0
 --- !u!1 &4477987230306094436
 GameObject:
   m_ObjectHideFlags: 0

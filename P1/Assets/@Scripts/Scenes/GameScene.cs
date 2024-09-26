@@ -70,8 +70,10 @@ public class GameScene : BaseScene
     {
         SceneType = EScene.GameScene;
         Managers.Scene.SetCurrentScene(this);
-        Managers.Resource.Instantiate("BaseMap");
+        GameObject map = Managers.Resource.Instantiate("BaseMap");
+        PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
+        cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;
         Managers.Purse.Init();
