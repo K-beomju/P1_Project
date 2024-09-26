@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Cinemachine;
 using Data;
 using UnityEngine;
@@ -132,10 +134,11 @@ public class GameScene : BaseScene
 
     private IEnumerator CoPlayStage()
     {
+        Managers.Game.SetMonsterCount(0, Data.KillMonsterCount);
+
         yield return StartWait;
         sceneUI.UpdateStageUI(false);
         Managers.Game.SpawnMonster(Data);
-        Managers.Game.SetMonsterCount(0, Data.KillMonsterCount);
 
         while (!Managers.Game.ClearStage())
         {
@@ -152,8 +155,6 @@ public class GameScene : BaseScene
 
     private IEnumerator CoBossStage()
     {
-        //yield return StartWait;
-        //Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(0.5f);
         sceneUI.UpdateStageUI(true);
 
         Managers.Game.SpawnMonster(Data, true);
@@ -179,7 +180,7 @@ public class GameScene : BaseScene
         yield return null;
     }
 
-    private void MoveToNextStage(bool isClear)
+    public void MoveToNextStage(bool isClear)
     {
         KillAllMonsters();
         StartCoroutine(MoveToStageAfterDelay(isClear ? 1 : -1));
@@ -189,6 +190,8 @@ public class GameScene : BaseScene
     {
         yield return new WaitForSeconds(0.5f);
         StageLevel += stageDelta;
+        if (StageLevel == 0)
+            StageLevel = 1;
         Debug.LogWarning($"다음 스테이지 {StageLevel} 입니다!");
         SetupStage(StageLevel);
         GameSceneState = EGameSceneState.Play;
@@ -209,12 +212,15 @@ public class GameScene : BaseScene
 
     private void KillAllMonsters()
     {
-        foreach (Monster monster in Managers.Object.Monsters)
+        for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
         {
-            monster.CreatureState = ECreatureState.Dead;
+            Monster monster = Managers.Object.Monsters.ElementAt(i);
+            Managers.Object.Despawn(monster);
         }
+
         if (Managers.Object.BossMonster != null)
-            Managers.Object.BossMonster.CreatureState = ECreatureState.Dead;
+            Managers.Object.Despawn(Managers.Object.BossMonster);
+
     }
 
 

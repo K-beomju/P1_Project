@@ -42,6 +42,7 @@ public class BossMonster : Monster
     protected override void UpdateMove()
     {
         base.UpdateMove();
+
     }
     protected override void UpdateDead()
     {
@@ -53,6 +54,7 @@ public class BossMonster : Monster
     public override void OnDamaged(Creature attacker)
     {
         base.OnDamaged(attacker);
+        Sprite.flipX = transform.position.x > attacker.transform.position.x;
         (Managers.UI.SceneUI as UI_GameScene).RefreshBossMonsterHp(this);
     }
 

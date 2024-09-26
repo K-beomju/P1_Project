@@ -63,7 +63,6 @@ public class ObjectManager
         {
             Monster monster = obj.GetComponent<Monster>();
             Monsters.Remove(monster);
-            Managers.Game.OnMonsterDestroyed();
         }
         if (typeof(T) == typeof(BossMonster))
         {

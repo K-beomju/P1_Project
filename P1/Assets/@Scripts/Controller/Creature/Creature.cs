@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using static Define;
 
@@ -123,6 +124,8 @@ public class Creature : BaseObject
         if (Hp <= 0)
         {
             OnDead();
+            CreatureState = ECreatureState.Dead;
+
         }
 
         Color originalColor = Sprite.color;

@@ -123,6 +123,7 @@ public class Monster : Creature, IDamageable
     public override void OnDamaged(Creature attacker)
     {
         base.OnDamaged(attacker);
+        Sprite.flipX = transform.position.x > attacker.transform.position.x;
         _isDamaged = true;
         // 플레이어에게 데미지를 입히는 코루틴 시작
         if (_damageCoroutine == null)
@@ -164,7 +165,10 @@ public class Monster : Creature, IDamageable
             //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
             //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
         }
+        Managers.Game.OnMonsterDestroyed();
+
         Managers.Object.Despawn(this);
+
 
     }
 }

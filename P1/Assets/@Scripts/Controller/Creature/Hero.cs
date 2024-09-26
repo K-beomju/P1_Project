@@ -53,8 +53,8 @@ public class Hero : Creature
     {
         HeroInfo = Managers.Hero.PlayerHeroInfo;
 
-        Atk = HeroInfo.Atk;
-        MaxHp = HeroInfo.MaxHp;
+        Atk = 5;
+        MaxHp = 12;
         Hp = MaxHp;
         AttackDelay = HeroInfo.AttackDelay;
         AttackRange = HeroInfo.AttackRange;
@@ -79,6 +79,9 @@ public class Hero : Creature
     #region Anim
     protected override void UpdateAnimation()
     {
+        if(CreatureState == ECreatureState.Dead)
+            Anim.SetTrigger(HeroAnimation.HashDead);
+
         Anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
         Anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && Target != null);
     }
@@ -248,7 +251,17 @@ public class Hero : Creature
 
     public override void OnDead()
     {
-        
+        //TODO
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(1f, 1f, () =>
+        {
+            Anim.Rebind();
+            Hp = MaxHp;
+            CreatureState = ECreatureState.Idle;
+            Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.Over;
+
+        }, () =>
+        {
+        });
     }
 
     void OnDrawGizmos()
