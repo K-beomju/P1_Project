@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 using UnityEngine;
 using static Define;
 
@@ -18,8 +19,11 @@ public class Hero : Creature
     #endregion
 
     public HeroInfo HeroInfo { get; private set; }
-    private Coroutine _comboDelayCoroutine = null;
-    private HeroGhost _ghost;
+    private Coroutine comboDelayCoroutine = null;
+    private HeroGhost ghost;
+
+    private AnimatorController handController;
+    private AnimatorController weaponController;
 
     private bool isDash = false;
 
@@ -28,10 +32,12 @@ public class Hero : Creature
         if (base.Init() == false)
             return false;
 
-        _ghost = GetComponent<HeroGhost>();
+        ghost = GetComponent<HeroGhost>();
 
         ObjectType = EObjectType.Hero;
         gameObject.layer = (int)ELayer.Hero;
+        handController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Hand");
+        weaponController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Weapon");
         Anim.SetBool(HeroAnimation.HashCombo, true);
 
         HeroMoveState = EHeroMoveState.None;
@@ -53,8 +59,8 @@ public class Hero : Creature
     {
         HeroInfo = Managers.Hero.PlayerHeroInfo;
 
-        Atk = 5;
-        MaxHp = 12;
+        Atk = HeroInfo.Atk;
+        MaxHp = HeroInfo.MaxHp;
         Hp = MaxHp;
         AttackDelay = HeroInfo.AttackDelay;
         AttackRange = HeroInfo.AttackRange;
@@ -88,9 +94,9 @@ public class Hero : Creature
 
     public void ComboAttackDelay()
     {
-        if (_comboDelayCoroutine != null)
-            StopCoroutine(_comboDelayCoroutine);
-        _comboDelayCoroutine = StartCoroutine(ComboDelayCo());
+        if (comboDelayCoroutine != null)
+            StopCoroutine(comboDelayCoroutine);
+        comboDelayCoroutine = StartCoroutine(ComboDelayCo());
     }
 
     private IEnumerator ComboDelayCo()
@@ -98,7 +104,7 @@ public class Hero : Creature
         Anim.SetBool(HeroAnimation.HashCombo, false);
         yield return new WaitForSeconds(AttackDelay);
         Anim.SetBool(HeroAnimation.HashCombo, true);
-        _comboDelayCoroutine = null;
+        comboDelayCoroutine = null;
     }
 
     public void OnAnimEventHandler()
@@ -204,7 +210,7 @@ public class Hero : Creature
         if (distToTargetSqr <= attackDistanceSqr)
         {
             CreatureState = ECreatureState.Attack;
-            _ghost.makeGhost = false;
+            ghost.makeGhost = false;
             isDash = false;
             return;
         }
@@ -213,8 +219,8 @@ public class Hero : Creature
             // 대쉬 상태가 아닌 경우에만 조건을 검사
             if (!isDash && distToTargetSqr > DASH_DISTANCE_THRESHOLD)
             {
-                isDash = true; 
-                _ghost.makeGhost = true; 
+                isDash = true;
+                ghost.makeGhost = true; 
             }
 
             if (isDash)
@@ -240,13 +246,20 @@ public class Hero : Creature
     {
         transform.Translate(dir);
     }
+
+    public void ChangeAnimController(bool weapon = false)
+    {
+        Anim.runtimeAnimatorController = weapon ? weaponController : handController;
+        Anim.Rebind();
+        CreatureState = ECreatureState.Idle;
+    }
     #endregion
 
     public override void OnDamaged(Creature attacker)
     {
         base.OnDamaged(attacker);
 
-        //HpBar.DoFadeSlider();
+        HpBar.DoFadeSlider();
     }
 
     public override void OnDead()

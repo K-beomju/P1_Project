@@ -97,6 +97,8 @@ public class EquipmentManager
             }
             else
             {
+                if(equipEquipmentInfo.Data.EquipmentType == EEquipmentType.Weapon)
+                Managers.Object.Hero.ChangeAnimController(true);
                 equipEquipmentInfo.IsEquipped = true;
                 EquippedEquipments.Add(equipEquipmentInfo.Data.EquipmentType, equipEquipmentInfo);
             }
