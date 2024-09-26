@@ -29,6 +29,7 @@ public class BossMonster : Monster
 
         MoveRange = 5;
         IdleWaitTime = 3;
+
     }
 
 

@@ -35,6 +35,7 @@ public class HeroInfo
         float levelMultiplierAtk = 1 + (Managers.Purse._currentLevel * 0.2f);
         // 최종공격력 = (기본 공격력 + 업그레이드 공격력) * 레벨 %
         Atk = (Data.Atk + increaseAtk) * levelMultiplierAtk;
+        Atk = 60;
 
         // 보유한 무기의 데이터 가져오기 (보유효과)
         float ownedWeaponValues = Managers.Equipment.OwnedEquipmentValues(EEquipmentType.Weapon);

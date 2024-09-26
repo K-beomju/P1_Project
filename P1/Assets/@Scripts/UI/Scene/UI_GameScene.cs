@@ -18,16 +18,16 @@ public class UI_GameScene : UI_Scene
 
     enum Sliders
     {
-        ExpSlider,
-        MonsterKillSlider,
-        BossHpSlider,
-        BossStageTimer
+        Slider_Exp,
+        Slider_StageInfo,
+        Slider_BossTimer
     }
 
     enum Texts
     {
         RemainMonsterValueText,
-        ExpValueText
+        ExpValueText,
+        Text_StageInfo
     }
 
     enum GameObjects
@@ -73,24 +73,25 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EGoodType.Gold);
-        //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
-        //Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Money).SetInfo(EGoodType.Money);
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
 
-        // 초기화 
-        {
-            GetSlider((int)Sliders.ExpSlider).value = 0;
-            GetSlider((int)Sliders.BossHpSlider).value = 0;
-            GetSlider((int)Sliders.BossStageTimer).value = 0;
-            GetSlider((int)Sliders.MonsterKillSlider).value = 0;
+        InitializeUIElements();
 
-            GetText((int)Texts.ExpValueText).text = string.Empty;
-            GetText((int)Texts.RemainMonsterValueText).text = string.Empty;
-        }
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, int, int>(RefreshShowExp));
 
         RefreshUI();
         return true;
+    }
+
+    private void InitializeUIElements()
+    {
+        GetSlider((int)Sliders.Slider_Exp).value = 0;
+        GetSlider((int)Sliders.Slider_BossTimer).value = 0;
+        GetSlider((int)Sliders.Slider_StageInfo).value = 0;
+
+        GetText((int)Texts.ExpValueText).text = string.Empty;
+        GetText((int)Texts.RemainMonsterValueText).text = string.Empty;
     }
 
     private void RefreshUI()
@@ -105,39 +106,34 @@ public class UI_GameScene : UI_Scene
 
     #region Stage UI
 
-    public void ShowNormalOrBossStageUI(bool isBoss = false)
+    public void UpdateStageUI(bool isBoss = false)
     {
-        SetActiveSlider(Sliders.BossHpSlider, isBoss, 1f);
-        SetActiveSlider(Sliders.BossStageTimer, isBoss, 1f);
-        GetObject((int)GameObjects.RemainMonster).SetActive(!isBoss);
-    }
+        if(!isBoss)
+                GetText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
 
-    private void SetActiveSlider(Sliders slider, bool active, float value)
-    {
-        var sliderObj = GetSlider((int)slider);
-        sliderObj.gameObject.SetActive(active);
-        sliderObj.value = value;
+        GetObject((int)GameObjects.RemainMonster).SetActive(!isBoss);
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)
     {
         GetText((int)Texts.RemainMonsterValueText).text = $"{killMonster} / {maxMonster}";
 
-        GetSlider((int)Sliders.MonsterKillSlider).value = killMonster;
-        GetSlider((int)Sliders.MonsterKillSlider).maxValue = maxMonster;
+        GetSlider((int)Sliders.Slider_StageInfo).value = killMonster;
+        GetSlider((int)Sliders.Slider_StageInfo).maxValue = maxMonster;
     }
-
 
     public void RefreshBossMonsterHp(BossMonster boss)
     {
         float hpAmount = boss.Hp / boss.MaxHp;
-        GetSlider((int)Sliders.BossHpSlider).value = hpAmount;
+        GetSlider((int)Sliders.Slider_StageInfo).maxValue = 1;
+        GetSlider((int)Sliders.Slider_StageInfo).value = hpAmount;
+        GetText((int)Texts.Text_StageInfo).text = $"{boss.Hp} / {boss.MaxHp}";
     }
 
     public void RefreshBossStageTimer(float currentTime, float maxTime)
     {
         float timePercentage = currentTime / maxTime;
-        GetSlider((int)Sliders.BossStageTimer).value = timePercentage;
+        GetSlider((int)Sliders.Slider_BossTimer).value = timePercentage;
     }
 
     #endregion
@@ -146,24 +142,12 @@ public class UI_GameScene : UI_Scene
 
     public UI_GoodItem GetGoodItem(EGoodType goodType)
     {
-        UI_GoodItem getGoodItem = null;
-
-        switch (goodType)
+        return goodType switch
         {
-            case EGoodType.Gold:
-                getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold);
-                break;
-            case EGoodType.Dia:
-                getGoodItem = Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia);
-                break;
-            default:
-                return null;
-        }
-
-        if (getGoodItem == null)
-            return null;
-
-        return getGoodItem;
+            EGoodType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
+            EGoodType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
+            _ => null,
+        };
     }
 
     public void RefreshShowExp(int currentLevel, int currentExp, int expToNextLevel)
@@ -172,7 +156,7 @@ public class UI_GameScene : UI_Scene
         if (expToNextLevel > 0)
         {
             // 경험치 슬라이더와 텍스트 갱신
-            GetSlider((int)Sliders.ExpSlider).value = (float)currentExp / expToNextLevel;
+            GetSlider((int)Sliders.Slider_Exp).value = (float)currentExp / expToNextLevel;
 
             float expPercentage = ((float)currentExp / expToNextLevel) * 100;
             // 텍스트에 반영 (소수점 2자리로 표시)
@@ -181,7 +165,7 @@ public class UI_GameScene : UI_Scene
         else
         {
             // 경험치 슬라이더가 0인 경우 처리 (경험치가 없거나 초기화 상황)
-            GetSlider((int)Sliders.ExpSlider).value = 0;
+            GetSlider((int)Sliders.Slider_Exp).value = 0;
             GetText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
         }
     }
@@ -238,16 +222,20 @@ public class UI_GameScene : UI_Scene
                     break;
                     
             }
-            GetObject((int)GameObjects.TopStage).SetActive(false);
+            ShowActiveTopStage(false);
         }
         else
         {
             Managers.UI.ClosePopupUI();
-            GetObject((int)GameObjects.TopStage).SetActive(true);
-
+            ShowActiveTopStage(true);
         }
     }
 
     #endregion
+
+    public void ShowActiveTopStage(bool active)
+    {
+        GetObject((int)GameObjects.TopStage).SetActive(active);
+    }
 
 }
