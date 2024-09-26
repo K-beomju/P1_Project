@@ -16,7 +16,7 @@ public class Monster : Creature, IDamageable
     private Coroutine _idleCoroutine;  // Idle 상태에서 대기 시간을 처리할 코루틴
     private bool _isDamaged;           // 공격을 받은 상태인지 여부
 
-    private UI_HpBarWorldSpace _hpBar;
+    private Coroutine _damageCoroutine; // 플레이어에게 데미지를 입히는 코루틴
 
     protected override bool Init()
     {
@@ -37,7 +37,7 @@ public class Monster : Creature, IDamageable
     {
         MonsterInfoData data = Managers.Data.MonsterDataDic[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
-
+        Atk = 10;
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
 
@@ -48,10 +48,10 @@ public class Monster : Creature, IDamageable
         Sprite.DOFade(0, 0);
         Sprite.DOFade(1, 1f);
 
-        _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
-        _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
-        _hpBar.SetSliderInfo(this);
-        _hpBar.gameObject.SetActive(false);
+        HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
+        HpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
+        HpBar.SetSliderInfo(this);
+        HpBar.gameObject.SetActive(false);
     }
 
     private void SetNewPatrolTarget()
@@ -120,38 +120,49 @@ public class Monster : Creature, IDamageable
         OnDead();
     }
 
-    public virtual void OnDamaged(Creature attacker)
+    public override void OnDamaged(Creature attacker)
     {
-        float finalDamage = attacker.Atk; // TODO: 방어력이나 다른 계산이 있을 경우 적용
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
-        if(_hpBar != null && !_hpBar.gameObject.activeSelf)
-        _hpBar.gameObject.SetActive(true);
-
-        // 공격을 받으면 움직이지 않도록 Idle 상태로 유지
+        base.OnDamaged(attacker);
         _isDamaged = true;
-        CreatureState = ECreatureState.Idle;
-
-        if (Hp <= 0)
+        // 플레이어에게 데미지를 입히는 코루틴 시작
+        if (_damageCoroutine == null)
         {
-            OnDead();
+            _damageCoroutine = StartCoroutine(DealDamageToPlayer());
         }
 
-        // DmageText
-        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, finalDamage, false);
+        CreatureState = ECreatureState.Idle;
 
         Color originalColor = Sprite.color;
-        
+
         Sprite.DOColor(Color.red, 0.05f)
             .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
     }
 
-    public virtual void OnDead()
+    private IEnumerator DealDamageToPlayer()
     {
+        yield return new WaitForSeconds(1f);
+        // 플레이어가 존재하는지 확인하고 데미지를 입힘
+        if (Managers.Object.Hero != null)
+        {
+            // 데미지 계산 (임의의 값, 여기서는 10 데미지로 설정)
+            Managers.Object.Hero.OnDamaged(this);
+        }
+
+        // 3초마다 플레이어에게 데미지를 입힘
+        _damageCoroutine = null;
+    }
+
+    public override void OnDead()
+    {
+        if (_damageCoroutine != null)
+        {
+            StopCoroutine(_damageCoroutine);
+            _damageCoroutine = null;
+        }
+
         GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
 
-        int expReward = gameScene.Data.MonsterGoldReward;  // 몬스터 처치 시 획득하는 경험치
-        //Managers.Purse.AddExp(expReward);  // 경험치 추가
+        //Managers.Purse.AddExp(gameScene.Data.MonsterExpReward);  // 경험치 추가
         if (ObjectType == EObjectType.Monster)
         {
             UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();

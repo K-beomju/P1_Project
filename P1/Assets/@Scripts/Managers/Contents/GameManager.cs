@@ -85,12 +85,21 @@ public class GameManager
 			_tileMap.CompressBounds();
 		}
 
+		Vector3 heroPosition = Managers.Object.Hero.transform.position; // 플레이어의 현재 위치 가져오기
+
 		if (!isBoss) // 노말 스테이지
 		{
-			SetMonsterCount(0, stageData.KillMonsterCount);
 			for (int i = 0; i < stageData.KillMonsterCount; i++)
 			{
-				Vector3 spawnPosition = GetRandomPositionInTileMap(_tileMap.cellBounds); // 타일맵 안의 랜덤 위치 얻기
+				Vector3 spawnPosition = Vector3.zero;
+
+				// 플레이어와의 거리가 최소 5 이상일 때까지 위치를 찾기
+				do
+				{
+					spawnPosition = GetRandomPositionInTileMap(_tileMap.cellBounds); // 타일맵 안의 랜덤 위치 얻기
+				}
+				while (Vector3.Distance(spawnPosition, heroPosition) < 5f); // 플레이어와의 거리가 5 미만이면 다시 찾음
+
 				Managers.Object.Spawn<Monster>(spawnPosition, stageData.MonsterDataIdList[UnityEngine.Random.Range(0, stageData.MonsterDataIdList.Count)]);
 			}
 		}

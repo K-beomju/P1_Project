@@ -22,6 +22,7 @@ public class Creature : BaseObject
     public Animator Anim { get; protected set; }
     public Rigidbody2D Rigid { get; protected set; }
     public BaseObject Target { get; protected set; }
+    public UI_HpBarWorldSpace HpBar { get; protected set; }
     #endregion
 
 
@@ -67,6 +68,7 @@ public class Creature : BaseObject
 
     public virtual void SetCreatureInfo(int dataTemplateID)
     {
+
     }
 
     public virtual void ReSetStats()
@@ -107,6 +109,29 @@ public class Creature : BaseObject
     protected virtual void UpdateMove() { }
     protected virtual void UpdateAttack() { }
     protected virtual void UpdateDead() { }
+
+
+    public virtual void OnDamaged(Creature attacker)
+    {
+        float finalDamage = attacker.Atk; // TODO: 방어력이나 다른 계산이 있을 경우 적용
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
+
+        if(HpBar != null && !HpBar.gameObject.activeSelf)
+        HpBar.gameObject.SetActive(true);
+
+        if (Hp <= 0)
+        {
+            OnDead();
+        }
+
+        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
+        damageText.SetInfo(CenterPosition, finalDamage, false);
+    }
+
+    public virtual void OnDead()
+    {
+
+    }
 
     protected void LookAt(Vector2 dir)
     {

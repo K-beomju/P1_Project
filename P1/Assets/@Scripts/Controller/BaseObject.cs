@@ -24,7 +24,10 @@ public class BaseObject : InitBase
     }
 
     public virtual void SetInfo(int dataTemplateID)
-    { 
+    {
+        if (dataTemplateID == 0)
+            return;
+
         DataTemplateID = dataTemplateID;
     }
 

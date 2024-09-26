@@ -19,7 +19,6 @@ public class Hero : Creature
 
     public HeroInfo HeroInfo { get; private set; }
     private Coroutine _comboDelayCoroutine = null;
-    private UI_HpBarWorldSpace _hpBar;
     private HeroGhost _ghost;
 
     private bool isDash = false;
@@ -54,7 +53,6 @@ public class Hero : Creature
     {
         HeroInfo = Managers.Hero.PlayerHeroInfo;
 
-        Level = Managers.Purse._currentLevel;
         Atk = HeroInfo.Atk;
         MaxHp = HeroInfo.MaxHp;
         Hp = MaxHp;
@@ -63,10 +61,11 @@ public class Hero : Creature
         AttackSpeedRate = HeroInfo.AttackSpeedRate;
         MoveSpeed = 3;
 
-        _hpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
-        _hpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f);
-        _hpBar.SetSliderInfo(this);
-        _hpBar.gameObject.SetActive(false);
+        HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>();
+        HpBar.offset = new Vector3(0.0f, -0.2f, 0.0f);
+        HpBar.SetSliderInfo(this);
+        HpBar.gameObject.SetActive(true);
+
     }
 
     // 레벨업 시 스탯을 다시 계산하는 함수
@@ -239,6 +238,18 @@ public class Hero : Creature
         transform.Translate(dir);
     }
     #endregion
+
+    public override void OnDamaged(Creature attacker)
+    {
+        base.OnDamaged(attacker);
+                Debug.Log(MaxHp);
+        Debug.Log(Hp);
+    }
+
+    public override void OnDead()
+    {
+        
+    }
 
     void OnDrawGizmos()
     {

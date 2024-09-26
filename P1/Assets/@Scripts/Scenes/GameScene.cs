@@ -27,7 +27,7 @@ public class GameScene : BaseScene
             }
         }
     }
-    
+
     private Dictionary<EGameSceneState, Func<IEnumerator>> _stateCoroutines;
     private IEnumerator CurrentCoroutine = null;
     private WaitForSeconds FrameWait = new WaitForSeconds(0.2f);
@@ -119,10 +119,10 @@ public class GameScene : BaseScene
         StageLevel = stageLevel;
         Data = Managers.Data.StageDataDic[StageLevel];
         Debug.Log($"{stageLevel} 스테이지 진입");
-     
+
         BossBattleTimeLimit = Data.BossBattleTimeLimit;
         BossBattleTimer = BossBattleTimeLimit;
-        
+
         GameSceneState = EGameSceneState.Play;
 
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(StageLevel);
@@ -135,6 +135,7 @@ public class GameScene : BaseScene
         yield return StartWait;
         sceneUI.UpdateStageUI(false);
         Managers.Game.SpawnMonster(Data);
+        Managers.Game.SetMonsterCount(0, Data.KillMonsterCount);
 
         while (!Managers.Game.ClearStage())
         {
@@ -151,8 +152,8 @@ public class GameScene : BaseScene
 
     private IEnumerator CoBossStage()
     {
-        yield return StartWait;
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(0.5f);
+        //yield return StartWait;
+        //Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(0.5f);
         sceneUI.UpdateStageUI(true);
 
         Managers.Game.SpawnMonster(Data, true);

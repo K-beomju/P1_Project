@@ -12,18 +12,17 @@ public class PurseManager
     private int _currentExp = 0;
     private int _expToNextLevel;
 
-    public void Init(int initialLevel = 1)
+    public void Init()
     {
-        _currentLevel = initialLevel;
+        _currentLevel = 1;
         _expToNextLevel = CalculateRequiredExp(_currentLevel);
         Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, _currentLevel, _currentExp, _expToNextLevel); // 경험치 갱신 이벤트
         Managers.Event.AddEvent(EEventType.PlayerLevelUp, new Action<int>(level =>
 		{
 			// 히어로의 레벨 업데이트
-			Managers.Object.Hero.Level = level;
+			Managers.Hero.PlayerHeroInfo.Level = level;
             Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
 		}));
-        Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, _currentLevel); // 레벨업 이벤트 발생
 
     }
 

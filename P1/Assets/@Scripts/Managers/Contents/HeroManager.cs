@@ -8,6 +8,7 @@ using System;
 
 public class HeroInfo
 {
+    public int Level { get; set; }
     #region Stat
     public float Atk { get; private set; }
     public float MaxHp { get; private set; }
@@ -21,10 +22,9 @@ public class HeroInfo
 
     public HeroInfo(int dataTemplateID)
     {
+        Level = 1;
         DataTemplateID = dataTemplateID;
         Data = Managers.Data.HeroInfoDataDic[dataTemplateID];
-
-        CalculateInfoStat();
     }
 
     public void CalculateInfoStat()
@@ -35,8 +35,6 @@ public class HeroInfo
         float levelMultiplierAtk = 1 + (Managers.Purse._currentLevel * 0.2f);
         // 최종공격력 = (기본 공격력 + 업그레이드 공격력) * 레벨 %
         Atk = (Data.Atk + increaseAtk) * levelMultiplierAtk;
-        Atk = 60;
-
         // 보유한 무기의 데이터 가져오기 (보유효과)
         float ownedWeaponValues = Managers.Equipment.OwnedEquipmentValues(EEquipmentType.Weapon);
         // 장착된 무기의 데이터 가져오기 (장착효과)
@@ -52,6 +50,7 @@ public class HeroInfo
         float increaseMaxHp = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
         // 레벨에 따른 체력 증가 (5% 증가)
         float levelMultiplierHp = 1 + (Managers.Purse._currentLevel * 5f);
+        Debug.Log(Managers.Purse._currentLevel );
         // 최종최대체력 = (기본 체력 + 업그레이드 체력) * 레벨 %
         MaxHp = (Data.MaxHp + increaseMaxHp) * levelMultiplierHp;
 
@@ -65,6 +64,7 @@ public class HeroInfo
             // 무기의 총 효과 (보유 + 장착) 적용
             MaxHp *= 1 + (totalArmorEffect / 100f); // 합산된 값을 퍼센트로 반영
         }
+        Debug.LogWarning(MaxHp);
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
@@ -97,6 +97,8 @@ public class HeroManager
 
         HeroInfo heroInfo = new HeroInfo(11000);
         PlayerHeroInfo = heroInfo;
+
+        PlayerHeroInfo.CalculateInfoStat();
     }
 
     #region Upgrade(Growth)
@@ -112,7 +114,7 @@ public class HeroManager
         }
 
         PlayerHeroInfo.CalculateInfoStat();
-
+        Debug.LogWarning("LevelUpHeroUpgrade");
         Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
     }
     #endregion

@@ -20,6 +20,7 @@ public class UI_HpBarWorldSpace : UI_Base
     private Creature _owner;
     private Slider _hpBarSlider;
     private Slider _damageSlider;
+    public Vector3 offset { get; set; }  // HP바의 위치 오프셋 (플레이어의 머리 위에 표시)
     public float smoothSpeed = 0.1f;  // DamageSlider가 천천히 줄어들도록 하는 속도
 
     protected override bool Init()
@@ -52,6 +53,12 @@ public class UI_HpBarWorldSpace : UI_Base
         if (_owner == null)
         {
             return;
+        }
+
+        if (_owner.ObjectType == EObjectType.Hero)
+        {
+            Vector3 worldPosition = _owner.transform.position + offset;
+            transform.position = worldPosition;  // 월드 좌표로 HP바 위치 설정
         }
 
         float hpAmount = _owner.Hp / _owner.MaxHp;
