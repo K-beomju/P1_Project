@@ -178,7 +178,7 @@ public class UI_EquipmentPopup : UI_Popup
         GetText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
         GetText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
         GetText((int)Texts.Text_EquipmentValueText).text
-        = $"<color=#FFA500>장착 효과 : {SelectEquipmentInfo.Data.EquippedValue}%</color> \n <color=#00FF00>보유 효과 : {SelectEquipmentInfo.Data.OwnedValue}%</color>";
+        = $"<color=#FFA500>장착 효과 : {SelectEquipmentInfo.Data.EquippedValue}%</color> \n<color=#00FF00>보유 효과 : {SelectEquipmentInfo.Data.OwnedValue}%</color>";
 
         int currentCount = SelectEquipmentInfo.Count;
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);

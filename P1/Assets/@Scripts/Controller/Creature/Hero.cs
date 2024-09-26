@@ -62,9 +62,9 @@ public class Hero : Creature
         MoveSpeed = 3;
 
         HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>();
-        HpBar.offset = new Vector3(0.0f, -0.2f, 0.0f);
+        HpBar._offset = new Vector3(0.0f, -0.2f, 0.0f);
         HpBar.SetSliderInfo(this);
-        HpBar.gameObject.SetActive(true);
+        HpBar.gameObject.SetActive(false);
 
     }
 
@@ -242,8 +242,8 @@ public class Hero : Creature
     public override void OnDamaged(Creature attacker)
     {
         base.OnDamaged(attacker);
-                Debug.Log(MaxHp);
-        Debug.Log(Hp);
+
+        HpBar.DoFadeSlider();
     }
 
     public override void OnDead()

@@ -131,24 +131,15 @@ public class Monster : Creature, IDamageable
         }
 
         CreatureState = ECreatureState.Idle;
-
-        Color originalColor = Sprite.color;
-
-        Sprite.DOColor(Color.red, 0.05f)
-            .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
     }
 
     private IEnumerator DealDamageToPlayer()
     {
         yield return new WaitForSeconds(1f);
-        // 플레이어가 존재하는지 확인하고 데미지를 입힘
         if (Managers.Object.Hero != null)
         {
-            // 데미지 계산 (임의의 값, 여기서는 10 데미지로 설정)
             Managers.Object.Hero.OnDamaged(this);
         }
-
-        // 3초마다 플레이어에게 데미지를 입힘
         _damageCoroutine = null;
     }
 

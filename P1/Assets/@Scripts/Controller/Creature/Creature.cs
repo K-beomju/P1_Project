@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -123,6 +124,11 @@ public class Creature : BaseObject
         {
             OnDead();
         }
+
+        Color originalColor = Sprite.color;
+
+        Sprite.DOColor(Color.red, 0.05f)
+            .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
 
         UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
         damageText.SetInfo(CenterPosition, finalDamage, false);

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,8 +21,9 @@ public class UI_HpBarWorldSpace : UI_Base
     private Creature _owner;
     private Slider _hpBarSlider;
     private Slider _damageSlider;
-    public Vector3 offset { get; set; }  // HP바의 위치 오프셋 (플레이어의 머리 위에 표시)
-    public float smoothSpeed = 0.1f;  // DamageSlider가 천천히 줄어들도록 하는 속도
+    private CanvasGroup _canvasGroup;
+    public Vector3 _offset { get; set; }
+    private float _smoothSpeed = 0.3f;
 
     protected override bool Init()
     {
@@ -29,12 +31,12 @@ public class UI_HpBarWorldSpace : UI_Base
             return false;
         BindSliders(typeof(Sliders));
         BindImages(typeof(Images));
+        _canvasGroup = GetComponent<CanvasGroup>(); 
 
         _hpBarSlider = GetSlider((int)Sliders.HpSlider);
         _damageSlider = GetSlider((int)Sliders.DamageSlider);
 
         Canvas canvas = GetComponent<Canvas>();
-        // 애매함 
         canvas.sortingOrder = SortingLayers.UI_HPBAR;
         return true;
     }
@@ -57,7 +59,7 @@ public class UI_HpBarWorldSpace : UI_Base
 
         if (_owner.ObjectType == EObjectType.Hero)
         {
-            Vector3 worldPosition = _owner.transform.position + offset;
+            Vector3 worldPosition = _owner.transform.position + _offset;
             transform.position = worldPosition;  // 월드 좌표로 HP바 위치 설정
         }
 
@@ -67,7 +69,16 @@ public class UI_HpBarWorldSpace : UI_Base
         // DamageSlider는 천천히 HpSlider를 따라가며 감소
         if (_damageSlider.value > _hpBarSlider.value)
         {
-            _damageSlider.value = Mathf.Lerp(_damageSlider.value, _hpBarSlider.value, smoothSpeed * Time.deltaTime);
+            _damageSlider.DOValue(_hpBarSlider.value, _smoothSpeed);      
         }
+    }
+
+    public void DoFadeSlider()
+    {
+        if (_owner.ObjectType != EObjectType.Hero)
+            return;
+
+        _canvasGroup.alpha = 1;
+        _canvasGroup.DOFade(0, 0.5f).SetDelay(1f);
     }
 }
