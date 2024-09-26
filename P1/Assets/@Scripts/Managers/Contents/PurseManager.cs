@@ -70,24 +70,14 @@ public class PurseManager
 
     private int CalculateRequiredExp(int level)
     {
-        float coefficient = 5f;
-        float expGrowthFactor = 1f;
+        // 레벨에 따른 경험치 증가를 더 부드럽게 조정
+        float baseExp = 100f; // 초기 경험치 요구량을 더 높게 설정
+        float growthFactor = 1.1f; // 경험치 증가율을 완만하게 설정
 
-        if (level >= 1 && level <= 30)
-        {
-            expGrowthFactor = 1.0f; // 1~30레벨
-        }
-        else if (level >= 31 && level <= 70)
-        {
-            expGrowthFactor = 1.5f; // 31~70레벨
-        }
-        else if (level >= 71 && level <= 100)
-        {
-            expGrowthFactor = 2.0f; // 71~100레벨
-        }
+        return Mathf.RoundToInt(baseExp * Mathf.Pow(growthFactor, level - 1)); // 레벨에 따른 경험치 요구량 증가
 
-        return Mathf.RoundToInt(Mathf.Pow((level - 1) * 50 / 49f, expGrowthFactor) * coefficient);
     }
+
 
 
     #endregion

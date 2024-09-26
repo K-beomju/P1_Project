@@ -6,6 +6,7 @@
       "Name": "Slime",
       "ObjectType": 2,
       "PrefabKey": "Enemy_Slime",
+      "Atk": 5.0,
       "MaxHp": 10.0
     },
     {
@@ -14,6 +15,7 @@
       "Name": "Bat",
       "ObjectType": 2,
       "PrefabKey": "Enemy_Bat",
+      "Atk": 5.0,
       "MaxHp": 10.0
     },
     {
@@ -22,6 +24,7 @@
       "Name": "Goblin",
       "ObjectType": 2,
       "PrefabKey": "Enemy_Goblin",
+      "Atk": 5.0,
       "MaxHp": 10.0
     }
   ]

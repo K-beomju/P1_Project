@@ -8,7 +8,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 1,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -20,7 +20,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 2,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -32,7 +32,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 3,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -44,7 +44,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 4,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -56,7 +56,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 5,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -68,7 +68,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 6,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -80,7 +80,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 7,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -92,7 +92,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 8,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -104,7 +104,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 10,
+      "MonsterLevel": 9,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10
     },
@@ -128,7 +128,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 11,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -140,7 +140,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 12,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -152,7 +152,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 13,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -164,7 +164,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 14,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -176,7 +176,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 15,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -188,7 +188,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 16,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -200,7 +200,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 17,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -212,7 +212,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 18,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -224,7 +224,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 20,
+      "MonsterLevel": 19,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20
     },
@@ -248,7 +248,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 30,
+      "MonsterLevel": 21,
       "MonsterGoldReward": 30,
       "MonsterExpReward": 30
     },
@@ -260,7 +260,7 @@
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterLevel": 30,
+      "MonsterLevel": 22,
       "MonsterGoldReward": 30,
       "MonsterExpReward": 30
     },
@@ -1178,18 +1178,6 @@
     },
     {
       "StageNumber": 99,
-      "KillMonsterCount": 50,
-      "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
-      "MonsterDataIdList": [
-        50001000
-      ],
-      "MonsterLevel": 100,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100
-    },
-    {
-      "StageNumber": 100,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
       "BossBattleTimeLimit": 30,

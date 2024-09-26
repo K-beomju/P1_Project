@@ -26,6 +26,7 @@ public class Hero : Creature
     private AnimatorController weaponController;
 
     private bool isDash = false;
+    private bool isWeapon = false;
 
     protected override bool Init()
     {
@@ -79,6 +80,11 @@ public class Hero : Creature
     {
         Atk = HeroInfo.Atk;
         MaxHp = HeroInfo.MaxHp;
+        Hp = MaxHp;
+
+        Debug.Log($"공격력 {Atk}");
+        Debug.Log($"체력 {Hp}");
+
         Debug.Log($"{Level} 레벨에서 공식계산 다시합니다.");
     }
 
@@ -111,10 +117,13 @@ public class Hero : Creature
     {
         if (Target.IsValid() == false)
             return;
+
+
         Target.GetComponent<IDamageable>().OnDamaged(this);
 
         CreatureState = ECreatureState.Move;
     }
+
     #endregion
 
 
@@ -252,6 +261,7 @@ public class Hero : Creature
         Anim.runtimeAnimatorController = weapon ? weaponController : handController;
         Anim.Rebind();
         CreatureState = ECreatureState.Idle;
+        isWeapon = true;
     }
     #endregion
 

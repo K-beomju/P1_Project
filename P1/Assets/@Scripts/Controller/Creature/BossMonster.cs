@@ -21,12 +21,10 @@ public class BossMonster : Monster
         BossMonsterInfoData data = Managers.Data.BossMonsterDataDic[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
 
+        Atk = data.Atk + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
-        // Debug.Log($"MaxHp = 원래 체력: {data.MaxHp} + (업그레이드 체력: {Managers.Data.CreatureUpgradeDic[dataTemplateID].IncreaseMaxHp} * 레벨: {Level - 1})");
-        // Debug.Log($"MaxHp 계산 결과: {MaxHp.Value}");
         MoveSpeed = data.MoveSpeed;
-
         MoveRange = 5;
         IdleWaitTime = 3;
 

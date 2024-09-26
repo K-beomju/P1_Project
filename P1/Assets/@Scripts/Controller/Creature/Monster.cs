@@ -37,10 +37,11 @@ public class Monster : Creature, IDamageable
     {
         MonsterInfoData data = Managers.Data.MonsterDataDic[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
-        Atk = 10;
+        Atk = data.Atk + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
 
+        Debug.LogWarning(Atk);
         MoveSpeed = data.MoveSpeed;
         MoveRange = 5;
         IdleWaitTime = 1;
@@ -154,7 +155,7 @@ public class Monster : Creature, IDamageable
 
         GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
 
-        //Managers.Purse.AddExp(gameScene.Data.MonsterExpReward);  // 경험치 추가
+        Managers.Purse.AddExp(gameScene.Data.MonsterExpReward);  // 경험치 추가
         if (ObjectType == EObjectType.Monster)
         {
             UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();

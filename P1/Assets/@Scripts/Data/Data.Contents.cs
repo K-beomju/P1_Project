@@ -14,7 +14,7 @@ namespace Data
         public string Name;
         public EObjectType ObjectType;
         public string PrefabKey;
-        //public float Atk;
+        public float Atk;
         //public float Def;
         public float MaxHp;
         // public float AttackRange;
@@ -26,8 +26,8 @@ namespace Data
     {
         public int DataID;
         public string Name;
-        // public float IncreaseAtk;
         // public float IncreaseDef;
+        public float IncreaseAtk;
         public float IncreaseMaxHp;
     }
     [Serializable]

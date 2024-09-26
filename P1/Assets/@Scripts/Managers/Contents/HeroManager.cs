@@ -32,7 +32,7 @@ public class HeroInfo
         // 업그레이드에 의한 공격력 증가 
         float increaseAtk = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Atk] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].Value;
         // 레벨에 따른 공격력 증가 (2% 증가)
-        float levelMultiplierAtk = 1 + (Managers.Purse._currentLevel * 0.2f);
+        float levelMultiplierAtk = 1 + (Managers.Purse._currentLevel * 0.02f);
         // 최종공격력 = (기본 공격력 + 업그레이드 공격력) * 레벨 %
         Atk = (Data.Atk + increaseAtk) * levelMultiplierAtk;
         // 보유한 무기의 데이터 가져오기 (보유효과)
@@ -49,7 +49,7 @@ public class HeroInfo
         // 업그레이드에 의한 체력 증가 
         float increaseMaxHp = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
         // 레벨에 따른 체력 증가 (5% 증가)
-        float levelMultiplierHp = 1 + (Managers.Purse._currentLevel * 5f);
+        float levelMultiplierHp = 1 + (Managers.Purse._currentLevel * 0.05f);
         Debug.Log(Managers.Purse._currentLevel );
         // 최종최대체력 = (기본 체력 + 업그레이드 체력) * 레벨 %
         MaxHp = (Data.MaxHp + increaseMaxHp) * levelMultiplierHp;
