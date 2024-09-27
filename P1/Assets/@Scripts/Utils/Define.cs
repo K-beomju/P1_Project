@@ -116,7 +116,10 @@ public static class Define
     public enum EHeroUpgradeType
     {
         Growth_Atk,
-        Growth_Hp
+        Growth_Hp,
+        Growth_Recovery,
+        Growth_CriRate,
+        Growth_CriDmg
     }
 
     public enum EGoodType

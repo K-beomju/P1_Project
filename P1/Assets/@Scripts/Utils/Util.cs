@@ -99,17 +99,15 @@ public static class Util
 
 	public static string GetHeroUpgradeString(EHeroUpgradeType type)
 	{
-		string heroUpgradeString = string.Empty;
-		switch (type)
+		return type switch
 		{
-			case EHeroUpgradeType.Growth_Atk:
-				heroUpgradeString = "공격력";
-				break;
-			case EHeroUpgradeType.Growth_Hp:
-				heroUpgradeString = "체력";
-				break;
-		}
-		return heroUpgradeString;
+			EHeroUpgradeType.Growth_Atk => "공격력",
+			EHeroUpgradeType.Growth_Hp => "체력",
+			EHeroUpgradeType.Growth_Recovery => "체력 회복",
+			EHeroUpgradeType.Growth_CriRate => "치명타 확률",
+			EHeroUpgradeType.Growth_CriDmg => "치명타 피해",
+			_ => throw new ArgumentException($"Unknown rare type String: {type}")
+		};
 	}
 	#endregion
 

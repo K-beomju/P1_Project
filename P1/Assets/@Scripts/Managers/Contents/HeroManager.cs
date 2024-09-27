@@ -50,7 +50,6 @@ public class HeroInfo
         float increaseMaxHp = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
         // 레벨에 따른 체력 증가 (5% 증가)
         float levelMultiplierHp = 1 + (Managers.Purse._currentLevel * 0.05f);
-        Debug.Log(Managers.Purse._currentLevel );
         // 최종최대체력 = (기본 체력 + 업그레이드 체력) * 레벨 %
         MaxHp = (Data.MaxHp + increaseMaxHp) * levelMultiplierHp;
 
@@ -64,7 +63,6 @@ public class HeroInfo
             // 무기의 총 효과 (보유 + 장착) 적용
             MaxHp *= 1 + (totalArmorEffect / 100f); // 합산된 값을 퍼센트로 반영
         }
-        Debug.LogWarning(MaxHp);
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
@@ -86,7 +84,9 @@ public class HeroManager
 
     public Dictionary<EHeroUpgradeType, int> HeroGrowthUpgradeLevelDic
     {
-        get { return HeroUpgradeLevelDic.Where(pair => pair.Key == EHeroUpgradeType.Growth_Atk || pair.Key == EHeroUpgradeType.Growth_Hp).ToDictionary(pair => pair.Key, pair => pair.Value); }
+        get { return HeroUpgradeLevelDic.Where(pair => pair.Key == EHeroUpgradeType.Growth_Atk || pair.Key == 
+        EHeroUpgradeType.Growth_Hp || pair.Key == EHeroUpgradeType.Growth_Recovery || pair.Key == 
+        EHeroUpgradeType.Growth_CriRate || pair.Key == EHeroUpgradeType.Growth_CriDmg).ToDictionary(pair => pair.Key, pair => pair.Value); }
     }
     #endregion
 
@@ -94,6 +94,9 @@ public class HeroManager
     {
         HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Atk, 0);
         HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Hp, 0);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Recovery, 0);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_CriRate, 0);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_CriDmg, 0);
 
         HeroInfo heroInfo = new HeroInfo(11000);
         PlayerHeroInfo = heroInfo;

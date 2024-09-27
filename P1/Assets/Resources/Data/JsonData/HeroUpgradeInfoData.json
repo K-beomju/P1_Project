@@ -9,6 +9,21 @@
       "HeroUpgradeType": 1,
       "Remark": "체력 증가+",
       "Value": 1.0
+    },
+    {
+      "HeroUpgradeType": 2,
+      "Remark": "체력 회복 증가+",
+      "Value": 1.0
+    },
+    {
+      "HeroUpgradeType": 3,
+      "Remark": "치명타 확률+",
+      "Value": 1.0
+    },
+    {
+      "HeroUpgradeType": 4,
+      "Remark": "치명타 데미지+",
+      "Value": 1.0
     }
   ]
 }
