@@ -35,13 +35,14 @@ public class UI_HeroGrowthInvenSlot : UI_Base
 
         GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPressUpgradeButton, EUIEvent.Pressed);
         GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
-
+        
         UpdateSlotInfoUI();
         return true;
     }
 
     private void OnEnable()
     {
+        Managers.Event.AddEvent(EEventType.CurrencyUpdated, new Action(CheckUpgradeInteractive));
         Managers.Event.AddEvent(EEventType.HeroUpgradeUpdated, new Action(UpdateSlotInfoUI));
 
         UpdateSlotInfoUI();
@@ -49,6 +50,7 @@ public class UI_HeroGrowthInvenSlot : UI_Base
 
     private void OnDisable()
     {
+        Managers.Event.RemoveEvent(EEventType.CurrencyUpdated, new Action(CheckUpgradeInteractive));
         Managers.Event.RemoveEvent(EEventType.HeroUpgradeUpdated, new Action(UpdateSlotInfoUI));
     }
 
@@ -67,7 +69,7 @@ public class UI_HeroGrowthInvenSlot : UI_Base
         {
             level = 0; // 레벨이 없으면 0으로 초기화
         }
-
+        CheckUpgradeInteractive();
         string titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
         string levelText = $"Lv {level}";
         string valueText = 
@@ -105,6 +107,15 @@ public class UI_HeroGrowthInvenSlot : UI_Base
         {
             StopCoroutine(_coolTime);
             _coolTime = null;
+        }
+    }
+
+    private void CheckUpgradeInteractive()
+    {
+        if (Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
+        {
+            int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
+            GetButton((int)Buttons.Btn_Upgrade).interactable = CanUpgrade(price);
         }
     }
 
