@@ -38,7 +38,6 @@ public class UIManager
 
 		foreach (Type type in list)
 		{
-			Debug.Log(type.Name);
 			CachePopupUI(type);
 		}
 		CloseAllPopupUI();

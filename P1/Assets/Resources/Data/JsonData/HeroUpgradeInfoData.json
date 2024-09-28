@@ -3,27 +3,32 @@
     {
       "HeroUpgradeType": 0,
       "Remark": "공격력 증가+",
-      "Value": 1.0
+      "Value": 10.0,
+      "IncreaseValue": 10.0
     },
     {
       "HeroUpgradeType": 1,
       "Remark": "체력 증가+",
-      "Value": 1.0
+      "Value": 110.0,
+      "IncreaseValue": 10.0
     },
     {
       "HeroUpgradeType": 2,
       "Remark": "체력 회복 증가+",
-      "Value": 1.0
+      "Value": 0.5,
+      "IncreaseValue": 0.1
     },
     {
       "HeroUpgradeType": 3,
       "Remark": "치명타 확률+",
-      "Value": 1.0
+      "Value": 0.1,
+      "IncreaseValue": 0.1
     },
     {
       "HeroUpgradeType": 4,
       "Remark": "치명타 데미지+",
-      "Value": 1.0
+      "Value": 120.0,
+      "IncreaseValue": 10.0
     }
   ]
 }

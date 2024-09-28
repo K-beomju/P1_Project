@@ -10,9 +10,12 @@ public class Creature : BaseObject
     #region Stat
     public int Level;
     public float Atk { get; protected set; }
-    public float Def { get; protected set; }
     public float MaxHp { get; protected set; }
     public float Hp { get; set; }
+    public float Recovery { get; protected set; }
+    public float CriRate { get; protected set; }
+    public float CriDmg { get; protected set; }
+
     public float AttackRange { get; protected set; }
     public float AttackDelay { get; protected set; }
     public float AttackSpeedRate { get; protected set; }
@@ -115,7 +118,11 @@ public class Creature : BaseObject
 
     public virtual void OnDamaged(Creature attacker)
     {
-        float finalDamage = attacker.Atk; // TODO: 방어력이나 다른 계산이 있을 경우 적용
+        if (CreatureState == ECreatureState.Dead)
+            return;
+
+
+        float finalDamage = attacker.Atk;
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
 
         if(HpBar != null && !HpBar.gameObject.activeSelf)

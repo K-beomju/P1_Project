@@ -63,6 +63,10 @@ public class Hero : Creature
         Atk = HeroInfo.Atk;
         MaxHp = HeroInfo.MaxHp;
         Hp = MaxHp;
+        Recovery = HeroInfo.Recovery;
+        CriRate = HeroInfo.CriRate;
+        CriDmg = HeroInfo.CriDmg;
+
         AttackDelay = HeroInfo.AttackDelay;
         AttackRange = HeroInfo.AttackRange;
         AttackSpeedRate = HeroInfo.AttackSpeedRate;

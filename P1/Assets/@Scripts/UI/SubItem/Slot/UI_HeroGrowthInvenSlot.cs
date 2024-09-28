@@ -70,7 +70,8 @@ public class UI_HeroGrowthInvenSlot : UI_Base
 
         string titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
         string levelText = $"Lv {level}";
-        string valueText = $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value * (level + 1)}";
+        string valueText = 
+            $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value + (Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].IncreaseValue) * (level - 1)}";
         string amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, level + 1):N0}";
 
         GetText((int)Texts.Text_Title).text = titleText;
@@ -94,7 +95,7 @@ public class UI_HeroGrowthInvenSlot : UI_Base
                 Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
             }
         }
-        _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
+        _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
 
     }
 

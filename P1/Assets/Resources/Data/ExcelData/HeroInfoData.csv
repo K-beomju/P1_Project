@@ -1,2 +1,2 @@
-DataID,Name,ObjectType,PrefabKey,Atk,MaxHp,AttackRange,AttackDelay,AttackSpeedRate
-11000,히어로,Hero,Hero,5,100,1,1,1
+﻿DataID,Name,ObjectType,PrefabKey,Atk,MaxHp,Recovery,CriRate,CriDmg,AttackRange,AttackDelay,AttackSpeedRate
+11000,히어로,Hero,Hero,0,0,0,0,0,1,1,1

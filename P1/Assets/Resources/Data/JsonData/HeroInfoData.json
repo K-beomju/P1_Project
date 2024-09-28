@@ -1,7 +1,9 @@
 {
   "HeroInfoDatas": [
     {
-      "Atk": 5.0,
+      "Recovery": 0.0,
+      "CriRate": 0.0,
+      "CriDmg": 0.0,
       "AttackRange": 1.0,
       "AttackDelay": 1.0,
       "AttackSpeedRate": 1.0,
@@ -9,7 +11,8 @@
       "Name": "히어로",
       "ObjectType": 1,
       "PrefabKey": "Hero",
-      "MaxHp": 100.0
+      "Atk": 0.0,
+      "MaxHp": 0.0
     }
   ]
 }

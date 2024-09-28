@@ -12,6 +12,10 @@ public class HeroInfo
     #region Stat
     public float Atk { get; private set; }
     public float MaxHp { get; private set; }
+    public float Recovery { get; private set; } 
+    public float CriRate { get; private set; }
+    public float CriDmg { get; private set; }
+
     public float AttackRange { get; private set; }
     public float AttackDelay { get; private set; }
     public float AttackSpeedRate { get; private set; }
@@ -29,12 +33,20 @@ public class HeroInfo
 
     public void CalculateInfoStat()
     {
-        // 업그레이드에 의한 공격력 증가 
-        float increaseAtk = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Atk] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].Value;
+        float baseAtkValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].Value;
+        // 레벨당 증가 값 (예: 5)
+        float increaseAtkValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].IncreaseValue;
+
+        // 현재 레벨 (예: 3)
+        int currentAtkLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Atk];
+
         // 레벨에 따른 공격력 증가 (2% 증가)
-        float levelMultiplierAtk = 1 + (Managers.Purse._currentLevel * 0.02f);
+        // float levelMultiplierAtk = 1 + (Level * 0.02f);
+
         // 최종공격력 = (기본 공격력 + 업그레이드 공격력) * 레벨 %
-        Atk = (Data.Atk + increaseAtk) * levelMultiplierAtk;
+        Atk = baseAtkValue + (increaseAtkValue * (currentAtkLevel - 1)); ; //* levelMultiplierAtk;
+
+
         // 보유한 무기의 데이터 가져오기 (보유효과)
         float ownedWeaponValues = Managers.Equipment.OwnedEquipmentValues(EEquipmentType.Weapon);
         // 장착된 무기의 데이터 가져오기 (장착효과)
@@ -49,7 +61,7 @@ public class HeroInfo
         // 업그레이드에 의한 체력 증가 
         float increaseMaxHp = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
         // 레벨에 따른 체력 증가 (5% 증가)
-        float levelMultiplierHp = 1 + (Managers.Purse._currentLevel * 0.05f);
+        float levelMultiplierHp = 1 + (Level * 0.05f);
         // 최종최대체력 = (기본 체력 + 업그레이드 체력) * 레벨 %
         MaxHp = (Data.MaxHp + increaseMaxHp) * levelMultiplierHp;
 
@@ -63,6 +75,18 @@ public class HeroInfo
             // 무기의 총 효과 (보유 + 장착) 적용
             MaxHp *= 1 + (totalArmorEffect / 100f); // 합산된 값을 퍼센트로 반영
         }
+
+        float increaseRecovery = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Recovery] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Recovery].Value;
+        float levelMultiplierRecovery = 1 + (Level * 0.01f);
+        Recovery = (Data.Recovery + increaseRecovery) * levelMultiplierRecovery;
+
+        float increaseCriRate = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriRate] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriRate].Value;
+        float levelMultiplierCriRate = 1 + (Level * 0.01f);
+        CriRate = (Data.CriRate + increaseCriRate) * levelMultiplierCriRate;
+
+        float increaseCriDmg = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriDmg] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriDmg].Value;
+        float levelMultiplierCriDmg = 1 + (Level * 0.01f);
+        CriRate = (Data.CriDmg + increaseCriDmg) * levelMultiplierCriDmg;
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
@@ -92,11 +116,11 @@ public class HeroManager
 
     public void Init()
     {
-        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Atk, 0);
-        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Hp, 0);
-        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Recovery, 0);
-        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_CriRate, 0);
-        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_CriDmg, 0);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Atk, 1);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Hp, 1);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_Recovery, 1);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_CriRate, 1);
+        HeroUpgradeLevelDic.Add(EHeroUpgradeType.Growth_CriDmg, 1);
 
         HeroInfo heroInfo = new HeroInfo(11000);
         PlayerHeroInfo = heroInfo;
@@ -117,7 +141,6 @@ public class HeroManager
         }
 
         PlayerHeroInfo.CalculateInfoStat();
-        Debug.LogWarning("LevelUpHeroUpgrade");
         Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
     }
     #endregion

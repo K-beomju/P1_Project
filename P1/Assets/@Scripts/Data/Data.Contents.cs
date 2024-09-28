@@ -52,7 +52,9 @@ namespace Data
     [Serializable]
     public class HeroInfoData : CreatureInfoData
     {
-        public float Atk;
+        public float Recovery;
+        public float CriRate;
+        public float CriDmg;
         public float AttackRange;
         public float AttackDelay;
         public float AttackSpeedRate;
@@ -161,6 +163,7 @@ namespace Data
         public EHeroUpgradeType HeroUpgradeType;
         public string Remark;
         public float Value;
+        public float IncreaseValue;
     }
 
     [Serializable]
@@ -189,7 +192,6 @@ namespace Data
         public List<EGoodType> GoodList = new List<EGoodType>();
         public List<int>StartCostList = new List<int>();
         public List<int>IncreaseCostList = new List<int>();
-        public List<float> SuccessPercentageList = new List<float>();
     }
 
     [Serializable]
