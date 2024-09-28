@@ -32,54 +32,18 @@ public class HeroInfo
     }
 
 
-    // 스탯 계산을 위한 공통 함수
-    private float CalculateStat(EHeroUpgradeType upgradeType)
-    {
-        // 기본 값 및 증가 값 가져오기
-        var upgradeData = Managers.Data.HeroUpgradeInfoDataDic[upgradeType];
-        float baseValue = upgradeData.Value;
-        float increaseValue = upgradeData.IncreaseValue;
-        int currentLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[upgradeType];
-
-        // 최종 값 계산
-        return baseValue + (increaseValue * (currentLevel - 1));
-    }
-
-    // 장비 효과 적용을 위한 공통 함수
-    private float ApplyEquipmentEffect(EEquipmentType equipmentType, float baseStat)
-    {
-        // 보유한 장비 효과 및 장착된 장비 효과 가져오기
-        float ownedValue = Managers.Equipment.OwnedEquipmentValues(equipmentType);
-        float equipValue = Managers.Equipment.EquipEquipmentValue(equipmentType);
-
-        // 보유 효과가 존재하면 먼저 적용
-        if (ownedValue != 0)
-        {
-            baseStat *= (1 + ownedValue / 100f);
-        }
-
-        // 장착 효과가 존재하면 추가로 적용
-        if (equipValue != 0)
-        {
-            baseStat *= (1 + equipValue / 100f);
-        }
-
-        return baseStat; // 최종 스탯 반환
-    }
-
-
     public void CalculateInfoStat()
     {
-        // 각 스탯을 공통 함수를 통해 계산
-        Atk = CalculateStat(EHeroUpgradeType.Growth_Atk);
-        MaxHp = CalculateStat(EHeroUpgradeType.Growth_Hp);
-        Recovery = CalculateStat(EHeroUpgradeType.Growth_Recovery);
-        CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
-        CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
+        // StatCalculator 클래스를 이용하여 계산
+        Atk = Util.CalculateStat(EHeroUpgradeType.Growth_Atk, Managers.Hero.HeroGrowthUpgradeLevelDic);
+        MaxHp = Util.CalculateStat(EHeroUpgradeType.Growth_Hp, Managers.Hero.HeroGrowthUpgradeLevelDic);
+        Recovery = Util.CalculateStat(EHeroUpgradeType.Growth_Recovery, Managers.Hero.HeroGrowthUpgradeLevelDic);
+        CriRate = Util.CalculateStat(EHeroUpgradeType.Growth_CriRate, Managers.Hero.HeroGrowthUpgradeLevelDic);
+        CriDmg = Util.CalculateStat(EHeroUpgradeType.Growth_CriDmg, Managers.Hero.HeroGrowthUpgradeLevelDic);
 
         // 장비 효과 적용
-        Atk = ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);
-        MaxHp = ApplyEquipmentEffect(EEquipmentType.Armor, MaxHp);
+        Atk = Util.ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);
+        MaxHp = Util.ApplyEquipmentEffect(EEquipmentType.Armor, MaxHp);
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
@@ -87,6 +51,8 @@ public class HeroInfo
 
         if (Managers.Object.Hero != null)
             Managers.Object.Hero.ReSetStats();
+
+        Debug.Log("총 전투력: " + Util.CalculateTotalCombatPower(this));
     }
 }
 
