@@ -31,56 +31,55 @@ public class HeroInfo
         Data = Managers.Data.HeroInfoDataDic[dataTemplateID];
     }
 
+
+    // 스탯 계산을 위한 공통 함수
+    private float CalculateStat(EHeroUpgradeType upgradeType)
+    {
+        // 기본 값 및 증가 값 가져오기
+        var upgradeData = Managers.Data.HeroUpgradeInfoDataDic[upgradeType];
+        float baseValue = upgradeData.Value;
+        float increaseValue = upgradeData.IncreaseValue;
+        int currentLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[upgradeType];
+
+        // 최종 값 계산
+        return baseValue + (increaseValue * (currentLevel - 1));
+    }
+
+    // 장비 효과 적용을 위한 공통 함수
+    private float ApplyEquipmentEffect(EEquipmentType equipmentType, float baseStat)
+    {
+        // 보유한 장비 효과 및 장착된 장비 효과 가져오기
+        float ownedValue = Managers.Equipment.OwnedEquipmentValues(equipmentType);
+        float equipValue = Managers.Equipment.EquipEquipmentValue(equipmentType);
+
+        // 보유 효과가 존재하면 먼저 적용
+        if (ownedValue != 0)
+        {
+            baseStat *= (1 + ownedValue / 100f);
+        }
+
+        // 장착 효과가 존재하면 추가로 적용
+        if (equipValue != 0)
+        {
+            baseStat *= (1 + equipValue / 100f);
+        }
+
+        return baseStat; // 최종 스탯 반환
+    }
+
+
     public void CalculateInfoStat()
     {
-        float baseAtkValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].Value;
-        float increaseAtkValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].IncreaseValue;
-        int currentAtkLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Atk];
-        Atk = baseAtkValue + (increaseAtkValue * (currentAtkLevel - 1)); ; //* levelMultiplierAtk;
+        // 각 스탯을 공통 함수를 통해 계산
+        Atk = CalculateStat(EHeroUpgradeType.Growth_Atk);
+        MaxHp = CalculateStat(EHeroUpgradeType.Growth_Hp);
+        Recovery = CalculateStat(EHeroUpgradeType.Growth_Recovery);
+        CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
+        CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
 
-
-        // 보유한 무기의 데이터 가져오기 (보유효과)
-        float ownedWeaponValues = Managers.Equipment.OwnedEquipmentValues(EEquipmentType.Weapon);
-        // 장착된 무기의 데이터 가져오기 (장착효과)
-        float equipWeaponValue = Managers.Equipment.EquipEquipmentValue(EEquipmentType.Weapon);
-        float totalWeaponEffect = ownedWeaponValues + equipWeaponValue;
-        if (totalWeaponEffect != 0)
-        {
-            // 무기의 총 효과 (보유 + 장착) 적용
-            Atk *= 1 + (totalWeaponEffect / 100f); // 합산된 값을 퍼센트로 반영
-        }
-
-        float baseMaxHpValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
-        float increaseMaxHpValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].IncreaseValue;
-        int currentMaxHpLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp];
-        MaxHp = baseMaxHpValue + (increaseMaxHpValue * (currentMaxHpLevel -1));
-
-        // 보유한 갑옷의 데이터 가져오기 (보유효과)
-        float ownedArmorValues = Managers.Equipment.OwnedEquipmentValues(EEquipmentType.Armor);
-        // 장착된 갑옷의 데이터 가져오기 (장착효과)
-        float equipArmorValue = Managers.Equipment.EquipEquipmentValue(EEquipmentType.Armor);
-        float totalArmorEffect = ownedArmorValues + equipArmorValue;
-        if (totalArmorEffect != 0)
-        {
-            // 무기의 총 효과 (보유 + 장착) 적용
-            MaxHp *= 1 + (totalArmorEffect / 100f); // 합산된 값을 퍼센트로 반영
-        }
-
-        float baseRecoveryValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Recovery].Value;
-        float increaseRecoveryValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Recovery].IncreaseValue;
-        int currentRecoveryLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Recovery];
-        Recovery = baseRecoveryValue + (increaseRecoveryValue * (currentRecoveryLevel -1));
-
-        float baseCriRateValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriRate].Value;
-        float increaseCriRateValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriRate].IncreaseValue;
-        int currentCriRateLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriRate];
-        CriRate = baseCriRateValue + (increaseCriRateValue * (currentCriRateLevel - 1));
-
-        float baseCriDmgValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriDmg].Value;
-        float increaseCriDmgValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriDmg].IncreaseValue;
-        int currentCriDmgLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriDmg];
-        CriDmg = baseCriDmgValue + (increaseCriDmgValue * (currentCriDmgLevel - 1));
-
+        // 장비 효과 적용
+        Atk = ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);
+        MaxHp = ApplyEquipmentEffect(EEquipmentType.Armor, MaxHp);
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;

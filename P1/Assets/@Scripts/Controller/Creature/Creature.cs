@@ -153,7 +153,7 @@ public class Creature : BaseObject
             .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
 
         UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, finalDamage, false);
+        damageText.SetInfo(CenterPosition, finalDamage, isCriticalHit);
     }
 
     public virtual void OnDead()

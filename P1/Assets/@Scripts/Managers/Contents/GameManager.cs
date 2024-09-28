@@ -89,7 +89,7 @@ public class GameManager
 
 		if (!isBoss) // 노말 스테이지
 		{
-			for (int i = 0; i < 1; i++)
+			for (int i = 0; i < stageData.KillMonsterCount; i++)
 			{
 				Vector3 spawnPosition = Vector3.zero;
 
