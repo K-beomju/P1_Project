@@ -41,7 +41,6 @@ public class Monster : Creature, IDamageable
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
 
-        Debug.LogWarning(Atk);
         MoveSpeed = data.MoveSpeed;
         MoveRange = 5;
         IdleWaitTime = 1;

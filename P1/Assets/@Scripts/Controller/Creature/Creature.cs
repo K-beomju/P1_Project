@@ -123,6 +123,18 @@ public class Creature : BaseObject
 
 
         float finalDamage = attacker.Atk;
+
+        // 치명타 체크 (0~1000 범위에서 비교)
+        float randomValue = Random.Range(0.0f, 100.0f);
+        bool isCriticalHit = randomValue < attacker.CriRate; // 예: CriRate가 0.1일 경우 0.1% 확률로 치명타 발생
+
+        if (isCriticalHit)
+        {
+            float criticalMultiplier = attacker.CriDmg / 100.0f;
+            finalDamage += finalDamage * criticalMultiplier;
+        }
+
+
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
 
         if(HpBar != null && !HpBar.gameObject.activeSelf)

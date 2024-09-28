@@ -34,16 +34,8 @@ public class HeroInfo
     public void CalculateInfoStat()
     {
         float baseAtkValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].Value;
-        // 레벨당 증가 값 (예: 5)
         float increaseAtkValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Atk].IncreaseValue;
-
-        // 현재 레벨 (예: 3)
         int currentAtkLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Atk];
-
-        // 레벨에 따른 공격력 증가 (2% 증가)
-        // float levelMultiplierAtk = 1 + (Level * 0.02f);
-
-        // 최종공격력 = (기본 공격력 + 업그레이드 공격력) * 레벨 %
         Atk = baseAtkValue + (increaseAtkValue * (currentAtkLevel - 1)); ; //* levelMultiplierAtk;
 
 
@@ -58,12 +50,10 @@ public class HeroInfo
             Atk *= 1 + (totalWeaponEffect / 100f); // 합산된 값을 퍼센트로 반영
         }
 
-        // 업그레이드에 의한 체력 증가 
-        float increaseMaxHp = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
-        // 레벨에 따른 체력 증가 (5% 증가)
-        float levelMultiplierHp = 1 + (Level * 0.05f);
-        // 최종최대체력 = (기본 체력 + 업그레이드 체력) * 레벨 %
-        MaxHp = (Data.MaxHp + increaseMaxHp) * levelMultiplierHp;
+        float baseMaxHpValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].Value;
+        float increaseMaxHpValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Hp].IncreaseValue;
+        int currentMaxHpLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Hp];
+        MaxHp = baseMaxHpValue + (increaseMaxHpValue * (currentMaxHpLevel -1));
 
         // 보유한 갑옷의 데이터 가져오기 (보유효과)
         float ownedArmorValues = Managers.Equipment.OwnedEquipmentValues(EEquipmentType.Armor);
@@ -76,17 +66,21 @@ public class HeroInfo
             MaxHp *= 1 + (totalArmorEffect / 100f); // 합산된 값을 퍼센트로 반영
         }
 
-        float increaseRecovery = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Recovery] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Recovery].Value;
-        float levelMultiplierRecovery = 1 + (Level * 0.01f);
-        Recovery = (Data.Recovery + increaseRecovery) * levelMultiplierRecovery;
+        float baseRecoveryValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Recovery].Value;
+        float increaseRecoveryValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_Recovery].IncreaseValue;
+        int currentRecoveryLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_Recovery];
+        Recovery = baseRecoveryValue + (increaseRecoveryValue * (currentRecoveryLevel -1));
 
-        float increaseCriRate = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriRate] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriRate].Value;
-        float levelMultiplierCriRate = 1 + (Level * 0.01f);
-        CriRate = (Data.CriRate + increaseCriRate) * levelMultiplierCriRate;
+        float baseCriRateValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriRate].Value;
+        float increaseCriRateValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriRate].IncreaseValue;
+        int currentCriRateLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriRate];
+        CriRate = baseCriRateValue + (increaseCriRateValue * (currentCriRateLevel - 1));
 
-        float increaseCriDmg = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriDmg] * Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriDmg].Value;
-        float levelMultiplierCriDmg = 1 + (Level * 0.01f);
-        CriRate = (Data.CriDmg + increaseCriDmg) * levelMultiplierCriDmg;
+        float baseCriDmgValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriDmg].Value;
+        float increaseCriDmgValue = Managers.Data.HeroUpgradeInfoDataDic[EHeroUpgradeType.Growth_CriDmg].IncreaseValue;
+        int currentCriDmgLevel = Managers.Hero.HeroGrowthUpgradeLevelDic[EHeroUpgradeType.Growth_CriDmg];
+        CriDmg = baseCriDmgValue + (increaseCriDmgValue * (currentCriDmgLevel - 1));
+
 
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,12 +74,15 @@ public class UI_HpBarWorldSpace : UI_Base
         }
     }
 
-    public void DoFadeSlider()
+    public void DoFadeSlider(Action CallBackAction = null)
     {
         if (_owner.ObjectType != EObjectType.Hero)
             return;
 
         _canvasGroup.alpha = 1;
-        _canvasGroup.DOFade(0, 0.5f).SetDelay(1f);
+        _canvasGroup.DOFade(0, 0.5f).SetDelay(1f).OnComplete(() =>
+        {
+            CallBackAction?.Invoke();
+        });
     }
 }

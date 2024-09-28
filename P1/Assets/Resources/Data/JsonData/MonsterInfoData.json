@@ -7,7 +7,7 @@
       "ObjectType": 2,
       "PrefabKey": "Enemy_Slime",
       "Atk": 5.0,
-      "MaxHp": 30.0
+      "MaxHp": 40.0
     },
     {
       "MoveSpeed": 1.0,
@@ -16,7 +16,7 @@
       "ObjectType": 2,
       "PrefabKey": "Enemy_Bat",
       "Atk": 5.0,
-      "MaxHp": 30.0
+      "MaxHp": 40.0
     },
     {
       "MoveSpeed": 1.0,
@@ -25,7 +25,7 @@
       "ObjectType": 2,
       "PrefabKey": "Enemy_Goblin",
       "Atk": 5.0,
-      "MaxHp": 30.0
+      "MaxHp": 40.0
     }
   ]
 }

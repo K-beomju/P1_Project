@@ -172,6 +172,7 @@ public class GameScene : BaseScene
 
     private IEnumerator CoStageOver()
     {
+        sceneUI.RefreshBossStageTimer(0, 0);
         MoveToNextStage(false);
         yield return null;
     }

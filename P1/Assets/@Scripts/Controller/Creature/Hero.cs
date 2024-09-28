@@ -20,10 +20,12 @@ public class Hero : Creature
 
     public HeroInfo HeroInfo { get; private set; }
     private Coroutine comboDelayCoroutine = null;
+    private Coroutine recoveryCoroutine = null;
     private HeroGhost ghost;
 
     private AnimatorController handController;
     private AnimatorController weaponController;
+    private WaitForSeconds recoveryTime = new WaitForSeconds(1);
 
     private bool isDash = false;
     private bool isWeapon = false;
@@ -273,7 +275,15 @@ public class Hero : Creature
     {
         base.OnDamaged(attacker);
 
-        HpBar.DoFadeSlider();
+        if(recoveryCoroutine != null)
+        {
+            StopCoroutine(recoveryCoroutine);
+            recoveryCoroutine = null;
+        }
+        HpBar.DoFadeSlider(() =>
+        {
+            recoveryCoroutine = StartCoroutine(RecoveryCo());
+        });
     }
 
     public override void OnDead()
@@ -289,6 +299,20 @@ public class Hero : Creature
         }, () =>
         {
         });
+    }
+
+    private IEnumerator RecoveryCo()
+    {
+        while(true)
+        {
+            yield return recoveryTime;
+            Hp += Recovery;
+            if(Hp >= MaxHp)
+            {
+                Hp = MaxHp;
+                yield break;
+            }
+        }
     }
 
     void OnDrawGizmos()

@@ -70,6 +70,7 @@ public class UI_HeroGrowthInvenSlot : UI_Base
             level = 0; // 레벨이 없으면 0으로 초기화
         }
         CheckUpgradeInteractive();
+        string percentString = "%";
         string titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
         string levelText = $"Lv {level}";
         string valueText = 
@@ -78,6 +79,9 @@ public class UI_HeroGrowthInvenSlot : UI_Base
 
         GetText((int)Texts.Text_Title).text = titleText;
         GetText((int)Texts.Text_Level).text = levelText;
+        if (_heroUpgradeType == EHeroUpgradeType.Growth_CriRate || _heroUpgradeType == EHeroUpgradeType.Growth_CriDmg)
+            valueText += percentString;
+
         GetText((int)Texts.Text_Value).text = valueText;
         GetText((int)Texts.Text_Amount).text = amountText;
     }
