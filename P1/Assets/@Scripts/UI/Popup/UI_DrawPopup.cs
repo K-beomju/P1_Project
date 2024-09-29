@@ -26,6 +26,8 @@ public class UI_DrawPopup : UI_Popup
 
     public enum Buttons
     {
+        Btn_GachaProbability,
+        Btn_SkipDrawVisual,
         Btn_DrawTenAd,
         Btn_DrawTen,
         Btn_DrawThirty,
@@ -80,6 +82,7 @@ public class UI_DrawPopup : UI_Popup
         };
         _portalImage = GetImage((int)Images.Image_PortalEquipment);
 
+        GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_type));
         GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
@@ -91,6 +94,7 @@ public class UI_DrawPopup : UI_Popup
             (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
 
         }, EUIEvent.Click);
+
 
         return true;
     }
