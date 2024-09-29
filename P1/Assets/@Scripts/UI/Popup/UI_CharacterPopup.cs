@@ -56,7 +56,7 @@ public class UI_CharacterPopup : UI_Popup
 
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
         Bind<UI_EquipmentItem>(typeof(EquipmentItems));
 
         GetButton((int)Buttons.Btn_RingSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Ring));
@@ -106,7 +106,7 @@ public class UI_CharacterPopup : UI_Popup
         var (selectedButton, selectedPanel) = _characterPanels[inven];
         selectedButton.interactable = false;
         selectedPanel.SetActive(true);
-        GetText((int)Texts.Text_CharacterTitle).text = GetCharacterTabString(inven);
+        GetTMPText((int)Texts.Text_CharacterTitle).text = GetCharacterTabString(inven);
 
     }
 

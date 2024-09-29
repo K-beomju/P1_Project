@@ -372,4 +372,31 @@ public static class Util
     }
 
     #endregion
+
+    public static string ConvertToKoreanUnits(long number)
+    {
+        if (number == 0) return "0";
+
+        // 단위 정의 (4자리마다 '만', '억', '조' 사용)
+        string[] units = { "", "만", "억", "조" };
+        int unitIndex = 0;
+        List<string> parts = new List<string>();
+
+        // 단위를 나누면서 나머지 값을 저장
+        while (number > 0 && unitIndex < units.Length)
+        {
+            long remainder = number % 10000; // 4자리마다 나머지 값 추출
+            if (remainder > 0)
+            {
+                // 나머지가 0이 아닐 때만 단위와 함께 리스트에 추가
+                parts.Insert(0, $"{remainder:N0}{units[unitIndex]}");
+            }
+            number /= 10000;
+            unitIndex++;
+        }
+
+        // 리스트를 문자열로 합쳐서 반환
+        return string.Join("", parts);
+    }
+
 }

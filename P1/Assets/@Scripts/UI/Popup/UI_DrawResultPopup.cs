@@ -37,7 +37,7 @@ public class UI_DrawResultPopup : UI_Popup
 
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
 
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() =>
         {
@@ -58,13 +58,13 @@ public class UI_DrawResultPopup : UI_Popup
     private void OnEnable()
     {
         Managers.Event.AddEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
-        GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
+        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
     }
 
     private void OnDisable()
     {
         Managers.Event.AddEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
-         GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
+         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
     }
 
     public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList)
@@ -73,8 +73,8 @@ public class UI_DrawResultPopup : UI_Popup
         _level = Managers.Game.PlayerGameData.DrawData[_type].Level;  // 최신 레벨 가져오기
         _drawCount = drawCount;
 
-        GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
-        GetText((int)Texts.Text_Retry).text = $"{_drawCount}회";
+        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
+        GetTMPText((int)Texts.Text_Retry).text = $"{_drawCount}회";
 
         InteractiveButtons(false);
         StartCoroutine(CreateEquipmentItem(resultList));

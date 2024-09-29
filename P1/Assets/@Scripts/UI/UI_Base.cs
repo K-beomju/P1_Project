@@ -35,7 +35,7 @@ public class UI_Base : InitBase
 
 	protected void BindObjects(Type type) { Bind<GameObject>(type); }
 	protected void BindImages(Type type) { Bind<Image>(type); }
-	protected void BindTexts(Type type) { Bind<Text>(type); }
+	//protected void BindTexts(Type type) { Bind<Text>(type); }
 	protected void BindTMPTexts(Type type) { Bind<TMP_Text>(type); }
 	protected void BindButtons(Type type) { Bind<Button>(type); }
 	protected void BindToggles(Type type) { Bind<Toggle>(type); }
@@ -51,7 +51,7 @@ public class UI_Base : InitBase
 	}
 
 	protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
-	protected Text GetText(int idx) { return Get<Text>(idx); }
+	//protected Text GetText(int idx) { return Get<Text>(idx); }
 	protected TMP_Text GetTMPText(int idx) { return Get<TMP_Text>(idx); }
 	protected Button GetButton(int idx) { return Get<Button>(idx); }
 	protected Image GetImage(int idx) { return Get<Image>(idx); }

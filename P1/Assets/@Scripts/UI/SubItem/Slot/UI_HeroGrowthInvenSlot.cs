@@ -30,7 +30,7 @@ public class UI_HeroGrowthInvenSlot : UI_Base
         if (base.Init() == false)
             return false;
 
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
         BindButtons(typeof(Buttons));
 
         GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPressUpgradeButton, EUIEvent.Pressed);
@@ -77,13 +77,13 @@ public class UI_HeroGrowthInvenSlot : UI_Base
             $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value + (Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].IncreaseValue) * (level - 1)}";
         string amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, level + 1):N0}";
 
-        GetText((int)Texts.Text_Title).text = titleText;
-        GetText((int)Texts.Text_Level).text = levelText;
+        GetTMPText((int)Texts.Text_Title).text = titleText;
+        GetTMPText((int)Texts.Text_Level).text = levelText;
         if (_heroUpgradeType == EHeroUpgradeType.Growth_CriRate || _heroUpgradeType == EHeroUpgradeType.Growth_CriDmg)
             valueText += percentString;
 
-        GetText((int)Texts.Text_Value).text = valueText;
-        GetText((int)Texts.Text_Amount).text = amountText;
+        GetTMPText((int)Texts.Text_Value).text = valueText;
+        GetTMPText((int)Texts.Text_Amount).text = amountText;
     }
 
     private void OnPressUpgradeButton()

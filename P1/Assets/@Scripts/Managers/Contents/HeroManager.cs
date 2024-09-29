@@ -40,7 +40,7 @@ public class HeroInfo
         Recovery = Util.CalculateStat(EHeroUpgradeType.Growth_Recovery, Managers.Hero.HeroGrowthUpgradeLevelDic);
         CriRate = Util.CalculateStat(EHeroUpgradeType.Growth_CriRate, Managers.Hero.HeroGrowthUpgradeLevelDic);
         CriDmg = Util.CalculateStat(EHeroUpgradeType.Growth_CriDmg, Managers.Hero.HeroGrowthUpgradeLevelDic);
-
+        Debug.Log(CriRate);
         // 장비 효과 적용
         Atk = Util.ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);
         MaxHp = Util.ApplyEquipmentEffect(EEquipmentType.Armor, MaxHp);

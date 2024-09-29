@@ -61,7 +61,7 @@ public class UI_GameScene : UI_Scene
             return false;
 
         BindButtons(typeof(Buttons));
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindObjects(typeof(GameObjects));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
@@ -90,8 +90,8 @@ public class UI_GameScene : UI_Scene
         GetSlider((int)Sliders.Slider_BossTimer).value = 0;
         GetSlider((int)Sliders.Slider_StageInfo).value = 0;
 
-        GetText((int)Texts.ExpValueText).text = string.Empty;
-        GetText((int)Texts.RemainMonsterValueText).text = string.Empty;
+        GetTMPText((int)Texts.ExpValueText).text = string.Empty;
+        GetTMPText((int)Texts.RemainMonsterValueText).text = string.Empty;
     }
 
     private void RefreshUI()
@@ -109,14 +109,14 @@ public class UI_GameScene : UI_Scene
     public void UpdateStageUI(bool isBoss = false)
     {
         if(!isBoss)
-                GetText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
+                GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
 
         GetObject((int)GameObjects.RemainMonster).SetActive(!isBoss);
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)
     {
-        GetText((int)Texts.RemainMonsterValueText).text = $"{killMonster} / {maxMonster}";
+        GetTMPText((int)Texts.RemainMonsterValueText).text = $"{killMonster} / {maxMonster}";
 
         GetSlider((int)Sliders.Slider_StageInfo).value = killMonster;
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = maxMonster;
@@ -127,7 +127,7 @@ public class UI_GameScene : UI_Scene
         float hpAmount = boss.Hp / boss.MaxHp;
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = 1;
         GetSlider((int)Sliders.Slider_StageInfo).value = hpAmount;
-        GetText((int)Texts.Text_StageInfo).text = $"{boss.Hp} / {boss.MaxHp}";
+        GetTMPText((int)Texts.Text_StageInfo).text = $"{boss.Hp} / {boss.MaxHp}";
     }
 
     public void RefreshBossStageTimer(float currentTime, float maxTime)
@@ -160,13 +160,13 @@ public class UI_GameScene : UI_Scene
 
             float expPercentage = ((float)currentExp / expToNextLevel) * 100;
             // 텍스트에 반영 (소수점 2자리로 표시)
-            GetText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
+            GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
         }
         else
         {
             // 경험치 슬라이더가 0인 경우 처리 (경험치가 없거나 초기화 상황)
             GetSlider((int)Sliders.Slider_Exp).value = 0;
-            GetText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
+            GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
         }
     }
 

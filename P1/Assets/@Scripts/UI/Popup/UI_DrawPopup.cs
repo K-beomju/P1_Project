@@ -43,7 +43,6 @@ public class UI_DrawPopup : UI_Popup
     private EquipmentDrawData _equipmentData;
     private EEquipmentType _type = EEquipmentType.None;
 
-    private Color _selectedColor;
     private Image _portalImage;
 
     private int _drawlevel;
@@ -55,7 +54,7 @@ public class UI_DrawPopup : UI_Popup
         if (base.Init() == false)
             return false;
 
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindButtons(typeof(Buttons));
         BindImages(typeof(Images));
@@ -116,8 +115,8 @@ public class UI_DrawPopup : UI_Popup
         _drawlevel = _equipmentData.Level;
         _totalCount = _equipmentData.DrawCount;
 
-        GetText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_drawlevel}";
-        GetText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.GachaDataDic[_drawlevel].MaxExp}";
+        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_drawlevel}";
+        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.GachaDataDic[_drawlevel].MaxExp}";
 
         GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
         GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.GachaDataDic[_drawlevel].MaxExp;
@@ -139,9 +138,9 @@ public class UI_DrawPopup : UI_Popup
     {
         foreach (var icon in _iconImages)
         {
-            icon.Value.color = Color.white;
+            icon.Value.color = Util.HexToColor("#848484");
         }
-        _iconImages[type].color = _selectedColor;
+        _iconImages[type].color = Color.white;
         _portalImage.sprite = _portalEqIconDic[type];
         _type = type;
         UpdateUI();

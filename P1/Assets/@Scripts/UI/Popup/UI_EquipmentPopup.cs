@@ -67,7 +67,7 @@ public class UI_EquipmentPopup : UI_Popup
             if (equipmentType != value)
             {
                 equipmentType = value;
-                GetText((int)Texts.Text_EquipmentType).text = Util.GetEquipmentString(value);
+                GetTMPText((int)Texts.Text_EquipmentType).text = Util.GetEquipmentString(value);
             }
         }
     }
@@ -79,7 +79,7 @@ public class UI_EquipmentPopup : UI_Popup
 
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
 
         GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => ShowEquipmentAllUI(EEquipmentType.Weapon));
@@ -174,17 +174,17 @@ public class UI_EquipmentPopup : UI_Popup
             return;
 
         equipmentItem.SetEquipmentInfo(SelectEquipmentInfo);
-        GetText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
-        GetText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
-        GetText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
-        GetText((int)Texts.Text_EquipmentValueText).text
+        GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
+        GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
+        GetTMPText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
+        GetTMPText((int)Texts.Text_EquipmentValueText).text
         = $"<color=#FFA500>장착 효과 : {SelectEquipmentInfo.Data.EquippedValue}%</color> \n<color=#00FF00>보유 효과 : {SelectEquipmentInfo.Data.OwnedValue}%</color>";
 
         int currentCount = SelectEquipmentInfo.Count;
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
         GetSlider((int)Sliders.Slider_EquipmentCount).maxValue = maxCount;
         GetSlider((int)Sliders.Slider_EquipmentCount).value = currentCount;  // 슬라이더의 현재 값도 업데이트
-        GetText((int)Texts.Text_OwendAmount).text = $"{currentCount} / {maxCount}";
+        GetTMPText((int)Texts.Text_OwendAmount).text = $"{currentCount} / {maxCount}";
 
 
 

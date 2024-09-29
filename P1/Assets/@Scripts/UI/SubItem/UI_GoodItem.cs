@@ -23,7 +23,7 @@ public class UI_GoodItem : UI_Base
         if (base.Init() == false)
             return false;
 
-        BindTexts(typeof(Texts));
+        BindTMPTexts(typeof(Texts));
         Bind<RectTransform>(typeof(RectTransforms));
         return true;
     }
@@ -48,7 +48,7 @@ public class UI_GoodItem : UI_Base
         if (goodType == EGoodType.None)
             return;
 
-        GetText((int)Texts.GoodText).text = $"{Managers.Purse.GetAmount(goodType):N0}";
+        GetTMPText((int)Texts.GoodText).text = Util.ConvertToKoreanUnits(Managers.Purse.GetAmount(goodType));
     }
 
     public RectTransform GetGoodIcon()
