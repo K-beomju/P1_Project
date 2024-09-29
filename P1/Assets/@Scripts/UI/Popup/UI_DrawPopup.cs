@@ -8,6 +8,11 @@ using static Define;
 
 public class UI_DrawPopup : UI_Popup
 {
+    public enum GameObjects
+    {
+        BG
+    }
+
     public enum Texts
     {
         Text_DrawLevel,
@@ -53,7 +58,8 @@ public class UI_DrawPopup : UI_Popup
     {
         if (base.Init() == false)
             return false;
-
+           
+        BindObjects(typeof(GameObjects));
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindButtons(typeof(Buttons));
@@ -80,6 +86,11 @@ public class UI_DrawPopup : UI_Popup
         GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Ring));
+        GetObject((int)GameObjects.BG).BindEvent(() =>
+        {
+            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
+
+        }, EUIEvent.Click);
 
         return true;
     }

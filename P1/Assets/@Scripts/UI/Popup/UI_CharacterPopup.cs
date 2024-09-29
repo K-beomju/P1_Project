@@ -9,6 +9,7 @@ public class UI_CharacterPopup : UI_Popup
 {
     public enum GameObjects
     {
+        BG,
         Character,
         Attribute,
         Relics
@@ -62,6 +63,11 @@ public class UI_CharacterPopup : UI_Popup
         GetButton((int)Buttons.Btn_RingSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Ring));
         GetButton((int)Buttons.Btn_ArmorSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_WeaponSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Weapon));
+        GetObject((int)GameObjects.BG).BindEvent(() =>
+        {
+            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
+
+        }, EUIEvent.Click);
 
         // 버튼과 패널을 함께 딕셔너리로 관리
         _characterPanels = new Dictionary<CharacterInven, (Button, GameObject)>

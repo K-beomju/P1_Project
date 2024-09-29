@@ -196,7 +196,7 @@ public class UI_GameScene : UI_Scene
         }
     }
 
-    private void ToggleTab(PlayTab tab, bool isActive)
+    public void ToggleTab(PlayTab tab, bool isActive)
     {
         if (isActive)
         {
@@ -226,6 +226,7 @@ public class UI_GameScene : UI_Scene
         }
         else
         {
+            Debug.Log("머자ㅣㅇ");
             Managers.UI.ClosePopupUI();
             ShowActiveTopStage(true);
         }
@@ -236,6 +237,12 @@ public class UI_GameScene : UI_Scene
     public void ShowActiveTopStage(bool active)
     {
         GetObject((int)GameObjects.TopStage).SetActive(active);
+    }
+
+    public void CloseDrawPopup(UI_Popup popup)
+    {
+        Managers.UI.ClosePopupUI(popup);
+        _tab = PlayTab.None; // 팝업이 닫힐 때 _tab을 None으로 초기화
     }
 
 }

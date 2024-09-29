@@ -9,6 +9,7 @@ public class UI_EquipmentPopup : UI_Popup
 {
     public enum GameObjects
     {
+        BG,
         Content_Equipment
     }
 
@@ -89,6 +90,11 @@ public class UI_EquipmentPopup : UI_Popup
         GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(() => OnEnhanceEquipment());
         GetButton((int)Buttons.Btn_AutoEquip).onClick.AddListener(() => OnAutoEquipment());
         GetButton((int)Buttons.Btn_BatchEnhance).onClick.AddListener(() => OnBatchEnhanceEquipment());
+        GetObject((int)GameObjects.BG).BindEvent(() =>
+        {
+            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
+
+        }, EUIEvent.Click);
 
         equipmentItem = Util.FindChild<UI_EquipmentItem>(gameObject, "UI_EquipmentItem", true);
         for (int i = 0; i < 24; i++)
