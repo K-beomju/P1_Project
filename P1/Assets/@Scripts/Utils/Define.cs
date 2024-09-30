@@ -106,12 +106,6 @@ public static class Define
         Max,
     }
 
-    public enum EStatModType
-    {
-        Add,
-        PercentAdd,
-        PercentMult,
-    }
 
     public enum EGoodType
     {
