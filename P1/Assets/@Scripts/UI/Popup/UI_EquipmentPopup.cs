@@ -129,6 +129,7 @@ public class UI_EquipmentPopup : UI_Popup
     public void SetInfo(EEquipmentType type)
     {
         EquipmentType = type;
+        RefreshUI();
     }
 
     // 장비 타입을 바꿨을 때 Item 갱신 
