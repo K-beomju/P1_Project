@@ -113,15 +113,6 @@ public static class Define
         PercentMult,
     }
 
-    public enum EHeroUpgradeType
-    {
-        Growth_Atk,
-        Growth_Hp,
-        Growth_Recovery,
-        Growth_CriRate,
-        Growth_CriDmg
-    }
-
     public enum EGoodType
     {
         None,
@@ -154,6 +145,16 @@ public static class Define
         Armor,
         Ring
     }
+
+    public enum EHeroUpgradeType
+    {
+        Growth_Atk,
+        Growth_Hp,
+        Growth_Recovery,
+        Growth_CriRate,
+        Growth_CriDmg
+    }
+
 
     public enum ELayer
     {

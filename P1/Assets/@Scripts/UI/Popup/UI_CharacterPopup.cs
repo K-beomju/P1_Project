@@ -4,18 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static Define;
+using static UI_DrawPopup;
 
 public class UI_CharacterPopup : UI_Popup
 {
     public enum GameObjects
     {
         BG,
-        Character,
-        Attribute,
-        Relics
+        UI_ChracterPanel,
+        UI_AttributePanel,
+        UI_RelicsPanel
     }
 
-    public enum CharacterInven
+    public enum Buttons
+    {
+        Btn_Character,
+        Btn_Attribute,
+        Btn_Relics
+    }
+
+    public enum ECharacterSection
     {
         None = -1,
         Character,
@@ -23,32 +31,21 @@ public class UI_CharacterPopup : UI_Popup
         Relics
     }
 
-    public enum Buttons
-    {
-        Btn_RingSlot,
-        Btn_ArmorSlot,
-        Btn_WeaponSlot,
-
-        Btn_Character,
-        Btn_Attribute,
-        Btn_Relics
-    }
-
     public enum Texts
     {
         Text_CharacterTitle
     }
 
-    public enum EquipmentItems
-    {
-        UI_EquipmentItem_Ring,
-        UI_EquipmentItem_Armor,
-        UI_EquipmentItem_Weapon
-    }
+    // State
+    private ECharacterSection _characterSection = ECharacterSection.None;
+
+    // Panel
+    UI_CharacterPanel _characterPanel;
+    UI_AttributePanel _attributePanel;
+    UI_RelicsPanel _relicsPanel;
 
 
-    private CharacterInven _inven = CharacterInven.None;
-    private Dictionary<CharacterInven, (Button, GameObject)> _characterPanels;
+    private Dictionary<ECharacterSection, (Button, GameObject)> _characterPanels;
 
     protected override bool Init()
     {
@@ -58,107 +55,66 @@ public class UI_CharacterPopup : UI_Popup
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(Texts));
-        Bind<UI_EquipmentItem>(typeof(EquipmentItems));
 
-        GetButton((int)Buttons.Btn_RingSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Ring));
-        GetButton((int)Buttons.Btn_ArmorSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Armor));
-        GetButton((int)Buttons.Btn_WeaponSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Weapon));
-        GetObject((int)GameObjects.BG).BindEvent(() =>
-        {
-            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
+        _characterPanel = GetObject((int)GameObjects.UI_ChracterPanel).GetOrAddComponent<UI_CharacterPanel>();
+        _attributePanel = GetObject((int)GameObjects.UI_AttributePanel).GetOrAddComponent<UI_AttributePanel>();
+        _relicsPanel = GetObject((int)GameObjects.UI_RelicsPanel).GetOrAddComponent<UI_RelicsPanel>();
 
-        }, EUIEvent.Click);
+        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this));
+        GetButton((int)Buttons.Btn_Character).onClick.AddListener(() => OnClickButton(ECharacterSection.Character));
+        GetButton((int)Buttons.Btn_Attribute).onClick.AddListener(() => OnClickButton(ECharacterSection.Attribute));
+        GetButton((int)Buttons.Btn_Relics).onClick.AddListener(() => OnClickButton(ECharacterSection.Relics));
 
-        // 버튼과 패널을 함께 딕셔너리로 관리
-        _characterPanels = new Dictionary<CharacterInven, (Button, GameObject)>
-        {
-            { CharacterInven.Character, (GetButton((int)Buttons.Btn_Character), GetObject((int)GameObjects.Character)) },
-            { CharacterInven.Attribute, (GetButton((int)Buttons.Btn_Attribute),  GetObject((int)GameObjects.Attribute)) },
-            { CharacterInven.Relics, (GetButton((int)Buttons.Btn_Relics),  GetObject((int)GameObjects.Relics)) }
-        };
-
-        // 버튼에 클릭 이벤트 할당
-        foreach (var (inven, (button, _)) in _characterPanels)
-        {
-            button.onClick.AddListener(() => ShowTab(inven));
-        }
-
-        foreach (EquipmentItems item in Enum.GetValues(typeof(EquipmentItems)))
-        {
-            var equipmentItem = Get<UI_EquipmentItem>((int)item);
-            if (equipmentItem != null)
-            {
-                equipmentItem.gameObject.SetActive(false);
-            }
-        }
+        _characterSection = ECharacterSection.Character;
         return true;
+    }
+
+    void OnClickButton(ECharacterSection section)
+    {
+        if (_characterSection == section)
+            return;
+
+        _characterSection = section;
+        RefreshUI();
     }
 
 
     public void RefreshUI()
     {
-        _inven = CharacterInven.Character;
-        ShowTab(_inven);
-        UpdateEquipmentSlot();
-    }
+        _characterPanel.gameObject.SetActive(false);
+        GetButton((int)Buttons.Btn_Character).interactable = true;
+        GetButton((int)Buttons.Btn_Attribute).interactable = true;
+        GetButton((int)Buttons.Btn_Relics).interactable = true;
 
-    public void ShowTab(CharacterInven inven)
-    {
-        foreach (var (button, panel) in _characterPanels.Values)
+        switch (_characterSection)
         {
-            button.interactable = true;
-            panel.SetActive(false);
+            case ECharacterSection.Character:
+                GetButton((int)Buttons.Btn_Character).interactable = false;
+
+                _characterPanel.gameObject.SetActive(true);
+                _characterPanel.RefreshUI();
+                break;
+            case ECharacterSection.Attribute:
+                GetButton((int)Buttons.Btn_Attribute).interactable = false;
+                break;
+            case ECharacterSection.Relics:
+                GetButton((int)Buttons.Btn_Relics).interactable = false;
+                break;
         }
-        var (selectedButton, selectedPanel) = _characterPanels[inven];
-        selectedButton.interactable = false;
-        selectedPanel.SetActive(true);
-        GetTMPText((int)Texts.Text_CharacterTitle).text = GetCharacterTabString(inven);
 
+        GetTMPText((int)Texts.Text_CharacterTitle).text = GetCharacterPanelString(_characterSection);
     }
 
-    private string GetCharacterTabString(CharacterInven inven)
+    private string GetCharacterPanelString(ECharacterSection section)
     {
-        return inven switch
+        return section switch
         {
-            CharacterInven.Character => "캐릭터",
-            CharacterInven.Attribute => "특성",
-            CharacterInven.Relics => "유물",
-            _ => throw new ArgumentException($"Unknown rare type String: {inven}")
+            ECharacterSection.Character => "캐릭터",
+            ECharacterSection.Attribute => "특성",
+            ECharacterSection.Relics => "유물",
+            _ => throw new ArgumentException($"Unknown rare type String: {section}")
         };
     }
 
-    #region Equipment Slot 
-
-    private void HandleEquipmentPopup(EEquipmentType equipmentType)
-    {
-        Managers.UI.ClosePopupUI();
-        Managers.UI.ShowPopupUI<UI_EquipmentPopup>().SetInfo(equipmentType);
-        (Managers.UI.SceneUI as UI_GameScene)._tab = UI_GameScene.PlayTab.Equipment;
-    }
-
-    public void UpdateEquipmentSlot()
-    {
-        UpdateEquipmentUI(EEquipmentType.Weapon, EquipmentItems.UI_EquipmentItem_Weapon);
-        UpdateEquipmentUI(EEquipmentType.Armor, EquipmentItems.UI_EquipmentItem_Armor);
-        UpdateEquipmentUI(EEquipmentType.Ring, EquipmentItems.UI_EquipmentItem_Ring);
-    }
-
-    private void UpdateEquipmentUI(EEquipmentType type, EquipmentItems uiItem)
-    {
-        int equipmentId = Managers.Equipment.GetEquippedId(type);
-        var equipmentItem = Get<UI_EquipmentItem>((int)uiItem);
-
-        if (equipmentId != 0)
-        {
-            equipmentItem.gameObject.SetActive(true);
-            equipmentItem.SetEquipmentInfo(Managers.Equipment.GetEquipmentInfo(equipmentId));
-        }
-        else
-        {
-            equipmentItem.gameObject.SetActive(false);
-        }
-    }
-
-    #endregion
 
 }

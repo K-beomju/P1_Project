@@ -67,8 +67,8 @@ public class UI_DrawPopup : UI_Popup
 
     public void RefreshUI()
     {
-        GetObject((int)GameObjects.UI_DrawEquipmentPanel).SetActive(false);
-        GetObject((int)GameObjects.UI_DrawSkillPanel).SetActive(false);
+        _drawEquipmentPanel.gameObject.SetActive(false);
+        _drawSkillPanel.gameObject.SetActive(false);
         GetButton((int)Buttons.Btn_Equipment).interactable = true;
         GetButton((int)Buttons.Btn_Skill).interactable = true;
 
