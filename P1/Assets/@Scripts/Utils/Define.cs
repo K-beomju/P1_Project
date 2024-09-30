@@ -67,7 +67,7 @@ public static class Define
         DrawDataUpdated,
 
         /// <summary>뽑기 관련 UI가 갱신될 때 호출</summary>
-        DrawUIUpdated,
+        DrawEquipmentUIUpdated,
 
         /// <summary>뽑기 레벨업 시 UI 갱신을 위해 호출</summary>
         DrawLevelUpUIUpdated,
@@ -145,6 +145,7 @@ public static class Define
         /// <summary> 천상 </summary>
         Celestial
     }
+
 
     public enum EEquipmentType
     {

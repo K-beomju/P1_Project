@@ -42,7 +42,7 @@ public class UI_DrawResultPopup : UI_Popup
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() =>
         {
             ClosePopupUI();
-            Managers.Event.TriggerEvent(EEventType.DrawUIUpdated);
+            Managers.Event.TriggerEvent(EEventType.DrawEquipmentUIUpdated);
         });
         GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawEquipment());
         for (int i = 0; i < 30; i++)

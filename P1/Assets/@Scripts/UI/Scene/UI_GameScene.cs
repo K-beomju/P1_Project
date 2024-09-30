@@ -33,6 +33,7 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         TopStage,
+        SkillSlotGroup,
         RemainMonster
     }
 
@@ -206,7 +207,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_CharacterPopup>().RefreshUI();
                     break;
                 case PlayTab.Equipment:
-                    Managers.UI.ShowPopupUI<UI_EquipmentPopup>().RefreshUI();
+                    Managers.UI.ShowPopupUI<UI_EquipmentPopup>().SetInfo();
                     break;
                 case PlayTab.Skill:
                     Managers.UI.ShowPopupUI<UI_SkillPopup>();
@@ -222,21 +223,23 @@ public class UI_GameScene : UI_Scene
                     break;
                     
             }
-            ShowActiveTopStage(false);
+            ShowPopupActiveGameUI(false);
         }
         else
         {
             Debug.Log("머자ㅣㅇ");
             Managers.UI.ClosePopupUI();
-            ShowActiveTopStage(true);
+            ShowPopupActiveGameUI(true);
         }
     }
 
     #endregion
 
-    public void ShowActiveTopStage(bool active)
+    public void ShowPopupActiveGameUI(bool active)
     {
         GetObject((int)GameObjects.TopStage).SetActive(active);
+        GetObject((int)GameObjects.SkillSlotGroup).SetActive(active);
+
     }
 
     public void CloseDrawPopup(UI_Popup popup)

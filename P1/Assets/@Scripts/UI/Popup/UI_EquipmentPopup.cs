@@ -83,9 +83,9 @@ public class UI_EquipmentPopup : UI_Popup
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
 
-        GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => ShowEquipmentAllUI(EEquipmentType.Weapon));
-        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => ShowEquipmentAllUI(EEquipmentType.Armor));
-        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => ShowEquipmentAllUI(EEquipmentType.Ring));
+        GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => RefreshUI(EEquipmentType.Weapon));
+        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => RefreshUI(EEquipmentType.Armor));
+        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => RefreshUI(EEquipmentType.Ring));
         GetButton((int)Buttons.Btn_Equip).onClick.AddListener(() => OnEquipEquipment());
         GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(() => OnEnhanceEquipment());
         GetButton((int)Buttons.Btn_AutoEquip).onClick.AddListener(() => OnAutoEquipment());
@@ -117,16 +117,19 @@ public class UI_EquipmentPopup : UI_Popup
         Managers.Event.RemoveEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
     }
 
-    public void RefreshUI(EEquipmentType type = EEquipmentType.None)
+    public void SetInfo(EEquipmentType type = EEquipmentType.None)
     {
         if (type != EEquipmentType.None)
             EquipmentType = type;
 
-        ShowEquipmentAllUI(EquipmentType);
+        if(Init() == false)
+        {
+            RefreshUI(EquipmentType);
+        }
     }
 
     // 장비 타입을 바꿨을 때 Item 갱신 
-    public void ShowEquipmentAllUI(EEquipmentType type)
+    public void RefreshUI(EEquipmentType type)
     {
         EquipmentType = type;
         // 장착된 장비를 우선 확인

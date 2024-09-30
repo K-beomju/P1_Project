@@ -10,155 +10,81 @@ public class UI_DrawPopup : UI_Popup
 {
     public enum GameObjects
     {
-        BG
-    }
-
-    public enum Texts
-    {
-        Text_DrawLevel,
-        Text_DrawValue
-    }
-
-    public enum Sliders
-    {
-        Slider_DrawCount
+        BG,
+        UI_DrawEquipmentPanel,
+        UI_DrawSkillPanel
     }
 
     public enum Buttons
     {
-        Btn_GachaProbability,
-        Btn_SkipDrawVisual,
-        Btn_DrawTenAd,
-        Btn_DrawTen,
-        Btn_DrawThirty,
-        Btn_Sword,
-        Btn_Armor,
-        Btn_Ring
+        Btn_Equipment,
+        Btn_Skill
     }
 
-    public enum Images
+
+    public enum EDrawSection
     {
-        BG_IconSword,
-        BG_IconArmor,
-        BG_IconRing,
-        Image_PortalEquipment
+        None,
+        Equipment,
+        Skill
     }
+    
+    // State
+    private EDrawSection _drawSection = EDrawSection.None;
 
-    private Dictionary<EEquipmentType, Image> _iconImages;
-    private Dictionary<EEquipmentType, Sprite> _portalEqIconDic;
-
-    private EquipmentDrawData _equipmentData;
-    private EEquipmentType _type = EEquipmentType.None;
-
-    private Image _portalImage;
-
-    private int _drawlevel;
-    private int _totalCount;
+    // Panel
+    UI_DrawEquipmentPanel _drawEquipmentPanel;
+    UI_DrawSkillPanel _drawSkillPanel;
 
 
     protected override bool Init()
     {
         if (base.Init() == false)
             return false;
-           
+
         BindObjects(typeof(GameObjects));
-        BindTMPTexts(typeof(Texts));
-        BindSliders(typeof(Sliders));
         BindButtons(typeof(Buttons));
-        BindImages(typeof(Images));
 
-        _iconImages = new Dictionary<EEquipmentType, Image>
-        {
-            { EEquipmentType.Weapon, GetImage((int)Images.BG_IconSword) },
-            { EEquipmentType.Armor, GetImage((int)Images.BG_IconArmor) },
-            { EEquipmentType.Ring, GetImage((int)Images.BG_IconRing) }
-        };
+        _drawEquipmentPanel = GetObject((int)GameObjects.UI_DrawEquipmentPanel).GetOrAddComponent<UI_DrawEquipmentPanel>();
+        _drawSkillPanel = GetObject((int)GameObjects.UI_DrawSkillPanel).GetOrAddComponent<UI_DrawSkillPanel>();
 
-        _portalEqIconDic = new Dictionary<EEquipmentType, Sprite>
-        {
-            { EEquipmentType.Weapon,   Managers.Resource.Load<Sprite>($"Sprites/WeaponIcon") },
-            { EEquipmentType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/Armor/Armor_24") },
-            { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/RingIcon") }
-        };
-        _portalImage = GetImage((int)Images.Image_PortalEquipment);
-
-        GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_type));
-        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
-        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
-        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
-        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Weapon));
-        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Armor));
-        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnSelectEquipmentIcon(EEquipmentType.Ring));
-        GetObject((int)GameObjects.BG).BindEvent(() =>
-        {
-            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
-
-        }, EUIEvent.Click);
+        GetButton((int)Buttons.Btn_Equipment).onClick.AddListener(() => OnClickButton(EDrawSection.Equipment));
+        GetButton((int)Buttons.Btn_Skill).onClick.AddListener(() => OnClickButton(EDrawSection.Skill));
 
 
+        _drawSection = EDrawSection.Equipment;
         return true;
     }
 
-    private void OnEnable()
+    void OnClickButton(EDrawSection section)
     {
-        Managers.Event.AddEvent(EEventType.DrawUIUpdated, new Action(UpdateUI));
-    }
+        if (_drawSection == section)
+            return;
 
-    private void OnDisable()
-    {
-        Managers.Event.RemoveEvent(EEventType.DrawUIUpdated, new Action(UpdateUI));
+        _drawSection = section;
+        RefreshUI();
     }
-
 
     public void RefreshUI()
     {
-        if (_init == false)
-            return;
+        GetObject((int)GameObjects.UI_DrawEquipmentPanel).SetActive(false);
+        GetObject((int)GameObjects.UI_DrawSkillPanel).SetActive(false);
+        GetButton((int)Buttons.Btn_Equipment).interactable = true;
+        GetButton((int)Buttons.Btn_Skill).interactable = true;
 
-        OnSelectEquipmentIcon(EEquipmentType.Weapon);
-    }
-
-    public void UpdateUI()
-    {
-        _equipmentData = Managers.Game.PlayerGameData.DrawData[_type];
-
-        if (_equipmentData == null)
+        switch (_drawSection)
         {
-            Debug.LogWarning("장비 게임 데이터가 없음");
-            return;
+            case EDrawSection.Equipment:
+                GetButton((int)Buttons.Btn_Equipment).interactable = false;
+
+                _drawEquipmentPanel.gameObject.SetActive(true);
+                _drawEquipmentPanel.RefreshUI();
+                break;
+            case EDrawSection.Skill:
+                GetButton((int)Buttons.Btn_Skill).interactable = false;
+                _drawSkillPanel.gameObject.SetActive(true);
+                break;
         }
-        _drawlevel = _equipmentData.Level;
-        _totalCount = _equipmentData.DrawCount;
-
-        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_drawlevel}";
-        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.GachaDataDic[_drawlevel].MaxExp}";
-
-        GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
-        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.GachaDataDic[_drawlevel].MaxExp;
-    }
-
-
-    public void OnDrawEquipment(int drawCount)
-    {
-        var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
-        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
-
-        List<int> equipmentIdList = Util.GetEquipmentDrawResults(_type, drawCount, _drawlevel);
-        popupUI.RefreshUI(_type, drawCount, equipmentIdList);
-    }
-
-
-    // 어떤 타입의 장비를 뽑는지 설정 
-    public void OnSelectEquipmentIcon(EEquipmentType type)
-    {
-        foreach (var icon in _iconImages)
-        {
-            icon.Value.color = Util.HexToColor("#848484");
-        }
-        _iconImages[type].color = Color.white;
-        _portalImage.sprite = _portalEqIconDic[type];
-        _type = type;
-        UpdateUI();
     }
 
 
