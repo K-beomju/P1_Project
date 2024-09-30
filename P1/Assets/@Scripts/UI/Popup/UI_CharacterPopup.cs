@@ -132,7 +132,9 @@ public class UI_CharacterPopup : UI_Popup
     private void HandleEquipmentPopup(EEquipmentType equipmentType)
     {
         Managers.UI.ClosePopupUI();
-        Managers.UI.ShowPopupUI<UI_EquipmentPopup>().RefreshUI(equipmentType);
+        var equipmentPopup = Managers.UI.ShowPopupUI<UI_EquipmentPopup>();
+        equipmentPopup.SetInfo(equipmentType);
+        equipmentPopup.RefreshUI();
         (Managers.UI.SceneUI as UI_GameScene)._tab = UI_GameScene.PlayTab.Equipment;
     }
 
