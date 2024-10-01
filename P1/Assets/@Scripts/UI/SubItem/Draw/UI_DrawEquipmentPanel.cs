@@ -9,7 +9,7 @@ public class UI_DrawEquipmentPanel : UI_Base
 {
     public enum Texts
     {
-        Text_DrawLevel,
+        Text_DrawEquipmentLevel,
         Text_DrawValue
     }
 
@@ -133,7 +133,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         _drawLevel = _equipmentData.Level;
         _totalCount = _equipmentData.DrawCount;
 
-        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_currentEquipmentType)} »Ì±â Lv. {_drawLevel}";
+        GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetEquipmentString(_currentEquipmentType)} »Ì±â Lv. {_drawLevel}";
         GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.GachaDataDic[_drawLevel].MaxExp}";
 
         GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
