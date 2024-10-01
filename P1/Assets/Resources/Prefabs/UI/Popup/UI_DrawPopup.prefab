@@ -879,6 +879,7 @@ GameObject:
   - component: {fileID: 4498086662610047337}
   - component: {fileID: 4533179638552931335}
   - component: {fileID: 6306595484039566509}
+  - component: {fileID: 936614629171356090}
   m_Layer: 5
   m_Name: UI_DrawSkillPanel
   m_TagString: Untagged
@@ -955,6 +956,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &936614629171356090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805332415969950492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21c63e5bb1242247a66adb9df2def9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &839118403454030057
 GameObject:
   m_ObjectHideFlags: 0
@@ -6553,7 +6566,7 @@ GameObject:
   - component: {fileID: 5516274458868007962}
   - component: {fileID: 6618461491592937621}
   m_Layer: 5
-  m_Name: Text_DrawSkill
+  m_Name: Text_DrawSkillLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
