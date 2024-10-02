@@ -60,6 +60,7 @@ public class GameScene : BaseScene
 
     private void InitializeGameComponents()
     {
+        Managers.BackEnd.Init();
         Managers.Data.Init();
         Managers.Game.Init();
         Managers.Hero.Init();

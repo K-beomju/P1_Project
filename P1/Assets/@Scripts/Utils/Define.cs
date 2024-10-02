@@ -21,6 +21,14 @@ public static class Define
         Clear,
     }
 
+    public enum EBackendState
+    {
+        Failure,
+        Maintainance,
+        Retry,
+        Success
+    }
+
     public enum EStageType
     {
         NormalStage,
