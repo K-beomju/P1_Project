@@ -7,21 +7,21 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
 
-public class GameData
+public class GameDatas
 {
 
-	public Dictionary<EEquipmentType, EquipmentDrawData> DrawData;
+    public Dictionary<EEquipmentType, EquipmentDrawData> DrawData;
 
-	public GameData()
-	{
-		DrawData = new Dictionary<EEquipmentType, EquipmentDrawData>
-		{
-			{EEquipmentType.Weapon, new EquipmentDrawData()},
-			{EEquipmentType.Armor, new EquipmentDrawData()},
-			{EEquipmentType.Ring, new EquipmentDrawData()}
-		};
+    public GameDatas()
+    {
+        DrawData = new Dictionary<EEquipmentType, EquipmentDrawData>
+        {
+            {EEquipmentType.Weapon, new EquipmentDrawData()},
+            {EEquipmentType.Armor, new EquipmentDrawData()},
+            {EEquipmentType.Ring, new EquipmentDrawData()}
+        };
 
-	}
+    }
 }
 
 public class EquipmentDrawData
@@ -50,7 +50,7 @@ public class EquipmentDrawData
 
 public class GameManager
 {
-	public GameData PlayerGameData { get; private set; }
+	public GameDatas PlayerGameData { get; private set; }
 
 	private Tilemap _tileMap;
 	private int _killMonsters;
@@ -58,7 +58,7 @@ public class GameManager
 
 	public void Init()
 	{
-		GameData gameData = new GameData();
+		GameDatas gameData = new GameDatas();
 		PlayerGameData = gameData;
 
 		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EEquipmentType>((type) =>

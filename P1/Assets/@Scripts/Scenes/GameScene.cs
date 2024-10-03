@@ -10,12 +10,6 @@ using static Define;
 
 public class GameScene : BaseScene
 {
-    public StageInfoData Data { get; private set; }
-    public int ChapterLevel { get; private set; }
-    public int StageLevel { get; private set; }
-    public float BossBattleTimer { get; private set; }
-    public float BossBattleTimeLimit { get; private set; }
-
     private EGameSceneState _gameSceneState = EGameSceneState.None;
     public EGameSceneState GameSceneState
     {
@@ -35,7 +29,16 @@ public class GameScene : BaseScene
     private WaitForSeconds FrameWait = new WaitForSeconds(0.2f);
     private WaitForSeconds StartWait = new WaitForSeconds(1f);
     private UI_GameScene sceneUI;
+
+    public StageInfoData Data { get; private set; }
+    public int ChapterLevel { get; private set; }
+    public int StageLevel { get; private set; }
+    public float BossBattleTimer { get; private set; }
+    public float BossBattleTimeLimit { get; private set; }
     private bool isClear;
+
+    private delegate void BackendLoadStep();
+    private readonly Queue<BackendLoadStep> _initializeStep = new Queue<BackendLoadStep>();
 
 
     protected override bool Init()
@@ -47,6 +50,8 @@ public class GameScene : BaseScene
         SceneType = EScene.GameScene;
         Managers.Scene.SetCurrentScene(this);
 
+        // Server
+        InitailizeBackend();
         // Data
         InitializeGameComponents();
         InitializeScene();
@@ -58,9 +63,17 @@ public class GameScene : BaseScene
         return true;
     }
 
+    private void InitailizeBackend()
+    {
+
+        // 코루틴을 통한 정기 데이터 업데이트 시작
+        BackendManager.Instance.StartUpdate();
+
+
+    }
+
     private void InitializeGameComponents()
     {
-        Managers.BackEnd.Init();
         Managers.Data.Init();
         Managers.Game.Init();
         Managers.Hero.Init();
@@ -69,8 +82,7 @@ public class GameScene : BaseScene
 
     private void InitializeScene()
     {
-        SceneType = EScene.GameScene;
-        Managers.Scene.SetCurrentScene(this);
+
         GameObject map = Managers.Resource.Instantiate("BaseMap");
         PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
@@ -85,7 +97,7 @@ public class GameScene : BaseScene
     {
         Managers.UI.CacheAllPopups();
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
-        Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_GAMESCENE);
+        Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
         sceneUI.UpdateStageUI(false);
     }
 

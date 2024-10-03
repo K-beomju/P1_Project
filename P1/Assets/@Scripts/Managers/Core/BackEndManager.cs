@@ -1,202 +1,230 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Diagnostics;
+using System.Reflection;
+using System.Transactions;
 using BackEnd;
+using BackendData.Base;
+using Unity.VisualScripting;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
 
-using static Define;
-using System;
-
-public class BackEndManager
+public class BackendManager : MonoBehaviour
 {
-    private BackendGameData _backendGameData = new();
-    public void Init()
-    {
-        var initializeBro = Backend.Initialize();
+    public static BackendManager Instance { get; private set; }
 
-        if (!initializeBro.IsSuccess())
-        {
-            Debug.LogError("초기화 실패 : " + initializeBro.ToString()); // 실패일 경우 statusCode 400대 에러 발생
-            return;
+
+    // 게임 정보 관리 데이터만 모아놓은 클래스
+    public class BackendGameData {
+        public readonly BackendData.GameData.UserData UserData = new();
+
+        public readonly Dictionary<string, BackendData.Base.GameData>
+            GameDataList = new Dictionary<string, BackendData.Base.GameData>();
+
+        public BackendGameData() {
+            GameDataList.Add("내 유저 정보", UserData);
         }
-
-        Debug.Log("초기화 성공 : " + initializeBro); // 성공일 경우 statusCode 204 Success
-
-        Backend.BMember.CustomLogin("user1", "1234");
-        _backendGameData.SaveUserData(10);
-
     }
 
-    // 차트 ID와 반복 횟수, 연결이 됐을 경우 실행할 함수를 받아 서버 GameData란에
-    // 정보를 추가하는 함수 
-    public void GameDataInsert(string selectedProbabilityField, int maxRepeatCount,
-        Param param, Action<BackendReturnObject> onCompleted = null)
-    {
-        if (!Backend.IsLogin)
+    public BackendGameData GameData = new(); // 게임 데이터 관리 클래스 생성 
+
+    // 치명적인 에러 발생 여부
+    private bool _isErrorOccured = false;
+
+
+    void Awake() {
+        if (Instance != null)
         {
-            Debug.LogError("뒤끝에 로그인 되어있지 않습니다.");
+            Destroy(gameObject);
             return;
         }
 
-        if (maxRepeatCount <= 0)
-        {
-            Debug.LogErrorFormat($"{selectedProbabilityField} 게임 정보를 추가하지 못했습니다.");
-            return;
-        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
-        Backend.GameData.Insert(selectedProbabilityField, param, callback =>
-        {
-            switch (ErrorCheck(callback))
-            {
-                case EBackendState.Failure:
-                    Debug.LogError("연결 실패");
-                    break;
-                case EBackendState.Maintainance:
-                    Debug.LogError("서버 점검 중");
-                    break;
-                case EBackendState.Retry:
-                    Debug.LogWarning("연결 재시도");
-                    GameDataInsert(selectedProbabilityField, maxRepeatCount - 1, param, onCompleted);
-                    break;
-                case EBackendState.Success:
-                    Debug.Log("정보 추가 성공");
-                    onCompleted?.Invoke(callback);
-                    break;
-            }
-        });
+        Init();
     }
 
-    // 차트 ID와 반복 횟수, 연결이 됐을 경우 실행할 함수를 받아 서버 GameData란에
-    // 정보를 수정하는 함수 
-    public void GameDataUpdate(string selectedProbabilityField, string inData, 
-        int maxRepeatCount, Param param, Action<BackendReturnObject> onCompleted = null)
-    {
-        if (!Backend.IsLogin)
-        {
-            Debug.LogError("뒤끝에 로그인 되어있지 않습니다.");
-            return;
-        }
+    public void Init() {
 
-        if (maxRepeatCount <= 0)
-        {
-            Debug.LogErrorFormat($"{selectedProbabilityField} 게임 정보를 추가하지 못했습니다.");
-            return;
-        }
+        var initalizeBro = Backend.Initialize();
 
-        Backend.GameData.UpdateV2(selectedProbabilityField, inData, Backend.UserInDate,
-            param, callback =>
+        if (initalizeBro.IsSuccess())
         {
-            switch (ErrorCheck(callback))
-            {
-                case EBackendState.Failure:
-                    Debug.LogError("연결 실패");
-                    break;
-                case EBackendState.Maintainance:
-                    Debug.LogError("서버 점검 중");
-                    break;
-                case EBackendState.Retry:
-                    Debug.LogWarning("연결 재시도");
-                    GameDataUpdate(selectedProbabilityField, inData, 
-                        maxRepeatCount - 1, param, onCompleted);
-                    break;
-                case EBackendState.Success:
-                    Debug.Log("정보 추가 성공");
-                    onCompleted?.Invoke(callback);
-                    break;
-            }
-        });
-    }
+            Debug.Log("뒤끝 초기화가 완료되었습니다.");
+            Backend.BMember.CustomLogin("user1", "1234");
 
-
-    // 서버와 연결 상태를 체크하고 State값을 반환하는 함수 
-    public EBackendState ErrorCheck(BackendReturnObject bro)
-    {
-        if (bro.IsSuccess())
-        {
-            Debug.Log("요청 성공");
-            return EBackendState.Success;
+            CreateSendQueueMgr();
+            SetErrorHandler();
         }
         else
         {
-            if (bro.IsClientRequestFailError())
-            {
-                Debug.LogError("일시적인 네트워크 끊김");
-                return EBackendState.Retry;
-            }
-            else if (bro.IsServerError())
-            {
-                Debug.LogError("서버 이상 발생");
-                return EBackendState.Retry;
-            }
-            else if (bro.IsMaintenanceError())
-            {
-                Debug.Log("게임 점검중");
-                return EBackendState.Maintainance;
-            }
-            else if (bro.IsTooManyRequestError())
-            {
-                Debug.LogError("단기간에 많은 요청을 보냈습니다.");
-                return EBackendState.Failure;
-            }
-            else if (bro.IsBadAccessTokenError())
-            {
-                bool isRefreshSuccess = RefreshTheBackendToken(3);
-
-                if (isRefreshSuccess)
-                {
-                    Debug.LogError("토큰 발급 성공");
-                    return EBackendState.Retry;
-                }
-                else
-                {
-                    Debug.LogError("토큰을 발급 받지 못하였습니다.");
-                    return EBackendState.Failure;
-                }
-
-            }
-            return EBackendState.Retry;
+            Debug.LogError("초기화 실패");
         }
     }
 
-    /// 뒤끝 토큰 재발급 함수 , maxRepeatCount : 서버 연결 실패시 재 시도할 횟수 
-    public bool RefreshTheBackendToken(int maxRepeatCount)
+    // 모든 뒤끝 함수에서 에러 발생 시, 각 에러에 따라 호출해주는 핸들러
+    private void SetErrorHandler() {
+        // 서버 점검 에러 발생 시
+        Backend.ErrorHandler.OnMaintenanceError = () => {
+            Debug.LogError("점검 에러 발생!!!");
+        };
+        // 403 에러 발생시
+        Backend.ErrorHandler.OnTooManyRequestError = () => {
+            Debug.LogError("비정상적인 행동 감지 " + "비정상적인 행동이 감지되었습니다.\n타이틀로 돌아갑니다.");
+        };
+        // 액세스토큰 만료 후 리프레시 토큰 실패 시
+        Backend.ErrorHandler.OnOtherDeviceLoginDetectedError = () => {
+            Debug.LogError("다른 기기 접속 감지 " + "다른 기기에서 로그인이 감지되었습니다.\n타이틀로 돌아갑니다.");
+        };
+    }
+
+    // 로딩씬에서 할당할 뒤끝 정보 클래스 초기화
+    public void InitInGameData() {
+        GameData = new();
+    }
+
+    //SendQueue를 관리해주는 SendQueue 매니저 생성
+    private void CreateSendQueueMgr() {
+        var obj = new GameObject();
+        obj.name = "SendQueueMgr";
+        obj.transform.SetParent(this.transform);
+        obj.AddComponent<SendQueueMgr>();
+    }
+
+    // 일정주기마다 데이터를 저장/불러오는 코루틴 시작(인게임 시작 시)
+    public void StartUpdate() {
+        StartCoroutine(UpdateGameDataTransaction());
+    }
+
+    // 호출 시, 코루틴 내 함수들의 동작을 멈추게 하는 함수
+    public void StopUpdate() {
+        Debug.Log("자동 저장을 중지합니다.");
+        _isErrorOccured = false;
+    }
+
+    private IEnumerator UpdateGameDataTransaction() {
+        var seconds = new WaitForSeconds(300);
+        yield return seconds;
+
+        while(_isErrorOccured) {
+            UpdateAllGameData(null);
+
+            yield return seconds;
+        }
+    }
+
+    // 업데이트가 발생한 이후에 호출에 대한 응답을 반환해주는 대리자 함수
+    public delegate void AfterUpdateFunc(BackendReturnObject callback);
+
+    // 값이 바뀐 데이터가 있는지 체크후 바뀐 데이터들은 바로 저장 혹은 트랜잭션에 묶어 저장을 진행하는 함수
+    public void UpdateAllGameData(AfterUpdateFunc afterUpdateFunc)
     {
-        if (maxRepeatCount <= 0)
-        {
-            Debug.Log("토큰 발급 실패");
-            return false;
+        string info = string.Empty;
+
+
+        // 바뀐 데이터가 몇개 있는지 체크
+        List<GameData> gameDatas = new List<GameData>();
+
+        foreach (var gameData in GameData.GameDataList) {
+            if (gameData.Value.IsChangedData) {
+                info += gameData.Value.GetTableName() + "\n";
+                gameDatas.Add(gameData.Value);
+            }
         }
 
-        BackendReturnObject callBack = Backend.BMember.RefreshTheBackendToken();
+        if (gameDatas.Count <= 0) {
+            afterUpdateFunc(null); // 지정한 대리자 함수 호출
 
-        if (callBack.IsSuccess())
-        {
-            Debug.Log("토큰 발급 성공");
-            return true;
+            Debug.Log("업데이트할 목록이 존재하지 않습니다.");
         }
-        else
-        {
-            if (callBack.IsClientRequestFailError())
-            {
-                return RefreshTheBackendToken(maxRepeatCount - 1);
-            }
-            else if (callBack.IsServerError())
-            {
-                return RefreshTheBackendToken(maxRepeatCount - 1);
-            }
-            else if (callBack.IsMaintenanceError())
-            {
-                return false;
-            }
-            else if (callBack.IsTooManyRequestError())
-            {
-                return false;
-            }
-            else
-            {
-                Debug.Log("게임 접속에 문제가 발생했습니다. 로그인 화면으로 돌아감 \n"
-                    + callBack.ToString());
-                return false;
+        else if (gameDatas.Count == 1) {
+
+            //하나라면 찾아서 해당 테이블만 업데이트
+            foreach (var gameData in gameDatas) {
+                if (gameData.IsChangedData) {
+                    gameData.Update(callback => {
+
+                        //성공할경우 데이터 변경 여부를 false로 변경
+                        if (callback.IsSuccess()) {
+                            gameData.IsChangedData = false;
+                        }
+                        else {
+                            SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString() + "\n" + info);
+                        }
+                        Debug.Log($"UpdateV2 : {callback}\n업데이트 테이블 : \n{info}");
+                        if (afterUpdateFunc == null) {
+
+                        }
+                        else {
+                            afterUpdateFunc(callback); // 지정한 대리자 함수 호출
+                        }
+                    });
+                }
             }
         }
+        else {
+            // 2개 이상이라면 트랜잭션에 묶어서 업데이트
+            // 단 10개 이상이면 트랜잭션 실패 주의
+            List<TransactionValue> transactionList = new List<TransactionValue>();
+
+            // 변경된 데이터만큼 트랜잭션 추가
+            foreach (var gameData in gameDatas) {
+                transactionList.Add(gameData.GetTransactionUpdateValue());
+            }
+
+            SendQueue.Enqueue(Backend.GameData.TransactionWriteV2, transactionList, callback => {
+                Debug.Log($"Backend.BMember.TransactionWriteV2 : {callback}");
+
+                if (callback.IsSuccess()) {
+                    foreach (var data in gameDatas) {
+                        data.IsChangedData = false;
+                    }
+                }
+                else {
+                    SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString() + "\n" + info);
+                }
+
+                Debug.Log($"TransactionWriteV2 : {callback}\n업데이트 테이블 : \n{info}");
+
+                if (afterUpdateFunc == null) {
+
+                }
+                else {
+                    afterUpdateFunc(callback);  // 지정한 대리자 함수 호출
+                }
+            });
+        }
+    }
+
+    // 에러 발생시 게임로그를 삽입하는 함수
+    public void SendBugReport(string className, string functionName, string errorInfo, int repeatCount = 3)
+    {
+        // 에러가 실패할 경우 재귀함수를 통해 최대 3번까지 호출을 시도한다.
+        if (repeatCount <= 0)
+        {
+            return;
+        }
+
+        // 아직 로그인되지 않을 경우 뒤끝 함수 호출이 불가능하여 UI에 띄운다.
+        if (string.IsNullOrEmpty(Backend.UserInDate))
+        {
+            return;
+        }
+
+        Param param = new Param();
+        param.Add("className", className);
+        param.Add("functionName", functionName);
+        param.Add("errorPath", errorInfo);
+
+        // [뒤끝] 로그 삽입 함수
+        Backend.GameLog.InsertLog("error", param, 7, callback => {
+            // 에러가 발생할 경우 재귀
+            if (callback.IsSuccess() == false)
+            {
+                SendBugReport(className, functionName, errorInfo, repeatCount - 1);
+            }
+        });
     }
 }

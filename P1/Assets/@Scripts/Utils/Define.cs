@@ -8,6 +8,7 @@ public static class Define
     {
         Unknown,
         TitleScene,
+        LoadingScene,
         GameScene,
     }
 
@@ -197,7 +198,7 @@ public static class Define
         public const int SKILL_EFFECT = 310;
         public const int DAMAGE_FONT = 410;
         public const int UI_POPUP = 450;
-        public const int UI_GAMESCENE = 500;
+        public const int UI_SCENE = 500;
         public const int UI_RESULTPOPUP = 600;
 
     }
