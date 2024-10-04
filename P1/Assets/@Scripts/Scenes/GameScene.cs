@@ -99,6 +99,9 @@ public class GameScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
         sceneUI.UpdateStageUI(false);
+
+        Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
+
     }
 
 

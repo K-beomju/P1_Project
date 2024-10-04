@@ -6,7 +6,7 @@ using static Define;
 
 public class PurseManager
 {
-    private Dictionary<EGoodType, int> _purseDic = new Dictionary<EGoodType, int>();
+    //private Dictionary<EGoodType, int> _purseDic = new Dictionary<EGoodType, int>();
 
     public int _currentLevel { get; private set; }
     private int _currentExp = 0;
@@ -30,21 +30,13 @@ public class PurseManager
 
     public void AddAmount(EGoodType goodType, int amount)
     {
-        if (!_purseDic.ContainsKey(goodType))
-        {
-            _purseDic.Add(goodType, amount);
-        }
-        else
-        {
-            _purseDic[goodType] += amount;
-        }
-
+        BackendManager.Instance.GameData.UserData.AddAmount(goodType, amount);
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
     }
 
     public int GetAmount(EGoodType goodType)
     {
-        _purseDic.TryGetValue(goodType, out int amount);
+        BackendManager.Instance.GameData.UserData.PurseDic.TryGetValue(goodType.ToString(), out int amount);
         return amount;
     }
 

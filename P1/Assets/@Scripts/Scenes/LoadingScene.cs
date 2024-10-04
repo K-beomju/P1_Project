@@ -139,7 +139,8 @@ public class LoadingScene : BaseScene
 
                 }
                 else {
-                    foreach(var gameData in BackendManager.Instance.GameData.GameDataList) { 
+                    // 트랜잭션으로 데이터를 찾지 못하여 에러가 발생한다면 개별로 GetMyData로 호출
+                    foreach (var gameData in BackendManager.Instance.GameData.GameDataList) { 
                         _initializeStep.Enqueue(() => {
                             ShowDataName(gameData.Key);
                             // GetMyData 호출

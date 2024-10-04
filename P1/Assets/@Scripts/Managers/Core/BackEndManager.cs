@@ -227,4 +227,24 @@ public class BackendManager : MonoBehaviour
             }
         });
     }
+
+    private void OnApplicationQuit()
+    {
+        UpdateAllGameData(callback => {
+            if (callback == null) {
+                Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
+                return;
+            }
+
+            if (callback.IsSuccess()) {
+                Debug.Log("저장 성공, 저장에 성공했습니다.");
+            }
+            else {
+                Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+            }
+                
+        });
+        Debug.Log("애플리케이션이 종료됩니다.");
+        // 종료 시 필요한 작업을 이곳에 작성
+    }
 }
