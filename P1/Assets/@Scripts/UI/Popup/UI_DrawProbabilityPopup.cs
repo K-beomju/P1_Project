@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using BackendData.GameData;
+
 using static Define;
 
 public class UI_DrawProbabilityPopup : UI_Popup
@@ -24,11 +26,11 @@ public class UI_DrawProbabilityPopup : UI_Popup
 
     private List<UI_DrawProbabilityItem> drawPbItems = new List<UI_DrawProbabilityItem>();
 
-    // ·¹º§ °ü¸® º¯¼ö
+    // ë ˆë²¨ ê´€ë¦¬ ë³€ìˆ˜
     private int _currentLevel;
     private EEquipmentType _currentType;
 
-    // ·¹º§º° È®·ü µ¥ÀÌÅÍ Ä³½ÌÀ» À§ÇÑ Dictionary
+    // ë ˆë²¨ë³„ í™•ë¥  ë°ì´í„° ìºì‹±ì„ ìœ„í•œ Dictionary
     private Dictionary<int, List<float>> _cachedProbabilityData;
 
     protected override bool Init()
@@ -49,7 +51,7 @@ public class UI_DrawProbabilityPopup : UI_Popup
         GetButton((int)Buttons.Btn_Right).onClick.AddListener(OnClickRight);
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() => Managers.UI.ClosePopupUI(this));
         GetObject((int)GameObjects.BG).BindEvent(() => Managers.UI.ClosePopupUI(this), EUIEvent.Click);
-        // È®·ü µ¥ÀÌÅÍ¸¦ Ä³½ÌÇÏ´Â ÇÔ¼ö È£Ãâ
+        // í™•ë¥  ë°ì´í„°ë¥¼ ìºì‹±í•˜ëŠ” í•¨ìˆ˜ í˜¸ì¶œ
         CacheProbabilityData();
 
         return true;
@@ -57,13 +59,13 @@ public class UI_DrawProbabilityPopup : UI_Popup
 
     private void CacheProbabilityData()
     {
-        // ·¹º§º° È®·ü µ¥ÀÌÅÍ¸¦ Ä³½ÌÇÒ Dictionary ÃÊ±âÈ­
+        // ë ˆë²¨ë³„ í™•ë¥  ë°ì´í„°ë¥¼ ìºì‹±í•  Dictionary ì´ˆê¸°í™”
         _cachedProbabilityData = new Dictionary<int, List<float>>();
 
-        // 1ºÎÅÍ 10±îÁöÀÇ ·¹º§¿¡ ´ëÇÑ È®·ü µ¥ÀÌÅÍ¸¦ Ä³½Ì
+        // 1ë¶€í„° 10ê¹Œì§€ì˜ ë ˆë²¨ì— ëŒ€í•œ í™•ë¥  ë°ì´í„°ë¥¼ ìºì‹±
         for (int level = 1; level <= 10; level++)
         {
-            // ·¹º§º° gachaData¸¦ °¡Á®¿Í °¢ ¸®½ºÆ®ÀÇ µ¥ÀÌÅÍ¸¦ °áÇÕÇÏ¿© List<float>·Î ÀúÀå
+            // ë ˆë²¨ë³„ gachaDataë¥¼ ê°€ì ¸ì™€ ê° ë¦¬ìŠ¤íŠ¸ì˜ ë°ì´í„°ë¥¼ ê²°í•©í•˜ì—¬ List<float>ë¡œ ì €ì¥
             var gachaData = Managers.Data.GachaDataDic[level];
             List<float> drawProbability = new List<float>();
             drawProbability.AddRange(gachaData.NormalDrawList);
@@ -73,27 +75,27 @@ public class UI_DrawProbabilityPopup : UI_Popup
             drawProbability.AddRange(gachaData.MythicalDrawList);
             drawProbability.AddRange(gachaData.CelestialDrawList);
 
-            // ÇØ´ç ·¹º§ÀÇ È®·ü µ¥ÀÌÅÍ¸¦ Dictionary¿¡ Ãß°¡
+            // í•´ë‹¹ ë ˆë²¨ì˜ í™•ë¥  ë°ì´í„°ë¥¼ Dictionaryì— ì¶”ê°€
             _cachedProbabilityData[level] = drawProbability;
         }
     }
 
     public void RefreshUI(EEquipmentType type)
     {
-        var equipmentData = Managers.Game.PlayerGameData.DrawData[type];
+        var equipmentData = BackendManager.Instance.GameData.UserData.DrawDic[type.ToString()]; 
         _currentType = type;
-        _currentLevel = equipmentData.Level; // ÃÊ±â ·¹º§ ¼³Á¤
+        _currentLevel = equipmentData.DrawLevel; // ì´ˆê¸° ë ˆë²¨ ì„¤ì •
 
         UpdateLevelText();
-        UpdateDrawProbabilityUI(); // UI °»½Å ½Ã Ä³½ÌµÈ µ¥ÀÌÅÍ »ç¿ë
+        UpdateDrawProbabilityUI(); // UI ê°±ì‹  ì‹œ ìºì‹±ëœ ë°ì´í„° ì‚¬ìš©
     }
 
     private void UpdateDrawProbabilityUI()
     {
-        // Ä³½ÌµÈ µ¥ÀÌÅÍ¿¡¼­ ÇöÀç ·¹º§ÀÇ È®·ü µ¥ÀÌÅÍ¸¦ °¡Á®¿È
+        // ìºì‹±ëœ ë°ì´í„°ì—ì„œ í˜„ì¬ ë ˆë²¨ì˜ í™•ë¥  ë°ì´í„°ë¥¼ ê°€ì ¸ì˜´
         if (_cachedProbabilityData.TryGetValue(_currentLevel, out var drawProbability))
         {
-            List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(_currentType);
+            List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(_currentType);
 
             for (int i = 0; i < drawPbItems.Count; i++)
             {
@@ -103,30 +105,30 @@ public class UI_DrawProbabilityPopup : UI_Popup
         }
     }
 
-    // Left ¹öÆ° Å¬¸¯ ½Ã ·¹º§ °¨¼Ò
+    // Left ë²„íŠ¼ í´ë¦­ ì‹œ ë ˆë²¨ ê°ì†Œ
     private void OnClickLeft()
     {
-        if (_currentLevel > 1) // ÃÖ¼Ò ·¹º§À» 1·Î ¼³Á¤
+        if (_currentLevel > 1) // ìµœì†Œ ë ˆë²¨ì„ 1ë¡œ ì„¤ì •
         {
             _currentLevel--;
-            UpdateDrawProbabilityUI(); // ·¹º§ º¯°æ ÈÄ UI °»½Å
-            UpdateLevelText(); // ÅØ½ºÆ® ¾÷µ¥ÀÌÆ®
+            UpdateDrawProbabilityUI(); // ë ˆë²¨ ë³€ê²½ í›„ UI ê°±ì‹ 
+            UpdateLevelText(); // í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
         }
     }
 
-    // Right ¹öÆ° Å¬¸¯ ½Ã ·¹º§ Áõ°¡
+    // Right ë²„íŠ¼ í´ë¦­ ì‹œ ë ˆë²¨ ì¦ê°€
     private void OnClickRight()
     {
-        if (_currentLevel < 10) // ÃÖ´ë ·¹º§ 10
+        if (_currentLevel < 10) // ìµœëŒ€ ë ˆë²¨ 10
         {
             _currentLevel++;
-            UpdateDrawProbabilityUI(); // ·¹º§ º¯°æ ÈÄ UI °»½Å
-            UpdateLevelText(); // ÅØ½ºÆ® ¾÷µ¥ÀÌÆ®
+            UpdateDrawProbabilityUI(); // ë ˆë²¨ ë³€ê²½ í›„ UI ê°±ì‹ 
+            UpdateLevelText(); // í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
         }
     }
 
     private void UpdateLevelText()
     {
-        GetTMPText((int)Texts.Text_DrawTypeLevel).text = $"{Util.GetEquipmentString(_currentType)} »Ì±â Lv. {_currentLevel}";
+        GetTMPText((int)Texts.Text_DrawTypeLevel).text = $"{Util.GetEquipmentString(_currentType)} ë½‘ê¸° Lv. {_currentLevel}";
     }
 }

@@ -7,63 +7,19 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
 
-public class GameDatas
-{
-
-    public Dictionary<EEquipmentType, EquipmentDrawData> DrawData;
-
-    public GameDatas()
-    {
-        DrawData = new Dictionary<EEquipmentType, EquipmentDrawData>
-        {
-            {EEquipmentType.Weapon, new EquipmentDrawData()},
-            {EEquipmentType.Armor, new EquipmentDrawData()},
-            {EEquipmentType.Ring, new EquipmentDrawData()}
-        };
-
-    }
-}
-
-public class EquipmentDrawData
-{
-	public int Level { get; set; }
-	public int DrawCount { get; set; }
-
-	public EquipmentDrawData()
-	{
-		Level = 1;
-		DrawCount = 0;
-	}
-
-	public void AddDrawCount()
-	{
-		DrawCount++;
-
-		while (DrawCount >= Managers.Data.GachaDataDic[Level].MaxExp)
-		{
-			DrawCount -= Managers.Data.GachaDataDic[Level].MaxExp;
-			Level++;
-			Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, Level);
-		}
-	}
-}
 
 public class GameManager
 {
-	public GameDatas PlayerGameData { get; private set; }
-
 	private Tilemap _tileMap;
 	private int _killMonsters;
 	private int _maxMonsters;
 
 	public void Init()
 	{
-		GameDatas gameData = new GameDatas();
-		PlayerGameData = gameData;
 
 		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EEquipmentType>((type) =>
 		{
-			PlayerGameData.DrawData[type].AddDrawCount();
+            BackendManager.Instance.GameData.UserData.AddDrawCount(type);
 		}));
 
 	}

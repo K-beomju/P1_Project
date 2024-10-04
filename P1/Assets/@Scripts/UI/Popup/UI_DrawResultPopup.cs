@@ -70,7 +70,7 @@ public class UI_DrawResultPopup : UI_Popup
     public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList)
     {
         _type = type;
-        _level = Managers.Game.PlayerGameData.DrawData[_type].Level;  // 최신 레벨 가져오기
+        _level = BackendManager.Instance.GameData.UserData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
         _drawCount = drawCount;
 
         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
@@ -101,7 +101,6 @@ public class UI_DrawResultPopup : UI_Popup
             drawItem.gameObject.SetActive(true);
             drawItem.SetDrawInfo(Managers.Equipment.GetEquipmentInfo(resultList[i]));
             Managers.Equipment.AddEquipment(resultList[i]);
-
             yield return wait;
         }
         InteractiveButtons(true);

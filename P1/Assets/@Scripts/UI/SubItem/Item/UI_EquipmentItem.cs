@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Define;
 using DG.Tweening;
+using BackendData.GameData;
+using static Define;
 
 
 public class UI_EquipmentItem : UI_Base
@@ -34,7 +35,7 @@ public class UI_EquipmentItem : UI_Base
     }
 
 
-    public void SetDrawInfo(EquipmentInfo equipmentData)
+    public void SetDrawInfo(EquipmentInfoData equipmentData)
     {
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
         
@@ -45,7 +46,7 @@ public class UI_EquipmentItem : UI_Base
         _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
     }
 
-    public void SetEquipmentInfo(EquipmentInfo equipmentData)
+    public void SetEquipmentInfo(EquipmentInfoData equipmentData)
     {
         _fadeImage.gameObject.SetActive(false);
         _equipmentButton.onClick.RemoveAllListeners();

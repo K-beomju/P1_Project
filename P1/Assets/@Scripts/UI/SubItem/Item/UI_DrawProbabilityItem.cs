@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BackendData.GameData;
+
 using static Define;
 
 public class UI_DrawProbabilityItem : UI_Base
@@ -29,7 +31,7 @@ public class UI_DrawProbabilityItem : UI_Base
         return true;
     }
 
-    public void RefreshUI(EquipmentInfo equipmentInfo, float drawProbability)
+    public void RefreshUI(EquipmentInfoData equipmentInfo, float drawProbability)
     {
         GetImage((int)Images.Image_Rare).color = Util.GetRareTypeColor(equipmentInfo.Data.RareType);
         GetTMPText((int)Texts.Text_EquipmentName).text = equipmentInfo.Data.Name;

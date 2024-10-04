@@ -27,6 +27,7 @@ public class LoadingScene : BaseScene
 
         SceneType = EScene.LoadingScene;
         Managers.Scene.SetCurrentScene(this);
+        Managers.Data.Init();
 
         // StaticManager가 없을 경우 새로 생성
         if (FindObjectOfType(typeof(BackendManager)) == null)

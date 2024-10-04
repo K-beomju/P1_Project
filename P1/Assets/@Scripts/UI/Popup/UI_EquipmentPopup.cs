@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,8 +47,8 @@ public class UI_EquipmentPopup : UI_Popup
     private UI_EquipmentItem equipmentItem;
     private List<UI_EquipmentItem> equipmentItems = new List<UI_EquipmentItem>();
 
-    private EquipmentInfo selectEquipmentInfo;
-    public EquipmentInfo SelectEquipmentInfo
+    private EquipmentInfoData selectEquipmentInfo;
+    public EquipmentInfoData SelectEquipmentInfo
     {
         get { return selectEquipmentInfo; }
         set
@@ -109,12 +110,12 @@ public class UI_EquipmentPopup : UI_Popup
 
     void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
+        Managers.Event.AddEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfoData>(ShowEquipmentDetailUI));
     }
 
     void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfo>(ShowEquipmentDetailUI));
+        Managers.Event.RemoveEvent(EEventType.EquipmentItemClick, new Action<EquipmentInfoData>(ShowEquipmentDetailUI));
     }
 
     void OnClickButton(EEquipmentType type)
@@ -135,11 +136,22 @@ public class UI_EquipmentPopup : UI_Popup
     // 장비 타입을 바꿨을 때 Item 갱신 
     public void RefreshUI()
     {
-        // 장착된 장비를 우선 확인
-        EquipmentInfo equippedInfo = Managers.Equipment.EquippedEquipments.Values
-            .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType);
+        // 장비 인벤토리 중 장착된 장비 찾기 
+        EquipmentInfoData equippedInfo = BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.Values
+            .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType && equipmentInfo.IsEquipped);
 
-        List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
+
+        // 장비 인벤과 동기화 
+        for (int i = 0; i < equipmentInfos.Count; i++)
+        {
+            // 만약에 내가 가진 장비 인벤과 동일한 ID일 경우
+            if (BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
+            {
+                // 동기화
+                equipmentInfos[i] = equipmentInfoData; 
+            }
+        }
 
         if (equippedInfo != null)
         {
@@ -149,7 +161,7 @@ public class UI_EquipmentPopup : UI_Popup
         else
         {
             // 장착된 장비가 없으면 소유한 장비나 가장 낮은 등급의 장비를 보여줍니다.
-            EquipmentInfo ownedEquipment = equipmentInfos
+            EquipmentInfoData ownedEquipment = equipmentInfos
                 .Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned)
                 .LastOrDefault();
 
@@ -160,7 +172,7 @@ public class UI_EquipmentPopup : UI_Popup
             else
             {
                 // 소유한 장비가 없을 때 가장 낮은 등급의 장비를 보여줍니다.
-                EquipmentInfo lowestRareEquipment = equipmentInfos
+                EquipmentInfoData lowestRareEquipment = equipmentInfos
                     .OrderBy(equipmentInfo => equipmentInfo.Data.RareType)
                     .FirstOrDefault();
 
@@ -179,7 +191,7 @@ public class UI_EquipmentPopup : UI_Popup
     }
 
     // 장비 Item을 클릭했을 때 보여주는 부분 
-    public void ShowEquipmentDetailUI(EquipmentInfo _equipmentInfo)
+    public void ShowEquipmentDetailUI(EquipmentInfoData _equipmentInfo)
     {
         SelectEquipmentInfo = _equipmentInfo;
         if (SelectEquipmentInfo == null)
@@ -218,12 +230,10 @@ public class UI_EquipmentPopup : UI_Popup
     // 강화
     private void OnEnhanceEquipment()
     {
-        int maxCount = Util.GetUpgradeEquipmentMaxCount(selectEquipmentInfo.Level);
+        int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
         if(SelectEquipmentInfo.Count >= maxCount)
         {
-            SelectEquipmentInfo.Level++;
-            SelectEquipmentInfo.Count -= maxCount;
-
+            BackendManager.Instance.GameData.UserData.EquipmentLevelUp(SelectEquipmentInfo);
             ShowEquipmentDetailUI(SelectEquipmentInfo);
         }
     }
@@ -232,9 +242,9 @@ public class UI_EquipmentPopup : UI_Popup
     private void OnAutoEquipment()
     {
         // 추후에 생각
-        List<EquipmentInfo> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
-        EquipmentInfo bestEquipment = equipmentInfos
+        EquipmentInfoData bestEquipment = equipmentInfos
         .Where(info => info.OwningState == EOwningState.Owned)
         .OrderByDescending(info => info.Data.RareType)
         .ThenByDescending(info => info.Data.DataId)

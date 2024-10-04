@@ -71,7 +71,6 @@ public class GameScene : BaseScene
 
     private void InitializeGameComponents()
     {
-        Managers.Data.Init();
         Managers.Game.Init();
         Managers.Hero.Init();
         Managers.Equipment.Init();

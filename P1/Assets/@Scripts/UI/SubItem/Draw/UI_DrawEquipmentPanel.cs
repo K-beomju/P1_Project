@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ public class UI_DrawEquipmentPanel : UI_Base
     private Dictionary<EEquipmentType, Image> _iconImages;
     private Dictionary<EEquipmentType, Sprite> _portalEqIconDic;
 
-    private EquipmentDrawData _equipmentData;
+    private DrawData _drawData;
     private EEquipmentType _currentEquipmentType = EEquipmentType.None;
 
     private Image _portalImage;
@@ -123,21 +124,21 @@ public class UI_DrawEquipmentPanel : UI_Base
 
     public void UpdateEquipmentUI()
     {
-        _equipmentData = Managers.Game.PlayerGameData.DrawData[_currentEquipmentType];
+        _drawData = BackendManager.Instance.GameData.UserData.DrawDic[_currentEquipmentType.ToString()];
 
-        if (_equipmentData == null)
+        if (_drawData == null)
         {
-            Debug.LogWarning("¿Â∫Ò ∞‘¿” µ•¿Ã≈Õ∞° æ¯¿Ω");
+            Debug.LogWarning("Ïû•ÎπÑ Í≤åÏûÑ Îç∞Ïù¥ÌÑ∞Í∞Ä ÏóÜÏùå");
             return;
         }
-        _drawLevel = _equipmentData.Level;
-        _totalCount = _equipmentData.DrawCount;
+        _drawLevel = _drawData.DrawLevel;
+        _totalCount = _drawData.DrawCount;
 
-        GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetEquipmentString(_currentEquipmentType)} ªÃ±‚ Lv. {_drawLevel}";
+        GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetEquipmentString(_currentEquipmentType)} ÎΩëÍ∏∞ Lv. {_drawLevel}";
         GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.GachaDataDic[_drawLevel].MaxExp}";
 
-        GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
         GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.GachaDataDic[_drawLevel].MaxExp;
+        GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
     }
 
 
