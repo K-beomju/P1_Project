@@ -33,12 +33,11 @@ public class GameScene : BaseScene
 
     public StageInfoData Data { get; private set; }
     public int ChapterLevel { get; private set; }
-    public int StageLevel { get; private set; }
     public float BossBattleTimer { get; private set; }
     public float BossBattleTimeLimit { get; private set; }
     private bool isClear;
 
-    private UserData userData;
+    private UserData UserData;
 
     protected override bool Init()
     {
@@ -57,14 +56,13 @@ public class GameScene : BaseScene
         InitializeUI();
 
         ChapterLevel = 1;
-        isClear = false;
-        SetupStage(1);
+        SetupStage();
         return true;
     }
 
     private void InitailizeBackend()
     {
-        userData = BackendManager.Instance.GameData.UserData;
+        UserData = BackendManager.Instance.GameData.UserData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
         BackendManager.Instance.StartUpdate();
 
@@ -102,7 +100,7 @@ public class GameScene : BaseScene
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
-        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, userData.Level, userData.Exp, userData.MaxExp); // 경험치 갱신 이벤트
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, UserData.Level, UserData.Exp, UserData.MaxExp); // 경험치 갱신 이벤트
 
     }
 
@@ -135,19 +133,18 @@ public class GameScene : BaseScene
         };
     }
 
-    private void SetupStage(int stageLevel)
+    private void SetupStage()
     {
         isClear = false;
-        StageLevel = stageLevel;
-        Data = Managers.Data.StageDataDic[StageLevel];
-        Debug.Log($"{stageLevel} 스테이지 진입");
+        Data = Managers.Data.StageDataDic[UserData.StageLevel];
+        Debug.Log($"{UserData.StageLevel} 스테이지 진입");
 
         BossBattleTimeLimit = Data.BossBattleTimeLimit;
         BossBattleTimer = BossBattleTimeLimit;
 
         GameSceneState = EGameSceneState.Play;
 
-        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(StageLevel);
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(UserData.StageLevel);
     }
 
     #region GameSceneState
@@ -210,11 +207,9 @@ public class GameScene : BaseScene
     private IEnumerator MoveToStageAfterDelay(int stageDelta)
     {
         yield return new WaitForSeconds(0.5f);
-        StageLevel += stageDelta;
-        if (StageLevel == 0)
-            StageLevel = 1;
-        Debug.LogWarning($"다음 스테이지 {StageLevel} 입니다!");
-        SetupStage(StageLevel);
+        UserData.UpdateStageLevel(stageDelta);
+        Debug.LogWarning($"다음 스테이지 {UserData.StageLevel} 입니다!");
+        SetupStage();
         GameSceneState = EGameSceneState.Play;
     }
 
@@ -257,7 +252,7 @@ public class GameScene : BaseScene
 
     public string GetCurrentStage()
     {
-        return $"{ChapterLevel}-{StageLevel}";
+        return $"{ChapterLevel}-{UserData.StageLevel}";
     }
 
     public override void Clear()

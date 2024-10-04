@@ -13,6 +13,9 @@ namespace BackendData.GameData
         public float Exp { get; private set; }
         public float MaxExp { get; private set; }
 
+        // 현재 진행한 스테이지 정보 
+        public int StageLevel { get; private set; }
+
         // Purse 각 재화를 담는 Dictionary
         private Dictionary<string, float> _purseDic = new();
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
@@ -28,19 +31,21 @@ namespace BackendData.GameData
             Level = 1;
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
+            StageLevel = 1;
             _purseDic.Clear();
             _purseDic.Add("Gold", 0);
             _purseDic.Add("Dia", 0);
         }
 
-        protected override void SetServerDataToLocal(JsonData gameDataJson)
+        protected override void SetServerDataToLocal(JsonData Data)
         {
-            Level = int.Parse(gameDataJson["Level"].ToString());
-            Exp = float.Parse(gameDataJson["Exp"].ToString());
-            MaxExp = float.Parse(gameDataJson["MaxExp"].ToString());
-            foreach (var column in gameDataJson["Purse"].Keys)
+            Level = int.Parse(Data["Level"].ToString());
+            Exp = float.Parse(Data["Exp"].ToString());
+            MaxExp = float.Parse(Data["MaxExp"].ToString());
+            StageLevel = int.Parse(Data["StageLevel"].ToString());
+            foreach (var column in Data["Purse"].Keys)
             {
-                _purseDic.Add(column, float.Parse(gameDataJson["Purse"][column].ToString()));
+                _purseDic.Add(column, float.Parse(Data["Purse"][column].ToString()));
             }
         }
 
@@ -61,6 +66,7 @@ namespace BackendData.GameData
             param.Add("Level", Level);
             param.Add("Exp", Exp);
             param.Add("MaxExp", MaxExp);
+            param.Add("StageLevel", StageLevel);
             param.Add("Purse", PurseDic);
 
             return param;
@@ -105,6 +111,14 @@ namespace BackendData.GameData
             Level++;
 
             Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, Level); // 레벨업 이벤트 발생
+        }
+
+        public void UpdateStageLevel(int stageLevel)
+        {
+            IsChangedData = true;
+            StageLevel += stageLevel;
+            if (StageLevel == 0)
+                StageLevel = 1;
         }
 
     }
