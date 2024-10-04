@@ -5,6 +5,7 @@ using UnityEngine;
 using static Define;
 using Data;
 using System;
+using BackendData.GameData;
 
 public class HeroInfo
 {
@@ -26,7 +27,8 @@ public class HeroInfo
 
     public HeroInfo(int dataTemplateID)
     {
-        Level = 1;
+        Level = BackendManager.Instance.GameData.UserData.Level;
+        Debug.Log($"현재 레벨 : {Level}");
         DataTemplateID = dataTemplateID;
         Data = Managers.Data.HeroInfoDataDic[dataTemplateID];
     }
@@ -83,6 +85,13 @@ public class HeroManager
 
         HeroInfo heroInfo = new HeroInfo(11000);
         PlayerHeroInfo = heroInfo;
+
+        Managers.Event.AddEvent(EEventType.PlayerLevelUp, new Action<int>(level =>
+        {
+            // 히어로의 레벨 업데이트
+            PlayerHeroInfo.Level = BackendManager.Instance.GameData.UserData.Level;
+            PlayerHeroInfo.CalculateInfoStat();
+        }));
 
         PlayerHeroInfo.CalculateInfoStat();
     }

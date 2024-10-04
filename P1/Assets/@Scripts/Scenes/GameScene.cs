@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using BackendData.GameData;
 using Cinemachine;
 using Data;
 using UnityEngine;
@@ -37,9 +38,7 @@ public class GameScene : BaseScene
     public float BossBattleTimeLimit { get; private set; }
     private bool isClear;
 
-    private delegate void BackendLoadStep();
-    private readonly Queue<BackendLoadStep> _initializeStep = new Queue<BackendLoadStep>();
-
+    private UserData userData;
 
     protected override bool Init()
     {
@@ -65,7 +64,7 @@ public class GameScene : BaseScene
 
     private void InitailizeBackend()
     {
-
+        userData = BackendManager.Instance.GameData.UserData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
         BackendManager.Instance.StartUpdate();
 
@@ -89,7 +88,8 @@ public class GameScene : BaseScene
         cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;
-        Managers.Purse.Init();
+
+ 
 
     }
 
@@ -100,7 +100,9 @@ public class GameScene : BaseScene
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
         sceneUI.UpdateStageUI(false);
 
+        // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, userData.Level, userData.Exp, userData.MaxExp); // 경험치 갱신 이벤트
 
     }
 

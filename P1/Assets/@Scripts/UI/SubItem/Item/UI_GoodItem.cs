@@ -48,7 +48,7 @@ public class UI_GoodItem : UI_Base
         if (goodType == EGoodType.None)
             return;
 
-        GetTMPText((int)Texts.GoodText).text = Util.ConvertToKoreanUnits(Managers.Purse.GetAmount(goodType));
+        GetTMPText((int)Texts.GoodText).text = Util.ConvertToKoreanUnits((long)Managers.Purse.GetAmount(goodType));
     }
 
     public RectTransform GetGoodIcon()

@@ -1,25 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using LitJson;
 using BackEnd;
-using System;
-using static Define;
 using Unity.VisualScripting;
-using DG.Tweening;
+using static Define;
 
 namespace BackendData.GameData
 {
 
     public partial class UserData
     {
-        //public int Level { get; private set; }
-        //public float Gold { get; private set; }
+        public int Level { get; private set; }
+        public float Exp { get; private set; }
+        public float MaxExp { get; private set; }
 
         // Purse 각 재화를 담는 Dictionary
-        private Dictionary<string, int> _purseDic = new();
+        private Dictionary<string, float> _purseDic = new();
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
-        public IReadOnlyDictionary<string, int> PurseDic => (IReadOnlyDictionary<string, int>)_purseDic.AsReadOnlyCollection();
+        public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
 
     }
 
@@ -28,22 +25,22 @@ namespace BackendData.GameData
 
         protected override void InitializeData()
         {
-            //Level = 1;
-            //Gold = 200;
+            Level = 1;
+            Exp = 0;
+            MaxExp = Util.CalculateRequiredExp(Level);
             _purseDic.Clear();
             _purseDic.Add("Gold", 0);
             _purseDic.Add("Dia", 0);
-
         }
 
         protected override void SetServerDataToLocal(JsonData gameDataJson)
         {
-            //Level = int.Parse(gameDataJson["Level"].ToString());
-            //Gold = float.Parse(gameDataJson["Gold"].ToString());
-
+            Level = int.Parse(gameDataJson["Level"].ToString());
+            Exp = float.Parse(gameDataJson["Exp"].ToString());
+            MaxExp = float.Parse(gameDataJson["MaxExp"].ToString());
             foreach (var column in gameDataJson["Purse"].Keys)
             {
-                _purseDic.Add(column, int.Parse(gameDataJson["Purse"][column].ToString()));
+                _purseDic.Add(column, float.Parse(gameDataJson["Purse"][column].ToString()));
             }
         }
 
@@ -61,18 +58,13 @@ namespace BackendData.GameData
         {
             Param param = new Param();
 
-            //param.Add("Level", Level);
-            //param.Add("Gold", Gold);
+            param.Add("Level", Level);
+            param.Add("Exp", Exp);
+            param.Add("MaxExp", MaxExp);
             param.Add("Purse", PurseDic);
 
             return param;
         }
-
-        //public void UpdateUserData(float gold)
-        //{
-        //    IsChangedData = true;
-        //    Gold += gold;
-        //}
 
 
         public void AddAmount(EGoodType goodType, int amount)
@@ -89,6 +81,32 @@ namespace BackendData.GameData
                 _purseDic[key] += amount;
             }
         }
+
+        public void AddExp(int exp)
+        {
+            IsChangedData = true;
+            Exp += exp;
+
+            // 레벨업 처리
+            while (Exp >= MaxExp)
+            {
+                LevelUp();
+            }
+
+            Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, Level, Exp, MaxExp); // 경험치 갱신 이벤트
+        }
+
+        public void LevelUp()
+        {
+            Exp -= MaxExp;
+
+            MaxExp = Util.CalculateRequiredExp(Level);
+
+            Level++;
+
+            Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, Level); // 레벨업 이벤트 발생
+        }
+
     }
 
 }
