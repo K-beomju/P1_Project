@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using BackendData.GameData.EquipmentInventory;
+using BackendData.GameData;
 using static Define;
 
 public class UI_CharacterPanel : UI_Base

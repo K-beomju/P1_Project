@@ -8,7 +8,7 @@ using System;
 using static Define;
 
 
-namespace BackendData.GameData.EquipmentInventory
+namespace BackendData.GameData
 {
 
     //===============================================================

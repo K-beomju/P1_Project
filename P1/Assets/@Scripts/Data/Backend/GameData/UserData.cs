@@ -9,21 +9,7 @@ using static Define;
 
 namespace BackendData.GameData
 {
-    //===============================================================
-    // UserData 테이블의 뽑기 관련 데이터를 담당하는 클래스
-    //===============================================================
-    public class DrawData
-    {
-        public int DrawLevel { get; set; }
-        public int DrawCount { get; set; }
-
-        public DrawData(int drawlevel, int drawCount)
-        {
-            DrawLevel = drawlevel;
-            DrawCount = drawCount;
-        }
-    }
-
+ 
     //===============================================================
     // UserData 테이블의 데이터를 담당하는 클래스(변수)
     //===============================================================
@@ -38,16 +24,11 @@ namespace BackendData.GameData
 
         // Purse 각 재화를 담는 Dictionary
         private Dictionary<string, float> _purseDic = new();
-        // Draw 각 뽑기 데이터를 담는 Dic
-        private Dictionary<string, DrawData> _drawDic = new();
 
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
-        public IReadOnlyDictionary<string, DrawData> DrawDic => (IReadOnlyDictionary<string, DrawData>)_drawDic.AsReadOnlyCollection();
 
     }
-
-
     //===============================================================
     // UserData 테이블의 데이터를 담당하는 클래스(함수)
     //===============================================================
@@ -63,10 +44,6 @@ namespace BackendData.GameData
             _purseDic.Clear();
             _purseDic.Add("Gold", 0);
             _purseDic.Add("Dia", 0);
-            _drawDic.Clear();
-            _drawDic.Add("Weapon", new DrawData(1, 0));
-            _drawDic.Add("Armor", new DrawData(1, 0));
-            _drawDic.Add("Ring", new DrawData(1, 0));
         }
 
         // Backend.GameData.GetMyData 호출 이후 리턴된 값을 파싱하여 캐싱하는 함수
@@ -84,12 +61,6 @@ namespace BackendData.GameData
                 _purseDic.Add(column, float.Parse(Data["Purse"][column].ToString()));
             }
 
-            foreach (var column in Data["Draw"].Keys)
-            {
-                int drawLevel = int.Parse(Data["Draw"][column]["DrawLevel"].ToString());
-                int drawCount = int.Parse(Data["Draw"][column]["DrawCount"].ToString());
-                _drawDic.Add(column, new DrawData(drawLevel, drawCount));
-            }
         }
 
         public override string GetTableName()
@@ -111,7 +82,6 @@ namespace BackendData.GameData
             param.Add("MaxExp", MaxExp);
             param.Add("StageLevel", StageLevel);
             param.Add("Purse", _purseDic);
-            param.Add("Draw", _drawDic);
             return param;
         }
 
@@ -175,33 +145,6 @@ namespace BackendData.GameData
 
         #endregion
 
-
-        #region Draw Methods 
-
-        // 유저의 뽑기 횟수를 변경하는 함수
-        public void AddDrawCount(EEquipmentType equipmentType)
-        {
-            IsChangedData = true;
-            string key = equipmentType.ToString();
-
-            _drawDic[key].DrawCount++;
-
-            while (_drawDic[key].DrawCount >= Managers.Data.GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
-            {
-                DrawLevelUp(key);
-            }
-
-        }
-
-        // 유저의 뽑기 레벨을 변경하는 함수
-        public void DrawLevelUp(string key)
-        {
-            _drawDic[key].DrawCount -= Managers.Data.GachaDataDic[Level].MaxExp;
-            _drawDic[key].DrawLevel++;
-            Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, _drawDic[key].DrawLevel);
-        }
-
-        #endregion
 
     }
 

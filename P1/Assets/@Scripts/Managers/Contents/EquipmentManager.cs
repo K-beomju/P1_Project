@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BackendData.GameData.EquipmentInventory;
+using BackendData.GameData;
 using static Define;
 
 public class EquipmentManager

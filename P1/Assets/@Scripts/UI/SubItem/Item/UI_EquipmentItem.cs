@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using BackendData.GameData.EquipmentInventory;
+using BackendData.GameData;
 using static Define;
 
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using BackendData.GameData.EquipmentInventory;
+using BackendData.GameData;
 using static Define;
 
 public class UI_EquipmentPopup : UI_Popup

@@ -233,9 +233,9 @@ public static class Util
     private static DrawEquipmentGachaData CheckAndUpdateGachaData(EEquipmentType type, ref int initialLevel)
     {
         //현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
-        if (BackendManager.Instance.GameData.UserData.DrawDic[type.ToString()].DrawLevel != initialLevel)
+        if (BackendManager.Instance.GameData.DrawLevelData.DrawDic[type.ToString()].DrawLevel != initialLevel)
         {
-            initialLevel = BackendManager.Instance.GameData.UserData.DrawDic[type.ToString()].DrawLevel;
+            initialLevel = BackendManager.Instance.GameData.DrawLevelData.DrawDic[type.ToString()].DrawLevel;
         }
 
         return Managers.Data.GachaDataDic[initialLevel];

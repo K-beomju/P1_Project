@@ -1,4 +1,4 @@
-using BackendData.GameData.EquipmentInventory;
+using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ public class UI_DrawResultPopup : UI_Popup
     public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList)
     {
         _type = type;
-        _level = BackendManager.Instance.GameData.UserData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
+        _level = BackendManager.Instance.GameData.DrawLevelData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
         _drawCount = drawCount;
 
         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";

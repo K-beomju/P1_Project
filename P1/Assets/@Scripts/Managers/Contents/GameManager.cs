@@ -19,7 +19,7 @@ public class GameManager
 
 		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EEquipmentType>((type) =>
 		{
-            BackendManager.Instance.GameData.UserData.AddDrawCount(type);
+            BackendManager.Instance.GameData.DrawLevelData.AddDrawCount(type);
 		}));
 
 	}

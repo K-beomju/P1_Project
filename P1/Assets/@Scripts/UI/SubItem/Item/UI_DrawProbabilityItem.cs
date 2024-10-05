@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using BackendData.GameData;
 using static Define;
-using BackendData.GameData.EquipmentInventory;
 
 public class UI_DrawProbabilityItem : UI_Base
 {
