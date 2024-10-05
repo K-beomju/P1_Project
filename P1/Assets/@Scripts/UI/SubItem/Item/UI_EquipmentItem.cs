@@ -52,7 +52,7 @@ public class UI_EquipmentItem : UI_Base
         _equipmentButton.onClick.RemoveAllListeners();
         _equipmentButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
 
-        bool isOwned = Managers.Equipment.GetOwneded(equipmentData.DataTemplateID);
+        bool isOwned = equipmentData.OwningState == EOwningState.Owned;
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
 

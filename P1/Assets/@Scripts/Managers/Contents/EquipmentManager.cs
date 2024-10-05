@@ -12,18 +12,6 @@ public class EquipmentManager
 {
     public Dictionary<int, EquipmentInfoData> AllEquipmentInfos { get; private set; } = new Dictionary<int, EquipmentInfoData>();
 
-    public List<EquipmentInfoData> OwnedEquipments
-    {
-        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned).ToList(); }
-    }
-
-    public List<EquipmentInfoData> UnownedEquipments
-    {
-        get { return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Unowned).ToList(); }
-    }
-
-    public Dictionary<EEquipmentType, EquipmentInfoData> EquippedEquipments = new Dictionary<EEquipmentType, EquipmentInfoData>();
-
     public void Init()
     {
         // 무기
@@ -51,34 +39,11 @@ public class EquipmentManager
             index += 1;
         }
 
-        List<int> keys = new List<int>(AllEquipmentInfos.Keys);
-
-        for (int i = 0; i < keys.Count; i++)
-        {
-            int dataId = keys[i];
-
-            // 전체 장비 중에 가지고 있는 장비가 있다면
-            if (BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.TryGetValue(dataId, out EquipmentInfoData equipmentInfo))
-            {
-                // 업데이트: Dictionary의 값을 수정합니다.
-                AllEquipmentInfos[dataId] = BackendManager.Instance.GameData.UserData.EquipmentInventoryDic[dataId];
-            }
-        }
-
     }
 
     public void AddEquipment(int dataTemplateID)
     {
         BackendManager.Instance.GameData.UserData.AddEquipment(dataTemplateID);
-
-        List<int> keys = new List<int>(AllEquipmentInfos.Keys);
-
-        // 전체 장비 중에 가지고 있는 장비가 있다면
-        if (BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.TryGetValue(dataTemplateID, out EquipmentInfoData equipmentInfo))
-        {
-            // 업데이트: Dictionary의 값을 수정합니다.
-            AllEquipmentInfos[dataTemplateID] = BackendManager.Instance.GameData.UserData.EquipmentInventoryDic[dataTemplateID];
-        }
     }
 
     public void EquipEquipment(int dataTemplateID)
@@ -86,40 +51,11 @@ public class EquipmentManager
         BackendManager.Instance.GameData.UserData.EquipEquipment(dataTemplateID);
     }
 
-    public EquipmentInfoData GetEquipmentInfo(int dataTemplateID)
-    {
-        if (AllEquipmentInfos.TryGetValue(dataTemplateID, out EquipmentInfoData equipmentInfo))
-        {
-            return equipmentInfo;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type)
     {
         return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type).ToList();
     }
 
-    public bool GetOwneded(int dataTemplateID)
-    {
-        return OwnedEquipments.Any(equipment => equipment.DataTemplateID == dataTemplateID);
-    }
-
-    public int GetEquippedId(EEquipmentType type)
-    {
-        // 장착된 장비 딕셔너리에서 해당 타입의 장비가 있는지 확인
-        if (EquippedEquipments.TryGetValue(type, out EquipmentInfoData equippedItem))
-        {
-            // 장착된 장비가 있으면 dataTemplateID 반환
-            return equippedItem.DataTemplateID;
-        }
-
-        // 장착된 장비가 없으면 0 반환
-        return 0;
-    }
 
 
     public float OwnedEquipmentValues(EEquipmentType type)
@@ -127,7 +63,7 @@ public class EquipmentManager
         float ownedValues = 0;
 
         // 소유 중인 장비 중 해당 타입의 장비 효과 합산
-        foreach (var equipment in OwnedEquipments)
+        foreach (var equipment in BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.Values)
         {
             if (equipment.Data.EquipmentType == type)
             {
@@ -143,7 +79,7 @@ public class EquipmentManager
         float equipValue = 0;
 
         // 장착된 장비 중 해당 타입의 장비 효과 합산
-        foreach (var equipment in EquippedEquipments.Values)
+        foreach (var equipment in BackendManager.Instance.GameData.UserData.EquipmentEquipDic.Values)
         {
             if (equipment.Data.EquipmentType == type)
             {

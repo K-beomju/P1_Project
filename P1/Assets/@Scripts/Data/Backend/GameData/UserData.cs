@@ -8,6 +8,7 @@ using DG.Tweening;
 using Data;
 using System;
 using System.Reflection;
+using static Cinemachine.DocumentationSortingAttribute;
 
 namespace BackendData.GameData
 {
@@ -68,14 +69,13 @@ namespace BackendData.GameData
         private Dictionary<string, DrawData> _drawDic = new();
         // Equipment 각 장비 데이터를 담는 Dic 
         private Dictionary<int, EquipmentInfoData> _equipmentInventoryDic = new();
+        // Equipment 각 장착한 장비 데이터를 담는 Dic 
+        private Dictionary<string, EquipmentInfoData> _equipmentEquipDic = new();
 
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, DrawData> DrawDic => (IReadOnlyDictionary<string, DrawData>)_drawDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<int, EquipmentInfoData> EquipmentInventoryDic => (IReadOnlyDictionary<int, EquipmentInfoData>)_equipmentInventoryDic.AsReadOnlyCollection();
-
-
-        private Dictionary<string, EquipmentInfoData> _equipmentEquipDic = new();
         public IReadOnlyDictionary<string, EquipmentInfoData> EquipmentEquipDic => (IReadOnlyDictionary<string, EquipmentInfoData>)_equipmentEquipDic.AsReadOnlyCollection();
 
     }
@@ -128,12 +128,6 @@ namespace BackendData.GameData
                 _drawDic.Add(column, new DrawData(drawLevel, drawCount));
             }
 
-            //foreach (var column in Data["EquipmentEquip"].Keys)
-            //{
-
-            //    _equipmentEquipDic.Add()
-            //}
-
             foreach (var column in Data["EquipmentInventory"].Keys)
             {
                 int dataId = int.Parse(Data["EquipmentInventory"][column]["DataTemplateID"].ToString());
@@ -143,6 +137,18 @@ namespace BackendData.GameData
 
                 _equipmentInventoryDic.Add(dataId, new EquipmentInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
             }
+
+            foreach (var column in Data["EquipmentEquip"].Keys)
+            {
+                string equipmentType = ((EEquipmentType)int.Parse(Data["EquipmentEquip"][column]["Data"]["EquipmentType"].ToString())).ToString();
+                int dataId = int.Parse(Data["EquipmentEquip"][column]["DataTemplateID"].ToString());
+                int level = int.Parse(Data["EquipmentEquip"][column]["Level"].ToString());
+                int count = int.Parse(Data["EquipmentEquip"][column]["Count"].ToString());
+                bool isEquipped = Boolean.Parse(Data["EquipmentEquip"][column]["IsEquipped"].ToString());
+
+                _equipmentEquipDic.Add(equipmentType, new EquipmentInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
+            }
+
 
         }
 
@@ -170,6 +176,8 @@ namespace BackendData.GameData
             param.Add("EquipmentInventory", _equipmentInventoryDic);
             return param;
         }
+
+        #region User Methods 
 
         // 유저의 재화를 변경하는 함수
         public void AddAmount(EGoodType goodType, int amount)
@@ -214,6 +222,10 @@ namespace BackendData.GameData
             Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, Level); // 레벨업 이벤트 발생
         }
 
+        #endregion
+
+        #region Stage Methods 
+
         // 유저의 스테이지 정보를 변경하는 함수
         public void UpdateStageLevel(int stageLevel)
         {
@@ -223,6 +235,11 @@ namespace BackendData.GameData
                 StageLevel = 1;
         }
 
+        #endregion
+
+
+        #region Draw Methods 
+
         // 유저의 뽑기 횟수를 변경하는 함수
         public void AddDrawCount(EEquipmentType equipmentType)
         {
@@ -231,7 +248,7 @@ namespace BackendData.GameData
 
             _drawDic[key].DrawCount++;
 
-            while (_drawDic[key].DrawCount >= Managers.Data.GachaDataDic[Level].MaxExp)
+            while (_drawDic[key].DrawCount >= Managers.Data.GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
             {
                 DrawLevelUp(key);
             }
@@ -245,6 +262,11 @@ namespace BackendData.GameData
             _drawDic[key].DrawLevel++;
             Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, _drawDic[key].DrawLevel);
         }
+
+        #endregion
+
+
+        #region Equipment Methods
 
         // 유저의 장비 아이템을 추가하는 함수
         public void AddEquipment(int dataTemplateID)
@@ -264,19 +286,29 @@ namespace BackendData.GameData
         {
             IsChangedData = true;
 
+            // 장착할 장비가 인벤토리에 있는지 확인
             if (_equipmentInventoryDic.TryGetValue(dataTemplateID, out EquipmentInfoData equipmentInventoryData))
             {
-                if(_equipmentEquipDic.TryGetValue(equipmentInventoryData.Data.EquipmentType.ToString(), out EquipmentInfoData equipmentEquipData))
+                // 현재 장착 중인 장비가 있는지 확인 (해당 EquipmentType을 기준으로)
+                if (_equipmentEquipDic.TryGetValue(equipmentInventoryData.Data.EquipmentType.ToString(), out EquipmentInfoData currentlyEquippedData))
                 {
-                    equipmentEquipData.IsEquipped = false;
-                    equipmentInventoryData.IsEquipped = true;
-                    _equipmentEquipDic[equipmentEquipData.Data.EquipmentType.ToString()] = equipmentInventoryData;
+                    // 기존에 장착된 장비가 있다면 IsEquipped를 false로 설정
+                    currentlyEquippedData.IsEquipped = false;
+
+                    _equipmentInventoryDic[currentlyEquippedData.DataTemplateID] = currentlyEquippedData;
+
                 }
-                else
-                {
-                    equipmentInventoryData.IsEquipped = true;
-                    _equipmentEquipDic.Add(equipmentInventoryData.Data.EquipmentType.ToString(), equipmentInventoryData);
-                }
+
+                // 새롭게 장착할 장비의 IsEquipped를 true로 설정하고 장착된 장비 Dictionary에 업데이트
+                equipmentInventoryData.IsEquipped = true;
+                _equipmentEquipDic[equipmentInventoryData.Data.EquipmentType.ToString()] = equipmentInventoryData;
+
+                // 새롭게 장착한 장비도 인벤토리 Dictionary에 업데이트 (동기화)
+                _equipmentInventoryDic[dataTemplateID] = equipmentInventoryData;
+            }
+            else
+            {
+                Debug.LogWarning($"장착하려는 장비({dataTemplateID})가 인벤토리에 없습니다.");
             }
 
             //Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
@@ -292,6 +324,8 @@ namespace BackendData.GameData
             _equipmentInventoryDic[equipmentInfoData.DataTemplateID].Count -= maxCount;
 
         }
+
+        #endregion
 
     }
 

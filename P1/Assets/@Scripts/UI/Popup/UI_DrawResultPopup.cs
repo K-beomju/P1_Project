@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -97,10 +98,17 @@ public class UI_DrawResultPopup : UI_Popup
 
         for (int i = 0; i < resultList.Count; i++)
         {
+            if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultList[i], out EquipmentInfoData equipmentInfoData))
+            {
+                Debug.LogWarning($"Equipment.AllEquipmentInfo에 장비 ID가 없습니다");
+                yield break;
+            }
+            
             UI_EquipmentItem drawItem = _drawItems[i];
             drawItem.gameObject.SetActive(true);
-            drawItem.SetDrawInfo(Managers.Equipment.GetEquipmentInfo(resultList[i]));
-            Managers.Equipment.AddEquipment(resultList[i]);
+            drawItem.SetDrawInfo(equipmentInfoData);
+            Managers.Equipment.AddEquipment(equipmentInfoData.DataTemplateID);
+            
             yield return wait;
         }
         InteractiveButtons(true);

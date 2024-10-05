@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -80,13 +81,15 @@ public class UI_CharacterPanel : UI_Base
 
     private void UpdateEquipmentUI(EEquipmentType type, EquipmentItems uiItem)
     {
-        int equipmentId = Managers.Equipment.GetEquippedId(type);
         var equipmentItem = Get<UI_EquipmentItem>((int)uiItem);
 
-        if (equipmentId != 0)
+        // 만약에 장착된 장비가 있다면 
+        if (BackendManager.Instance.GameData.UserData.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))
         {
+            int dataId = equipmentInfoData.DataTemplateID;
             equipmentItem.gameObject.SetActive(true);
-            equipmentItem.SetEquipmentInfo(Managers.Equipment.GetEquipmentInfo(equipmentId));
+            equipmentItem.SetEquipmentInfo(equipmentInfoData);
+
         }
         else
         {
