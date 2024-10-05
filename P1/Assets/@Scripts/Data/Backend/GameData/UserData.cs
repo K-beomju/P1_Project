@@ -2,13 +2,10 @@ using System.Collections.Generic;
 using LitJson;
 using BackEnd;
 using Unity.VisualScripting;
-using static Define;
 using UnityEngine;
-using DG.Tweening;
 using Data;
 using System;
-using System.Reflection;
-using static Cinemachine.DocumentationSortingAttribute;
+using static Define;
 
 namespace BackendData.GameData
 {
@@ -28,30 +25,6 @@ namespace BackendData.GameData
     }
 
     //===============================================================
-    // UserData 테이블의 장비 관련 데이터를 담당하는 클래스
-    //===============================================================
-    public class EquipmentInfoData
-    {
-        public int DataTemplateID { get; private set; }
-        public EquipmentData Data { get; private set; }
-        public EOwningState OwningState { get; set; }
-
-        public int Level { get; set; }
-        public int Count { get; set; }
-        public bool IsEquipped { get; set; }
-
-        public EquipmentInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
-        {
-            DataTemplateID = dataTemplateID;
-            OwningState = owningState;
-            Level = level;
-            Count = count;
-            IsEquipped = isEquipped;
-            Data = Managers.Data.EquipmentDic[dataTemplateID];
-        }
-    }
-
-    //===============================================================
     // UserData 테이블의 데이터를 담당하는 클래스(변수)
     //===============================================================
     public partial class UserData
@@ -67,16 +40,10 @@ namespace BackendData.GameData
         private Dictionary<string, float> _purseDic = new();
         // Draw 각 뽑기 데이터를 담는 Dic
         private Dictionary<string, DrawData> _drawDic = new();
-        // Equipment 각 장비 데이터를 담는 Dic 
-        private Dictionary<int, EquipmentInfoData> _equipmentInventoryDic = new();
-        // Equipment 각 장착한 장비 데이터를 담는 Dic 
-        private Dictionary<string, EquipmentInfoData> _equipmentEquipDic = new();
 
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, DrawData> DrawDic => (IReadOnlyDictionary<string, DrawData>)_drawDic.AsReadOnlyCollection();
-        public IReadOnlyDictionary<int, EquipmentInfoData> EquipmentInventoryDic => (IReadOnlyDictionary<int, EquipmentInfoData>)_equipmentInventoryDic.AsReadOnlyCollection();
-        public IReadOnlyDictionary<string, EquipmentInfoData> EquipmentEquipDic => (IReadOnlyDictionary<string, EquipmentInfoData>)_equipmentEquipDic.AsReadOnlyCollection();
 
     }
 
@@ -100,10 +67,6 @@ namespace BackendData.GameData
             _drawDic.Add("Weapon", new DrawData(1, 0));
             _drawDic.Add("Armor", new DrawData(1, 0));
             _drawDic.Add("Ring", new DrawData(1, 0));
-
-            // 장비 인벤은 처음부터 존재하지 않으니까
-            _equipmentInventoryDic.Clear();
-            _equipmentEquipDic.Clear();
         }
 
         // Backend.GameData.GetMyData 호출 이후 리턴된 값을 파싱하여 캐싱하는 함수
@@ -127,29 +90,6 @@ namespace BackendData.GameData
                 int drawCount = int.Parse(Data["Draw"][column]["DrawCount"].ToString());
                 _drawDic.Add(column, new DrawData(drawLevel, drawCount));
             }
-
-            foreach (var column in Data["EquipmentInventory"].Keys)
-            {
-                int dataId = int.Parse(Data["EquipmentInventory"][column]["DataTemplateID"].ToString());
-                int level = int.Parse(Data["EquipmentInventory"][column]["Level"].ToString());
-                int count = int.Parse(Data["EquipmentInventory"][column]["Count"].ToString());
-                bool isEquipped = Boolean.Parse(Data["EquipmentInventory"][column]["IsEquipped"].ToString());
-
-                _equipmentInventoryDic.Add(dataId, new EquipmentInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
-            }
-
-            foreach (var column in Data["EquipmentEquip"].Keys)
-            {
-                string equipmentType = ((EEquipmentType)int.Parse(Data["EquipmentEquip"][column]["Data"]["EquipmentType"].ToString())).ToString();
-                int dataId = int.Parse(Data["EquipmentEquip"][column]["DataTemplateID"].ToString());
-                int level = int.Parse(Data["EquipmentEquip"][column]["Level"].ToString());
-                int count = int.Parse(Data["EquipmentEquip"][column]["Count"].ToString());
-                bool isEquipped = Boolean.Parse(Data["EquipmentEquip"][column]["IsEquipped"].ToString());
-
-                _equipmentEquipDic.Add(equipmentType, new EquipmentInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
-            }
-
-
         }
 
         public override string GetTableName()
@@ -172,8 +112,6 @@ namespace BackendData.GameData
             param.Add("StageLevel", StageLevel);
             param.Add("Purse", _purseDic);
             param.Add("Draw", _drawDic);
-            param.Add("EquipmentEquip", _equipmentEquipDic);
-            param.Add("EquipmentInventory", _equipmentInventoryDic);
             return param;
         }
 
@@ -261,68 +199,6 @@ namespace BackendData.GameData
             _drawDic[key].DrawCount -= Managers.Data.GachaDataDic[Level].MaxExp;
             _drawDic[key].DrawLevel++;
             Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, _drawDic[key].DrawLevel);
-        }
-
-        #endregion
-
-
-        #region Equipment Methods
-
-        // 유저의 장비 아이템을 추가하는 함수
-        public void AddEquipment(int dataTemplateID)
-        {
-            IsChangedData = true;
-            if (_equipmentInventoryDic.TryGetValue(dataTemplateID, out EquipmentInfoData equipEquipmentInfo)) {
-                equipEquipmentInfo.Count += 1;
-                //Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
-            }
-            else {
-                equipEquipmentInfo = new EquipmentInfoData(dataTemplateID, EOwningState.Owned, 1, 1, false);
-                _equipmentInventoryDic.Add(dataTemplateID, equipEquipmentInfo);
-            }
-        }
-
-        public void EquipEquipment(int dataTemplateID)
-        {
-            IsChangedData = true;
-
-            // 장착할 장비가 인벤토리에 있는지 확인
-            if (_equipmentInventoryDic.TryGetValue(dataTemplateID, out EquipmentInfoData equipmentInventoryData))
-            {
-                // 현재 장착 중인 장비가 있는지 확인 (해당 EquipmentType을 기준으로)
-                if (_equipmentEquipDic.TryGetValue(equipmentInventoryData.Data.EquipmentType.ToString(), out EquipmentInfoData currentlyEquippedData))
-                {
-                    // 기존에 장착된 장비가 있다면 IsEquipped를 false로 설정
-                    currentlyEquippedData.IsEquipped = false;
-
-                    _equipmentInventoryDic[currentlyEquippedData.DataTemplateID] = currentlyEquippedData;
-
-                }
-
-                // 새롭게 장착할 장비의 IsEquipped를 true로 설정하고 장착된 장비 Dictionary에 업데이트
-                equipmentInventoryData.IsEquipped = true;
-                _equipmentEquipDic[equipmentInventoryData.Data.EquipmentType.ToString()] = equipmentInventoryData;
-
-                // 새롭게 장착한 장비도 인벤토리 Dictionary에 업데이트 (동기화)
-                _equipmentInventoryDic[dataTemplateID] = equipmentInventoryData;
-            }
-            else
-            {
-                Debug.LogWarning($"장착하려는 장비({dataTemplateID})가 인벤토리에 없습니다.");
-            }
-
-            //Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
-        }
-
-        public void EquipmentLevelUp(EquipmentInfoData equipmentInfoData)
-        {
-            IsChangedData = true;
-
-            int maxCount = Util.GetUpgradeEquipmentMaxCount(equipmentInfoData.Level);
-
-            _equipmentInventoryDic[equipmentInfoData.DataTemplateID].Level += 1;
-            _equipmentInventoryDic[equipmentInfoData.DataTemplateID].Count -= maxCount;
-
         }
 
         #endregion

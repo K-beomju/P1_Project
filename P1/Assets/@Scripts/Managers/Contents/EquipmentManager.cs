@@ -1,12 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Data;
-using UnityEngine;
-using BackendData.GameData;
+using BackendData.GameData.EquipmentInventory;
 using static Define;
-
-
 
 public class EquipmentManager
 {
@@ -43,12 +39,12 @@ public class EquipmentManager
 
     public void AddEquipment(int dataTemplateID)
     {
-        BackendManager.Instance.GameData.UserData.AddEquipment(dataTemplateID);
+        BackendManager.Instance.GameData.EquipmentInventory.AddEquipment(dataTemplateID);
     }
 
     public void EquipEquipment(int dataTemplateID)
     {
-        BackendManager.Instance.GameData.UserData.EquipEquipment(dataTemplateID);
+        BackendManager.Instance.GameData.EquipmentInventory.EquipEquipment(dataTemplateID);
     }
 
     public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type)
@@ -63,7 +59,7 @@ public class EquipmentManager
         float ownedValues = 0;
 
         // 소유 중인 장비 중 해당 타입의 장비 효과 합산
-        foreach (var equipment in BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.Values)
+        foreach (var equipment in BackendManager.Instance.GameData.EquipmentInventory.EquipmentInventoryDic.Values)
         {
             if (equipment.Data.EquipmentType == type)
             {
@@ -79,13 +75,13 @@ public class EquipmentManager
         float equipValue = 0;
 
         // 장착된 장비 중 해당 타입의 장비 효과 합산
-        foreach (var equipment in BackendManager.Instance.GameData.UserData.EquipmentEquipDic.Values)
-        {
-            if (equipment.Data.EquipmentType == type)
-            {
-                equipValue += equipment.Data.EquippedValue;
-            }
-        }
+        //foreach (var equipment in BackendManager.Instance.GameData.EquipmentInventory.EquipmentEquipDic.Values)
+        //{
+        //    if (equipment.Data.EquipmentType == type)
+        //    {
+        //        equipValue += equipment.Data.EquippedValue;
+        //    }
+        //}
 
         return equipValue;
     }

@@ -1,4 +1,4 @@
-using BackendData.GameData;
+using BackendData.GameData.EquipmentInventory;
 using System;
 using System.Collections;
 using System.Collections.Generic;

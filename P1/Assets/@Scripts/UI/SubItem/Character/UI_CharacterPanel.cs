@@ -1,10 +1,9 @@
-using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BackendData.GameData.EquipmentInventory;
 using static Define;
-using static UI_CharacterPopup;
 
 public class UI_CharacterPanel : UI_Base
 {
@@ -83,8 +82,8 @@ public class UI_CharacterPanel : UI_Base
     {
         var equipmentItem = Get<UI_EquipmentItem>((int)uiItem);
 
-        // 만약에 장착된 장비가 있다면 
-        if (BackendManager.Instance.GameData.UserData.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))
+        //만약에 장착된 장비가 있다면
+        if (BackendManager.Instance.GameData.EquipmentInventory.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))
         {
             int dataId = equipmentInfoData.DataTemplateID;
             equipmentItem.gameObject.SetActive(true);

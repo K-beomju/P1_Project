@@ -1,9 +1,9 @@
-using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using BackendData.GameData.EquipmentInventory;
 using static Define;
 
 public class UI_EquipmentPopup : UI_Popup
@@ -137,7 +137,7 @@ public class UI_EquipmentPopup : UI_Popup
     public void RefreshUI()
     {
         // 장비 인벤토리 중 장착된 장비 찾기 
-        EquipmentInfoData equippedInfo = BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.Values
+        EquipmentInfoData equippedInfo = BackendManager.Instance.GameData.EquipmentInventory.EquipmentInventoryDic.Values
             .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType && equipmentInfo.IsEquipped);
 
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
@@ -146,7 +146,7 @@ public class UI_EquipmentPopup : UI_Popup
         for (int i = 0; i < equipmentInfos.Count; i++)
         {
             // 만약에 내가 가진 장비 인벤과 동일한 ID일 경우
-            if (BackendManager.Instance.GameData.UserData.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
+            if (BackendManager.Instance.GameData.EquipmentInventory.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
             {
                 // 동기화
                 equipmentInfos[i] = equipmentInfoData; 
@@ -233,7 +233,7 @@ public class UI_EquipmentPopup : UI_Popup
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
         if(SelectEquipmentInfo.Count >= maxCount)
         {
-            BackendManager.Instance.GameData.UserData.EquipmentLevelUp(SelectEquipmentInfo);
+            BackendManager.Instance.GameData.EquipmentInventory.EquipmentLevelUp(SelectEquipmentInfo, maxCount);
             ShowEquipmentDetailUI(SelectEquipmentInfo);
         }
     }

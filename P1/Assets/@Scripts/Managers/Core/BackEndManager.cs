@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
-using System.Transactions;
 using BackEnd;
 using BackendData.Base;
-using Unity.VisualScripting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -18,12 +15,15 @@ public class BackendManager : MonoBehaviour
     // 게임 정보 관리 데이터만 모아놓은 클래스
     public class BackendGameData {
         public readonly BackendData.GameData.UserData UserData = new();
+        public readonly BackendData.GameData.EquipmentInventory.EquipmentInventory EquipmentInventory = new();
 
         public readonly Dictionary<string, BackendData.Base.GameData>
             GameDataList = new Dictionary<string, BackendData.Base.GameData>();
 
         public BackendGameData() {
+            GameDataList.Add("내 장비 정보", EquipmentInventory);
             GameDataList.Add("내 유저 정보", UserData);
+
         }
     }
 
@@ -101,18 +101,34 @@ public class BackendManager : MonoBehaviour
     // 호출 시, 코루틴 내 함수들의 동작을 멈추게 하는 함수
     public void StopUpdate() {
         Debug.Log("자동 저장을 중지합니다.");
-        _isErrorOccured = false;
+        _isErrorOccured = true;
     }
 
     private IEnumerator UpdateGameDataTransaction() {
-        var seconds = new WaitForSeconds(300);
+        var seconds = new WaitForSeconds(5);
         yield return seconds;
 
-        while(_isErrorOccured) {
-            UpdateAllGameData(null);
+        while(!_isErrorOccured) {
+            UpdateAllGameData(callback => {
+                if (callback == null)
+                {
+                    Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
+                    return;
+                }
 
+                if (callback.IsSuccess())
+                {
+                    Debug.Log("저장 성공, 저장에 성공했습니다.");
+                }
+                else
+                {
+                    Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                }
+
+            });
             yield return seconds;
         }
+
     }
 
     // 업데이트가 발생한 이후에 호출에 대한 응답을 반환해주는 대리자 함수
@@ -122,7 +138,6 @@ public class BackendManager : MonoBehaviour
     public void UpdateAllGameData(AfterUpdateFunc afterUpdateFunc)
     {
         string info = string.Empty;
-
 
         // 바뀐 데이터가 몇개 있는지 체크
         List<GameData> gameDatas = new List<GameData>();
@@ -168,12 +183,12 @@ public class BackendManager : MonoBehaviour
             // 2개 이상이라면 트랜잭션에 묶어서 업데이트
             // 단 10개 이상이면 트랜잭션 실패 주의
             List<TransactionValue> transactionList = new List<TransactionValue>();
-
             // 변경된 데이터만큼 트랜잭션 추가
             foreach (var gameData in gameDatas) {
                 transactionList.Add(gameData.GetTransactionUpdateValue());
+                Debug.LogWarning(transactionList);
             }
-
+            
             SendQueue.Enqueue(Backend.GameData.TransactionWriteV2, transactionList, callback => {
                 Debug.Log($"Backend.BMember.TransactionWriteV2 : {callback}");
 
@@ -186,7 +201,7 @@ public class BackendManager : MonoBehaviour
                     SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString() + "\n" + info);
                 }
 
-                Debug.Log($"TransactionWriteV2 : {callback}\n업데이트 테이블 : \n{info}");
+                Debug.LogWarning($"TransactionWriteV2 : {callback}\n업데이트 테이블 : \n{info}");
 
                 if (afterUpdateFunc == null) {
 

@@ -35,7 +35,6 @@ public class GameScene : BaseScene
     public int ChapterLevel { get; private set; }
     public float BossBattleTimer { get; private set; }
     public float BossBattleTimeLimit { get; private set; }
-    private bool isClear;
 
     private UserData UserData;
 
@@ -56,9 +55,10 @@ public class GameScene : BaseScene
         InitializeUI();
 
         ChapterLevel = 1;
-        SetupStage();
+        //SetupStage();
         return true;
     }
+
 
     private void InitailizeBackend()
     {
@@ -134,7 +134,6 @@ public class GameScene : BaseScene
 
     private void SetupStage()
     {
-        isClear = false;
         Data = Managers.Data.StageDataDic[UserData.StageLevel];
         Debug.Log($"{UserData.StageLevel} 스테이지 진입");
 

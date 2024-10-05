@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using BackendData.GameData;
+using BackendData.GameData.EquipmentInventory;
 
 using static Define;
 
