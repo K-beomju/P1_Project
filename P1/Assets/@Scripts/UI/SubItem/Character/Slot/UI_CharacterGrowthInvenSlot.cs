@@ -36,7 +36,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
         GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPressUpgradeButton, EUIEvent.Pressed);
         GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
-        
+
         UpdateSlotInfoUI();
         return true;
     }
@@ -59,7 +59,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
     {
         _heroUpgradeType = statType;
 
-        if(Init() == false)
+        if (Init() == false)
         {
             UpdateSlotInfoUI();
         }
@@ -67,16 +67,17 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     public void UpdateSlotInfoUI()
     {
-        if (!Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
+        if (!Managers.Backend.GameData.UserData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
         {
-            level = 0; // 레벨이 없으면 0으로 초기화
+            Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
+            return;
         }
 
         CheckUpgradeInteractive();
         string percentString = "%";
         string titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
         string levelText = $"Lv {level}";
-        string valueText = 
+        string valueText =
             $"{Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].Value + (Managers.Data.HeroUpgradeInfoDataDic[_heroUpgradeType].IncreaseValue) * (level - 1)}";
         string amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, level + 1):N0}";
 
@@ -94,24 +95,25 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         if (_coolTime != null)
             return;
 
-
-        if (Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
+        try
         {
-            int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
-            if (CanUpgrade(price))
+
+            if (Managers.Backend.GameData.UserData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
             {
-                try
+                int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
+                if (CanUpgrade(price))
                 {
                     Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, -price);
-                    Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"OnPressUpgradeButton({EGoodType.Gold}, {-price}) 중 에러가 발생하였습니다\n{e}");
+                    Managers.Backend.GameData.UserData.LevelUpHeroUpgrade(_heroUpgradeType);
                 }
             }
+            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
         }
-        _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
+        catch (Exception e)
+        {
+            throw new Exception($"OnPressUpgradeButton({EGoodType.Gold}) 중 에러가 발생하였습니다\n{e}");
+        }
+
 
     }
 
@@ -126,7 +128,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     private void CheckUpgradeInteractive()
     {
-        if (Managers.Hero.HeroGrowthUpgradeLevelDic.TryGetValue(_heroUpgradeType, out int level))
+        if (Managers.Backend.GameData.UserData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
         {
             int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
             GetButton((int)Buttons.Btn_Upgrade).interactable = CanUpgrade(price);
@@ -138,7 +140,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(EGoodType.Gold.ToString(), out float amount))
             return false;
 
-          return amount >= cost;
+        return amount >= cost;
     }
 
     private IEnumerator CoStartUpgradeCoolTime(float seconds)

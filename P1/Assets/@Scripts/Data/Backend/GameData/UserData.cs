@@ -6,10 +6,11 @@ using UnityEngine;
 using Data;
 using System;
 using static Define;
+using System.Linq;
 
 namespace BackendData.GameData
 {
- 
+
     //===============================================================
     // UserData 테이블의 데이터를 담당하는 클래스(변수)
     //===============================================================
@@ -22,13 +23,18 @@ namespace BackendData.GameData
         // 현재 진행한 스테이지 정보 
         public int StageLevel { get; private set; }
 
-        // Purse 각 재화를 담는 Dictionary
+        // 각 재화 담는 Dic
         private Dictionary<string, float> _purseDic = new();
+
+        // 각 스탯레벨 담는 Dic
+        private Dictionary<string, int> _upgradeStatDic = new();
 
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
+        public IReadOnlyDictionary<string, int> UpgradeStatDic => (IReadOnlyDictionary<string, int>)_upgradeStatDic.AsReadOnlyCollection();
 
     }
+
     //===============================================================
     // UserData 테이블의 데이터를 담당하는 클래스(함수)
     //===============================================================
@@ -44,6 +50,12 @@ namespace BackendData.GameData
             _purseDic.Clear();
             _purseDic.Add("Gold", 0);
             _purseDic.Add("Dia", 0);
+            _upgradeStatDic.Clear();
+            _upgradeStatDic.Add("Growth_Atk", 1);
+            _upgradeStatDic.Add("Growth_Hp", 1);
+            _upgradeStatDic.Add("Growth_Recovery", 1);
+            _upgradeStatDic.Add("Growth_CriRate", 1);
+            _upgradeStatDic.Add("Growth_CriDmg", 1);
         }
 
         // Backend.GameData.GetMyData 호출 이후 리턴된 값을 파싱하여 캐싱하는 함수
@@ -59,6 +71,11 @@ namespace BackendData.GameData
             foreach (var column in Data["Purse"].Keys)
             {
                 _purseDic.Add(column, float.Parse(Data["Purse"][column].ToString()));
+            }
+
+            foreach (var column in Data["UpgradeStat"].Keys)
+            {
+                _upgradeStatDic.Add(column, int.Parse(Data["UpgradeStat"][column].ToString()));
             }
 
         }
@@ -82,6 +99,8 @@ namespace BackendData.GameData
             param.Add("MaxExp", MaxExp);
             param.Add("StageLevel", StageLevel);
             param.Add("Purse", _purseDic);
+            param.Add("UpgradeStat", _upgradeStatDic);
+
             return param;
         }
 
@@ -145,6 +164,24 @@ namespace BackendData.GameData
                 StageLevel = 1;
         }
 
+        #endregion
+
+        #region Upgrade(Growth)
+        public void LevelUpHeroUpgrade(EHeroUpgradeType upgradeType)
+        {
+            string key = upgradeType.ToString();
+            if (_upgradeStatDic.ContainsKey(key))
+            {
+                _upgradeStatDic[key]++;
+            }
+            else
+            {
+                _upgradeStatDic.Add(key, 1);
+            }
+
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
+            Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
+        }
         #endregion
 
 

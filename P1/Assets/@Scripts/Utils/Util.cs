@@ -327,13 +327,13 @@ public static class Util
     #region Stat System
 
     // 스탯 계산
-    public static float CalculateStat(EHeroUpgradeType upgradeType, Dictionary<EHeroUpgradeType, int> levelDic)
+    public static float CalculateStat(EHeroUpgradeType upgradeType)
     {
         // 기본 값 및 증가 값 가져오기
         var upgradeData = Managers.Data.HeroUpgradeInfoDataDic[upgradeType];
         float baseValue = upgradeData.Value;
         float increaseValue = upgradeData.IncreaseValue;
-        int currentLevel = levelDic[upgradeType];
+        int currentLevel = Managers.Backend.GameData.UserData.UpgradeStatDic[upgradeType.ToString()];
 
         // 최종 값 계산
         return baseValue + (increaseValue * (currentLevel - 1));
