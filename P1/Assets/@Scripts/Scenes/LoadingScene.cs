@@ -27,7 +27,7 @@ public class LoadingScene : BaseScene
 
         SceneType = EScene.LoadingScene;
         Managers.Scene.SetCurrentScene(this);
-        Managers.Data.Init();
+        //Managers.Data.Init();
 
         Managers.Backend.Init();
 

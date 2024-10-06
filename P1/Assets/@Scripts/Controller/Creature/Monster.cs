@@ -37,10 +37,10 @@ public class Monster : Creature, IDamageable
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        MonsterInfoData data = Managers.Data.MonsterDataDic[dataTemplateID];
+        BackendData.Chart.Monster.Item data = Managers.Backend.Chart.Monster.Dic[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
-        Atk = data.Atk + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
-        MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
+        Atk = data.Atk + Managers.Backend.Chart.CreatureUpgradeStat.Dic[dataTemplateID].IncreaseAtk; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
+        MaxHp = data.MaxHp + Managers.Backend.Chart.CreatureUpgradeStat.Dic[dataTemplateID].IncreaseMaxHp; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
 
         MoveSpeed = data.MoveSpeed;

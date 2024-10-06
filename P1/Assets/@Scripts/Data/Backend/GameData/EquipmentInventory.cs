@@ -17,7 +17,7 @@ namespace BackendData.GameData
     public class EquipmentInfoData
     {
         public int DataTemplateID { get; private set; }
-        public EquipmentData Data { get; private set; }
+        public BackendData.Chart.Equipment.Item Data { get; private set; }
         public EOwningState OwningState { get; set; }
 
         public int Level { get; set; }
@@ -31,7 +31,7 @@ namespace BackendData.GameData
             Level = level;
             Count = count;
             IsEquipped = isEquipped;
-            Data = Managers.Data.EquipmentDic[dataTemplateID];
+            Data = Managers.Backend.Chart.Equipment.Dic[dataTemplateID]; //Managers.Data.EquipmentDic[dataTemplateID];
         }
     }
 
@@ -144,6 +144,7 @@ namespace BackendData.GameData
                 // 새롭게 장착할 장비의 IsEquipped를 true로 설정하고 장착된 장비 Dictionary에 업데이트
                 equipmentInventoryData.IsEquipped = true;
                 _equipmentEquipDic[equipmentInventoryData.Data.EquipmentType.ToString()] = equipmentInventoryData;
+                Managers.Object.Hero.ChangeAnimController(true);
 
                 // 새롭게 장착한 장비도 인벤토리 Dictionary에 업데이트 (동기화)
                 _equipmentInventoryDic[dataTemplateID] = equipmentInventoryData;

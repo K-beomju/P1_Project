@@ -87,9 +87,9 @@ public static class Util
     #region Upgrade System 
     public static int GetUpgradeCost(EHeroUpgradeType upgradeType, int level)
     {
-        List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].ReferenceLevelList;
-        List<int> StartCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].StartCostList;
-        List<int> IncreaseCostList = Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].IncreaseCostList;
+        List<int> ReferenceLevelList = Managers.Backend.Chart.HeroUpgradeCost.Dic[upgradeType.ToString()].ReferenceLevelList; //Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].ReferenceLevelList;
+        List<int> StartCostList = Managers.Backend.Chart.HeroUpgradeCost.Dic[upgradeType.ToString()].StartCostList; //Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].StartCostList;
+        List<int> IncreaseCostList = Managers.Backend.Chart.HeroUpgradeCost.Dic[upgradeType.ToString()].IncreaseCostList; //Managers.Data.HeroUpgradeCostInfoDataDic[upgradeType].IncreaseCostList;
 
         int startCost = 0;
         int increaseCost = 0;
@@ -198,7 +198,7 @@ public static class Util
     public static List<int> GetEquipmentDrawResults(EEquipmentType type, int drawCount, int initialLevel)
     {
         var resultEqList = new List<int>();
-        var gachaData = Managers.Data.GachaDataDic[initialLevel];
+        var gachaData = Managers.Backend.Chart.DrawEquipmentGacha.Dic[initialLevel];
         int weightValue = GetWeightValueByType(type);
         for (int i = 0; i < drawCount; i++)
         {
@@ -206,7 +206,7 @@ public static class Util
             gachaData = CheckAndUpdateGachaData(type, ref initialLevel);
 
             // 뽑기 확률에 따라 장비를 뽑습니다.
-            ERareType rareType = GetRandomRareType(gachaData.DrawProbability);
+            ERareType rareType = GetRandomRareType(gachaData.DrawProbabilityList);
             int equipmentIndex = GetEquipmentIndexForRareType(gachaData, rareType);
             int dataID = GetEquipmentDataID(gachaData, rareType, equipmentIndex, weightValue);
             resultEqList.Add(dataID);
@@ -230,7 +230,7 @@ public static class Util
         }
     }
 
-    private static DrawEquipmentGachaData CheckAndUpdateGachaData(EEquipmentType type, ref int initialLevel)
+    private static BackendData.Chart.DrawEquipmentGacha.Item CheckAndUpdateGachaData(EEquipmentType type, ref int initialLevel)
     {
         //현재 레벨과 뽑기 시작 시의 레벨이 다른 경우, 새로운 레벨 데이터를 다시 가져옵니다.
         if (Managers.Backend.GameData.DrawLevelData.DrawDic[type.ToString()].DrawLevel != initialLevel)
@@ -238,7 +238,7 @@ public static class Util
             initialLevel = Managers.Backend.GameData.DrawLevelData.DrawDic[type.ToString()].DrawLevel;
         }
 
-        return Managers.Data.GachaDataDic[initialLevel];
+        return Managers.Backend.Chart.DrawEquipmentGacha.Dic[initialLevel]; //Managers.Data.GachaDataDic[initialLevel];
     }
 
     // 등급에 따른 가챠 
@@ -248,7 +248,7 @@ public static class Util
     }
 
     // 장비에 따른 인덱스 가챠 
-    public static int GetEquipmentIndexForRareType(DrawEquipmentGachaData gachaData, ERareType rareType)
+    public static int GetEquipmentIndexForRareType(BackendData.Chart.DrawEquipmentGacha.Item gachaData, ERareType rareType)
     {
         switch (rareType)
         {
@@ -271,7 +271,7 @@ public static class Util
     }
 
     // 등급과 인덱스에 맞는 장비 ID 반환 
-    public static int GetEquipmentDataID(DrawEquipmentGachaData gachaData, ERareType rareType, int equipmentIndex, int weightValue)
+    public static int GetEquipmentDataID(BackendData.Chart.DrawEquipmentGacha.Item gachaData, ERareType rareType, int equipmentIndex, int weightValue)
     {
         List<int> equipmentIdList;
 
@@ -330,7 +330,7 @@ public static class Util
     public static float CalculateStat(EHeroUpgradeType upgradeType)
     {
         // 기본 값 및 증가 값 가져오기
-        var upgradeData = Managers.Data.HeroUpgradeInfoDataDic[upgradeType];
+        var upgradeData = Managers.Backend.Chart.HeroUpgrade.Dic[upgradeType.ToString()];
         float baseValue = upgradeData.Value;
         float increaseValue = upgradeData.IncreaseValue;
         int currentLevel = Managers.Backend.GameData.UserData.UpgradeStatDic[upgradeType.ToString()];

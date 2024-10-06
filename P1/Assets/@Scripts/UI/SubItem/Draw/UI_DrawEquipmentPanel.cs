@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Cinemachine.DocumentationSortingAttribute;
 using static Define;
 
 public class UI_DrawEquipmentPanel : UI_Base
@@ -135,9 +136,9 @@ public class UI_DrawEquipmentPanel : UI_Base
         _totalCount = _drawData.DrawCount;
 
         GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetEquipmentString(_currentEquipmentType)} 뽑기 Lv. {_drawLevel}";
-        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.GachaDataDic[_drawLevel].MaxExp}";
+        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Backend.Chart.DrawEquipmentGacha.Dic[_drawLevel].MaxExp}";
 
-        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.GachaDataDic[_drawLevel].MaxExp;
+        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Backend.Chart.DrawEquipmentGacha.Dic[_drawLevel].MaxExp;
         GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
     }
 

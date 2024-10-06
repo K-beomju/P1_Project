@@ -28,7 +28,6 @@ public class Hero : Creature
     private WaitForSeconds recoveryTime = new WaitForSeconds(1);
 
     private bool isDash = false;
-    private bool isWeapon = false;
 
     protected override bool Init()
     {
@@ -267,7 +266,6 @@ public class Hero : Creature
         Anim.runtimeAnimatorController = weapon ? weaponController : handController;
         Anim.Rebind();
         CreatureState = ECreatureState.Idle;
-        isWeapon = true;
     }
     #endregion
 

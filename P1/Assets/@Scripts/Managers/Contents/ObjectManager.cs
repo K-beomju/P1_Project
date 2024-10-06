@@ -27,10 +27,10 @@ public class ObjectManager
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
         string prefabName = typeof(T).Name;
-        if(prefabName == "Monster")
-        prefabName += "/" + Managers.Data.MonsterDataDic[dataTemplateID].PrefabKey;
-        else if(prefabName == "BossMonster")
-                prefabName += "/" + Managers.Data.BossMonsterDataDic[dataTemplateID].PrefabKey;
+        if (prefabName == "Monster")
+            prefabName += "/" + Managers.Backend.Chart.Monster.Dic[dataTemplateID].PrefabKey;//Managers.Data.MonsterDataDic[dataTemplateID].PrefabKey;
+        else if (prefabName == "BossMonster")
+            prefabName += "/" + Managers.Backend.Chart.BossMonster.Dic[dataTemplateID].PrefabKey; //Managers.Data.BossMonsterDataDic[dataTemplateID].PrefabKey;
 
         GameObject go = Managers.Resource.Instantiate("Object/" + prefabName);
         go.name = prefabName;

@@ -23,14 +23,14 @@ public class HeroInfo
     #endregion
 
     public int DataTemplateID { get; private set; }
-    public HeroInfoData Data { get; private set; }
+    public BackendData.Chart.Hero.Item Data { get; private set; }
 
     public HeroInfo(int dataTemplateID)
     {
         Level = Managers.Backend.GameData.UserData.Level;
         Debug.Log($"현재 레벨 : {Level}");
         DataTemplateID = dataTemplateID;
-        Data = Managers.Data.HeroInfoDataDic[dataTemplateID];
+        Data = Managers.Backend.Chart.Hero.Dic[dataTemplateID]; //Managers.Data.HeroInfoDataDic[dataTemplateID];
     }
 
 
