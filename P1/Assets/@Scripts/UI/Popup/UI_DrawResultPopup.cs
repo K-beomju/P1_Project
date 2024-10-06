@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using static UnityEditor.Progress;
 
 public class UI_DrawResultPopup : UI_Popup
 {
@@ -71,7 +72,7 @@ public class UI_DrawResultPopup : UI_Popup
     public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList)
     {
         _type = type;
-        _level = BackendManager.Instance.GameData.DrawLevelData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
+        _level = Managers.Backend.GameData.DrawLevelData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
         _drawCount = drawCount;
 
         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
@@ -98,17 +99,21 @@ public class UI_DrawResultPopup : UI_Popup
 
         for (int i = 0; i < resultList.Count; i++)
         {
-            if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultList[i], out EquipmentInfoData equipmentInfoData))
-            {
+            if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultList[i], out EquipmentInfoData equipmentInfoData)) {
                 Debug.LogWarning($"Equipment.AllEquipmentInfo에 장비 ID가 없습니다");
                 yield break;
             }
-            
-            UI_EquipmentItem drawItem = _drawItems[i];
-            drawItem.gameObject.SetActive(true);
-            drawItem.SetDrawInfo(equipmentInfoData);
-            Managers.Equipment.AddEquipment(equipmentInfoData.DataTemplateID);
-            
+
+            try {
+                Managers.Backend.GameData.EquipmentInventory.AddEquipment(equipmentInfoData.DataTemplateID);
+                UI_EquipmentItem drawItem = _drawItems[i];
+                drawItem.gameObject.SetActive(true);
+                drawItem.SetDrawInfo(equipmentInfoData);
+            }
+            catch (Exception e) {
+                throw new Exception($"CreateEquipmentItem({equipmentInfoData}, {equipmentInfoData.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
+            }
+
             yield return wait;
         }
         InteractiveButtons(true);

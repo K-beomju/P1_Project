@@ -83,7 +83,7 @@ public class UI_CharacterPanel : UI_Base
         var equipmentItem = Get<UI_EquipmentItem>((int)uiItem);
 
         //만약에 장착된 장비가 있다면
-        if (BackendManager.Instance.GameData.EquipmentInventory.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))
+        if (Managers.Backend.GameData.EquipmentInventory.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))
         {
             int dataId = equipmentInfoData.DataTemplateID;
             equipmentItem.gameObject.SetActive(true);

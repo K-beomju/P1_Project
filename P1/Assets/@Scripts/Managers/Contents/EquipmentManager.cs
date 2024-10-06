@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,56 +11,37 @@ public class EquipmentManager
 
     public void Init()
     {
-        // 무기
-        int index = 100100;
-        for (int i = 0; i < 24; i++)
-        {
-            EquipmentInfoData equipmentInfo = new EquipmentInfoData(index, EOwningState.Unowned, 0, 0, false);
-            AllEquipmentInfos.Add(equipmentInfo.DataTemplateID, equipmentInfo);
-            index += 1;
-        }
-        // 갑옷
-        index = 200100;
-        for (int i = 0; i < 24; i++)
-        {
-            EquipmentInfoData equipmentInfo = new EquipmentInfoData(index, EOwningState.Unowned, 0, 0, false);
-            AllEquipmentInfos.Add(equipmentInfo.DataTemplateID, equipmentInfo);
-            index += 1;
-        }
-        // 반지
-        index = 300100;
-        for (int i = 0; i < 24; i++)
-        {
-            EquipmentInfoData equipmentInfo = new EquipmentInfoData(index, EOwningState.Unowned, 0, 0, false);
-            AllEquipmentInfos.Add(equipmentInfo.DataTemplateID, equipmentInfo);
-            index += 1;
-        }
-
+        InitializeEquipment(EEquipmentType.Weapon, 100100, 24);
+        InitializeEquipment(EEquipmentType.Armor, 200100, 24);
+        InitializeEquipment(EEquipmentType.Ring, 300100, 24);
     }
 
-    public void AddEquipment(int dataTemplateID)
+    // 무기, 갑옷, 반지의 초기화를 각각 개별 메서드로 분리하여 중복 코드 제거
+    private void InitializeEquipment(EEquipmentType type, int startIndex, int count)
     {
-        BackendManager.Instance.GameData.EquipmentInventory.AddEquipment(dataTemplateID);
+        for (int i = 0; i < count; i++)
+        {
+            int index = startIndex + i;
+            var equipmentInfo = new EquipmentInfoData(index, EOwningState.Unowned, 0, 0, false);
+            AllEquipmentInfos.Add(equipmentInfo.DataTemplateID, equipmentInfo);
+        }
     }
 
-    public void EquipEquipment(int dataTemplateID)
-    {
-        BackendManager.Instance.GameData.EquipmentInventory.EquipEquipment(dataTemplateID);
-    }
-
+    // 특정 타입의 장비 정보 리스트 반환
     public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type)
     {
-        return AllEquipmentInfos.Values.Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type).ToList();
+        return AllEquipmentInfos.Values
+            .Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type)
+            .ToList();
     }
 
-
-
+    // 소유 중인 특정 타입 장비의 효과 합산 값 반환
     public float OwnedEquipmentValues(EEquipmentType type)
     {
         float ownedValues = 0;
 
         // 소유 중인 장비 중 해당 타입의 장비 효과 합산
-        foreach (var equipment in BackendManager.Instance.GameData.EquipmentInventory.EquipmentInventoryDic.Values)
+        foreach (var equipment in Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.Values)
         {
             if (equipment.Data.EquipmentType == type)
             {
@@ -70,18 +52,19 @@ public class EquipmentManager
         return ownedValues;
     }
 
+    // 장착 중인 특정 타입 장비의 효과 합산 값 반환
     public float EquipEquipmentValue(EEquipmentType type)
     {
         float equipValue = 0;
 
         // 장착된 장비 중 해당 타입의 장비 효과 합산
-        //foreach (var equipment in BackendManager.Instance.GameData.EquipmentInventory.EquipmentEquipDic.Values)
-        //{
-        //    if (equipment.Data.EquipmentType == type)
-        //    {
-        //        equipValue += equipment.Data.EquippedValue;
-        //    }
-        //}
+        foreach (var equipment in Managers.Backend.GameData.EquipmentInventory.EquipmentEquipDic.Values)
+        {
+            if (equipment.Data.EquipmentType == type)
+            {
+                equipValue += equipment.Data.EquippedValue;
+            }
+        }
 
         return equipValue;
     }

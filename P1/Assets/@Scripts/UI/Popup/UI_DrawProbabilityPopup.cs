@@ -82,7 +82,7 @@ public class UI_DrawProbabilityPopup : UI_Popup
 
     public void RefreshUI(EEquipmentType type)
     {
-        var equipmentData = BackendManager.Instance.GameData.DrawLevelData.DrawDic[type.ToString()]; 
+        var equipmentData = Managers.Backend.GameData.DrawLevelData.DrawDic[type.ToString()]; 
         _currentType = type;
         _currentLevel = equipmentData.DrawLevel; // 초기 레벨 설정
 

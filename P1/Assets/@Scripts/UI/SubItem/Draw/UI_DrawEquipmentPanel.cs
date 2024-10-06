@@ -124,7 +124,7 @@ public class UI_DrawEquipmentPanel : UI_Base
 
     public void UpdateEquipmentUI()
     {
-        _drawData = BackendManager.Instance.GameData.DrawLevelData.DrawDic[_currentEquipmentType.ToString()];
+        _drawData = Managers.Backend.GameData.DrawLevelData.DrawDic[_currentEquipmentType.ToString()];
 
         if (_drawData == null)
         {

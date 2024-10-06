@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using BackendData.GameData;
 using static Define;
+using static UnityEditor.Progress;
 
 public class UI_EquipmentPopup : UI_Popup
 {
@@ -137,7 +138,7 @@ public class UI_EquipmentPopup : UI_Popup
     public void RefreshUI()
     {
         // 장비 인벤토리 중 장착된 장비 찾기 
-        EquipmentInfoData equippedInfo = BackendManager.Instance.GameData.EquipmentInventory.EquipmentInventoryDic.Values
+        EquipmentInfoData equippedInfo = Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.Values
             .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType && equipmentInfo.IsEquipped);
 
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
@@ -146,10 +147,10 @@ public class UI_EquipmentPopup : UI_Popup
         for (int i = 0; i < equipmentInfos.Count; i++)
         {
             // 만약에 내가 가진 장비 인벤과 동일한 ID일 경우
-            if (BackendManager.Instance.GameData.EquipmentInventory.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
+            if (Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
             {
                 // 동기화
-                equipmentInfos[i] = equipmentInfoData; 
+                equipmentInfos[i] = equipmentInfoData;
             }
         }
 
@@ -223,18 +224,28 @@ public class UI_EquipmentPopup : UI_Popup
     // 장착 
     private void OnEquipEquipment()
     {
-        Managers.Equipment.EquipEquipment(SelectEquipmentInfo.DataTemplateID);
-        GetButton((int)Buttons.Btn_Equip).interactable = false;
+        try {
+            Managers.Backend.GameData.EquipmentInventory.EquipEquipment(SelectEquipmentInfo.DataTemplateID);
+            GetButton((int)Buttons.Btn_Equip).interactable = false;
+        }
+        catch(Exception e) {
+            throw new Exception($"OnEquipEquipment({SelectEquipmentInfo.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
+        }
     }
 
     // 강화
     private void OnEnhanceEquipment()
     {
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
-        if(SelectEquipmentInfo.Count >= maxCount)
-        {
-            BackendManager.Instance.GameData.EquipmentInventory.EquipmentLevelUp(SelectEquipmentInfo, maxCount);
-            ShowEquipmentDetailUI(SelectEquipmentInfo);
+        if (SelectEquipmentInfo.Count >= maxCount) {
+            try { 
+                Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(SelectEquipmentInfo, maxCount);
+                ShowEquipmentDetailUI(SelectEquipmentInfo);
+            } 
+            catch(Exception e) {
+                throw new Exception($"OnEnhanceEquipment({SelectEquipmentInfo}) 중 에러가 발생하였습니다\n{e}");
+            }
+
         }
     }
 
@@ -250,11 +261,15 @@ public class UI_EquipmentPopup : UI_Popup
         .ThenByDescending(info => info.Data.DataId)
         .FirstOrDefault();
 
-        if (bestEquipment != null)
-        {
-            Managers.Equipment.EquipEquipment(bestEquipment.DataTemplateID);
-            ShowEquipmentDetailUI(bestEquipment);
-            GetButton((int)Buttons.Btn_Equip).interactable = false;
+        if (bestEquipment != null) {
+            try {
+                Managers.Backend.GameData.EquipmentInventory.EquipEquipment(bestEquipment.DataTemplateID);
+                ShowEquipmentDetailUI(bestEquipment);
+                GetButton((int)Buttons.Btn_Equip).interactable = false;
+            }
+            catch (Exception e) {
+                throw new Exception($"OnAutoEquipment({bestEquipment}) 중 에러가 발생하였습니다\n{e}");
+            }
         }
     }
 

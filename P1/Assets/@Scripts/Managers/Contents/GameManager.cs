@@ -6,6 +6,7 @@ using Data;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
+using static UnityEditor.Progress;
 
 
 public class GameManager
@@ -19,8 +20,13 @@ public class GameManager
 
 		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EEquipmentType>((type) =>
 		{
-            BackendManager.Instance.GameData.DrawLevelData.AddDrawCount(type);
-		}));
+            try { 
+                Managers.Backend.GameData.DrawLevelData.AddDrawCount(type);
+            } 
+            catch(Exception e) {
+                throw new Exception($"EEventType.DrawDataUpdated({type}) 중 에러가 발생하였습니다\n{e}");
+            }
+        }));
 
 	}
 	#region MonsterSpawn

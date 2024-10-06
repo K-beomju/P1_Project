@@ -12,7 +12,7 @@ namespace BackendData.GameData
 {
 
     //===============================================================
-    // UserData 테이블의 장비 관련 데이터를 담당하는 클래스
+    // EquipmentInventory 테이블의 장비 EquipmentInfoData 클래스
     //===============================================================
     public class EquipmentInfoData
     {

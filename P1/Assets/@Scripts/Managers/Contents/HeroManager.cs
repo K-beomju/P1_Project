@@ -27,7 +27,7 @@ public class HeroInfo
 
     public HeroInfo(int dataTemplateID)
     {
-        Level = BackendManager.Instance.GameData.UserData.Level;
+        Level = Managers.Backend.GameData.UserData.Level;
         Debug.Log($"현재 레벨 : {Level}");
         DataTemplateID = dataTemplateID;
         Data = Managers.Data.HeroInfoDataDic[dataTemplateID];
@@ -89,7 +89,7 @@ public class HeroManager
         Managers.Event.AddEvent(EEventType.PlayerLevelUp, new Action<int>(level =>
         {
             // 히어로의 레벨 업데이트
-            PlayerHeroInfo.Level = BackendManager.Instance.GameData.UserData.Level;
+            PlayerHeroInfo.Level = Managers.Backend.GameData.UserData.Level;
             PlayerHeroInfo.CalculateInfoStat();
         }));
 

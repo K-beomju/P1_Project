@@ -55,18 +55,16 @@ public class GameScene : BaseScene
         InitializeUI();
 
         ChapterLevel = 1;
-        //SetupStage();
+        SetupStage();
         return true;
     }
 
 
     private void InitailizeBackend()
     {
-        UserData = BackendManager.Instance.GameData.UserData;
+        UserData = Managers.Backend.GameData.UserData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
-        BackendManager.Instance.StartUpdate();
-
-
+        StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
     }
 
     private void InitializeGameComponents()

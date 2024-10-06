@@ -7,11 +7,8 @@ using BackendData.Base;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class BackendManager : MonoBehaviour
+public class BackendManager
 {
-    public static BackendManager Instance { get; private set; }
-
-
     // 게임 정보 관리 데이터만 모아놓은 클래스
     public class BackendGameData {
         public readonly BackendData.GameData.UserData UserData = new();
@@ -33,19 +30,6 @@ public class BackendManager : MonoBehaviour
     // 치명적인 에러 발생 여부
     private bool _isErrorOccured = false;
 
-
-    void Awake() {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        Init();
-    }
 
     public void Init() {
 
@@ -90,13 +74,8 @@ public class BackendManager : MonoBehaviour
     private void CreateSendQueueMgr() {
         var obj = new GameObject();
         obj.name = "SendQueueMgr";
-        obj.transform.SetParent(this.transform);
+        obj.transform.SetParent(GameObject.Find("@Managers").transform);
         obj.AddComponent<SendQueueMgr>();
-    }
-
-    // 일정주기마다 데이터를 저장/불러오는 코루틴 시작(인게임 시작 시)
-    public void StartUpdate() {
-        StartCoroutine(UpdateGameDataTransaction());
     }
 
     // 호출 시, 코루틴 내 함수들의 동작을 멈추게 하는 함수
@@ -105,8 +84,9 @@ public class BackendManager : MonoBehaviour
         _isErrorOccured = true;
     }
 
-    private IEnumerator UpdateGameDataTransaction() {
-        var seconds = new WaitForSeconds(5);
+    // 일정주기마다 데이터를 저장/불러오는 코루틴 시작(인게임 시작 시)
+    public IEnumerator UpdateGameDataTransaction() {
+        var seconds = new WaitForSeconds(300);
         yield return seconds;
 
         while(!_isErrorOccured) {
@@ -244,23 +224,4 @@ public class BackendManager : MonoBehaviour
         });
     }
 
-    private void OnApplicationQuit()
-    {
-        UpdateAllGameData(callback => {
-            if (callback == null) {
-                Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
-                return;
-            }
-
-            if (callback.IsSuccess()) {
-                Debug.Log("저장 성공, 저장에 성공했습니다.");
-            }
-            else {
-                Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
-            }
-                
-        });
-        Debug.Log("애플리케이션이 종료됩니다.");
-        // 종료 시 필요한 작업을 이곳에 작성
-    }
 }

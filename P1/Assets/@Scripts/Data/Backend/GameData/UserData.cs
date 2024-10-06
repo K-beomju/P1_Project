@@ -101,6 +101,8 @@ namespace BackendData.GameData
             {
                 _purseDic[key] += amount;
             }
+
+            Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
         }
 
         // 유저의 경험치를 변경하는 함수

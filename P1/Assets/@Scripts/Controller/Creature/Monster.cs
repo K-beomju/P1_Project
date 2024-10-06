@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data;
 using DG.Tweening;
 using UnityEngine;
 using static Define;
+using static UnityEditor.Progress;
 
 public class Monster : Creature, IDamageable
 {
@@ -57,7 +59,7 @@ public class Monster : Creature, IDamageable
     private void SetNewPatrolTarget()
     {
         // 패트롤 범위 내에서 새로운 목표 위치 설정
-        _targetPosition = _initialPosition + new Vector3(Random.Range(-MoveRange, MoveRange), Random.Range(-MoveRange, MoveRange), 0);
+        _targetPosition = _initialPosition + new Vector3(UnityEngine.Random.Range(-MoveRange, MoveRange), UnityEngine.Random.Range(-MoveRange, MoveRange), 0);
         _isMovingToTarget = true;
     }
 
@@ -146,29 +148,42 @@ public class Monster : Creature, IDamageable
 
     public override void OnDead()
     {
-        if (_damageCoroutine != null)
+
+        try
         {
-            StopCoroutine(_damageCoroutine);
-            _damageCoroutine = null;
+            if (_damageCoroutine != null)
+            {
+                StopCoroutine(_damageCoroutine);
+                _damageCoroutine = null;
+            }
+            GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
+
+            Managers.Backend.GameData.UserData.AddExp(gameScene.Data.MonsterExpReward);
+            if (ObjectType == EObjectType.Monster)
+            {
+                UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
+                goldIcon.SetGoldIconAtPosition(transform.position, () =>
+                {
+                    try
+                    {
+                        Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"OnDead -> AddAmount ({EGoodType.Gold}, {gameScene.Data.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
+                    }
+                });
+            }
+            else if (ObjectType == EObjectType.BossMonster)
+            {
+                //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
+                //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
+            }
+            Managers.Game.OnMonsterDestroyed();
+            Managers.Object.Despawn(this);
         }
-
-        GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
-
-        Managers.Purse.AddExp(gameScene.Data.MonsterExpReward);  // 경험치 추가
-        if (ObjectType == EObjectType.Monster)
-        {
-            UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
-            goldIcon.SetGoldIconAtPosition(transform.position, () => Managers.Purse.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward));
+        catch(Exception e) {
+            throw new Exception($"Monster OnDead 중 에러가 발생하였습니다\n{e}");
         }
-        else if (ObjectType == EObjectType.BossMonster)
-        {
-            //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
-            //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
-        }
-        Managers.Game.OnMonsterDestroyed();
-
-        Managers.Object.Despawn(this);
-
-
     }
 }

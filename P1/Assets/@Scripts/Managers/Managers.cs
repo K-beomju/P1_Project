@@ -15,14 +15,12 @@ public class Managers : MonoBehaviour
     private ObjectManager _object = new ObjectManager();
     private GameManager _game = new GameManager();
     private EventManager _event = new EventManager();
-    private PurseManager _purse = new PurseManager();
     private HeroManager _hero = new HeroManager();
     private EquipmentManager _equipment = new EquipmentManager();
 
     public static ObjectManager Object { get { return Instance?._object; } }
     public static GameManager Game { get { return Instance?._game; } }
     public static EventManager Event { get { return Instance?._event; } }
-    public static PurseManager Purse { get { return Instance?._purse; } }
     public static HeroManager Hero { get { return Instance?._hero; } }
     public static EquipmentManager Equipment { get { return Instance?._equipment; } }
     #endregion
@@ -39,7 +37,12 @@ public class Managers : MonoBehaviour
     public static SoundManager Sound { get { return Instance?._sound; } }
     public static UIManager UI { get { return Instance?._ui; } }
     public static DataManager Data { get { return Instance?._data; } }
+    #endregion
 
+    #region Server
+    private BackendManager _backend = new BackendManager();
+
+    public static BackendManager Backend { get {  return Instance?._backend; } }
     #endregion
 
     public static void Init()

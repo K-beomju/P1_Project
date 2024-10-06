@@ -29,12 +29,7 @@ public class LoadingScene : BaseScene
         Managers.Scene.SetCurrentScene(this);
         Managers.Data.Init();
 
-        // StaticManager가 없을 경우 새로 생성
-        if (FindObjectOfType(typeof(BackendManager)) == null)
-        {
-            GameObject go = new GameObject { name = "BackendManager" };
-            go.GetOrAddComponent<BackendManager>();
-        }
+        Managers.Backend.Init();
 
         if (Backend.IsInitialized == false) {
             Debug.LogError("뒤끝 초기화가 안됌");
@@ -51,7 +46,7 @@ public class LoadingScene : BaseScene
         InitStep();
 
         // 뒤끝 데이터 초기화
-        BackendManager.Instance.InitInGameData();
+        Managers.Backend.InitInGameData();
 
         //Queue에 저장된 함수 순차적으로 실행
         NextStep(true, string.Empty, string.Empty, string.Empty);
@@ -111,7 +106,7 @@ public class LoadingScene : BaseScene
         List<TransactionValue> transactionList = new List<TransactionValue>();
 
         // 게임 테이블 데이터만큼 트랜잭션 불러오기
-        foreach (var gameData in BackendManager.Instance.GameData.GameDataList) {
+        foreach (var gameData in Managers.Backend.GameData.GameDataList) {
             transactionList.Add(gameData.Value.GetTransactionGetValue());
         }
 
@@ -126,7 +121,7 @@ public class LoadingScene : BaseScene
 
                     int index = 0;
 
-                    foreach (var gameData in BackendManager.Instance.GameData.GameDataList) {
+                    foreach (var gameData in Managers.Backend.GameData.GameDataList) {
                         _initializeStep.Enqueue(() => {
                             ShowDataName(gameData.Key);
                             // 불러온 데이터를 로컬에서 파싱
@@ -141,7 +136,7 @@ public class LoadingScene : BaseScene
                 }
                 else {
                     // 트랜잭션으로 데이터를 찾지 못하여 에러가 발생한다면 개별로 GetMyData로 호출
-                    foreach (var gameData in BackendManager.Instance.GameData.GameDataList) { 
+                    foreach (var gameData in Managers.Backend.GameData.GameDataList) { 
                         _initializeStep.Enqueue(() => {
                             ShowDataName(gameData.Key);
                             // GetMyData 호출

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BackEnd;
 using Data;
 using UnityEngine;
 using static Define;
@@ -99,8 +100,15 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
             int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
             if (CanUpgrade(price))
             {
-                Managers.Purse.AddAmount(EGoodType.Gold, -price);
-                Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
+                try
+                {
+                    Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, -price);
+                    Managers.Hero.LevelUpHeroUpgrade(_heroUpgradeType);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"OnPressUpgradeButton({EGoodType.Gold}, {-price}) 중 에러가 발생하였습니다\n{e}");
+                }
             }
         }
         _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
@@ -125,9 +133,12 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         }
     }
 
-    bool CanUpgrade(int cost)
+    bool CanUpgrade(float cost)
     {
-        return Managers.Purse.GetAmount(EGoodType.Gold) >= cost;
+        if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(EGoodType.Gold.ToString(), out float amount))
+            return false;
+
+          return amount >= cost;
     }
 
     private IEnumerator CoStartUpgradeCoolTime(float seconds)
