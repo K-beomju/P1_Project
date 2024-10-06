@@ -38,7 +38,7 @@ public class Monster : Creature, IDamageable
     public override void SetCreatureInfo(int dataTemplateID)
     {
         MonsterInfoData data = Managers.Data.MonsterDataDic[dataTemplateID];
-        Level = Managers.Scene.GetCurrentScene<GameScene>().Data.MonsterLevel;
+        Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
         Atk = data.Atk + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
@@ -158,7 +158,7 @@ public class Monster : Creature, IDamageable
             }
             GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
 
-            Managers.Backend.GameData.UserData.AddExp(gameScene.Data.MonsterExpReward);
+            Managers.Backend.GameData.UserData.AddExp(gameScene.StageInfo.MonsterExpReward);
             if (ObjectType == EObjectType.Monster)
             {
                 UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
@@ -166,11 +166,11 @@ public class Monster : Creature, IDamageable
                 {
                     try
                     {
-                        Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, gameScene.Data.MonsterGoldReward);
+                        Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, gameScene.StageInfo.MonsterGoldReward);
                     }
                     catch (Exception e)
                     {
-                        throw new Exception($"OnDead -> AddAmount ({EGoodType.Gold}, {gameScene.Data.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
+                        throw new Exception($"OnDead -> AddAmount ({EGoodType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
                     }
                 });
             }

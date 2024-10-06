@@ -39,7 +39,7 @@ public class GameManager
 		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _killMonsters, _maxMonsters);
 	}
 
-	public void SpawnMonster(StageInfoData stageData, bool isBoss = false)
+	public void SpawnMonster(BackendData.Chart.Stage.Item stageInfo, bool isBoss = false)
 	{
 		if (_tileMap == null)
 		{
@@ -51,7 +51,7 @@ public class GameManager
 
 		if (!isBoss) // 노말 스테이지
 		{
-			for (int i = 0; i < stageData.KillMonsterCount; i++)
+			for (int i = 0; i < stageInfo.KillMonsterCount; i++)
 			{
 				Vector3 spawnPosition = Vector3.zero;
 
@@ -62,12 +62,12 @@ public class GameManager
 				}
 				while (Vector3.Distance(spawnPosition, heroPosition) < 5f); // 플레이어와의 거리가 5 미만이면 다시 찾음
 
-				Managers.Object.Spawn<Monster>(spawnPosition, stageData.MonsterDataIdList[UnityEngine.Random.Range(0, stageData.MonsterDataIdList.Count)]);
+				Managers.Object.Spawn<Monster>(spawnPosition, stageInfo.MonsterDataIdList[UnityEngine.Random.Range(0, stageInfo.MonsterDataIdList.Count)]);
 			}
 		}
 		else // 보스 스테이지
 		{
-			Managers.Object.Spawn<BossMonster>(Vector3.zero, stageData.BossDataId);
+			Managers.Object.Spawn<BossMonster>(Vector3.zero, stageInfo.BossDataId);
 		}
 	}
 

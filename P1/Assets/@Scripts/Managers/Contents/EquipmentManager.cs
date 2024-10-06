@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BackendData.GameData;
+using UnityEngine;
 using static Define;
 
 public class EquipmentManager

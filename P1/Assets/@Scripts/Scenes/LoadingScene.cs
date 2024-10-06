@@ -60,6 +60,10 @@ public class LoadingScene : BaseScene
         // 트랜잭션으로 불러온 후, 안불러질 경우 각자 Get 함수로 불러오는 함수 *중요*
         _initializeStep.Enqueue(() => { ShowDataName("트랜잭션 시도 함수"); TransactionRead(NextStep); });
 
+        // 차트정보 불러오기 함수 Insert
+        _initializeStep.Enqueue(() => { ShowDataName("모든 차트 정보"); Managers.Backend.Chart.ChartInfo.BackendLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("스테이지 정보"); Managers.Backend.Chart.Stage.BackendChartDataLoad(NextStep); });
+
         _maxLoadingCount = _initializeStep.Count;
         _currentLoadingCount = 0;
         sceneUI.ShowDataSlider(_currentLoadingCount, _maxLoadingCount);
@@ -96,7 +100,7 @@ public class LoadingScene : BaseScene
     }
 
     // 트랜잭션 읽기 호출 함수
-    private void TransactionRead(BackendData.Base.Normal.AfterBackendLoadFuc func) {
+    private void TransactionRead(BackendData.Base.Normal.AfterBackendLoadFunc func) {
         bool isSuccess = false;
         string className = GetType().Name;
         string functionName = MethodBase.GetCurrentMethod()?.Name;

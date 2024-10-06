@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using BackendData.GameData;
 using Cinemachine;
 using Data;
 using UnityEngine;
@@ -31,12 +30,12 @@ public class GameScene : BaseScene
     private WaitForSeconds StartWait = new WaitForSeconds(1f);
     private UI_GameScene sceneUI;
 
-    public StageInfoData Data { get; private set; }
     public int ChapterLevel { get; private set; }
     public float BossBattleTimer { get; private set; }
     public float BossBattleTimeLimit { get; private set; }
 
-    private UserData UserData;
+    public BackendData.Chart.Stage.Item StageInfo { get; private set; }
+    private BackendData.GameData.UserData UserData;
 
     protected override bool Init()
     {
@@ -76,16 +75,12 @@ public class GameScene : BaseScene
 
     private void InitializeScene()
     {
-
         GameObject map = Managers.Resource.Instantiate("BaseMap");
         PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;
-
- 
-
     }
 
     private void InitializeUI()
@@ -132,10 +127,10 @@ public class GameScene : BaseScene
 
     private void SetupStage()
     {
-        Data = Managers.Data.StageDataDic[UserData.StageLevel];
-        Debug.Log($"{UserData.StageLevel} 스테이지 진입");
+        StageInfo = Managers.Backend.Chart.Stage.Dic[UserData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
+        Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
 
-        BossBattleTimeLimit = Data.BossBattleTimeLimit;
+        BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;
         BossBattleTimer = BossBattleTimeLimit;
 
         GameSceneState = EGameSceneState.Play;
@@ -147,11 +142,11 @@ public class GameScene : BaseScene
 
     private IEnumerator CoPlayStage()
     {
-        Managers.Game.SetMonsterCount(0, Data.KillMonsterCount);
+        Managers.Game.SetMonsterCount(0, StageInfo.KillMonsterCount);
 
         yield return StartWait;
         sceneUI.UpdateStageUI(false);
-        Managers.Game.SpawnMonster(Data);
+        Managers.Game.SpawnMonster(StageInfo);
 
         while (!Managers.Game.ClearStage())
         {
@@ -170,7 +165,7 @@ public class GameScene : BaseScene
     {
         sceneUI.UpdateStageUI(true);
 
-        Managers.Game.SpawnMonster(Data, true);
+        Managers.Game.SpawnMonster(StageInfo, true);
         sceneUI.RefreshBossMonsterHp(Managers.Object.BossMonster);
         while (Managers.Object.BossMonster != null)
         {

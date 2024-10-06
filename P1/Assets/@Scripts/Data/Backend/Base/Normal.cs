@@ -8,9 +8,9 @@ namespace BackendData.Base
 {
     public class Normal
     {
-        public delegate void AfterBackendLoadFuc(bool isSuccess, string className, string functionName, string errorInfo);
+        public delegate void AfterBackendLoadFunc(bool isSuccess, string className, string functionName, string errorInfo);
 
-        public virtual void BackendLoad(AfterBackendLoadFuc afterBackendLoadFuc)
+        public virtual void BackendLoad(AfterBackendLoadFunc afterBackendLoadFuc)
         {
             string className = GetType().Name;
             string funcName = MethodBase.GetCurrentMethod()?.Name;

@@ -9,6 +9,13 @@ using Debug = UnityEngine.Debug;
 
 public class BackendManager
 {
+
+    //뒤끝 콘솔에 업로드한 차트 데이터만 모아놓은 클래스
+    public class BackendChart {
+        public readonly BackendData.Chart.AllChart ChartInfo = new(); // 모든 차트
+        public readonly BackendData.Chart.Stage.Manager Stage = new();
+    }
+
     // 게임 정보 관리 데이터만 모아놓은 클래스
     public class BackendGameData {
         public readonly BackendData.GameData.UserData UserData = new();
@@ -25,6 +32,7 @@ public class BackendManager
         }
     }
 
+    public BackendChart Chart = new(); // 차트 모음 클래스 생성
     public BackendGameData GameData = new(); // 게임 데이터 관리 클래스 생성 
 
     // 치명적인 에러 발생 여부
@@ -67,6 +75,7 @@ public class BackendManager
 
     // 로딩씬에서 할당할 뒤끝 정보 클래스 초기화
     public void InitInGameData() {
+        Chart = new();
         GameData = new();
     }
 

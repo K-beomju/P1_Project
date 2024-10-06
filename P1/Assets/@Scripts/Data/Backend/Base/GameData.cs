@@ -27,7 +27,7 @@ namespace BackendData.Base
 
         protected abstract void SetServerDataToLocal(JsonData gameDataJson);
 
-        public void BackendGameDataLoad(AfterBackendLoadFuc afterBackendLoadFuc) {
+        public void BackendGameDataLoad(AfterBackendLoadFunc afterBackendLoadFunc) {
             string tableName = GetTableName();
             string columnName = GetColumnName();
             string className = tableName;
@@ -60,31 +60,31 @@ namespace BackendData.Base
 
                             isSuccess = true;
                             // 불러오기가 끝난 이후에 호출되는 함수 호출
-                            afterBackendLoadFuc(isSuccess, className, funcName, errorInfo);
+                            afterBackendLoadFunc(isSuccess, className, funcName, errorInfo);
                         }
                         else {
                             // 불러온 데이터가 없을 경우, 서버에 존재하지 않는 경우
                             // 데이터를 새로 생성
-                            BackendInsert(afterBackendLoadFuc);
+                            BackendInsert(afterBackendLoadFunc);
                         }
                     }
                     else {
                         // 데이터 존재 여부 상관없이 에러가 발생했을 경우(서버에 데이터가 존재할 수도있음)
                         errorInfo = callback.ToString();
-                        afterBackendLoadFuc(isSuccess, className, funcName, errorInfo);
+                        afterBackendLoadFunc(isSuccess, className, funcName, errorInfo);
                     }
                 }
                 catch (Exception e) {
                     // 예외가 발생했을 경우
                     // 파싱 실패등
                     errorInfo = e.ToString();
-                    afterBackendLoadFuc(isSuccess, className, funcName, errorInfo);
+                    afterBackendLoadFunc(isSuccess, className, funcName, errorInfo);
                 }
             });
         }
 
         // 서버에 데이터가 존재하지 않을 경우, 데이터를 새로 삽입
-        private void BackendInsert(AfterBackendLoadFuc afterBackendLoadFuc) {
+        private void BackendInsert(AfterBackendLoadFunc afterBackendLoadFunc) {
             string tableName = GetTableName();
             bool isSuccess = false;
             string errorInfo = string.Empty;
@@ -111,7 +111,7 @@ namespace BackendData.Base
                     errorInfo = e.ToString();
                 }
                 finally {
-                    afterBackendLoadFuc(isSuccess, className, funcName, errorInfo);
+                    afterBackendLoadFunc(isSuccess, className, funcName, errorInfo);
                 }
             });
         }
@@ -140,7 +140,7 @@ namespace BackendData.Base
             return TransactionValue.SetGet(GetTableName(), where);
         }
 
-        public void BackendGameDataLoadByTransaction(JsonData gameDataJson, AfterBackendLoadFuc afterBackendLoadFuc) {
+        public void BackendGameDataLoadByTransaction(JsonData gameDataJson, AfterBackendLoadFunc afterBackendLoadFunc) {
             string columnName = GetColumnName();
             string errorInfo = string.Empty;
             string className = GetType().Name;
@@ -157,12 +157,12 @@ namespace BackendData.Base
       
                     SetServerDataToLocal(gameDataJson[columnName]);
                 }
-                afterBackendLoadFuc(true, className, funcName, errorInfo);
+                afterBackendLoadFunc(true, className, funcName, errorInfo);
             
             }
             catch(Exception e) {
                 errorInfo = e.ToString();
-                afterBackendLoadFuc(false, className, funcName, errorInfo);
+                afterBackendLoadFunc(false, className, funcName, errorInfo);
             }
         
         }
