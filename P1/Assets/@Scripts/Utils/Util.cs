@@ -411,4 +411,42 @@ public static class Util
         return string.Join("", parts);
     }
 
+    public static List<T> ParseList<T>(string data)
+    {
+        List<T> resultList = new List<T>();
+        string[] values = data.Split('&');
+
+        foreach (string value in values)
+        {
+            try
+            {
+                // 빈 문자열이나 공백인 경우 무시
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    continue;
+                }
+                T convertedValue;
+
+                // Enum 타입 처리
+                if (typeof(T).IsEnum)
+                {
+                    convertedValue = (T)Enum.Parse(typeof(T), value);
+                }
+                else
+                {
+                    // 기본 타입 처리 (int, float, double 등)
+                    convertedValue = (T)Convert.ChangeType(value, typeof(T));
+                }
+
+                resultList.Add(convertedValue);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to convert {value} to {typeof(T)}: {e.Message}");
+            }
+        }
+
+        return resultList;
+    }
+
 }

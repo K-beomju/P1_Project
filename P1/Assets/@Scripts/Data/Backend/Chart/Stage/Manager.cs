@@ -14,14 +14,11 @@ namespace BackendData.Chart.Stage
         private readonly Dictionary<int, Item> _dic = new();
         public IReadOnlyDictionary<int, Item> Dic => (IReadOnlyDictionary<int, Item>)_dic.AsReadOnlyCollection();
 
-        //private readonly List<Item> _list = new List<Item>();
-        //public IReadOnlyList<Item> List => (IReadOnlyList<Item>)_list.AsReadOnlyList();
-
         // 차트 파일 이름 설정 함수
         // 차트 불러오기를 공통적으로 처리하는 BackendChartDataLoad() 함수에서 해당 함수를 통해 차트 파일 이름을 얻는다.
         public override string GetChartFileName()
         {
-            return "StageInfoData";
+            return "stageInfoChart";
         }
 
         // Backend.Chart.GetChartContents에서 각 차트 형태에 맞게 파싱하는 클래스

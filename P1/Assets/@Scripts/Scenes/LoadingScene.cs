@@ -63,6 +63,14 @@ public class LoadingScene : BaseScene
         // 차트정보 불러오기 함수 Insert
         _initializeStep.Enqueue(() => { ShowDataName("모든 차트 정보"); Managers.Backend.Chart.ChartInfo.BackendLoad(NextStep); });
         _initializeStep.Enqueue(() => { ShowDataName("스테이지 정보"); Managers.Backend.Chart.Stage.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("영웅 정보"); Managers.Backend.Chart.Hero.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("영웅 업그레이드 스탯 정보"); Managers.Backend.Chart.HeroUpgrade.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("영웅 업그레이드 가격 정보"); Managers.Backend.Chart.HeroUpgradeCost.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("생명체 업그레이드 스탯 정보"); Managers.Backend.Chart.CreatureUpgradeStat.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("일반 몬스터 정보"); Managers.Backend.Chart.Monster.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("보스 몬스터 정보"); Managers.Backend.Chart.BossMonster.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("장비 정보"); Managers.Backend.Chart.Equipment.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("뽑기 확률 정보"); Managers.Backend.Chart.DrawEquipmentGacha.BackendChartDataLoad(NextStep); });
 
         _maxLoadingCount = _initializeStep.Count;
         _currentLoadingCount = 0;
