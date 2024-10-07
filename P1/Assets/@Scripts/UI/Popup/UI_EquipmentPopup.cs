@@ -141,18 +141,7 @@ public class UI_EquipmentPopup : UI_Popup
         EquipmentInfoData equippedInfo = Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.Values
             .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType && equipmentInfo.IsEquipped);
 
-        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
-
-        // 장비 인벤과 동기화 
-        for (int i = 0; i < equipmentInfos.Count; i++)
-        {
-            // 만약에 내가 가진 장비 인벤과 동일한 ID일 경우
-            if (Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
-            {
-                // 동기화
-                equipmentInfos[i] = equipmentInfoData;
-            }
-        }
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
 
         if (equippedInfo != null)
         {
@@ -198,7 +187,7 @@ public class UI_EquipmentPopup : UI_Popup
         if (SelectEquipmentInfo == null)
             return;
 
-        equipmentItem.SetEquipmentInfo(SelectEquipmentInfo);
+        equipmentItem.SetEquipmentInfo(SelectEquipmentInfo, false);
         GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
         GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
         GetTMPText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
@@ -224,11 +213,13 @@ public class UI_EquipmentPopup : UI_Popup
     // 장착 
     private void OnEquipEquipment()
     {
-        try {
+        try
+        {
             Managers.Backend.GameData.EquipmentInventory.EquipEquipment(SelectEquipmentInfo.DataTemplateID);
             GetButton((int)Buttons.Btn_Equip).interactable = false;
         }
-        catch(Exception e) {
+        catch (Exception e)
+        {
             throw new Exception($"OnEquipEquipment({SelectEquipmentInfo.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
         }
     }
@@ -237,12 +228,15 @@ public class UI_EquipmentPopup : UI_Popup
     private void OnEnhanceEquipment()
     {
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
-        if (SelectEquipmentInfo.Count >= maxCount) {
-            try { 
+        if (SelectEquipmentInfo.Count >= maxCount)
+        {
+            try
+            {
                 Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(SelectEquipmentInfo, maxCount);
                 ShowEquipmentDetailUI(SelectEquipmentInfo);
-            } 
-            catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 throw new Exception($"OnEnhanceEquipment({SelectEquipmentInfo}) 중 에러가 발생하였습니다\n{e}");
             }
 
@@ -252,8 +246,7 @@ public class UI_EquipmentPopup : UI_Popup
     // 자동 장착 
     private void OnAutoEquipment()
     {
-        // 추후에 생각
-        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
 
         EquipmentInfoData bestEquipment = equipmentInfos
         .Where(info => info.OwningState == EOwningState.Owned)
@@ -261,23 +254,84 @@ public class UI_EquipmentPopup : UI_Popup
         .ThenByDescending(info => info.Data.DataId)
         .FirstOrDefault();
 
-        if (bestEquipment != null) {
-            try {
+        if (bestEquipment != null)
+        {
+            try
+            {
                 Managers.Backend.GameData.EquipmentInventory.EquipEquipment(bestEquipment.DataTemplateID);
                 ShowEquipmentDetailUI(bestEquipment);
                 GetButton((int)Buttons.Btn_Equip).interactable = false;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 throw new Exception($"OnAutoEquipment({bestEquipment}) 중 에러가 발생하였습니다\n{e}");
             }
         }
     }
 
-    // 일괄 강화 
+    // 일괄 강화 - 최대 레벨까지 강화
     private void OnBatchEnhanceEquipment()
     {
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
 
+        int enhancedCount = 0;
+
+        foreach (var equipment in equipmentInfos)
+        {
+            // 강화 가능한 장비인지 확인
+            if (equipment.OwningState == EOwningState.Owned)
+            {
+                // 강화 가능한 최대 레벨 (예시로 설정한 값, 필요시 실제 최대 레벨 값으로 대체)
+                int maxLevel = 100;  // 실제 최대 레벨 값으로 대체하세요.
+
+                // 현재 장비 레벨이 최대 레벨보다 낮고, 강화가 가능한 경우 반복하여 강화 수행
+                while (equipment.Level < maxLevel)
+                {
+                    // 강화에 필요한 최대 개수 확인
+                    int maxCount = Util.GetUpgradeEquipmentMaxCount(equipment.Level);
+
+                    // 현재 개수가 최대 강화 개수 이상일 때만 강화 수행
+                    if (equipment.Count >= maxCount)
+                    {
+                        try
+                        {
+                            // 장비 강화 수행
+                            Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(equipment, maxCount);
+                            enhancedCount++;
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"OnBatchEnhanceEquipment({equipment.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
+                            break; // 에러 발생 시 해당 장비 강화 중단
+                        }
+                    }
+                    else
+                    {
+                        // 현재 개수가 부족하여 더 이상 강화할 수 없으면 루프 종료
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 강화가 완료되면 UI를 갱신합니다.
+        if (enhancedCount > 0)
+        {
+            Debug.Log($"{enhancedCount}개의 장비가 최대 레벨까지 일괄 강화되었습니다.");
+            equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
+            for (int i = 0; i < equipmentItems.Count; i++)
+            {
+                equipmentItems[i].SetEquipmentInfo(equipmentInfos[i]);
+            }
+            ShowEquipmentDetailUI(SelectEquipmentInfo);
+
+        }
+        else
+        {
+            Debug.Log("강화할 수 있는 장비가 없습니다.");
+        }
     }
+
 
     #endregion
 

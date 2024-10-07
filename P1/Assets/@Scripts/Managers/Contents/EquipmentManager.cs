@@ -29,11 +29,25 @@ public class EquipmentManager
     }
 
     // 특정 타입의 장비 정보 리스트 반환
-    public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type)
+    public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type, bool needsSync = false)
     {
-        return AllEquipmentInfos.Values
+        List<EquipmentInfoData> equipmentInfos = AllEquipmentInfos.Values
             .Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type)
             .ToList();
+
+        if(!needsSync)
+         return equipmentInfos;
+
+        for (int i = 0; i < equipmentInfos.Count; i++)
+        {
+            // 만약에 내가 가진 장비 인벤과 동일한 ID일 경우
+            if (Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.TryGetValue(equipmentInfos[i].DataTemplateID, out var equipmentInfoData))
+            {
+                // 동기화
+                equipmentInfos[i] = equipmentInfoData;
+            }
+        }
+        return equipmentInfos;
     }
 
     // 소유 중인 특정 타입 장비의 효과 합산 값 반환

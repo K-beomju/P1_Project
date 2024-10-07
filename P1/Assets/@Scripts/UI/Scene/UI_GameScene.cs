@@ -227,7 +227,6 @@ public class UI_GameScene : UI_Scene
         }
         else
         {
-            Debug.Log("머자ㅣㅇ");
             Managers.UI.ClosePopupUI();
             ShowPopupActiveGameUI(true);
         }

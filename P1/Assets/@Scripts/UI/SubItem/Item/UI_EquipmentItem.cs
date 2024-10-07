@@ -18,6 +18,12 @@ public class UI_EquipmentItem : UI_Base
         Image_Unowned,
         BG_Rare
     }
+
+    public enum Texts 
+    {
+        Text_Level
+    }
+
     private Image _equipmentImage;
     private Image _fadeImage;
     public Button _equipmentButton { get; private set; }
@@ -28,6 +34,8 @@ public class UI_EquipmentItem : UI_Base
         if (base.Init() == false)
             return false;
         BindImages(typeof(Images));
+        BindTMPTexts(typeof(Texts));
+
         _equipmentImage = GetImage((int)Images.Image_Equipment);
         _fadeImage = GetImage((int)Images.Image_Fade);
         _equipmentButton = GetComponent<Button>();
@@ -38,7 +46,8 @@ public class UI_EquipmentItem : UI_Base
     public void SetDrawInfo(EquipmentInfoData equipmentData)
     {
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
-        
+        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
+
         _fadeImage.color = Color.white;
         _fadeImage.DOFade(0, 0.1f);
 
@@ -46,7 +55,7 @@ public class UI_EquipmentItem : UI_Base
         _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
     }
 
-    public void SetEquipmentInfo(EquipmentInfoData equipmentData)
+    public void SetEquipmentInfo(EquipmentInfoData equipmentData, bool showLvText = true)
     {
         _fadeImage.gameObject.SetActive(false);
         _equipmentButton.onClick.RemoveAllListeners();
@@ -54,6 +63,11 @@ public class UI_EquipmentItem : UI_Base
 
         bool isOwned = equipmentData.OwningState == EOwningState.Owned;
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
+        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(showLvText && isOwned);
+        if(isOwned)
+            GetTMPText((int)Texts.Text_Level).text = $"Lv. {equipmentData.Level}";
+
+        
         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
 
         _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
