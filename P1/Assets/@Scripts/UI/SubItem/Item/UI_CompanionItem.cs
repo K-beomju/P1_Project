@@ -7,13 +7,13 @@ using BackendData.GameData;
 using static Define;
 
 
-public class UI_EquipmentItem : UI_Base
+public class UI_CompanionItem : UI_Base
 {
 
 
     public enum Images
     {
-        Image_Equipment,
+        Image_Icon,
         Image_Fade,
         Image_Unowned,
         BG_Rare
@@ -24,9 +24,9 @@ public class UI_EquipmentItem : UI_Base
         Text_Level
     }
 
-    private Image _equipmentImage;
+    private Image _iconImage;
     private Image _fadeImage;
-    public Button _equipmentButton { get; private set; }
+    public Button _companionButton { get; private set; }
 
 
     protected override bool Init()
@@ -36,9 +36,9 @@ public class UI_EquipmentItem : UI_Base
         BindImages(typeof(Images));
         BindTMPTexts(typeof(Texts));
 
-        _equipmentImage = GetImage((int)Images.Image_Equipment);
+        _iconImage = GetImage((int)Images.Image_Icon);
         _fadeImage = GetImage((int)Images.Image_Fade);
-        _equipmentButton = GetComponent<Button>();
+        _companionButton = GetComponent<Button>();
         return true;
     }
 
@@ -52,14 +52,14 @@ public class UI_EquipmentItem : UI_Base
         _fadeImage.DOFade(0, 0.1f);
 
          GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
-        _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+        _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
     }
 
     public void SetEquipmentInfo(EquipmentInfoData equipmentData, bool showLvText = true)
     {
         _fadeImage.gameObject.SetActive(false);
-        _equipmentButton.onClick.RemoveAllListeners();
-        _equipmentButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
+        _companionButton.onClick.RemoveAllListeners();
+        _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
 
         bool isOwned = equipmentData.OwningState == EOwningState.Owned;
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
@@ -70,7 +70,7 @@ public class UI_EquipmentItem : UI_Base
         
         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
 
-        _equipmentImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+        _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
 
     }
 }

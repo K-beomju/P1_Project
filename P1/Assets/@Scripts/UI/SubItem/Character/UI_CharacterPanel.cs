@@ -35,7 +35,7 @@ public class UI_CharacterPanel : UI_Base
         if (base.Init() == false)
             return false;
         Bind<UI_CharacterGrowthInvenSlot>(typeof(UI_CharacterGrowthSlots));
-        Bind<UI_EquipmentItem>(typeof(EquipmentItems));
+        Bind<UI_CompanionItem>(typeof(EquipmentItems));
         BindButtons(typeof(Buttons));
 
         Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Atk).SetInfo(Define.EHeroUpgradeType.Growth_Atk);
@@ -50,7 +50,7 @@ public class UI_CharacterPanel : UI_Base
 
         foreach (EquipmentItems item in Enum.GetValues(typeof(EquipmentItems)))
         {
-            var equipmentItem = Get<UI_EquipmentItem>((int)item);
+            var equipmentItem = Get<UI_CompanionItem>((int)item);
             if (equipmentItem != null)
             {
                 equipmentItem.gameObject.SetActive(false);
@@ -80,7 +80,7 @@ public class UI_CharacterPanel : UI_Base
 
     private void UpdateEquipmentUI(EEquipmentType type, EquipmentItems uiItem)
     {
-        var equipmentItem = Get<UI_EquipmentItem>((int)uiItem);
+        var equipmentItem = Get<UI_CompanionItem>((int)uiItem);
 
         //만약에 장착된 장비가 있다면
         if (Managers.Backend.GameData.EquipmentInventory.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))

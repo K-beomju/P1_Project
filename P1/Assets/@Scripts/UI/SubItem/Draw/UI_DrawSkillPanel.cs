@@ -37,9 +37,9 @@ public class UI_DrawSkillPanel : UI_Base
 
         GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => ShowProbabilityPopup());
 
-        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
-        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
-        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
+        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawSkill(10));
+        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawSkill(10));
+        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawSkill(30));
 
         return true;
     }
@@ -52,7 +52,7 @@ public class UI_DrawSkillPanel : UI_Base
 
     #region Draw Logic
 
-    private void OnDrawEquipment(int drawCount)
+    private void OnDrawSkill(int drawCount)
     {
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);

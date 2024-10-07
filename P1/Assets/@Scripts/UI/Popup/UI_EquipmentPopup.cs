@@ -45,8 +45,8 @@ public class UI_EquipmentPopup : UI_Popup
     }
 
 
-    private UI_EquipmentItem equipmentItem;
-    private List<UI_EquipmentItem> equipmentItems = new List<UI_EquipmentItem>();
+    private UI_CompanionItem equipmentItem;
+    private List<UI_CompanionItem> equipmentItems = new List<UI_CompanionItem>();
 
     private EquipmentInfoData selectEquipmentInfo;
     public EquipmentInfoData SelectEquipmentInfo
@@ -98,10 +98,10 @@ public class UI_EquipmentPopup : UI_Popup
 
         }, EUIEvent.Click);
 
-        equipmentItem = Util.FindChild<UI_EquipmentItem>(gameObject, "UI_EquipmentItem", true);
+        equipmentItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);
         for (int i = 0; i < 24; i++)
         {
-            var item = Managers.UI.MakeSubItem<UI_EquipmentItem>(GetObject((int)GameObjects.Content_Equipment).transform);
+            var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.Content_Equipment).transform);
             equipmentItems.Add(item);
         }
 

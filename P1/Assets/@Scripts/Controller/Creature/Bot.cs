@@ -28,17 +28,6 @@ public class Bot : Creature, IDamageable
     }
 
 
-    protected override void UpdateIdle()
-    {
-
-    }
-
-    
-    protected override void UpdateMove()
-    {
-       
-    }
-
     protected override void UpdateDead()
     {
         OnDead();

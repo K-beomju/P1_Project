@@ -26,7 +26,7 @@ public class UI_DrawResultPopup : UI_Popup
         Btn_RetryDraw
     }
 
-    private List<UI_EquipmentItem> _drawItems = new List<UI_EquipmentItem>();
+    private List<UI_CompanionItem> _drawItems = new List<UI_CompanionItem>();
     private EEquipmentType _type;
 
     private int _level;
@@ -50,7 +50,7 @@ public class UI_DrawResultPopup : UI_Popup
         GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawEquipment());
         for (int i = 0; i < 30; i++)
         {
-            var item = Managers.UI.MakeSubItem<UI_EquipmentItem>(GetObject((int)GameObjects.DrawItemGroup).transform);
+            var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.DrawItemGroup).transform);
             item.gameObject.SetActive(false);
             _drawItems.Add(item);
         }
@@ -122,7 +122,7 @@ public class UI_DrawResultPopup : UI_Popup
                 Managers.Backend.GameData.EquipmentInventory.AddEquipment(equipmentInfoData.DataTemplateID);
 
                 // 아이템 설정 및 활성화
-                UI_EquipmentItem drawItem = _drawItems[i];
+                UI_CompanionItem drawItem = _drawItems[i];
                 drawItem.SetDrawInfo(equipmentInfoData);
                 drawItem.gameObject.SetActive(true);
             }
