@@ -40,6 +40,11 @@ public class UI_DrawEquipmentPanel : UI_Base
         Image_PortalEquipment
     }
 
+    public enum Toggles
+    {
+        Toggle_DrawDirection
+    }
+
     private Dictionary<EEquipmentType, Image> _iconImages;
     private Dictionary<EEquipmentType, Sprite> _portalEqIconDic;
 
@@ -50,6 +55,7 @@ public class UI_DrawEquipmentPanel : UI_Base
 
     private int _drawLevel;
     private int _totalCount;
+    private bool _drawDirection = false;
 
     protected override bool Init()
     {
@@ -60,6 +66,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         BindSliders(typeof(Sliders));
         BindButtons(typeof(Buttons));
         BindImages(typeof(Images));
+        Bind<Toggle>(typeof(Toggles));
 
         _iconImages = new Dictionary<EEquipmentType, Image>
         {
@@ -75,7 +82,7 @@ public class UI_DrawEquipmentPanel : UI_Base
             { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/RingIcon") }
         };
         _portalImage = GetImage((int)Images.Image_PortalEquipment);
- 
+
         GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => ShowProbabilityPopup());
 
         GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
@@ -85,6 +92,11 @@ public class UI_DrawEquipmentPanel : UI_Base
         GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnClickButton(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EEquipmentType.Ring));
+
+        // 버튼 클릭 시 Toggle의 값을 변경합니다.
+        Toggle drawDirectionToggle = Get<Toggle>((int)Toggles.Toggle_DrawDirection);
+        GetButton((int)Buttons.Btn_SkipDrawVisual).onClick.AddListener(() => drawDirectionToggle.isOn = !drawDirectionToggle.isOn);
+        drawDirectionToggle.onValueChanged.AddListener((bool isOn) => _drawDirection = isOn);
 
         _currentEquipmentType = EEquipmentType.Weapon;
         return true;
@@ -152,7 +164,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
 
         var equipmentIdList = Util.GetEquipmentDrawResults(_currentEquipmentType, drawCount, _drawLevel);
-        popupUI.RefreshUI(_currentEquipmentType, drawCount, equipmentIdList);
+        popupUI.RefreshUI(_currentEquipmentType, drawCount, equipmentIdList, _drawDirection);
     }
 
     private void ShowProbabilityPopup()

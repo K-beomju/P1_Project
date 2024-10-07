@@ -31,6 +31,7 @@ public class UI_DrawResultPopup : UI_Popup
 
     private int _level;
     private int _drawCount;
+    private bool _drawDirection;
 
     protected override bool Init()
     {
@@ -69,11 +70,12 @@ public class UI_DrawResultPopup : UI_Popup
          GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
     }
 
-    public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList)
+    public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList, bool drawDirection)
     {
         _type = type;
         _level = Managers.Backend.GameData.DrawLevelData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
         _drawCount = drawCount;
+        _drawDirection = drawDirection;
 
         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
         GetTMPText((int)Texts.Text_Retry).text = $"{_drawCount}회";
@@ -85,7 +87,7 @@ public class UI_DrawResultPopup : UI_Popup
     private void RetryDrawEquipment()
     {
         List<int> resultList = Util.GetEquipmentDrawResults(_type, _drawCount, _level);
-        RefreshUI(_type, _drawCount, resultList);
+        RefreshUI(_type, _drawCount, resultList, _drawDirection);
     }
 
     private IEnumerator CreateEquipmentItem(List<int> resultList)
@@ -130,6 +132,7 @@ public class UI_DrawResultPopup : UI_Popup
                 yield break;  // 에러 발생 시, 더 이상 아이템을 생성하지 않고 종료
             }
 
+            if(!_drawDirection)
             yield return wait;
         }
 
