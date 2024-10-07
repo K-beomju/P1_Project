@@ -7,6 +7,7 @@ public class ObjectManager
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
     public Hero Hero { get; private set; }
+    public Bot Bot { get; private set; }
 
     #region Roots
     public Transform GetRootTransform(string name)
@@ -50,7 +51,11 @@ public class ObjectManager
         {
             hero.transform.parent = HeroRoot;
             Hero = hero;
-        }        
+        }   
+        if(obj is Bot bot)
+        {
+            Bot = bot;
+        }     
         obj.SetInfo(dataTemplateID);
 
         return obj as T;

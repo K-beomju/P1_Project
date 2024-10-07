@@ -53,7 +53,9 @@ public class GameScene : BaseScene
         InitializeUI();
 
         ChapterLevel = 1;
-        SetupStage();
+
+        //SetupStage();
+        Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
         return true;
     }
 

@@ -28,6 +28,7 @@ public class Hero : Creature
     private WaitForSeconds recoveryTime = new WaitForSeconds(1);
 
     private bool isDash = false;
+    private bool isMove = false;
 
     protected override bool Init()
     {
@@ -135,6 +136,9 @@ public class Hero : Creature
     #region AI Update
     protected override void UpdateIdle()
     {
+        if(!isMove)
+        return;
+        
         Target = FindClosestTarget(Managers.Object.Monsters);
         if (Target != null)
         {
@@ -193,6 +197,9 @@ public class Hero : Creature
     {
         if (Managers.Object.BossMonster != null)
             return Managers.Object.BossMonster;
+
+        if (Managers.Object.Bot != null)
+            return Managers.Object.Bot;
 
         BaseObject target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
@@ -311,6 +318,11 @@ public class Hero : Creature
                 yield break;
             }
         }
+    }
+
+    public void GetUp()
+    {
+        isMove = true;
     }
 
     void OnDrawGizmos()
