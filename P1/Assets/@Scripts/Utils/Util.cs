@@ -323,66 +323,6 @@ public static class Util
 
     #endregion
 
-    #region Stat System
-
-    // 스탯 계산
-    public static float CalculateStat(EHeroUpgradeType upgradeType)
-    {
-        // 기본 값 및 증가 값 가져오기
-        var upgradeData = Managers.Backend.Chart.HeroUpgrade.Dic[upgradeType.ToString()];
-        float baseValue = upgradeData.Value;
-        float increaseValue = upgradeData.IncreaseValue;
-        int currentLevel = Managers.Backend.GameData.UserData.UpgradeStatDic[upgradeType.ToString()];
-
-        // 최종 값 계산
-        return baseValue + (increaseValue * (currentLevel - 1));
-    }
-
-    // 장비 효과 적용
-    public static float ApplyEquipmentEffect(EEquipmentType equipmentType, float baseStat)
-    {
-        // 보유한 장비 효과 및 장착된 장비 효과 가져오기
-        float ownedValue = Managers.Equipment.OwnedEquipmentValues(equipmentType);
-        float equipValue = Managers.Equipment.EquipEquipmentValue(equipmentType);
-
-        // 보유 효과가 존재하면 먼저 적용
-        if (ownedValue != 0)
-        {
-            baseStat *= (1 + ownedValue / 100f);
-        }
-
-        // 장착 효과가 존재하면 추가로 적용
-        if (equipValue != 0)
-        {
-            baseStat *= (1 + equipValue / 100f);
-        }
-
-        return baseStat; // 최종 스탯 반환
-    }
-
-    // 총전투력 계산 함수
-    public static float CalculateTotalCombatPower(HeroInfo hero)
-    {
-        // 모든 스탯을 단순히 합산하여 총 전투력을 계산합니다.
-        float totalCombatPower = 0.0f;
-
-        // HeroInfo 클래스에서 제공하는 각 스탯의 값을 합산
-        totalCombatPower += hero.Atk;       // 공격력
-        totalCombatPower += hero.MaxHp;     // 체력
-        totalCombatPower += hero.Recovery;  // 회복력
-        totalCombatPower += hero.CriRate;   // 치명타 확률
-        totalCombatPower += hero.CriDmg;    // 치명타 데미지
-        totalCombatPower += hero.AttackRange; // 공격 범위
-        totalCombatPower += hero.AttackDelay; // 공격 딜레이
-        totalCombatPower += hero.AttackSpeedRate; // 공격 속도
-
-        // 필요시 다른 스탯도 합산할 수 있음
-        // totalCombatPower += hero.Defense; // 방어력 예시
-
-        return totalCombatPower;
-    }
-
-    #endregion
 
     public static string ConvertToKoreanUnits(long number)
     {

@@ -90,32 +90,49 @@ public class UI_DrawResultPopup : UI_Popup
 
     private IEnumerator CreateEquipmentItem(List<int> resultList)
     {
-        for (int i = 0; i < _drawItems.Count; i++)
-        {
-            _drawItems[i].gameObject.SetActive(false);
-        }
+        _drawItems.ForEach(item => item.gameObject.SetActive(false));
 
         WaitForSeconds wait = new WaitForSeconds(CREATRE_EQUIPMENT_DELAY);
 
-        for (int i = 0; i < resultList.Count; i++)
+        // 결과 목록에 해당하는 장비 데이터를 한 번에 미리 검증하여 유효한지 확인
+        foreach (var resultId in resultList)
         {
-            if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultList[i], out EquipmentInfoData equipmentInfoData)) {
-                Debug.LogWarning($"Equipment.AllEquipmentInfo에 장비 ID가 없습니다");
+            if (!Managers.Equipment.AllEquipmentInfos.ContainsKey(resultId))
+            {
+                Debug.LogWarning($"Equipment.AllEquipmentInfo에 장비 ID {resultId}가 없습니다.");
                 yield break;
             }
+        }
 
-            try {
-                Managers.Backend.GameData.EquipmentInventory.AddEquipment(equipmentInfoData.DataTemplateID);
-                UI_EquipmentItem drawItem = _drawItems[i];
-                drawItem.gameObject.SetActive(true);
-                drawItem.SetDrawInfo(equipmentInfoData);
+        // 실제로 장비 아이템을 생성하고 UI에 적용
+        for (int i = 0; i < Mathf.Min(resultList.Count, _drawItems.Count); i++)
+        {
+            int resultId = resultList[i];
+
+            if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultId, out EquipmentInfoData equipmentInfoData))
+            {
+                continue;
             }
-            catch (Exception e) {
-                throw new Exception($"CreateEquipmentItem({equipmentInfoData}, {equipmentInfoData.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
+
+            try
+            {
+                // 장비 인벤토리에 추가
+                Managers.Backend.GameData.EquipmentInventory.AddEquipment(equipmentInfoData.DataTemplateID);
+
+                // 아이템 설정 및 활성화
+                UI_EquipmentItem drawItem = _drawItems[i];
+                drawItem.SetDrawInfo(equipmentInfoData);
+                drawItem.gameObject.SetActive(true);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"CreateEquipmentItem({equipmentInfoData}, {equipmentInfoData.DataTemplateID}) 중 에러가 발생하였습니다: {e}");
+                yield break;  // 에러 발생 시, 더 이상 아이템을 생성하지 않고 종료
             }
 
             yield return wait;
         }
+
         InteractiveButtons(true);
     }
 

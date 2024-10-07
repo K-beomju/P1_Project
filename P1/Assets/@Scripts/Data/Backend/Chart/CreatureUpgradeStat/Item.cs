@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LitJson;
-using static Cinemachine.DocumentationSortingAttribute;
 
 namespace BackendData.Chart.CreatureUpgradeStat
 {
