@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d2c7c618e2c4f4ba00cdb368ef6631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lockImage: {fileID: 0}
 --- !u!1001 &8705037306133812676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4700784591809817610, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
       propertyPath: m_Name
-      value: UI_CompanionItem
+      value: UI_CompanionItemSlot
       objectReference: {fileID: 0}
     - target: {fileID: 4700784591809817610, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
       propertyPath: m_IsActive

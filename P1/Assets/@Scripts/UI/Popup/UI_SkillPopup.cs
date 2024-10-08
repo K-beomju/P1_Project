@@ -96,37 +96,35 @@ public class UI_SkillPopup : UI_Popup
             _skillSlotDic.Add(Get<UI_SkillSlot>(i), ESkillSlotType.Lock);
         }
 
-
-
         return true;
     }
 
     void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.SkillItemClick, new Action<SkillInfoData>(ShowEquipmentDetailUI));
+        Managers.Event.AddEvent(EEventType.SkillItemClick, new Action<SkillInfoData>(ShowSkillDetailUI));
     }
 
     void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.SkillItemClick, new Action<SkillInfoData>(ShowEquipmentDetailUI));
+        Managers.Event.RemoveEvent(EEventType.SkillItemClick, new Action<SkillInfoData>(ShowSkillDetailUI));
     }
 
     public void RefreshUI()
     {
-        List<SkillInfoData> skillInfos = Managers.Skill.AllSkillInfos.Values.ToList();
-
+        List<SkillInfoData> skillInfos = Managers.Skill.GetSkillInfos(true);
+        
         for (int i = 0; i < _companionItems.Count; i++)
         {
             _companionItems[i].SetSkillInfo(skillInfos[i]);
         }
     }
 
-    public void ShowEquipmentDetailUI(SkillInfoData _skillInfo)
+    public void ShowSkillDetailUI(SkillInfoData _skillInfo)
     {
         if (SelectSkillInfo == _skillInfo)
             return;
         SelectSkillInfo = _skillInfo;
-
+        Debug.LogWarning(_companionItem == null);
         _companionItem.SetSkillInfo(SelectSkillInfo, false);
         GetTMPText((int)Texts.Text_SkillName).text = SelectSkillInfo.Data.Name;
         GetTMPText((int)Texts.Text_SkillLevel).text = $"Lv. {SelectSkillInfo.Level}";

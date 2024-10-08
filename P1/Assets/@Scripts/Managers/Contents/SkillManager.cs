@@ -18,6 +18,23 @@ public class SkillManager
         Managers.Backend.GameData.SkillInventory.AddSkill(100100);
     }
 
+    public List<SkillInfoData> GetSkillInfos(bool needsSync = false)
+    {
+        List<SkillInfoData> skillInfos = AllSkillInfos.Values.ToList();
+
+        if(!needsSync)
+        return skillInfos;
+
+        for (int i = 0; i < skillInfos.Count; i++)
+        {
+            if(Managers.Backend.GameData.SkillInventory.SkillInventoryDic.TryGetValue(skillInfos[i].DataTemplateID, out var skillInfoData))
+            {
+                skillInfos[i] = skillInfoData;
+            }
+        }
+        return skillInfos;
+    }
+
 
     
 }
