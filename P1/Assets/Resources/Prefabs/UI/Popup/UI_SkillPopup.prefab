@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 7153586985831246330}
   - component: {fileID: 1296734276235885147}
   m_Layer: 5
-  m_Name: SkillSlot_1
+  m_Name: Button_SkillSlot_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 6033828825153817034}
   - component: {fileID: 5548488663837936704}
   m_Layer: 5
-  m_Name: SkillSlot_1
+  m_Name: Button_SkillSlot_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1507,7 +1507,7 @@ GameObject:
   - component: {fileID: 4134404174274213826}
   - component: {fileID: 8745499687703964592}
   m_Layer: 5
-  m_Name: SkillSlot_1
+  m_Name: Button_SkillSlot_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2388,7 +2388,7 @@ GameObject:
   - component: {fileID: 3983211011274103504}
   - component: {fileID: 1128531978328463625}
   m_Layer: 5
-  m_Name: SkillSlot_1
+  m_Name: Button_SkillSlot_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2903,7 +2903,7 @@ GameObject:
   - component: {fileID: 8040513754020419696}
   - component: {fileID: 3815013235543495950}
   m_Layer: 5
-  m_Name: SkillSlot_1
+  m_Name: Button_SkillSlot_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3538,7 +3538,7 @@ GameObject:
   - component: {fileID: 7993168422159428676}
   - component: {fileID: 3597356839586051927}
   m_Layer: 5
-  m_Name: SkillSlot_1
+  m_Name: Button_SkillSlot_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

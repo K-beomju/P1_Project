@@ -70,7 +70,9 @@ public class LoadingScene : BaseScene
         _initializeStep.Enqueue(() => { ShowDataName("일반 몬스터 정보"); Managers.Backend.Chart.Monster.BackendChartDataLoad(NextStep); });
         _initializeStep.Enqueue(() => { ShowDataName("보스 몬스터 정보"); Managers.Backend.Chart.BossMonster.BackendChartDataLoad(NextStep); });
         _initializeStep.Enqueue(() => { ShowDataName("장비 정보"); Managers.Backend.Chart.Equipment.BackendChartDataLoad(NextStep); });
-        _initializeStep.Enqueue(() => { ShowDataName("뽑기 확률 정보"); Managers.Backend.Chart.DrawEquipmentGacha.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("스킬 정보"); Managers.Backend.Chart.Skill.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("장비 뽑기 확률 정보"); Managers.Backend.Chart.DrawEquipmentGacha.BackendChartDataLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("스킬 뽑기 확률 정보"); Managers.Backend.Chart.DrawSkillGacha.BackendChartDataLoad(NextStep); });
 
         _maxLoadingCount = _initializeStep.Count;
         _currentLoadingCount = 0;

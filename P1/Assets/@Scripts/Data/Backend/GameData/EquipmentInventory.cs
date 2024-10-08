@@ -30,7 +30,7 @@ namespace BackendData.GameData
             Level = level;
             Count = count;
             IsEquipped = isEquipped;
-            Data = Managers.Backend.Chart.Equipment.Dic[dataTemplateID]; //Managers.Data.EquipmentDic[dataTemplateID];
+            Data = Managers.Backend.Chart.Equipment.Dic[dataTemplateID];
         }
     }
 
