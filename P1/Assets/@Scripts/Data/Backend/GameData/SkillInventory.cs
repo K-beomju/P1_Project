@@ -42,6 +42,8 @@ namespace BackendData.GameData
         private Dictionary<int, SkillInfoData> _skillInventoryDic = new();
         // Skill 각 장착한 스킬 데이터를 담는 Dic 
         private Dictionary<int, SkillInfoData> _skillEquipDic = new();
+        
+        private List<ESkillSlotType> _skillSlots = new();
 
         public IReadOnlyDictionary<int, SkillInfoData> SkillInventoryDic => (IReadOnlyDictionary<int, SkillInfoData>)_skillInventoryDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<int, SkillInfoData> SkillEquipDic => (IReadOnlyDictionary<int, SkillInfoData>)_skillEquipDic.AsReadOnlyCollection();
@@ -54,6 +56,12 @@ namespace BackendData.GameData
         {
             _skillEquipDic.Clear();
             _skillInventoryDic.Clear();
+            _skillSlots.Add(ESkillSlotType.Lock);
+            _skillSlots.Add(ESkillSlotType.Lock);
+            _skillSlots.Add(ESkillSlotType.Lock);
+            _skillSlots.Add(ESkillSlotType.Lock);
+            _skillSlots.Add(ESkillSlotType.Lock);
+            _skillSlots.Add(ESkillSlotType.Lock);
         }
 
         protected override void SetServerDataToLocal(JsonData Data)
@@ -77,6 +85,12 @@ namespace BackendData.GameData
 
                 _skillEquipDic.Add(dataId, new SkillInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
             }
+
+            foreach (var column in Data["SkillSlot"].Keys)
+            {
+                ESkillSlotType slotType = Util.ParseEnum<ESkillSlotType>(Data["SkillSlot"].ToString());
+                _skillSlots.Add(slotType);
+            }
         }
 
         public override string GetTableName()
@@ -94,6 +108,7 @@ namespace BackendData.GameData
             Param param = new Param();
             param.Add("SkillEquip", _skillEquipDic);
             param.Add("SkillInventory", _skillInventoryDic);
+            param.Add("SkillSlot", _skillSlots);
             return param;
         }
 

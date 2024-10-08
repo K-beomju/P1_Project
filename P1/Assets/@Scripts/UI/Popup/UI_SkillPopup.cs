@@ -95,6 +95,7 @@ public class UI_SkillPopup : UI_Popup
         {
             _skillSlotDic.Add(Get<UI_SkillSlot>(i), ESkillSlotType.Lock);
         }
+        _skillSlotDic[Get<UI_SkillSlot>(0)] = ESkillSlotType.None;
 
         return true;
     }
