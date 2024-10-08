@@ -183,9 +183,9 @@ public class UI_EquipmentPopup : UI_Popup
     // 장비 Item을 클릭했을 때 보여주는 부분 
     public void ShowEquipmentDetailUI(EquipmentInfoData _equipmentInfo)
     {
-        SelectEquipmentInfo = _equipmentInfo;
-        if (SelectEquipmentInfo == null)
+        if (SelectEquipmentInfo == _equipmentInfo)
             return;
+        SelectEquipmentInfo = _equipmentInfo;
 
         equipmentItem.SetEquipmentInfo(SelectEquipmentInfo, false);
         GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;

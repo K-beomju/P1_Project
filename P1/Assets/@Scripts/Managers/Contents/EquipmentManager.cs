@@ -35,7 +35,7 @@ public class EquipmentManager
             .Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type)
             .ToList();
 
-        if(!needsSync)
+        if (!needsSync)
          return equipmentInfos;
 
         for (int i = 0; i < equipmentInfos.Count; i++)

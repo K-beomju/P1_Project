@@ -72,6 +72,8 @@ public class GameScene : BaseScene
         Managers.Game.Init();
         Managers.Hero.Init();
         Managers.Equipment.Init();
+        Managers.Skill.Init();
+
     }
 
     private void InitializeScene()

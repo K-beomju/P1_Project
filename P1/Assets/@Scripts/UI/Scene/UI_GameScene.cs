@@ -210,7 +210,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_EquipmentPopup>().RefreshUI();
                     break;
                 case PlayTab.Skill:
-                    Managers.UI.ShowPopupUI<UI_SkillPopup>();
+                    Managers.UI.ShowPopupUI<UI_SkillPopup>().RefreshUI();
                     break;
                 case PlayTab.Dungeon:
                     Managers.UI.ShowPopupUI<UI_DungeonPopup>();

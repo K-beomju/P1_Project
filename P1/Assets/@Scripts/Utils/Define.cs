@@ -84,7 +84,8 @@ public static class Define
         /// <summary>장비 아이템 클릭할 때 호출</summary>
         EquipmentItemClick,
 
-        EquipEquipmentUpdated, 
+        /// <summary>스킬 아이템 클릭할 때 호출</summary>
+        SkillItemClick,
     }
 
     public enum EOwningState
@@ -121,6 +122,19 @@ public static class Define
         None,
         Gold,
         Dia
+    }
+
+    public enum EDrawType
+    {
+        Equipment,
+        Skill
+    }
+
+    public enum ESkillSlotType
+    {
+        Lock,         // 슬롯이 잠겨 있는 상태
+        None,         // 슬롯이 열려 있지만 아무것도 장착되지 않은 상태
+        Equipped      // 슬롯에 스킬이 장착된 상태
     }
 
     public enum ERareType

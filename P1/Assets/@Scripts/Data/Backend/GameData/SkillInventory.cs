@@ -97,5 +97,27 @@ namespace BackendData.GameData
             return param;
         }
 
+        public void AddSkill(int dataTemplateID)
+        {
+            IsChangedData = true;
+            if(_skillInventoryDic.TryGetValue(dataTemplateID, out SkillInfoData skillInfoData))
+            {
+                skillInfoData.Count += 1;
+                // 보유효과 처리 
+            }
+            else
+            {
+                skillInfoData = new SkillInfoData(dataTemplateID, EOwningState.Owned, 1, 1, false);
+                _skillInventoryDic.Add(dataTemplateID, skillInfoData);
+            }
+        }
+
+        public void EquipSkill(int dataTemplateID)
+        {
+            IsChangedData = true;
+
+            //장착할 스킬이 있는지 확인 
+        }
+
     }
 }

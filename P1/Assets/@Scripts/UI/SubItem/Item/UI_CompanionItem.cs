@@ -71,6 +71,23 @@ public class UI_CompanionItem : UI_Base
         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
 
         _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+    }
 
+    public void SetSkillInfo(SkillInfoData skillinfo, bool showLvText = true)
+    {
+        _fadeImage.gameObject.SetActive(false);
+        _companionButton.onClick.RemoveAllListeners();
+        _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.SkillItemClick, skillinfo));
+
+        bool isOwned = skillinfo.OwningState == EOwningState.Owned;
+        GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
+        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(showLvText && isOwned);
+        if(isOwned)
+            GetTMPText((int)Texts.Text_Level).text = $"Lv. {skillinfo.Level}";
+
+        GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillinfo.Data.RareType);
+
+        _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{skillinfo.Data.SpriteKey}");
+        _iconImage.rectTransform.sizeDelta = new Vector2(120,120);
     }
 }
