@@ -1,6 +1,7 @@
 using BackendData.GameData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static Define;
 
@@ -15,6 +16,7 @@ public class UI_SkillPopup : UI_Popup
     public enum Buttons
     {
         Btn_Equip,
+        Btn_UnEquip,
         Btn_Enhance,
         Btn_AutoEquip,
         Btn_BatchEnhance
@@ -81,9 +83,11 @@ public class UI_SkillPopup : UI_Popup
 
         }, EUIEvent.Click);
         GetButton((int)Buttons.Btn_Equip).onClick.AddListener(OnEquipSkill);
+        GetButton((int)Buttons.Btn_UnEquip).onClick.AddListener(OnUnEquipSkill);
         GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(OnEnhanceSkill);
         GetButton((int)Buttons.Btn_AutoEquip).onClick.AddListener(OnAutoEquipSkill);
         GetButton((int)Buttons.Btn_BatchEnhance).onClick.AddListener(OnBatchEnhanceSkill);
+        GetButton((int)Buttons.Btn_UnEquip).gameObject.SetActive(false);
 
         _companionItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);
         for (int i = 0; i < Managers.Skill.AllSkillInfos.Count; i++)
@@ -124,7 +128,30 @@ public class UI_SkillPopup : UI_Popup
             }
         }
 
+        // 스킬 인벤토리 중 스킬 장비 찾기 
+        SkillInfoData equippedInfo = Managers.Backend.GameData.SkillInventory.SkillInventoryDic.Values
+            .FirstOrDefault(skillinfo => skillinfo.IsEquipped);
+
         List<SkillInfoData> skillInfos = Managers.Skill.GetSkillInfos(true);
+
+        //////////////////////////// ShowSkillDetailUI 부분 
+        if (equippedInfo != null)
+        {
+            ShowSkillDetailUI(equippedInfo);
+        }
+        else
+        {
+            // 소유한 스킬이 없을 때 가장 낮은 등급의 스킬을 보여줍니다.
+            SkillInfoData lowestRareSkill = skillInfos
+                .OrderBy(skillinfo => skillinfo.Data.RareType)
+                .FirstOrDefault();
+
+            if (lowestRareSkill != null)
+            {
+                ShowSkillDetailUI(lowestRareSkill);
+            }
+        }
+
         //////////////////////////// 스킬 아이템 목록 부분 
         for (int i = 0; i < _companionItems.Count; i++)
         {
@@ -155,6 +182,9 @@ public class UI_SkillPopup : UI_Popup
         GetSlider((int)Sliders.Slider_SkillCount).value = currentCount;
         GetTMPText((int)Texts.Text_OwendAmount).text = $"{currentCount} / {maxCount}";
 
+        SetEquipButtonState(Managers.Backend.GameData.SkillInventory.SkillInventoryDic[_skillInfo.DataTemplateID].IsEquipped);
+
+
     }
 
     private void OnEquipSkill()
@@ -165,10 +195,9 @@ public class UI_SkillPopup : UI_Popup
             {
                 if (slotIndex >= 0)
                 {
-                    Debug.Log("다시 한 번 UI를 그려줌");
-                    // 해당 슬롯 UI만 갱신
                     _skillSlotList[slotIndex].RefreshUI();
-                }   
+                   SetEquipButtonState(true);
+                }
                 else
                 {
                     Debug.LogWarning($"스킬 장착에 실패했습니다. DataTemplateID: {SelectSkillInfo.DataTemplateID}");
@@ -178,6 +207,29 @@ public class UI_SkillPopup : UI_Popup
         catch (Exception e)
         {
             throw new Exception($"OnEquipSkill({SelectSkillInfo}) 중 에러가 발생하였습니다\n{e}");
+        }
+    }
+
+    private void OnUnEquipSkill()
+    {
+        try
+        {
+            Managers.Backend.GameData.SkillInventory.UnEquipSkill(SelectSkillInfo.DataTemplateID, (int slotIndex) =>
+            {
+                if (slotIndex >= 0)
+                {
+                    _skillSlotList[slotIndex].RefreshUI();
+                    SetEquipButtonState(false);
+                }
+                else
+                {
+
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"OnUnEquipSkill({SelectSkillInfo}) 중 에러가 발생하였습니다\n{e}");
         }
     }
 
@@ -194,5 +246,11 @@ public class UI_SkillPopup : UI_Popup
     private void OnBatchEnhanceSkill()
     {
 
+    }
+
+    private void SetEquipButtonState(bool isEquipped)
+    {
+        GetButton((int)Buttons.Btn_Equip).gameObject.SetActive(!isEquipped);
+        GetButton((int)Buttons.Btn_UnEquip).gameObject.SetActive(isEquipped);
     }
 }

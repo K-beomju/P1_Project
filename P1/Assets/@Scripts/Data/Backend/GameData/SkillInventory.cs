@@ -81,13 +81,10 @@ namespace BackendData.GameData
     {
         // Skill 각 스킬 데이터를 담는 Dic 
         private Dictionary<int, SkillInfoData> _skillInventoryDic = new();
-        // Skill 각 장착한 스킬 데이터를 담는 Dic 
-        private Dictionary<int, SkillInfoData> _skillEquipDic = new();
         // Skill 각 스킬 슬롯을 담는 List
         private List<SkillSlot> _skillSlotList = new();
 
         public IReadOnlyDictionary<int, SkillInfoData> SkillInventoryDic => (IReadOnlyDictionary<int, SkillInfoData>)_skillInventoryDic.AsReadOnlyCollection();
-        public IReadOnlyDictionary<int, SkillInfoData> SkillEquipDic => (IReadOnlyDictionary<int, SkillInfoData>)_skillEquipDic.AsReadOnlyCollection();
         public IReadOnlyList<SkillSlot> SkillSlotList => (IReadOnlyList<SkillSlot>)_skillSlotList.AsReadOnlyList();
     }
 
@@ -96,7 +93,6 @@ namespace BackendData.GameData
     {
         protected override void InitializeData()
         {
-            _skillEquipDic.Clear();
             _skillInventoryDic.Clear();
             _skillSlotList.Clear();
             // 6개의 슬롯 생성 
@@ -118,16 +114,6 @@ namespace BackendData.GameData
                 _skillInventoryDic.Add(dataId, new SkillInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
             }
 
-            foreach (var column in Data["SkillEquip"].Keys)
-            {
-                int dataId = int.Parse(Data["SkillEquip"][column]["DataTemplateID"].ToString());
-                int level = int.Parse(Data["SkillEquip"][column]["Level"].ToString());
-                int count = int.Parse(Data["SkillEquip"][column]["Count"].ToString());
-                bool isEquipped = Boolean.Parse(Data["SkillEquip"][column]["IsEquipped"].ToString());
-
-                _skillEquipDic.Add(dataId, new SkillInfoData(dataId, EOwningState.Owned, level, count, isEquipped));
-            }
-
             for (int i = 0; i < 6; i++)
             {
                 int index = int.Parse(Data["SkillSlot"][i]["Index"].ToString());
@@ -147,7 +133,12 @@ namespace BackendData.GameData
 
                 _skillSlotList.Add(new SkillSlot(index, skillSlotType, skillInfoData));
             }
-            _skillSlotList[0].EmptySlot();
+            if (_skillSlotList[0].SlotType == ESkillSlotType.Lock)
+            {
+                _skillSlotList[0].EmptySlot();
+                _skillSlotList[1].EmptySlot();
+                _skillSlotList[2].EmptySlot();
+            }
 
         }
 
@@ -164,7 +155,6 @@ namespace BackendData.GameData
         public override Param GetParam()
         {
             Param param = new Param();
-            param.Add("SkillEquip", _skillEquipDic);
             param.Add("SkillInventory", _skillInventoryDic);
             param.Add("SkillSlot", _skillSlotList);
             return param;
@@ -189,27 +179,69 @@ namespace BackendData.GameData
         {
             IsChangedData = true;
 
+            if (!_skillInventoryDic.TryGetValue(dataTemplateID, out SkillInfoData skillInfoData))
+            {
+                Debug.LogWarning($"스킬 인벤토리에 존재하지 않은 {dataTemplateID}를 장착할려고 합니다..");
+                onEquipResult?.Invoke(-1); // 실패 시 false 반환
+                return;
+            }
+
             //장착할 스킬이 있는지 확인 
             for (int i = 0; i < _skillSlotList.Count; i++)
             {
                 if (_skillSlotList[i] == null)
                     return;
 
-                if (!_skillInventoryDic.TryGetValue(dataTemplateID, out SkillInfoData skillInfoData))
-                {
-                    Debug.LogWarning($"스킬 인벤토리에 존재하지 않은 {dataTemplateID}를 장착할려고 합니다..");
-                    onEquipResult?.Invoke(-1); // 실패 시 false 반환
-                    return;
-                }
-
                 SkillSlot skillSlot = _skillSlotList[i];
                 if (skillSlot.SlotType == ESkillSlotType.None)
                 {
-                    Debug.Log($"스킬 {skillInfoData.DataTemplateID}가 {i + 1}번 슬롯에 장착되었습니다.");
+                    Debug.Log($"스킬 {skillInfoData.Data.Name}가 {i + 1}번 슬롯에 장착되었습니다.");
+                    skillInfoData.IsEquipped = true;
                     skillSlot.EquipSkill(skillInfoData);
                     onEquipResult?.Invoke(i); // 성공 시 슬롯 인덱스를 반환
                     return;
 
+                }
+            }
+
+            Debug.LogWarning("스킬을 장착할 수 있는 빈 슬롯이 없습니다.");
+            onEquipResult?.Invoke(-1); // 실패 시 -1 반환
+        }
+
+
+        public void UnEquipSkill(int dataTemplateID, Action<int> onEquipResult = null)
+        {
+            IsChangedData = true;
+
+            if (!_skillInventoryDic.TryGetValue(dataTemplateID, out SkillInfoData skillInfoData))
+            {
+                Debug.LogWarning($"스킬 인벤토리에 존재하지 않은 {dataTemplateID}를 해제할려고 합니다..");
+                onEquipResult?.Invoke(-1); // 실패 시 false 반환
+                return;
+            }
+
+
+            //해제할 스킬이 있는지 확인 
+            for (int i = _skillSlotList.Count - 1; i >= 0; i--)
+            {
+                // 슬롯이 null인 경우 건너뜀
+                if (_skillSlotList[i] == null || _skillSlotList[i].SkillInfoData == null)
+                    continue;
+
+                // 해제할려는 스킬 ID와 선택된 ID중 같은 게 있는지 확인 
+                if (_skillSlotList[i].SkillInfoData.DataTemplateID == dataTemplateID)
+                {
+                    SkillSlot skillSlot = _skillSlotList[i];
+
+                    if (skillSlot.SlotType == ESkillSlotType.Equipped)
+                    {
+                        Debug.Log($"스킬 {skillInfoData.Data.Name}가 {i + 1}번 슬롯에 해제되었습니다.");
+                        skillInfoData.IsEquipped = false;
+                        skillSlot.UnEquipSkill();
+                        onEquipResult?.Invoke(i); // 성공 시 슬롯 인덱스를 반환
+                        return;
+
+                    }
                 }
             }
 

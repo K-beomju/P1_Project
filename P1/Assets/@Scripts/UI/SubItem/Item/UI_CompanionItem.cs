@@ -73,7 +73,7 @@ public class UI_CompanionItem : UI_Base
         _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
     }
 
-    public void SetSkillInfo(SkillInfoData skillinfo, bool showLvText = true)
+    public void SetSkillInfo(SkillInfoData skillinfo, bool showLvText = true, bool isSlot = false)
     {
         _fadeImage.gameObject.SetActive(false);
         _companionButton.onClick.RemoveAllListeners();
@@ -88,6 +88,7 @@ public class UI_CompanionItem : UI_Base
         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillinfo.Data.RareType);
 
         _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{skillinfo.Data.SpriteKey}");
+        if(!isSlot)
         _iconImage.rectTransform.sizeDelta = new Vector2(120,120);
     }
 }

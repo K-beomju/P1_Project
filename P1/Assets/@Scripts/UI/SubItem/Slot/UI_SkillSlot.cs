@@ -1,4 +1,5 @@
 using BackendData.GameData;
+using UnityEngine;
 using UnityEngine.UI;
 using static Define;
 
@@ -30,7 +31,7 @@ public class UI_SkillSlot : UI_Base
     {
         _index = index;
 
-        if (Init() == true)
+        if (Init() == false)
         {
             RefreshUI();
         }
@@ -58,5 +59,9 @@ public class UI_SkillSlot : UI_Base
                 _companionItem.gameObject.SetActive(true);
                 break;
         }
+        if (skillSlot.SkillInfoData == null)
+            return;
+
+        _companionItem.SetSkillInfo(skillSlot.SkillInfoData, true, true);
     }
 }
