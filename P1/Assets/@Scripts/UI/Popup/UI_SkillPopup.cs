@@ -52,6 +52,7 @@ public class UI_SkillPopup : UI_Popup
     private List<UI_SkillSlot> _skillSlotList = new List<UI_SkillSlot>();
     private List<UI_CompanionItem> _companionItems = new List<UI_CompanionItem>();
     private UI_CompanionItem _companionItem;
+    private UI_CompanionItem _placeCompanionItem;
 
     private SkillInfoData selectSkillInfo;
     public SkillInfoData SelectSkillInfo
@@ -90,6 +91,8 @@ public class UI_SkillPopup : UI_Popup
         GetButton((int)Buttons.Btn_UnEquip).gameObject.SetActive(false);
 
         _companionItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);
+        _placeCompanionItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItemPlace", true);
+        _placeCompanionItem.gameObject.SetActive(false);
         for (int i = 0; i < Managers.Skill.AllSkillInfos.Count; i++)
         {
             var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.Content_Skill).transform);
@@ -102,6 +105,8 @@ public class UI_SkillPopup : UI_Popup
             int index = i;
             _skillSlotList.Add(Get<UI_SkillSlot>(i));
             _skillSlotList[i].SetInfo(index);
+            _skillSlotList[i]._button.onClick.AddListener(() => OnSkillSlotClicked(index));
+
         }
         return true;
     }
@@ -119,18 +124,14 @@ public class UI_SkillPopup : UI_Popup
     public void RefreshUI()
     {
         //////////////////////////// 스킬 슬롯 부분 
-        var skillSlots = Managers.Backend.GameData.SkillInventory.SkillSlotList;
-        for (int i = 0; i < skillSlots.Count; i++)
+        foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
         {
-            if (skillSlots[i] != null)
-            {
-                _skillSlotList[i].RefreshUI();
-            }
+            _skillSlotList[slot.Index].RefreshUI();
         }
 
+
         // 스킬 인벤토리 중 스킬 장비 찾기 
-        SkillInfoData equippedInfo = Managers.Backend.GameData.SkillInventory.SkillInventoryDic.Values
-            .FirstOrDefault(skillinfo => skillinfo.IsEquipped);
+        SkillInfoData equippedInfo = Managers.Backend.GameData.SkillInventory.SkillInventoryDic.Values.FirstOrDefault(skillinfo => skillinfo.IsEquipped);
 
         List<SkillInfoData> skillInfos = Managers.Skill.GetSkillInfos(true);
 
@@ -155,17 +156,17 @@ public class UI_SkillPopup : UI_Popup
         //////////////////////////// 스킬 아이템 목록 부분 
         for (int i = 0; i < _companionItems.Count; i++)
         {
-            _companionItems[i].SetSkillInfo(skillInfos[i]);
+            _companionItems[i].SetItemInfo(skillInfos[i]);
         }
     }
 
-    public void ShowSkillDetailUI(SkillInfoData _skillInfo)
+    public void ShowSkillDetailUI(SkillInfoData skillInfo)
     {
-        if (SelectSkillInfo == _skillInfo)
+        if (SelectSkillInfo == skillInfo)
             return;
 
-        SelectSkillInfo = _skillInfo;
-        _companionItem.SetSkillInfo(SelectSkillInfo, false);
+        SelectSkillInfo = skillInfo;
+        _companionItem.SetItemInfo(SelectSkillInfo, false);
         GetTMPText((int)Texts.Text_SkillName).text = SelectSkillInfo.Data.Name;
         GetTMPText((int)Texts.Text_SkillLevel).text = $"Lv. {SelectSkillInfo.Level}";
         GetTMPText((int)Texts.Text_SkillRare).text = Util.GetRareTypeString(SelectSkillInfo.Data.RareType);
@@ -182,13 +183,20 @@ public class UI_SkillPopup : UI_Popup
         GetSlider((int)Sliders.Slider_SkillCount).value = currentCount;
         GetTMPText((int)Texts.Text_OwendAmount).text = $"{currentCount} / {maxCount}";
 
-        SetEquipButtonState(Managers.Backend.GameData.SkillInventory.SkillInventoryDic[_skillInfo.DataTemplateID].IsEquipped);
+        SetEquipButtonState(SelectSkillInfo.IsEquipped);
 
 
     }
 
     private void OnEquipSkill()
     {
+        if (IsSlotFull())
+        {
+            ActivateReplaceSkillMode();
+            Debug.LogWarning("모든 슬롯이 가득 찼습니다. 교체할 슬롯을 선택하세요.");
+            return;
+        }
+
         try
         {
             Managers.Backend.GameData.SkillInventory.EquipSkill(SelectSkillInfo.DataTemplateID, (int slotIndex) =>
@@ -196,11 +204,11 @@ public class UI_SkillPopup : UI_Popup
                 if (slotIndex >= 0)
                 {
                     _skillSlotList[slotIndex].RefreshUI();
-                   SetEquipButtonState(true);
+                    SetEquipButtonState(true);
                 }
                 else
                 {
-                    Debug.LogWarning($"스킬 장착에 실패했습니다. DataTemplateID: {SelectSkillInfo.DataTemplateID}");
+                    Debug.LogWarning($"스킬 장착에 실패했습니다. DataTemplateID{SelectSkillInfo.DataTemplateID}");
                 }
             });
         }
@@ -221,15 +229,76 @@ public class UI_SkillPopup : UI_Popup
                     _skillSlotList[slotIndex].RefreshUI();
                     SetEquipButtonState(false);
                 }
-                else
-                {
-
-                }
             });
         }
         catch (Exception e)
         {
             throw new Exception($"OnUnEquipSkill({SelectSkillInfo}) 중 에러가 발생하였습니다\n{e}");
+        }
+    }
+
+    private void ActivateReplaceSkillMode()
+    {
+        _placeCompanionItem.gameObject.SetActive(true);
+        _placeCompanionItem.PlayShakeAnimation();
+        _placeCompanionItem.SetItemInfo(SelectSkillInfo);
+        GetObject((int)GameObjects.Content_Skill).SetActive(false);
+
+        // 모든 슬롯의 버튼을 비활성화하여 교체 대기 상태로 전환
+        foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList
+        .Where(slot => slot.SlotType == ESkillSlotType.Equipped))
+        {
+            int index = slot.Index; // 슬롯의 인덱스 가져오기
+            _skillSlotList[index].EnableButton(false);
+        }
+    }
+
+    private void OnSkillSlotClicked(int slotIndex)
+    {
+        var skillSlot = Managers.Backend.GameData.SkillInventory.SkillSlotList[slotIndex];
+
+        // 잠긴 슬롯은 선택 불가
+        if (skillSlot.SlotType == ESkillSlotType.Lock)
+        {
+            Debug.LogWarning($"{slotIndex + 1}번 째 슬롯은 잠겨있습니다. 활성화 된 슬롯을 선택하세요.");
+            return;
+        }
+
+        // _placeCompanionItem이 활성화되어 있고, 교체할 스킬이 있는 상태인지 확인
+        if (_placeCompanionItem.gameObject.activeSelf && SelectSkillInfo != null)
+        {
+            // 기존 슬롯의 스킬을 교체하고 슬롯 UI를 업데이트
+            Managers.Backend.GameData.SkillInventory.UnEquipSkill(skillSlot.SkillInfoData.DataTemplateID, unEquipResult =>
+            {
+                if (unEquipResult < 0)
+                {
+                    Debug.LogWarning($"스킬 해제에 실패했습니다. DataTemplateID: {skillSlot.SkillInfoData.DataTemplateID}");
+                    return;
+                }
+
+                // 기존 스킬 해제 후 새 스킬 장착
+                Managers.Backend.GameData.SkillInventory.EquipSkill(SelectSkillInfo.DataTemplateID, equipResult =>
+                {
+                    if (equipResult >= 0)
+                    {
+                        _skillSlotList[slotIndex].RefreshUI();
+                        SetEquipButtonState(true);
+
+
+                        _placeCompanionItem.gameObject.SetActive(false);
+                        GetObject((int)GameObjects.Content_Skill).SetActive(true);
+                        foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList.Where(slot => slot.SlotType == ESkillSlotType.Equipped))
+                        {
+                            int index = slot.Index; // 슬롯의 인덱스 가져오기
+                            _skillSlotList[index].EnableButton(true);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"슬롯 {slotIndex}에 스킬 배치에 실패했습니다. DataTemplateID: {SelectSkillInfo.DataTemplateID}");
+                    }
+                });
+            });
         }
     }
 
@@ -253,4 +322,10 @@ public class UI_SkillPopup : UI_Popup
         GetButton((int)Buttons.Btn_Equip).gameObject.SetActive(!isEquipped);
         GetButton((int)Buttons.Btn_UnEquip).gameObject.SetActive(isEquipped);
     }
+
+    private bool IsSlotFull()
+    {
+        return Managers.Backend.GameData.SkillInventory.SkillSlotList.All(slot => slot.SlotType != ESkillSlotType.None);
+    }
+
 }

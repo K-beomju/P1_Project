@@ -87,7 +87,7 @@ public class UI_CharacterPanel : UI_Base
         {
             int dataId = equipmentInfoData.DataTemplateID;
             equipmentItem.gameObject.SetActive(true);
-            equipmentItem.SetEquipmentInfo(equipmentInfoData);
+            equipmentItem.SetItemInfo(equipmentInfoData);
 
         }
         else

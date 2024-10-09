@@ -19,15 +19,15 @@ public class UI_CompanionItem : UI_Base
         BG_Rare
     }
 
-    public enum Texts 
+    public enum Texts
     {
         Text_Level
     }
 
     private Image _iconImage;
     private Image _fadeImage;
-    public Button _companionButton { get; private set; }
-
+    private Button _companionButton;
+    private Sequence _shakeSequence;
 
     protected override bool Init()
     {
@@ -42,53 +42,78 @@ public class UI_CompanionItem : UI_Base
         return true;
     }
 
-
-    public void SetDrawInfo(EquipmentInfoData equipmentData)
+    public void SetItemInfo(Item itemData, bool showLvText = true, bool isSlot = false)
     {
+        if (itemData == null)
+        {
+            Debug.LogWarning("SetItemInfo: 아이템 데이터가 null입니다.");
+            return;
+        }
+
+        _fadeImage.gameObject.SetActive(false);
+        _companionButton.onClick.RemoveAllListeners();
+
+        if (itemData is SkillInfoData)
+            _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.SkillItemClick, itemData));
+        else if (itemData is EquipmentInfoData)
+            _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, itemData));
+
+        bool isOwned = itemData.OwningState == EOwningState.Owned;
+        GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
+        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(showLvText && isOwned);
+        if (isOwned)
+            GetTMPText((int)Texts.Text_Level).text = $"Lv. {itemData.Level}";
+
+        // 아이템의 희귀도 및 스프라이트 설정
+        if (itemData is SkillInfoData skillInfo)
+            GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillInfo.Data.RareType);
+        else if (itemData is EquipmentInfoData equipmentInfo)
+            GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentInfo.Data.RareType);
+
+        _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{itemData.SpriteKey}");
+
+        // 슬롯이 아닌 경우 아이콘 크기 조정
+        if (!isSlot && itemData is SkillInfoData)
+            _iconImage.rectTransform.sizeDelta = new Vector2(120, 120);
+    }
+
+    // 아이템 뽑기 UI 설정 메서드 (장비 전용)
+    public void SetDrawInfo(Item itemData)
+    {
+        _fadeImage.color = Color.white;
+        _fadeImage.DOFade(0, 0.1f); // 아이콘 페이드 효과
+
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
         GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
 
-        _fadeImage.color = Color.white;
-        _fadeImage.DOFade(0, 0.1f);
-
-         GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
-        _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+        if (itemData is SkillInfoData skillInfo)
+            GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillInfo.Data.RareType);
+        else if (itemData is EquipmentInfoData equipmentInfo)
+            GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentInfo.Data.RareType);
+        _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{itemData.SpriteKey}");
     }
 
-    public void SetEquipmentInfo(EquipmentInfoData equipmentData, bool showLvText = true)
+    // Z축 기준으로 랜덤하게 흔드는 애니메이션 실행 (DOShakeRotation 사용)
+    public void PlayShakeAnimation(float duration = 1f, float strength = 30, int vibrato = 15, float randomness = 90)
     {
-        _fadeImage.gameObject.SetActive(false);
-        _companionButton.onClick.RemoveAllListeners();
-        _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, equipmentData));
+        if (_shakeSequence != null && _shakeSequence.IsPlaying())
+        {
+            _shakeSequence.Kill(); // 시퀀스를 중지하고 초기화
+            _shakeSequence = null;
+        }
 
-        bool isOwned = equipmentData.OwningState == EOwningState.Owned;
-        GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
-        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(showLvText && isOwned);
-        if(isOwned)
-            GetTMPText((int)Texts.Text_Level).text = $"Lv. {equipmentData.Level}";
-
-        
-        GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentData.Data.RareType);
-
-        _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{equipmentData.Data.SpriteKey}");
+        // 시퀀스를 생성하여 애니메이션 반복 재생 설정
+        _shakeSequence = DOTween.Sequence()
+            .Append(transform.DOShakeRotation(duration, new Vector3(0, 0, strength), vibrato, randomness, fadeOut: true))
+            .AppendInterval(1f)  // 1초 동안 대기
+            .SetLoops(-1, LoopType.Restart)  // 무한 반복 재생
+            .SetEase(Ease.OutCubic);
     }
 
-    public void SetSkillInfo(SkillInfoData skillinfo, bool showLvText = true, bool isSlot = false)
+    public void EnableButton(bool enable)
     {
-        _fadeImage.gameObject.SetActive(false);
-        _companionButton.onClick.RemoveAllListeners();
-        _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.SkillItemClick, skillinfo));
-
-        bool isOwned = skillinfo.OwningState == EOwningState.Owned;
-        GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
-        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(showLvText && isOwned);
-        if(isOwned)
-            GetTMPText((int)Texts.Text_Level).text = $"Lv. {skillinfo.Level}";
-
-        GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillinfo.Data.RareType);
-
-        _iconImage.sprite =  Managers.Resource.Load<Sprite>($"Sprites/{skillinfo.Data.SpriteKey}");
-        if(!isSlot)
-        _iconImage.rectTransform.sizeDelta = new Vector2(120,120);
+        _companionButton.enabled = enable;
     }
+
+
 }

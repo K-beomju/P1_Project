@@ -13,23 +13,15 @@ namespace BackendData.GameData
     //===============================================================
     // EquipmentInventory 테이블의 장비 EquipmentInfoData 클래스
     //===============================================================
-    public class EquipmentInfoData
+    public class EquipmentInfoData : Item
     {
-        public int DataTemplateID { get; private set; }
         public BackendData.Chart.Equipment.Item Data { get; private set; }
-        public EOwningState OwningState { get; set; }
-
-        public int Level { get; set; }
-        public int Count { get; set; }
-        public bool IsEquipped { get; set; }
+        public override string Name => Data.Name;
+        public override string SpriteKey => Data.SpriteKey;
 
         public EquipmentInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
+     : base(dataTemplateID, owningState, level, count, isEquipped)
         {
-            DataTemplateID = dataTemplateID;
-            OwningState = owningState;
-            Level = level;
-            Count = count;
-            IsEquipped = isEquipped;
             Data = Managers.Backend.Chart.Equipment.Dic[dataTemplateID];
         }
     }

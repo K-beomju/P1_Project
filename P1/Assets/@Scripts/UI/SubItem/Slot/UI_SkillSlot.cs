@@ -5,6 +5,7 @@ using static Define;
 
 public class UI_SkillSlot : UI_Base
 {
+    public Button _button { get; set; }
     private UI_CompanionItem _companionItem;
     public Image _lockImage;
 
@@ -19,6 +20,7 @@ public class UI_SkillSlot : UI_Base
             return false;
         BindImages(typeof(Images));
 
+        _button = GetComponent<Button>();
         _lockImage = GetImage((int)Images.Image_Lock);
         _companionItem = GetComponentInChildren<UI_CompanionItem>();
         _companionItem.gameObject.SetActive(false);
@@ -62,6 +64,11 @@ public class UI_SkillSlot : UI_Base
         if (skillSlot.SkillInfoData == null)
             return;
 
-        _companionItem.SetSkillInfo(skillSlot.SkillInfoData, true, true);
+        _companionItem.SetItemInfo(skillSlot.SkillInfoData, true, true);
+    }
+
+    public void EnableButton(bool enable) 
+    {
+        _companionItem.EnableButton(enable);
     }
 }

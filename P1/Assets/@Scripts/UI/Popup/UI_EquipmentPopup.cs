@@ -176,7 +176,7 @@ public class UI_EquipmentPopup : UI_Popup
 
         for (int i = 0; i < equipmentItems.Count; i++)
         {
-            equipmentItems[i].SetEquipmentInfo(equipmentInfos[i]);
+            equipmentItems[i].SetItemInfo(equipmentInfos[i]);
         }
     }
 
@@ -187,7 +187,7 @@ public class UI_EquipmentPopup : UI_Popup
             return;
         SelectEquipmentInfo = _equipmentInfo;
 
-        equipmentItem.SetEquipmentInfo(SelectEquipmentInfo, false);
+        equipmentItem.SetItemInfo(SelectEquipmentInfo, false);
         GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
         GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
         GetTMPText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
@@ -321,7 +321,7 @@ public class UI_EquipmentPopup : UI_Popup
             equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
             for (int i = 0; i < equipmentItems.Count; i++)
             {
-                equipmentItems[i].SetEquipmentInfo(equipmentInfos[i]);
+                equipmentItems[i].SetItemInfo(equipmentInfos[i]);
             }
             ShowEquipmentDetailUI(SelectEquipmentInfo);
 

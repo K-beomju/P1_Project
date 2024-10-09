@@ -53,24 +53,16 @@ namespace BackendData.GameData
     //===============================================================
     // EquipmentInventory 테이블의 장비 EquipmentInfoData 클래스
     //===============================================================
-    public class SkillInfoData
+    public class SkillInfoData : Item
     {
-        public int DataTemplateID { get; private set; }
         public BackendData.Chart.Skill.Item Data { get; private set; } // 수정 필여
-        public EOwningState OwningState { get; set; }
-
-        public int Level { get; set; }
-        public int Count { get; set; }
-        public bool IsEquipped { get; set; }
+        public override string Name => Data.Name;
+        public override string SpriteKey => Data.SpriteKey;
 
         public SkillInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
+            : base(dataTemplateID, owningState, level, count, isEquipped)
         {
-            DataTemplateID = dataTemplateID;
-            OwningState = owningState;
-            Level = level;
-            Count = count;
-            IsEquipped = isEquipped;
-            Data = Managers.Backend.Chart.Skill.Dic[dataTemplateID]; // 수정 필여
+            Data = Managers.Backend.Chart.Skill.Dic[dataTemplateID];
         }
     }
 
@@ -137,7 +129,6 @@ namespace BackendData.GameData
             {
                 _skillSlotList[0].EmptySlot();
                 _skillSlotList[1].EmptySlot();
-                _skillSlotList[2].EmptySlot();
             }
 
         }
@@ -244,9 +235,6 @@ namespace BackendData.GameData
                     }
                 }
             }
-
-            Debug.LogWarning("스킬을 장착할 수 있는 빈 슬롯이 없습니다.");
-            onEquipResult?.Invoke(-1); // 실패 시 -1 반환
         }
 
     }
