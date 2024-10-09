@@ -33,8 +33,12 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         TopStage,
-        SkillSlotGroup,
         RemainMonster
+    }
+
+    enum CanvasGroups
+    {
+        SkillSlotGroup
     }
 
     public enum PlayTab
@@ -54,7 +58,18 @@ public class UI_GameScene : UI_Scene
         UI_GoodItem_Dia,
     }
 
+    public enum SkillSlots
+    {
+        UI_SkillSlot_1,
+        UI_SkillSlot_2,
+        UI_SkillSlot_3,
+        UI_SkillSlot_4,
+        UI_SkillSlot_5,
+        UI_SkillSlot_6
+    }
+
     public PlayTab _tab = PlayTab.None;
+    private List<UI_SkillSlot> _skillSlotList = new List<UI_SkillSlot>();
 
     protected override bool Init()
     {
@@ -65,7 +80,9 @@ public class UI_GameScene : UI_Scene
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindObjects(typeof(GameObjects));
+        Bind<CanvasGroup>(typeof(CanvasGroups));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
+        Bind<UI_SkillSlot>(typeof(SkillSlots));
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
@@ -80,13 +97,33 @@ public class UI_GameScene : UI_Scene
 
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
-
+        
         RefreshUI();
         return true;
     }
 
+    private void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.UpdatedSkillSlot, new Action(UpdatedSkillSlotUI));
+    }
+
+    private void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.UpdatedSkillSlot, new Action(UpdatedSkillSlotUI));
+    }
+
     private void InitializeUIElements()
     {
+         // 6개의 슬롯을 초기화하면서 각 슬롯을 Lock 타입으로 설정
+        for (int i = 0; i < 6; i++)
+        {
+            int index = i;
+            _skillSlotList.Add(Get<UI_SkillSlot>(i));
+            _skillSlotList[i].SetInfo(index);
+            //_skillSlotList[i]._button.onClick.AddListener(() => OnSkillSlotClicked(index));
+
+        }
+
         GetSlider((int)Sliders.Slider_Exp).value = 0;
         GetSlider((int)Sliders.Slider_BossTimer).value = 0;
         GetSlider((int)Sliders.Slider_StageInfo).value = 0;
@@ -99,6 +136,8 @@ public class UI_GameScene : UI_Scene
     {
         if (_init == false)
             return;
+
+        UpdatedSkillSlotUI();
 
         ShowTab(_tab);
     }
@@ -234,10 +273,20 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
+    public void UpdatedSkillSlotUI()
+    {
+        foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
+        {
+            _skillSlotList[slot.Index].RefreshUI();
+        }
+
+    }
+
     public void ShowPopupActiveGameUI(bool active)
     {
         GetObject((int)GameObjects.TopStage).SetActive(active);
-        GetObject((int)GameObjects.SkillSlotGroup).SetActive(active);
+        Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0; 
+        Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
 
     }
 

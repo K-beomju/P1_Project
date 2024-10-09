@@ -27,6 +27,7 @@ namespace BackendData.GameData
         {
             SlotType = ESkillSlotType.Equipped;
             SkillInfoData = skillInfoData;
+            Managers.Event.TriggerEvent(EEventType.UpdatedSkillSlot);
         }
 
         // 슬롯에서 스킬 해제
@@ -34,6 +35,8 @@ namespace BackendData.GameData
         {
             SlotType = ESkillSlotType.None;
             SkillInfoData = null;
+            Managers.Event.TriggerEvent(EEventType.UpdatedSkillSlot);
+
         }
 
         // 슬롯 잠금 상태 설정 

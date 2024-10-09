@@ -86,6 +86,9 @@ public static class Define
 
         /// <summary>스킬 아이템 클릭할 때 호출</summary>
         SkillItemClick,
+
+        /// <summary>게임씬 스킬 슬롯 업데이트</summary>
+        UpdatedSkillSlot,
     }
 
     public enum EOwningState

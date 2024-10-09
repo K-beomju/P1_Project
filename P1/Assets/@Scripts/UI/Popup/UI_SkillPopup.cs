@@ -190,6 +190,21 @@ public class UI_SkillPopup : UI_Popup
 
     private void OnEquipSkill()
     {
+        // 모든 슬롯이 잠금 상태인 경우
+        if (AreAllSlotsLocked())
+        {
+            Debug.LogWarning("모든 슬롯이 잠겨 있어 스킬을 장착할 수 없습니다.");
+            return;
+        }
+
+        // 현재 선택된 스킬이 인벤토리에 없는 경우
+        if (!IsSkillOwned(SelectSkillInfo))
+        {
+            Debug.LogWarning("선택된 스킬이 인벤토리에 없습니다.");
+            return;
+        }
+
+
         if (IsSlotFull())
         {
             ActivateReplaceSkillMode();
@@ -326,6 +341,19 @@ public class UI_SkillPopup : UI_Popup
     private bool IsSlotFull()
     {
         return Managers.Backend.GameData.SkillInventory.SkillSlotList.All(slot => slot.SlotType != ESkillSlotType.None);
+    }
+
+
+    private bool IsSkillOwned(SkillInfoData skillInfo)
+    {
+        // 해당 스킬이 인벤토리에 있는지 확인
+        return Managers.Backend.GameData.SkillInventory.SkillInventoryDic.ContainsKey(skillInfo.DataTemplateID);
+    }
+
+    private bool AreAllSlotsLocked()
+    {
+        // 모든 슬롯이 잠금 상태인지 확인
+        return Managers.Backend.GameData.SkillInventory.SkillSlotList.All(slot => slot.SlotType == ESkillSlotType.Lock);
     }
 
 }

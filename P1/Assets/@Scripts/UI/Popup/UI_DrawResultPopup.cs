@@ -66,7 +66,7 @@ public class UI_DrawResultPopup : UI_Popup
 
     private void OnDisable()
     {
-        Managers.Event.AddEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
+        Managers.Event.RemoveEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
          GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
     }
 
