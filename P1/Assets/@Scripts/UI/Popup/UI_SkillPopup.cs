@@ -1,11 +1,8 @@
 using BackendData.GameData;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static Define;
-using static UI_CharacterPanel;
 
 public class UI_SkillPopup : UI_Popup
 {
@@ -49,8 +46,10 @@ public class UI_SkillPopup : UI_Popup
         UI_SkillSlot_6
     }
 
-    private UI_CompanionItem _companionItem;
+
+    private List<UI_SkillSlot> _skillSlotList = new List<UI_SkillSlot>();
     private List<UI_CompanionItem> _companionItems = new List<UI_CompanionItem>();
+    private UI_CompanionItem _companionItem;
 
     private SkillInfoData selectSkillInfo;
     public SkillInfoData SelectSkillInfo
@@ -65,8 +64,6 @@ public class UI_SkillPopup : UI_Popup
         }
     }
 
-    private Dictionary<UI_SkillSlot, ESkillSlotType> _skillSlotDic = new Dictionary<UI_SkillSlot, ESkillSlotType>();
-
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -77,26 +74,31 @@ public class UI_SkillPopup : UI_Popup
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         Bind<UI_SkillSlot>(typeof(SkillSlots));
+
         GetObject((int)GameObjects.BG).BindEvent(() =>
         {
             (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
 
         }, EUIEvent.Click);
+        GetButton((int)Buttons.Btn_Equip).onClick.AddListener(OnEquipSkill);
+        GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(OnEnhanceSkill);
+        GetButton((int)Buttons.Btn_AutoEquip).onClick.AddListener(OnAutoEquipSkill);
+        GetButton((int)Buttons.Btn_BatchEnhance).onClick.AddListener(OnBatchEnhanceSkill);
 
         _companionItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < Managers.Skill.AllSkillInfos.Count; i++)
         {
             var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.Content_Skill).transform);
             _companionItems.Add(item);
         }
-        
+
         // 6개의 슬롯을 초기화하면서 각 슬롯을 Lock 타입으로 설정
         for (int i = 0; i < 6; i++)
         {
-            _skillSlotDic.Add(Get<UI_SkillSlot>(i), ESkillSlotType.Lock);
+            int index = i;
+            _skillSlotList.Add(Get<UI_SkillSlot>(i));
+            _skillSlotList[i].SetInfo(index);
         }
-        _skillSlotDic[Get<UI_SkillSlot>(0)] = ESkillSlotType.None;
-
         return true;
     }
 
@@ -112,8 +114,18 @@ public class UI_SkillPopup : UI_Popup
 
     public void RefreshUI()
     {
+        //////////////////////////// 스킬 슬롯 부분 
+        var skillSlots = Managers.Backend.GameData.SkillInventory.SkillSlotList;
+        for (int i = 0; i < skillSlots.Count; i++)
+        {
+            if (skillSlots[i] != null)
+            {
+                _skillSlotList[i].RefreshUI();
+            }
+        }
+
         List<SkillInfoData> skillInfos = Managers.Skill.GetSkillInfos(true);
-        
+        //////////////////////////// 스킬 아이템 목록 부분 
         for (int i = 0; i < _companionItems.Count; i++)
         {
             _companionItems[i].SetSkillInfo(skillInfos[i]);
@@ -124,8 +136,8 @@ public class UI_SkillPopup : UI_Popup
     {
         if (SelectSkillInfo == _skillInfo)
             return;
+
         SelectSkillInfo = _skillInfo;
-        Debug.LogWarning(_companionItem == null);
         _companionItem.SetSkillInfo(SelectSkillInfo, false);
         GetTMPText((int)Texts.Text_SkillName).text = SelectSkillInfo.Data.Name;
         GetTMPText((int)Texts.Text_SkillLevel).text = $"Lv. {SelectSkillInfo.Level}";
@@ -147,7 +159,26 @@ public class UI_SkillPopup : UI_Popup
 
     private void OnEquipSkill()
     {
-
+        try
+        {
+            Managers.Backend.GameData.SkillInventory.EquipSkill(SelectSkillInfo.DataTemplateID, (int slotIndex) =>
+            {
+                if (slotIndex >= 0)
+                {
+                    Debug.Log("다시 한 번 UI를 그려줌");
+                    // 해당 슬롯 UI만 갱신
+                    _skillSlotList[slotIndex].RefreshUI();
+                }   
+                else
+                {
+                    Debug.LogWarning($"스킬 장착에 실패했습니다. DataTemplateID: {SelectSkillInfo.DataTemplateID}");
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"OnEquipSkill({SelectSkillInfo}) 중 에러가 발생하였습니다\n{e}");
+        }
     }
 
     private void OnEnhanceSkill()

@@ -88,10 +88,10 @@ public class UI_EquipmentPopup : UI_Popup
         GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => OnClickButton(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EEquipmentType.Ring));
-        GetButton((int)Buttons.Btn_Equip).onClick.AddListener(() => OnEquipEquipment());
-        GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(() => OnEnhanceEquipment());
-        GetButton((int)Buttons.Btn_AutoEquip).onClick.AddListener(() => OnAutoEquipment());
-        GetButton((int)Buttons.Btn_BatchEnhance).onClick.AddListener(() => OnBatchEnhanceEquipment());
+        GetButton((int)Buttons.Btn_Equip).onClick.AddListener(OnEquipEquipment);
+        GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(OnEnhanceEquipment);
+        GetButton((int)Buttons.Btn_AutoEquip).onClick.AddListener(OnAutoEquipment);
+        GetButton((int)Buttons.Btn_BatchEnhance).onClick.AddListener(OnBatchEnhanceEquipment);
         GetObject((int)GameObjects.BG).BindEvent(() =>
         {
             (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
