@@ -58,18 +58,18 @@ public class UI_GameScene : UI_Scene
         UI_GoodItem_Dia,
     }
 
-    public enum SkillSlots
+    public enum EquipSkillSlots
     {
-        UI_SkillSlot_1,
-        UI_SkillSlot_2,
-        UI_SkillSlot_3,
-        UI_SkillSlot_4,
-        UI_SkillSlot_5,
-        UI_SkillSlot_6
+        UI_EquipSkillSlot_1,
+        UI_EquipSkillSlot_2,
+        UI_EquipSkillSlot_3,
+        UI_EquipSkillSlot_4,
+        UI_EquipSkillSlot_5,
+        UI_EquipSkillSlot_6
     }
 
     public PlayTab _tab = PlayTab.None;
-    private List<UI_SkillSlot> _skillSlotList = new List<UI_SkillSlot>();
+    private List<UI_EquipSkillSlot> _equipSkillSlotList = new List<UI_EquipSkillSlot>();
 
     protected override bool Init()
     {
@@ -82,7 +82,7 @@ public class UI_GameScene : UI_Scene
         BindObjects(typeof(GameObjects));
         Bind<CanvasGroup>(typeof(CanvasGroups));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
-        Bind<UI_SkillSlot>(typeof(SkillSlots));
+        Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
@@ -118,8 +118,8 @@ public class UI_GameScene : UI_Scene
         for (int i = 0; i < 6; i++)
         {
             int index = i;
-            _skillSlotList.Add(Get<UI_SkillSlot>(i));
-            _skillSlotList[i].SetInfo(index);
+            _equipSkillSlotList.Add(Get<UI_EquipSkillSlot>(i));
+            _equipSkillSlotList[i].SetInfo(index);
             //_skillSlotList[i]._button.onClick.AddListener(() => OnSkillSlotClicked(index));
 
         }
@@ -277,7 +277,7 @@ public class UI_GameScene : UI_Scene
     {
         foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
         {
-            _skillSlotList[slot.Index].RefreshUI();
+            _equipSkillSlotList[slot.Index].RefreshUI();
         }
 
     }

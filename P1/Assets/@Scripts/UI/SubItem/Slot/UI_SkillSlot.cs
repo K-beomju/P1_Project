@@ -9,6 +9,8 @@ public class UI_SkillSlot : UI_Base
     private UI_CompanionItem _companionItem;
     public Image _lockImage;
 
+    private int _index; // SkillSlot의 Index만 유지
+
     public enum Images
     {
         Image_Lock
@@ -26,8 +28,6 @@ public class UI_SkillSlot : UI_Base
         _companionItem.gameObject.SetActive(false);
         return true;
     }
-
-    private int _index; // SkillSlot의 Index만 유지
 
     public void SetInfo(int index)
     {
