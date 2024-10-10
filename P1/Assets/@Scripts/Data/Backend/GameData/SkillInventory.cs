@@ -15,11 +15,15 @@ namespace BackendData.GameData
         public ESkillSlotType SlotType { get; private set; }
         public SkillInfoData SkillInfoData { get; private set; }
 
+        public bool IsCoolTimeActive { get; set; } // 쿨타임을 돌려야 하는지 여부를 확인하는 플래그
+        public Action<int> OnSkillUnEquipped; // 스킬 해제 시 슬롯 인덱스를 전달하는 이벤트
+
         public SkillSlot(int index, ESkillSlotType slotType, SkillInfoData skillInfoData)
         {
             Index = index;
             SlotType = slotType;
             SkillInfoData = skillInfoData;
+            IsCoolTimeActive = false;
         }
 
         // 슬롯에 스킬 장착
@@ -27,7 +31,9 @@ namespace BackendData.GameData
         {
             SlotType = ESkillSlotType.Equipped;
             SkillInfoData = skillInfoData;
+            IsCoolTimeActive = true;
             Managers.Event.TriggerEvent(EEventType.UpdatedSkillSlot);
+
         }
 
         // 슬롯에서 스킬 해제
@@ -35,8 +41,10 @@ namespace BackendData.GameData
         {
             SlotType = ESkillSlotType.None;
             SkillInfoData = null;
+            IsCoolTimeActive = false;
             Managers.Event.TriggerEvent(EEventType.UpdatedSkillSlot);
 
+            OnSkillUnEquipped?.Invoke(Index);
         }
 
         // 슬롯 잠금 상태 설정 
@@ -189,7 +197,7 @@ namespace BackendData.GameData
                 SkillSlot skillSlot = _skillSlotList[i];
                 if (skillSlot.SlotType == ESkillSlotType.None)
                 {
-                    Debug.Log($"스킬 {skillInfoData.Data.Name}가 {i + 1}번 슬롯에 장착되었습니다.");
+                    Debug.LogWarning($"{i + 1}번째 슬롯의 <color=#FF0000>{skillInfoData.Name}</color> 스킬이 장착되었습니다.");
                     skillInfoData.IsEquipped = true;
                     skillSlot.EquipSkill(skillInfoData);
                     onEquipResult?.Invoke(i); // 성공 시 슬롯 인덱스를 반환
@@ -229,7 +237,7 @@ namespace BackendData.GameData
 
                     if (skillSlot.SlotType == ESkillSlotType.Equipped)
                     {
-                        Debug.Log($"스킬 {skillInfoData.Data.Name}가 {i + 1}번 슬롯에 해제되었습니다.");
+                        Debug.LogWarning($"{i + 1}번째 슬롯의 <color=#FF0000>{skillInfoData.Name}</color> 스킬이 해제되었습니다.");
                         skillInfoData.IsEquipped = false;
                         skillSlot.UnEquipSkill();
                         onEquipResult?.Invoke(i); // 성공 시 슬롯 인덱스를 반환

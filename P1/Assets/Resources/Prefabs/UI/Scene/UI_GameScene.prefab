@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 5274142732352976531}
   - component: {fileID: 8345271825327899607}
   m_Layer: 5
-  m_Name: Btn_Auto
+  m_Name: Btn_AutoSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2090,7 +2090,7 @@ GameObject:
   - component: {fileID: 3391857962712837600}
   - component: {fileID: 8485854267714219946}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_AutoSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

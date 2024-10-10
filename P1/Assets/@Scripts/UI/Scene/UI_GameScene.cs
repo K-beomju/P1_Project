@@ -13,7 +13,8 @@ public class UI_GameScene : UI_Scene
         EquipmentButton,
         SkillButton,
         DungeonButton,
-        DrawButton
+        DrawButton,
+        Btn_AutoSkill
     }
 
     enum Sliders
@@ -27,7 +28,8 @@ public class UI_GameScene : UI_Scene
     {
         RemainMonsterValueText,
         ExpValueText,
-        Text_StageInfo
+        Text_StageInfo,
+        Text_AutoSkill
     }
 
     enum GameObjects
@@ -68,8 +70,11 @@ public class UI_GameScene : UI_Scene
         UI_EquipSkillSlot_6
     }
 
-    public PlayTab _tab = PlayTab.None;
+    public PlayTab _tab { get; set; } = PlayTab.None;
     private List<UI_EquipSkillSlot> _equipSkillSlotList = new List<UI_EquipSkillSlot>();
+
+    private Coroutine _autoSkillCo;
+    private bool _isAutoSkillActive = false; // AutoSkill 활성화 상태를 저장하는 변수
 
     protected override bool Init()
     {
@@ -89,6 +94,7 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.SkillButton).gameObject.BindEvent(() => ShowTab(PlayTab.Skill));
         GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
+        GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EGoodType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
@@ -97,7 +103,7 @@ public class UI_GameScene : UI_Scene
 
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
-        
+
         RefreshUI();
         return true;
     }
@@ -114,7 +120,7 @@ public class UI_GameScene : UI_Scene
 
     private void InitializeUIElements()
     {
-         // 6개의 슬롯을 초기화하면서 각 슬롯을 Lock 타입으로 설정
+        // 6개의 슬롯을 초기화하면서 각 슬롯을 Lock 타입으로 설정
         for (int i = 0; i < 6; i++)
         {
             int index = i;
@@ -148,8 +154,8 @@ public class UI_GameScene : UI_Scene
 
     public void UpdateStageUI(bool isBoss = false)
     {
-        if(!isBoss)
-                GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
+        if (!isBoss)
+            GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
 
         GetObject((int)GameObjects.RemainMonster).SetActive(!isBoss);
     }
@@ -254,13 +260,13 @@ public class UI_GameScene : UI_Scene
                 case PlayTab.Dungeon:
                     Managers.UI.ShowPopupUI<UI_DungeonPopup>();
                     break;
-                      case PlayTab.Draw:
+                case PlayTab.Draw:
                     Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();
                     break;
                 case PlayTab.Shop:
                     Managers.UI.ShowPopupUI<UI_ShopPopup>();
                     break;
-                    
+
             }
             ShowPopupActiveGameUI(false);
         }
@@ -273,19 +279,64 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
+    #region Skill Slot
     public void UpdatedSkillSlotUI()
     {
         foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
         {
             _equipSkillSlotList[slot.Index].RefreshUI();
         }
-
     }
+
+    public void ActiveAutoSkill()
+    {
+        _isAutoSkillActive = !_isAutoSkillActive;
+
+        if (_isAutoSkillActive)
+        {
+            Debug.Log("Auto Skill 기능이 활성화되었습니다.");
+            GetTMPText((int)Texts.Text_AutoSkill).text = "AUTO\nON";
+            CheckUseSkillSlot(-1);
+            Managers.Event.AddEvent(EEventType.CompleteSkillCool, new Action<int>(CheckUseSkillSlot));
+        }
+        else
+        {
+            Debug.Log("Auto Skill 기능이 비활성화되었습니다.");
+            GetTMPText((int)Texts.Text_AutoSkill).text = "AUTO\nOFF";
+            Managers.Event.RemoveEvent(EEventType.CompleteSkillCool, new Action<int>(CheckUseSkillSlot));
+        }
+    }
+
+
+    public void CheckUseSkillSlot(int slotIndex = -1)
+    {
+        if (!_isAutoSkillActive) return;
+
+
+        // slotIndex가 -1인 경우 모든 슬롯을 검사하여 사용할 수 있는 스킬이 있는지 확인
+        if (slotIndex == -1)
+        {
+            foreach (var slot in _equipSkillSlotList)
+            {
+                if (slot.IsSkillReady())
+                    slot.OnUseSkill();
+            }
+            return;
+        } // 특정 슬롯의 스킬만 검사하여 사용할 수 있는지 확인
+        else if (slotIndex >= 0 && slotIndex < _equipSkillSlotList.Count)
+        {
+            if (_equipSkillSlotList[slotIndex].IsSkillReady())
+                _equipSkillSlotList[slotIndex].OnUseSkill();
+        }
+    }
+    #endregion
+
+
 
     public void ShowPopupActiveGameUI(bool active)
     {
         GetObject((int)GameObjects.TopStage).SetActive(active);
-        Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0; 
+        Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0;
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
 
     }
