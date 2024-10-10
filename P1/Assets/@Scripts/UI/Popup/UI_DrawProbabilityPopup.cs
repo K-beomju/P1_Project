@@ -66,7 +66,7 @@ public class UI_DrawProbabilityPopup : UI_Popup
         for (int level = 1; level <= 10; level++)
         {
             // 레벨별 gachaData를 가져와 각 리스트의 데이터를 결합하여 List<float>로 저장
-            var gachaData = Managers.Backend.Chart.DrawEquipmentGacha.Dic[level]; //Managers.Data.GachaDataDic[level];
+            var gachaData = Managers.Data.DrawEquipmentChart[level]; //Managers.Data.GachaDataDic[level];
             List<float> drawProbability = new List<float>();
             drawProbability.AddRange(gachaData.NormalDrawList);
             drawProbability.AddRange(gachaData.AdvancedDrawList);

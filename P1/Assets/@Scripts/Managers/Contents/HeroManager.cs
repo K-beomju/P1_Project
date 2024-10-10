@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static Define;
 using System;
-using BackendData.GameData;
+using Data;
 
 public class HeroInfo
 {
@@ -22,14 +22,14 @@ public class HeroInfo
     #endregion
 
     public int DataTemplateID { get; private set; }
-    public BackendData.Chart.Hero.Item Data { get; private set; }
+    public HeroInfoData Data { get; private set; }
 
     public HeroInfo(int dataTemplateID)
     {
         Level = Managers.Backend.GameData.UserData.Level;
         Debug.Log($"현재 레벨 : {Level}");
         DataTemplateID = dataTemplateID;
-        Data = Managers.Backend.Chart.Hero.Dic[dataTemplateID]; //Managers.Data.HeroInfoDataDic[dataTemplateID];
+        Data = Managers.Data.HeroChart[dataTemplateID];
     }
 
 
@@ -59,7 +59,7 @@ public class HeroInfo
     private float CalculateStat(EHeroUpgradeType upgradeType)
     {
         // 기본 값 및 증가 값 가져오기
-        var upgradeData = Managers.Backend.Chart.HeroUpgrade.Dic[upgradeType.ToString()];
+        var upgradeData = Managers.Data.HeroUpgradeChart[upgradeType];
         float baseValue = upgradeData.Value;
         float increaseValue = upgradeData.IncreaseValue;
         int currentLevel = Managers.Backend.GameData.UserData.UpgradeStatDic[upgradeType.ToString()];

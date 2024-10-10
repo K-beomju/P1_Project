@@ -1,0 +1,28 @@
+{
+  "CreatureUpgradeStatInfoDataList": [
+    {
+      "DataID": 50001000,
+      "Name": "가나",
+      "IncreaseAtk": 10.0,
+      "IncreaseMaxHp": 1.0
+    },
+    {
+      "DataID": 50002000,
+      "Name": "대한",
+      "IncreaseAtk": 10.0,
+      "IncreaseMaxHp": 1.0
+    },
+    {
+      "DataID": 50003000,
+      "Name": "콩고",
+      "IncreaseAtk": 10.0,
+      "IncreaseMaxHp": 1.0
+    },
+    {
+      "DataID": 60001000,
+      "Name": "보스1",
+      "IncreaseAtk": 10.0,
+      "IncreaseMaxHp": 1.0
+    }
+  ]
+}

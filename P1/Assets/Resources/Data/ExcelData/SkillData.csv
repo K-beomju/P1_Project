@@ -1,0 +1,4 @@
+﻿DataId,RareType,Name,Description,PrefabKey,SpriteKey,SoundKey,OwnedValue,UsedValue,CoolTime,SkillDuration,SkillRange,SkillCount,TargetCount
+100100,Normal,대쉬,적 앞으로 돌진하여 {value}% 피해,asd,Skill/Skill_Dash,asd,2,30,5,0,1,1,3
+100101,Normal,찌르기,스킬 설명 부분,asd,Skill/Skill_Prod,asd,2,30,5,0,0,1,3
+100102,Normal,각성,스킬 설명 부분,asd,Skill/Skill_Awaken,asd,2,30,5,0,0,1,3

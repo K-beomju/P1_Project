@@ -11,20 +11,20 @@ public class BackendManager
 {
 
     //뒤끝 콘솔에 업로드한 차트 데이터만 모아놓은 클래스
-    public class BackendChart {
-        public readonly BackendData.Chart.AllChart ChartInfo = new(); // 모든 차트
-        public readonly BackendData.Chart.Stage.Manager Stage = new(); // 스테이지 정보
-        public readonly BackendData.Chart.Hero.Manager Hero = new(); // 영웅 정보
-        public readonly BackendData.Chart.HeroUpgrade.Manager HeroUpgrade = new(); // 영웅 업그레이드 스탯 정보
-        public readonly BackendData.Chart.HeroUpgradeCost.Manager HeroUpgradeCost = new(); // 영웅 업그레이드 가격 정보
-        public readonly BackendData.Chart.CreatureUpgradeStat.Manager CreatureUpgradeStat = new(); // 생명체 업그레이드 스탯 정보
-        public readonly BackendData.Chart.Monster.Manager Monster = new(); // 일반 몬스터 정보
-        public readonly BackendData.Chart.BossMonster.Manager BossMonster = new(); // 보스 몬스터 정보 
-        public readonly BackendData.Chart.Equipment.Manager Equipment = new(); // 장비 정보
-        public readonly BackendData.Chart.DrawEquipmentGacha.Manager DrawEquipmentGacha = new(); // 장비 뽑기 확률 정보
-        public readonly BackendData.Chart.Skill.Manager Skill = new(); // 스킬 정보
-        public readonly BackendData.Chart.DrawSkillGacha.Manager DrawSkillGacha = new(); // 스킬 뽑기 확률 저옵
-    }
+    // public class BackendChart {
+    //     public readonly BackendData.Chart.AllChart ChartInfo = new(); // 모든 차트
+    //     public readonly BackendData.Chart.Stage.Manager Stage = new(); // 스테이지 정보
+    //     public readonly BackendData.Chart.Hero.Manager Hero = new(); // 영웅 정보
+    //     public readonly BackendData.Chart.HeroUpgrade.Manager HeroUpgrade = new(); // 영웅 업그레이드 스탯 정보
+    //     public readonly BackendData.Chart.HeroUpgradeCost.Manager HeroUpgradeCost = new(); // 영웅 업그레이드 가격 정보
+    //     public readonly BackendData.Chart.CreatureUpgradeStat.Manager CreatureUpgradeStat = new(); // 생명체 업그레이드 스탯 정보
+    //     public readonly BackendData.Chart.Monster.Manager Monster = new(); // 일반 몬스터 정보
+    //     public readonly BackendData.Chart.BossMonster.Manager BossMonster = new(); // 보스 몬스터 정보 
+    //     public readonly BackendData.Chart.Equipment.Manager Equipment = new(); // 장비 정보
+    //     public readonly BackendData.Chart.DrawEquipmentGacha.Manager DrawEquipmentGacha = new(); // 장비 뽑기 확률 정보
+    //     public readonly BackendData.Chart.Skill.Manager Skill = new(); // 스킬 정보
+    //     public readonly BackendData.Chart.DrawSkillGacha.Manager DrawSkillGacha = new(); // 스킬 뽑기 확률 저옵
+    // }
 
     // 게임 정보 관리 데이터만 모아놓은 클래스
     public class BackendGameData {
@@ -44,7 +44,7 @@ public class BackendManager
         }
     }
 
-    public BackendChart Chart = new(); // 차트 모음 클래스 생성
+    //public BackendChart Chart = new(); // 차트 모음 클래스 생성
     public BackendGameData GameData = new(); // 게임 데이터 관리 클래스 생성 
 
     // 치명적인 에러 발생 여부
@@ -87,7 +87,7 @@ public class BackendManager
 
     // 로딩씬에서 할당할 뒤끝 정보 클래스 초기화
     public void InitInGameData() {
-        Chart = new();
+        //Chart = new();
         GameData = new();
     }
 

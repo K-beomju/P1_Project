@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System;
 using static Define;
+using Data;
 
 
 namespace BackendData.GameData
@@ -15,14 +16,14 @@ namespace BackendData.GameData
     //===============================================================
     public class EquipmentInfoData : Item
     {
-        public BackendData.Chart.Equipment.Item Data { get; private set; }
+        public EquipmentData Data { get; private set; }
         public override string Name => Data.Name;
         public override string SpriteKey => Data.SpriteKey;
 
         public EquipmentInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
      : base(dataTemplateID, owningState, level, count, isEquipped)
         {
-            Data = Managers.Backend.Chart.Equipment.Dic[dataTemplateID];
+            Data = Managers.Data.EquipmentChart[dataTemplateID];
         }
     }
 

@@ -1,0 +1,764 @@
+{
+  "draws": [
+    {
+      "Level": 1,
+      "MaxExp": 100,
+      "DrawProbability": [
+        80.0,
+        20.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        35.0,
+        25.0,
+        15.0,
+        5.0
+      ],
+      "AdvancedDrawList": [
+        7.27,
+        7.27,
+        3.64,
+        1.82
+      ],
+      "RareDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "LegendaryDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "MythicalDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": null,
+      "LegendaryEqIdList": null,
+      "MythicalEqIdList": null,
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 2,
+      "MaxExp": 200,
+      "DrawProbability": [
+        70.0,
+        25.0,
+        5.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        30.62,
+        21.88,
+        13.12,
+        4.38
+      ],
+      "AdvancedDrawList": [
+        9.09,
+        9.09,
+        4.55,
+        2.27
+      ],
+      "RareDrawList": [
+        1.79,
+        1.43,
+        1.07,
+        0.71
+      ],
+      "LegendaryDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "MythicalDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": null,
+      "MythicalEqIdList": null,
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 3,
+      "MaxExp": 500,
+      "DrawProbability": [
+        60.0,
+        25.0,
+        10.0,
+        5.0,
+        0.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        26.25,
+        18.75,
+        11.25,
+        3.75
+      ],
+      "AdvancedDrawList": [
+        9.09,
+        9.09,
+        4.55,
+        2.27
+      ],
+      "RareDrawList": [
+        3.57,
+        2.86,
+        2.14,
+        1.43
+      ],
+      "LegendaryDrawList": [
+        1.79,
+        1.43,
+        1.07,
+        0.71
+      ],
+      "MythicalDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": null,
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 4,
+      "MaxExp": 700,
+      "DrawProbability": [
+        50.0,
+        25.0,
+        15.0,
+        10.0,
+        0.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        21.88,
+        15.62,
+        9.38,
+        3.12
+      ],
+      "AdvancedDrawList": [
+        9.09,
+        9.09,
+        4.55,
+        2.27
+      ],
+      "RareDrawList": [
+        5.36,
+        4.29,
+        3.21,
+        2.14
+      ],
+      "LegendaryDrawList": [
+        3.57,
+        2.86,
+        2.14,
+        1.43
+      ],
+      "MythicalDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": null,
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 5,
+      "MaxExp": 1000,
+      "DrawProbability": [
+        40.0,
+        25.0,
+        20.0,
+        15.0,
+        0.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        17.5,
+        12.5,
+        7.5,
+        2.5
+      ],
+      "AdvancedDrawList": [
+        9.09,
+        9.09,
+        4.55,
+        2.27
+      ],
+      "RareDrawList": [
+        7.14,
+        5.71,
+        4.29,
+        2.86
+      ],
+      "LegendaryDrawList": [
+        5.36,
+        4.29,
+        3.21,
+        2.14
+      ],
+      "MythicalDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": null,
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 6,
+      "MaxExp": 1500,
+      "DrawProbability": [
+        32.0,
+        25.0,
+        25.0,
+        15.0,
+        3.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        13.12,
+        9.38,
+        5.62,
+        1.88
+      ],
+      "AdvancedDrawList": [
+        9.09,
+        9.09,
+        4.55,
+        2.27
+      ],
+      "RareDrawList": [
+        8.93,
+        7.14,
+        5.36,
+        3.57
+      ],
+      "LegendaryDrawList": [
+        5.36,
+        4.29,
+        3.21,
+        2.14
+      ],
+      "MythicalDrawList": [
+        1.75,
+        1.25,
+        0.0,
+        0.0
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": [
+        100116,
+        100117,
+        100118,
+        100119
+      ],
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 7,
+      "MaxExp": 3000,
+      "DrawProbability": [
+        20.0,
+        26.0,
+        30.0,
+        20.0,
+        4.0,
+        0.0
+      ],
+      "NormalDrawList": [
+        8.75,
+        6.25,
+        3.75,
+        1.25
+      ],
+      "AdvancedDrawList": [
+        7.27,
+        6.27,
+        6.64,
+        4.82
+      ],
+      "RareDrawList": [
+        10.71,
+        8.57,
+        6.43,
+        4.29
+      ],
+      "LegendaryDrawList": [
+        7.14,
+        5.71,
+        4.29,
+        2.86
+      ],
+      "MythicalDrawList": [
+        1.75,
+        1.25,
+        0.9,
+        0.1
+      ],
+      "CelestialDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": [
+        100116,
+        100117,
+        100118,
+        100119
+      ],
+      "CelestialEqIdList": null
+    },
+    {
+      "Level": 8,
+      "MaxExp": 5000,
+      "DrawProbability": [
+        10.0,
+        24.99,
+        30.0,
+        30.0,
+        5.0,
+        0.01
+      ],
+      "NormalDrawList": [
+        4.38,
+        3.12,
+        1.88,
+        0.62
+      ],
+      "AdvancedDrawList": [
+        9.0,
+        7.0,
+        5.0,
+        3.99
+      ],
+      "RareDrawList": [
+        10.71,
+        8.57,
+        6.43,
+        4.29
+      ],
+      "LegendaryDrawList": [
+        10.71,
+        8.57,
+        6.43,
+        4.29
+      ],
+      "MythicalDrawList": [
+        2.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "CelestialDrawList": [
+        0.005,
+        0.004,
+        0.002,
+        0.001
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": [
+        100116,
+        100117,
+        100118,
+        100119
+      ],
+      "CelestialEqIdList": [
+        100120,
+        100121,
+        100122,
+        100123
+      ]
+    },
+    {
+      "Level": 9,
+      "MaxExp": 7000,
+      "DrawProbability": [
+        5.0,
+        22.0,
+        32.0,
+        34.9,
+        6.0,
+        0.1
+      ],
+      "NormalDrawList": [
+        2.19,
+        1.56,
+        0.94,
+        0.31
+      ],
+      "AdvancedDrawList": [
+        8.0,
+        8.0,
+        4.0,
+        2.0
+      ],
+      "RareDrawList": [
+        11.43,
+        9.14,
+        6.86,
+        4.57
+      ],
+      "LegendaryDrawList": [
+        12.47,
+        9.98,
+        7.48,
+        4.98
+      ],
+      "MythicalDrawList": [
+        2.0,
+        1.5,
+        1.5,
+        1.0
+      ],
+      "CelestialDrawList": [
+        0.053,
+        0.031,
+        0.011,
+        0.005
+      ],
+      "NormalEqIdList": [
+        100100,
+        100101,
+        100102,
+        100103
+      ],
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": [
+        100116,
+        100117,
+        100118,
+        100119
+      ],
+      "CelestialEqIdList": [
+        100120,
+        100121,
+        100122,
+        100123
+      ]
+    },
+    {
+      "Level": 10,
+      "MaxExp": 8000,
+      "DrawProbability": [
+        0.0,
+        22.0,
+        32.0,
+        38.5,
+        7.0,
+        0.5
+      ],
+      "NormalDrawList": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "AdvancedDrawList": [
+        8.0,
+        8.0,
+        4.0,
+        2.0
+      ],
+      "RareDrawList": [
+        11.43,
+        9.14,
+        6.86,
+        4.57
+      ],
+      "LegendaryDrawList": [
+        13.75,
+        11.0,
+        8.25,
+        5.5
+      ],
+      "MythicalDrawList": [
+        2.5,
+        2.0,
+        1.5,
+        1.0
+      ],
+      "CelestialDrawList": [
+        0.25,
+        0.15,
+        0.09,
+        0.01
+      ],
+      "NormalEqIdList": null,
+      "AdvancedEqIdList": [
+        100104,
+        100105,
+        100106,
+        100107
+      ],
+      "RareEqIdList": [
+        100108,
+        100109,
+        100110,
+        100111
+      ],
+      "LegendaryEqIdList": [
+        100112,
+        100113,
+        100114,
+        100115
+      ],
+      "MythicalEqIdList": [
+        100116,
+        100117,
+        100118,
+        100119
+      ],
+      "CelestialEqIdList": [
+        100120,
+        100121,
+        100122,
+        100123
+      ]
+    }
+  ]
+}

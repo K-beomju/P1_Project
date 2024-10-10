@@ -1,0 +1,52 @@
+{
+  "skillDatas": [
+    {
+      "DataId": 100100,
+      "RareType": 1,
+      "Name": "대쉬",
+      "Description": "적 앞으로 돌진하여 {value}% 피해",
+      "PrefabKey": "asd",
+      "SpriteKey": "Skill/Skill_Dash",
+      "SoundKey": "asd",
+      "OwnedValue": 2.0,
+      "UsedValue": 30.0,
+      "CoolTime": 5.0,
+      "SkillDuration": 0.0,
+      "SkillRange": 1.0,
+      "SkillCount": 1,
+      "TargetCount": 3
+    },
+    {
+      "DataId": 100101,
+      "RareType": 1,
+      "Name": "찌르기",
+      "Description": "스킬 설명 부분",
+      "PrefabKey": "asd",
+      "SpriteKey": "Skill/Skill_Prod",
+      "SoundKey": "asd",
+      "OwnedValue": 2.0,
+      "UsedValue": 30.0,
+      "CoolTime": 5.0,
+      "SkillDuration": 0.0,
+      "SkillRange": 0.0,
+      "SkillCount": 1,
+      "TargetCount": 3
+    },
+    {
+      "DataId": 100102,
+      "RareType": 1,
+      "Name": "각성",
+      "Description": "스킬 설명 부분",
+      "PrefabKey": "asd",
+      "SpriteKey": "Skill/Skill_Awaken",
+      "SoundKey": "asd",
+      "OwnedValue": 2.0,
+      "UsedValue": 30.0,
+      "CoolTime": 5.0,
+      "SkillDuration": 0.0,
+      "SkillRange": 0.0,
+      "SkillCount": 1,
+      "TargetCount": 3
+    }
+  ]
+}

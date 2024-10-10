@@ -77,7 +77,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         string titleText = $"{Util.GetHeroUpgradeString(_heroUpgradeType)}";
         string levelText = $"Lv {level}";
         string valueText =
-            $"{Managers.Backend.Chart.HeroUpgrade.Dic[_heroUpgradeType.ToString()].Value + (Managers.Backend.Chart.HeroUpgrade.Dic[_heroUpgradeType.ToString()].IncreaseValue) * (level - 1)}";
+            $"{Managers.Data.HeroUpgradeChart[_heroUpgradeType].Value + (Managers.Data.HeroUpgradeChart[_heroUpgradeType].IncreaseValue) * (level - 1)}";
         string amountText = $"{Util.GetUpgradeCost(_heroUpgradeType, level + 1):N0}";
 
         GetTMPText((int)Texts.Text_Title).text = titleText;

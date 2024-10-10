@@ -6,6 +6,7 @@ using static Define;
 using Unity.VisualScripting;
 using BackEnd;
 using System;
+using Data;
 
 namespace BackendData.GameData
 {
@@ -66,14 +67,14 @@ namespace BackendData.GameData
     //===============================================================
     public class SkillInfoData : Item
     {
-        public BackendData.Chart.Skill.Item Data { get; private set; } // 수정 필여
+        public SkillData Data { get; private set; }
         public override string Name => Data.Name;
         public override string SpriteKey => Data.SpriteKey;
 
         public SkillInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
             : base(dataTemplateID, owningState, level, count, isEquipped)
         {
-            Data = Managers.Backend.Chart.Skill.Dic[dataTemplateID];
+            Data = Managers.Data.SkillChart[dataTemplateID];
         }
     }
 

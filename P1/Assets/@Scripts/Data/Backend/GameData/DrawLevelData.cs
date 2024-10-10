@@ -80,7 +80,7 @@ namespace BackendData.GameData
 
             _drawDic[key].DrawCount++;
 
-            while (_drawDic[key].DrawCount >= Managers.Backend.Chart.DrawEquipmentGacha.Dic[_drawDic[key].DrawLevel].MaxExp) //GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
+            while (_drawDic[key].DrawCount >= Managers.Data.DrawEquipmentChart[_drawDic[key].DrawLevel].MaxExp) //GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
             {
                 DrawLevelUp(key);
             }
@@ -91,7 +91,7 @@ namespace BackendData.GameData
         public void DrawLevelUp(string key)
         {
             IsChangedData = true;
-            _drawDic[key].DrawCount -= Managers.Backend.Chart.DrawEquipmentGacha.Dic[_drawDic[key].DrawLevel].MaxExp;
+            _drawDic[key].DrawCount -= Managers.Data.DrawEquipmentChart[_drawDic[key].DrawLevel].MaxExp;
             _drawDic[key].DrawLevel++;
             Managers.Event.TriggerEvent(EEventType.DrawLevelUpUIUpdated, _drawDic[key].DrawLevel);
         }

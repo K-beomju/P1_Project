@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using DG.Tweening;
 using UnityEngine;
 using static Define;
@@ -36,10 +37,10 @@ public class Monster : Creature, IDamageable
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        BackendData.Chart.Monster.Item data = Managers.Backend.Chart.Monster.Dic[dataTemplateID];
+        MonsterInfoData data = Managers.Data.MonsterChart[dataTemplateID];
         Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
-        Atk = data.Atk + Managers.Backend.Chart.CreatureUpgradeStat.Dic[dataTemplateID].IncreaseAtk; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
-        MaxHp = data.MaxHp + Managers.Backend.Chart.CreatureUpgradeStat.Dic[dataTemplateID].IncreaseMaxHp; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
+        Atk = data.Atk + Managers.Data.CreatureUpgradeStatChart[dataTemplateID].IncreaseAtk; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
+        MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatChart[dataTemplateID].IncreaseMaxHp; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
 
         MoveSpeed = data.MoveSpeed;

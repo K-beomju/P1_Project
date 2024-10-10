@@ -1,0 +1,652 @@
+{
+  "equipmentDatas": [
+    {
+      "DataId": 100100,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_01",
+      "Name": "나무 검",
+      "OwnedValue": 2.0,
+      "EquippedValue": 10.0
+    },
+    {
+      "DataId": 100101,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_02",
+      "Name": "돌 검",
+      "OwnedValue": 2.0,
+      "EquippedValue": 12.0
+    },
+    {
+      "DataId": 100102,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_03",
+      "Name": "철 검",
+      "OwnedValue": 2.0,
+      "EquippedValue": 14.0
+    },
+    {
+      "DataId": 100103,
+      "RareType": 1,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_04",
+      "Name": "금 검",
+      "OwnedValue": 2.0,
+      "EquippedValue": 16.0
+    },
+    {
+      "DataId": 100104,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_05",
+      "Name": "은 검",
+      "OwnedValue": 5.0,
+      "EquippedValue": 20.0
+    },
+    {
+      "DataId": 100105,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_06",
+      "Name": "청동 검",
+      "OwnedValue": 5.0,
+      "EquippedValue": 25.0
+    },
+    {
+      "DataId": 100106,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_07",
+      "Name": "강철 검",
+      "OwnedValue": 5.0,
+      "EquippedValue": 30.0
+    },
+    {
+      "DataId": 100107,
+      "RareType": 2,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_08",
+      "Name": "청금석 검",
+      "OwnedValue": 5.0,
+      "EquippedValue": 35.0
+    },
+    {
+      "DataId": 100108,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_09",
+      "Name": "화염 검",
+      "OwnedValue": 10.0,
+      "EquippedValue": 50.0
+    },
+    {
+      "DataId": 100109,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_10",
+      "Name": "얼음 검",
+      "OwnedValue": 10.0,
+      "EquippedValue": 75.0
+    },
+    {
+      "DataId": 100110,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_11",
+      "Name": "천둥 검",
+      "OwnedValue": 10.0,
+      "EquippedValue": 100.0
+    },
+    {
+      "DataId": 100111,
+      "RareType": 3,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_12",
+      "Name": "바람 검",
+      "OwnedValue": 10.0,
+      "EquippedValue": 125.0
+    },
+    {
+      "DataId": 100112,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_13",
+      "Name": "불멸의 검",
+      "OwnedValue": 20.0,
+      "EquippedValue": 250.0
+    },
+    {
+      "DataId": 100113,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_14",
+      "Name": "용의 검",
+      "OwnedValue": 30.0,
+      "EquippedValue": 500.0
+    },
+    {
+      "DataId": 100114,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_15",
+      "Name": "섬광의 검",
+      "OwnedValue": 40.0,
+      "EquippedValue": 800.0
+    },
+    {
+      "DataId": 100115,
+      "RareType": 4,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_16",
+      "Name": "그림자의 검",
+      "OwnedValue": 50.0,
+      "EquippedValue": 1200.0
+    },
+    {
+      "DataId": 100116,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_17",
+      "Name": "불의 대검",
+      "OwnedValue": 100.0,
+      "EquippedValue": 2400.0
+    },
+    {
+      "DataId": 100117,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_18",
+      "Name": "얼음의 대검",
+      "OwnedValue": 150.0,
+      "EquippedValue": 4800.0
+    },
+    {
+      "DataId": 100118,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_19",
+      "Name": "천둥의 대검",
+      "OwnedValue": 200.0,
+      "EquippedValue": 8000.0
+    },
+    {
+      "DataId": 100119,
+      "RareType": 5,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_20",
+      "Name": "대지의 대검",
+      "OwnedValue": 250.0,
+      "EquippedValue": 12000.0
+    },
+    {
+      "DataId": 100120,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_21",
+      "Name": "성스러운 검",
+      "OwnedValue": 600.0,
+      "EquippedValue": 30000.0
+    },
+    {
+      "DataId": 100121,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_22",
+      "Name": "천상의 검",
+      "OwnedValue": 1200.0,
+      "EquippedValue": 60000.0
+    },
+    {
+      "DataId": 100122,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_23",
+      "Name": "심판의 검",
+      "OwnedValue": 2400.0,
+      "EquippedValue": 150000.0
+    },
+    {
+      "DataId": 100123,
+      "RareType": 6,
+      "EquipmentType": 1,
+      "SpriteKey": "Weapon/Weapon_24",
+      "Name": "창조의 검",
+      "OwnedValue": 5000.0,
+      "EquippedValue": 400000.0
+    },
+    {
+      "DataId": 200100,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_01",
+      "Name": "가죽 갑옷",
+      "OwnedValue": 2.0,
+      "EquippedValue": 10.0
+    },
+    {
+      "DataId": 200101,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_02",
+      "Name": "천 갑옷",
+      "OwnedValue": 2.0,
+      "EquippedValue": 12.0
+    },
+    {
+      "DataId": 200102,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_03",
+      "Name": "동 갑옷",
+      "OwnedValue": 2.0,
+      "EquippedValue": 14.0
+    },
+    {
+      "DataId": 200103,
+      "RareType": 1,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_04",
+      "Name": "철 갑옷",
+      "OwnedValue": 2.0,
+      "EquippedValue": 16.0
+    },
+    {
+      "DataId": 200104,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_05",
+      "Name": "강철 갑옷",
+      "OwnedValue": 5.0,
+      "EquippedValue": 20.0
+    },
+    {
+      "DataId": 200105,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_06",
+      "Name": "청동 갑옷",
+      "OwnedValue": 5.0,
+      "EquippedValue": 25.0
+    },
+    {
+      "DataId": 200106,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_07",
+      "Name": "은 갑옷",
+      "OwnedValue": 5.0,
+      "EquippedValue": 30.0
+    },
+    {
+      "DataId": 200107,
+      "RareType": 2,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_08",
+      "Name": "금 갑옷",
+      "OwnedValue": 5.0,
+      "EquippedValue": 35.0
+    },
+    {
+      "DataId": 200108,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_09",
+      "Name": "불꽃 갑옷",
+      "OwnedValue": 10.0,
+      "EquippedValue": 50.0
+    },
+    {
+      "DataId": 200109,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_10",
+      "Name": "서리 갑옷",
+      "OwnedValue": 10.0,
+      "EquippedValue": 75.0
+    },
+    {
+      "DataId": 200110,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_11",
+      "Name": "천둥 갑옷",
+      "OwnedValue": 10.0,
+      "EquippedValue": 100.0
+    },
+    {
+      "DataId": 200111,
+      "RareType": 3,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_12",
+      "Name": "바람 갑옷",
+      "OwnedValue": 10.0,
+      "EquippedValue": 125.0
+    },
+    {
+      "DataId": 200112,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_13",
+      "Name": "불멸의 갑옷",
+      "OwnedValue": 20.0,
+      "EquippedValue": 250.0
+    },
+    {
+      "DataId": 200113,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_14",
+      "Name": "용의 갑옷",
+      "OwnedValue": 30.0,
+      "EquippedValue": 500.0
+    },
+    {
+      "DataId": 200114,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_15",
+      "Name": "섬광의 갑옷",
+      "OwnedValue": 40.0,
+      "EquippedValue": 800.0
+    },
+    {
+      "DataId": 200115,
+      "RareType": 4,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_16",
+      "Name": "그림자의 갑옷",
+      "OwnedValue": 50.0,
+      "EquippedValue": 1200.0
+    },
+    {
+      "DataId": 200116,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_17",
+      "Name": "불의 대갑옷",
+      "OwnedValue": 100.0,
+      "EquippedValue": 2400.0
+    },
+    {
+      "DataId": 200117,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_18",
+      "Name": "얼음의 대갑옷",
+      "OwnedValue": 150.0,
+      "EquippedValue": 4800.0
+    },
+    {
+      "DataId": 200118,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_19",
+      "Name": "천둥의 대갑옷",
+      "OwnedValue": 200.0,
+      "EquippedValue": 8000.0
+    },
+    {
+      "DataId": 200119,
+      "RareType": 5,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_20",
+      "Name": "대지의 대갑옷",
+      "OwnedValue": 250.0,
+      "EquippedValue": 12000.0
+    },
+    {
+      "DataId": 200120,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_21",
+      "Name": "성스러운 갑옷",
+      "OwnedValue": 600.0,
+      "EquippedValue": 30000.0
+    },
+    {
+      "DataId": 200121,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_22",
+      "Name": "천상의 갑옷",
+      "OwnedValue": 1200.0,
+      "EquippedValue": 60000.0
+    },
+    {
+      "DataId": 200122,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_23",
+      "Name": "심판의 갑옷",
+      "OwnedValue": 2400.0,
+      "EquippedValue": 150000.0
+    },
+    {
+      "DataId": 200123,
+      "RareType": 6,
+      "EquipmentType": 2,
+      "SpriteKey": "Armor/Armor_24",
+      "Name": "창조의 갑옷",
+      "OwnedValue": 5000.0,
+      "EquippedValue": 400000.0
+    },
+    {
+      "DataId": 300100,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_01",
+      "Name": "구리 반지",
+      "OwnedValue": 2.0,
+      "EquippedValue": 20.0
+    },
+    {
+      "DataId": 300101,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_02",
+      "Name": "은 반지",
+      "OwnedValue": 2.0,
+      "EquippedValue": 24.0
+    },
+    {
+      "DataId": 300102,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_03",
+      "Name": "철 반지",
+      "OwnedValue": 2.0,
+      "EquippedValue": 28.0
+    },
+    {
+      "DataId": 300103,
+      "RareType": 1,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_04",
+      "Name": "금 반지",
+      "OwnedValue": 2.0,
+      "EquippedValue": 32.0
+    },
+    {
+      "DataId": 300104,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_05",
+      "Name": "사파이어 반지",
+      "OwnedValue": 5.0,
+      "EquippedValue": 40.0
+    },
+    {
+      "DataId": 300105,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_06",
+      "Name": "에메랄드 반지",
+      "OwnedValue": 5.0,
+      "EquippedValue": 50.0
+    },
+    {
+      "DataId": 300106,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_07",
+      "Name": "루비 반지",
+      "OwnedValue": 5.0,
+      "EquippedValue": 60.0
+    },
+    {
+      "DataId": 300107,
+      "RareType": 2,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_08",
+      "Name": "다이아몬드 반지",
+      "OwnedValue": 5.0,
+      "EquippedValue": 70.0
+    },
+    {
+      "DataId": 300108,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_09",
+      "Name": "불꽃 반지",
+      "OwnedValue": 10.0,
+      "EquippedValue": 100.0
+    },
+    {
+      "DataId": 300109,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_10",
+      "Name": "얼음 반지",
+      "OwnedValue": 10.0,
+      "EquippedValue": 150.0
+    },
+    {
+      "DataId": 300110,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_11",
+      "Name": "천둥 반지",
+      "OwnedValue": 10.0,
+      "EquippedValue": 200.0
+    },
+    {
+      "DataId": 300111,
+      "RareType": 3,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_12",
+      "Name": "바람 반지",
+      "OwnedValue": 10.0,
+      "EquippedValue": 250.0
+    },
+    {
+      "DataId": 300112,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_13",
+      "Name": "불멸의 반지",
+      "OwnedValue": 20.0,
+      "EquippedValue": 400.0
+    },
+    {
+      "DataId": 300113,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_14",
+      "Name": "용의 반지",
+      "OwnedValue": 30.0,
+      "EquippedValue": 750.0
+    },
+    {
+      "DataId": 300114,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_15",
+      "Name": "섬광의 반지",
+      "OwnedValue": 40.0,
+      "EquippedValue": 1200.0
+    },
+    {
+      "DataId": 300115,
+      "RareType": 4,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_16",
+      "Name": "그림자의 반지",
+      "OwnedValue": 50.0,
+      "EquippedValue": 1800.0
+    },
+    {
+      "DataId": 300116,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_17",
+      "Name": "불의 대반지",
+      "OwnedValue": 100.0,
+      "EquippedValue": 3600.0
+    },
+    {
+      "DataId": 300117,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_18",
+      "Name": "얼음의 대반지",
+      "OwnedValue": 150.0,
+      "EquippedValue": 7200.0
+    },
+    {
+      "DataId": 300118,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_19",
+      "Name": "천둥의 대반지",
+      "OwnedValue": 200.0,
+      "EquippedValue": 12000.0
+    },
+    {
+      "DataId": 300119,
+      "RareType": 5,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_20",
+      "Name": "대지의 대반지",
+      "OwnedValue": 250.0,
+      "EquippedValue": 18000.0
+    },
+    {
+      "DataId": 300120,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_21",
+      "Name": "성스러운 반지",
+      "OwnedValue": 600.0,
+      "EquippedValue": 36000.0
+    },
+    {
+      "DataId": 300121,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_22",
+      "Name": "천상의 반지",
+      "OwnedValue": 1200.0,
+      "EquippedValue": 72000.0
+    },
+    {
+      "DataId": 300122,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_23",
+      "Name": "심판의 반지",
+      "OwnedValue": 2400.0,
+      "EquippedValue": 180000.0
+    },
+    {
+      "DataId": 300123,
+      "RareType": 6,
+      "EquipmentType": 3,
+      "SpriteKey": "Ring/Ring_24",
+      "Name": "창조의 반지",
+      "OwnedValue": 5000.0,
+      "EquippedValue": 500000.0
+    }
+  ]
+}

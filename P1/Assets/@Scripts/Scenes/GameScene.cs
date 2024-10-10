@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Cinemachine;
+using Data;
 using UnityEngine;
 using static Define;
 
@@ -33,7 +33,7 @@ public class GameScene : BaseScene
     public float BossBattleTimer { get; private set; }
     public float BossBattleTimeLimit { get; private set; }
 
-    public BackendData.Chart.Stage.Item StageInfo { get; private set; }
+    public StageInfoData StageInfo { get; private set; }
     private BackendData.GameData.UserData UserData;
 
     protected override bool Init()
@@ -55,7 +55,7 @@ public class GameScene : BaseScene
         ChapterLevel = 1;
 
         //SetupStage();
-        Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
+        //Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
         return true;
     }
 
@@ -130,7 +130,7 @@ public class GameScene : BaseScene
 
     private void SetupStage()
     {
-        StageInfo = Managers.Backend.Chart.Stage.Dic[UserData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
+        StageInfo = Managers.Data.StageChart[UserData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
         Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
 
         BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;

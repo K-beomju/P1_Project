@@ -1,0 +1,164 @@
+{
+  "HeroUpgradeCostInfoDataList": [
+    {
+      "HeroUpgradeType": 0,
+      "Remark": "성장 공격",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "StartCostList": [
+        5,
+        10,
+        20,
+        40,
+        80
+      ],
+      "IncreaseCostList": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    {
+      "HeroUpgradeType": 1,
+      "Remark": "성장 체력",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "StartCostList": [
+        10,
+        20,
+        30,
+        50,
+        100
+      ],
+      "IncreaseCostList": [
+        5,
+        10,
+        15,
+        20,
+        25
+      ]
+    },
+    {
+      "HeroUpgradeType": 2,
+      "Remark": "성장 체력 재생",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "StartCostList": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "IncreaseCostList": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "HeroUpgradeType": 3,
+      "Remark": "치명타 확률",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "StartCostList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "IncreaseCostList": [
+        10,
+        20,
+        30,
+        40,
+        50
+      ]
+    },
+    {
+      "HeroUpgradeType": 4,
+      "Remark": "치명타 피해",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "StartCostList": [
+        15,
+        30,
+        45,
+        60,
+        75
+      ],
+      "IncreaseCostList": [
+        5,
+        10,
+        15,
+        20,
+        25
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ public class GameManager
 		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _killMonsters, _maxMonsters);
 	}
 
-	public void SpawnMonster(BackendData.Chart.Stage.Item stageInfo, bool isBoss = false)
+	public void SpawnMonster(StageInfoData stageInfo, bool isBoss = false)
 	{
 		if (_tileMap == null)
 		{
