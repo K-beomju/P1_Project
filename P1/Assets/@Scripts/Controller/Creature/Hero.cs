@@ -19,6 +19,7 @@ public class Hero : Creature
     #endregion
 
     public HeroInfo HeroInfo { get; private set; }
+
     private Coroutine comboDelayCoroutine = null;
     private Coroutine recoveryCoroutine = null;
     private HeroGhost ghost;

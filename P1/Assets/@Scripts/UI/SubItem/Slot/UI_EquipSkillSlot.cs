@@ -4,6 +4,7 @@ using BackendData.GameData;
 using DG.Tweening;
 using static Define;
 using System.Collections;
+using System;
 
 public class UI_EquipSkillSlot : UI_Base
 {
@@ -45,8 +46,9 @@ public class UI_EquipSkillSlot : UI_Base
     {
         _index = index;
         _skillSlot = Managers.Backend.GameData.SkillInventory.SkillSlotList[_index];
-        _skillSlot.OnSkillUnEquipped -= StopCoolTime;
-        _skillSlot.OnSkillUnEquipped += StopCoolTime;
+        Managers.Event.RemoveEvent(EEventType.OnSkillUnEquipped, new Action<int>(StopCoolTime));
+        Managers.Event.AddEvent(EEventType.OnSkillUnEquipped, new Action<int>(StopCoolTime));
+
         if (Init() == false)
         {
             RefreshUI();
@@ -64,6 +66,7 @@ public class UI_EquipSkillSlot : UI_Base
             case ESkillSlotType.None:
                 _iconImage.gameObject.SetActive(false);
                 _lockImage.gameObject.SetActive(false);
+                //Managers.Object.Hero.Skills.RemoveSkill(_index + 1);
                 break;
             case ESkillSlotType.Equipped:
                 _iconImage.gameObject.SetActive(true);
@@ -75,7 +78,6 @@ public class UI_EquipSkillSlot : UI_Base
             return;
 
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{_skillSlot.SkillInfoData.SpriteKey}");
-
         if(_skillSlot.IsCoolTimeActive)
         {
             _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));
@@ -85,18 +87,6 @@ public class UI_EquipSkillSlot : UI_Base
 
     public void OnUseSkill()
     {
-        // if (_skillSlot.SkillInfoData == null || _skillSlot.SlotType == ESkillSlotType.None || _skillSlot.SlotType == ESkillSlotType.Lock)
-        // {
-        //     Debug.LogWarning($"현재 클릭한 {_index + 1}번째 슬롯이 비어있거나 잠겨있거나 데이터가 없습니다");
-        //     return;
-        // }
-
-        // if (_coolTimeCo != null)
-        // {
-        //     Debug.LogWarning("스킬 쿨타임 중입니다.");
-        //     return;
-        // }
-
         if(IsSkillReady())
         {
             _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));

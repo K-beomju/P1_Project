@@ -24,6 +24,13 @@ public class ObjectManager
     public Transform BossMonsterRoot { get { return GetRootTransform("@BossMonster"); } }
     #endregion
 
+    public GameObject SpawnGameObject(Vector3 position, string prefabName)
+	{
+		GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+		go.transform.position = position;
+		return go;
+	}
+
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
         string prefabName = typeof(T).Name;

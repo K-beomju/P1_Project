@@ -71,9 +71,8 @@ public class UI_GameScene : UI_Scene
     }
 
     public PlayTab _tab { get; set; } = PlayTab.None;
+    
     private List<UI_EquipSkillSlot> _equipSkillSlotList = new List<UI_EquipSkillSlot>();
-
-    private Coroutine _autoSkillCo;
     private bool _isAutoSkillActive = false; // AutoSkill 활성화 상태를 저장하는 변수
 
     protected override bool Init()

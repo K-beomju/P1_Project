@@ -15,9 +15,7 @@ namespace BackendData.GameData
         public int Index { get; private set; }
         public ESkillSlotType SlotType { get; private set; }
         public SkillInfoData SkillInfoData { get; private set; }
-
         public bool IsCoolTimeActive { get; set; } // 쿨타임을 돌려야 하는지 여부를 확인하는 플래그
-        public Action<int> OnSkillUnEquipped; // 스킬 해제 시 슬롯 인덱스를 전달하는 이벤트
 
         public SkillSlot(int index, ESkillSlotType slotType, SkillInfoData skillInfoData)
         {
@@ -43,9 +41,9 @@ namespace BackendData.GameData
             SlotType = ESkillSlotType.None;
             SkillInfoData = null;
             IsCoolTimeActive = false;
-            Managers.Event.TriggerEvent(EEventType.UpdatedSkillSlot);
 
-            OnSkillUnEquipped?.Invoke(Index);
+            Managers.Event.TriggerEvent(EEventType.UpdatedSkillSlot);
+            Managers.Event.TriggerEvent(EEventType.OnSkillUnEquipped, Index);
         }
 
         // 슬롯 잠금 상태 설정 

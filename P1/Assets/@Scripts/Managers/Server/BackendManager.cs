@@ -58,7 +58,7 @@ public class BackendManager
         if (initalizeBro.IsSuccess())
         {
             Debug.Log("뒤끝 초기화가 완료되었습니다.");
-            Backend.BMember.CustomLogin("user1", "1234");
+            Backend.BMember.CustomLogin("user2", "12345");
 
             CreateSendQueueMgr();
             SetErrorHandler();

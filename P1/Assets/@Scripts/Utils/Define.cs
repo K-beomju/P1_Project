@@ -92,6 +92,9 @@ public static class Define
 
         /// <summary>게임씬 스킬 슬롯 쿨타임 체크</summary>
         CompleteSkillCool, 
+
+        /// <summary>스킬 슬롯 해제할 때 쿨타임 리셋</summary>
+        OnSkillUnEquipped, 
     }
 
     public enum EOwningState
