@@ -29,7 +29,7 @@ public class UI_DamageTextWorldSpace : UI_Base
         return true;
     }
 
-    public void SetInfo(Vector3 pos, float damage = 0, bool isCritical = false)
+    public void SetInfo(Vector3 pos, float damage = 0, bool isCritical = false, EffectBase effect = null)
 	{
 		transform.position = pos + new Vector3(0, 0.25f, 0);
 
@@ -41,6 +41,12 @@ public class UI_DamageTextWorldSpace : UI_Base
 		{
 			_damageText.color = Util.HexToColor("EFAD00");
 		} 
+
+		if(effect != null)
+		{
+			_damageText.color = Color.red;
+			_damageText.fontSize = 0.5f;
+		}
 
 		_damageText.text = $"{Mathf.Abs(damage)}";
 		_damageText.alpha = 1;

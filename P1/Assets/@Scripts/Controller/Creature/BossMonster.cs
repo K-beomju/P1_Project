@@ -50,7 +50,7 @@ public class BossMonster : Monster
     #endregion
 
     #region Battle
-    public override void OnDamaged(Creature attacker)
+    public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
         base.OnDamaged(attacker);
         Sprite.flipX = transform.position.x > attacker.transform.position.x;

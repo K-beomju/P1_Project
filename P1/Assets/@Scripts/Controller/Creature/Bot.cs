@@ -33,9 +33,9 @@ public class Bot : Creature, IDamageable
         OnDead();
     }
 
-    public override void OnDamaged(Creature attacker)
+    public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
-        base.OnDamaged(attacker);
+        base.OnDamaged(attacker, effect);
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
 
     }

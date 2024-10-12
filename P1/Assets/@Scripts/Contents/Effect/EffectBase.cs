@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
-public class EffectBase : MonoBehaviour
-{  
+public class EffectBase : BaseObject
+{
     public Hero Owner { get; private set; } // 이펙트를 생성한 주체
     public Data.SkillData SkillData { get; private set; } // 스킬 정보 데이터
 
@@ -11,13 +12,23 @@ public class EffectBase : MonoBehaviour
     {
         Owner = owner;
         SkillData = skillData;
+        Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
+        // 타겟이 유효한지 체크
+        if (Owner.Target != null)
+        {
+            LookAt(Owner.Target.transform.position);
+        }
+        else
+        {
+            Debug.LogWarning("Target is null when setting effect info");
+        }
         StartCoroutine(CoReserveDestroy(SkillData.SkillDuration));
     }
 
     // 충돌 감지 메서드
-    protected virtual void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Monster"))
         {
             Creature enemy = other.GetComponent<Creature>();
             if (enemy != null)
@@ -33,9 +44,9 @@ public class EffectBase : MonoBehaviour
         // 구체적인 데미지 계산은 하위 클래스에서 구현
     }
 
-    private IEnumerator CoReserveDestroy(float lifeTime)
-	{
-		yield return new WaitForSeconds(lifeTime);
-		Managers.Object.Despawn(this);
-	}
+    private IEnumerator CoReserveDestroy(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Managers.Object.Despawn(this);
+    }
 }

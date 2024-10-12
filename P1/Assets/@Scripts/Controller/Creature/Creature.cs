@@ -116,67 +116,53 @@ public class Creature : BaseObject
     protected virtual void UpdateDead() { }
 
 
-    public void HandleDotDamage(EffectBase effect)
-	{
-		if (effect == null)
-			return;
-		if (effect.Owner.IsValid() == false)
-			return;
-
-		// TEMP
-        float finalDamage = effect.SkillData.UsedValue;
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
-
-        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, finalDamage, false);
-
-		// TODO : OnDamaged 통합
-		if (Hp <= 0)
-		{
-            OnDead();
-			CreatureState = ECreatureState.Dead;
-			return;
-		}
-	}
-
-    public virtual void OnDamaged(Creature attacker)
+    public virtual void OnDamaged(Creature attacker, EffectBase effect = null)
     {
         if (CreatureState == ECreatureState.Dead)
             return;
 
+        float finalDamage = 0;
+        bool isCriticalHit = false;
 
-        float finalDamage = attacker.Atk;
-
-        // 치명타 체크 (0~1000 범위에서 비교)
-        float randomValue = Random.Range(0.0f, 100.0f);
-        bool isCriticalHit = randomValue < attacker.CriRate; // 예: CriRate가 0.1일 경우 0.1% 확률로 치명타 발생
-
-        if (isCriticalHit)
+        if (effect == null)
         {
-            float criticalMultiplier = attacker.CriDmg / 100.0f;
-            finalDamage += finalDamage * criticalMultiplier;
+            finalDamage = attacker.Atk;
+
+            // 치명타 체크 (0~1000 범위에서 비교)
+            float randomValue = Random.Range(0.0f, 100.0f);
+            isCriticalHit = randomValue < attacker.CriRate; // 예: CriRate가 0.1일 경우 0.1% 확률로 치명타 발생
+
+            if (isCriticalHit)
+            {
+                float criticalMultiplier = attacker.CriDmg / 100.0f;
+                finalDamage += finalDamage * criticalMultiplier;
+            }
+
+        }
+        else
+        {
+            float baseStat = attacker.Atk;
+            float ownedValue = effect.SkillData.DamageMultiplier; 
+            finalDamage = baseStat * (ownedValue / 100f);  // 공격력의 ownedValue%만큼 데미지 계산
         }
 
-
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
+        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
+        damageText.SetInfo(CenterPosition, finalDamage, isCriticalHit, effect);
 
-        if(HpBar != null && !HpBar.gameObject.activeSelf)
-        HpBar.gameObject.SetActive(true);
+        if (HpBar != null && !HpBar.gameObject.activeSelf)
+            HpBar.gameObject.SetActive(true);
 
         if (Hp <= 0)
         {
             OnDead();
             CreatureState = ECreatureState.Dead;
-
         }
 
         Color originalColor = Sprite.color;
 
         Sprite.DOColor(Color.red, 0.05f)
             .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
-
-        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, finalDamage, isCriticalHit);
     }
 
     public virtual void OnDead()
@@ -184,10 +170,5 @@ public class Creature : BaseObject
 
     }
 
-    protected void LookAt(Vector2 dir)
-    {
-        Vector3 scale = transform.localScale;
-        scale.x = dir.x < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
-        transform.localScale = scale;
-    }
+
 }

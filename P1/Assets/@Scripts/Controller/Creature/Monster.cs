@@ -122,9 +122,9 @@ public class Monster : Creature, IDamageable
         OnDead();
     }
 
-    public override void OnDamaged(Creature attacker)
+    public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
-        base.OnDamaged(attacker);
+        base.OnDamaged(attacker, effect);
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
         _isDamaged = true;
         // 플레이어에게 데미지를 입히는 코루틴 시작

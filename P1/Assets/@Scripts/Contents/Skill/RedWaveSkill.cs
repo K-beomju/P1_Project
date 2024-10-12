@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RedWaveSkill : SkillBase
 {
+
     protected override void ApplySkillEffect()
     {
         GameObject effectObj = Managers.Object.SpawnGameObject(Owner.CenterPosition, SkillData.PrefabKey);

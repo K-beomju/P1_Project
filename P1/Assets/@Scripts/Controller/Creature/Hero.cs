@@ -281,9 +281,9 @@ public class Hero : Creature
     }
     #endregion
 
-    public override void OnDamaged(Creature attacker)
+    public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
-        base.OnDamaged(attacker);
+        base.OnDamaged(attacker, effect);
 
         if(recoveryCoroutine != null)
         {

@@ -325,7 +325,7 @@ namespace Data
         public string SoundKey;
 
         public float OwnedValue;
-        public float UsedValue;
+        public float DamageMultiplier;
 
         public float CoolTime;
         public float SkillDuration;
