@@ -6,7 +6,7 @@
       "Name": "붉은 파동",
       "Description": "검에 붉은 기운을 모아 파동을 방출하여 {value}%의 피해를 입힙니다.",
       "ClassName": "RedWaveSkill",
-      "PrefabKey": "Object/Skill/Skill_RedWave",
+      "PrefabKey": "Object/Skill/RedWaveEffect",
       "SpriteKey": "Skill/Skill_RedWave",
       "SoundKey": "asd",
       "OwnedValue": 2.0,

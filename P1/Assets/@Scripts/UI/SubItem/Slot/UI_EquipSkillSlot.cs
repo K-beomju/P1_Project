@@ -89,6 +89,7 @@ public class UI_EquipSkillSlot : UI_Base
     {
         if(IsSkillReady())
         {
+            Managers.Object.Hero.Skills.UseSkill(_index);
             _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));
             Debug.LogWarning($"{_index + 1}번째 슬롯의 <color=#FF0000>{_skillSlot.SkillInfoData.Name}</color> 스킬이 실행됩니다.");
         }

@@ -19,6 +19,7 @@ public class Hero : Creature
     #endregion
 
     public HeroInfo HeroInfo { get; private set; }
+    public SkillComponent Skills;// { get; private set; }
 
     private Coroutine comboDelayCoroutine = null;
     private Coroutine recoveryCoroutine = null;
@@ -74,6 +75,9 @@ public class Hero : Creature
         AttackRange = HeroInfo.AttackRange;
         AttackSpeedRate = HeroInfo.AttackSpeedRate;
         MoveSpeed = 3;
+
+        Skills = gameObject.AddComponent<SkillComponent>();
+        Skills.SetInfo(this, Managers.Backend.GameData.SkillInventory.SkillSlotList);
 
         HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>();
         HpBar._offset = new Vector3(0.0f, -0.2f, 0.0f);

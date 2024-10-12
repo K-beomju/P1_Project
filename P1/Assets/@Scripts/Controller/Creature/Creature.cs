@@ -116,6 +116,29 @@ public class Creature : BaseObject
     protected virtual void UpdateDead() { }
 
 
+    public void HandleDotDamage(EffectBase effect)
+	{
+		if (effect == null)
+			return;
+		if (effect.Owner.IsValid() == false)
+			return;
+
+		// TEMP
+        float finalDamage = effect.SkillData.UsedValue;
+        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
+
+        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
+        damageText.SetInfo(CenterPosition, finalDamage, false);
+
+		// TODO : OnDamaged 통합
+		if (Hp <= 0)
+		{
+            OnDead();
+			CreatureState = ECreatureState.Dead;
+			return;
+		}
+	}
+
     public virtual void OnDamaged(Creature attacker)
     {
         if (CreatureState == ECreatureState.Dead)
