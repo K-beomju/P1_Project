@@ -13,15 +13,6 @@ public class EffectBase : BaseObject
         Owner = owner;
         SkillData = skillData;
         Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
-        // 타겟이 유효한지 체크
-        if (Owner.Target != null)
-        {
-            LookAt(Owner.Target.transform.position);
-        }
-        else
-        {
-            Debug.LogWarning("Target is null when setting effect info");
-        }
         StartCoroutine(CoReserveDestroy(SkillData.SkillDuration));
     }
 

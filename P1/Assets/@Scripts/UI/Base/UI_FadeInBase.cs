@@ -23,7 +23,7 @@ public class UI_FadeInBase : UI_Base
 
 
         canvas = GetComponent<Canvas>();
-        canvas.sortingOrder = SortingLayers.UI_RESULTPOPUP;
+        canvas.sortingOrder = SortingLayers.UI_POPUP;
 
         BindImages(typeof(Images));
         fadeImage = GetImage((int)Images.Image_Fade);
