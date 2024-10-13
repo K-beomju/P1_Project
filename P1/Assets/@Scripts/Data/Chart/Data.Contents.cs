@@ -326,12 +326,8 @@ namespace Data
 
         public float OwnedValue;
         public float DamageMultiplier;
-
         public float CoolTime;
-        public float SkillDuration;
-        public float SkillRange;
-        public int SkillCount;
-        public int TargetCount;
+        public int EffectId;
     }
 
     [Serializable]
@@ -346,7 +342,33 @@ namespace Data
             return dict;
         }
     }
+    
+    [Serializable]
+    public class EffectData
+    {
+        public int DataId;
+        public string Name;
+        public string Description;
+        public int Duration;
+        public float TickTime;
+        public EEffectType EffectType;
+    }
+
+    [Serializable]
+    public class EffectDataLoader : ILoader<int, EffectData>
+    {
+        public List<EffectData> effectDatas = new List<EffectData>();
+        public Dictionary<int, EffectData> MakeDict()
+        {
+            Dictionary<int, EffectData> dict = new Dictionary<int, EffectData>();
+            foreach (EffectData effect in effectDatas)
+                dict.Add(effect.DataId, effect);
+            return dict;
+        }
+    }
     #endregion
+
+    
 
     
 

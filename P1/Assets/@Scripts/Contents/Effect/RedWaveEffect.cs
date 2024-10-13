@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class RedWaveEffect : EffectBase
 {
-    public override void SetInfo(Hero owner, Data.SkillData skillData)
+    public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
     {
-        base.SetInfo(owner, skillData);
+        base.SetInfo(templateID, owner, skillData);
         Sprite.DOFade(0, 1);
     }
 

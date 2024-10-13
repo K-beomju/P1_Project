@@ -14,6 +14,6 @@ public class RedWaveSkill : SkillBase
                                                      effectObj.transform.localScale.z);
 
         RedWaveEffect effect = effectObj.GetComponent<RedWaveEffect>();
-        effect.SetInfo(Owner, SkillData); // Owner와 SkillData를 전달
+        effect.SetInfo(SkillData.EffectId, Owner, SkillData);
     }
 }

@@ -44,6 +44,12 @@ public static class Define
         BossMonster
     }
 
+    public enum EEffectType
+    {
+        Instant,
+        HasDuration
+    }
+
     public enum EUIEvent
     {
         Click,

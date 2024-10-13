@@ -23,6 +23,7 @@ public class DataManager
     public Dictionary<int, DrawSkillGachaData> DrawSkillChart { get; private set; } = new Dictionary<int, DrawSkillGachaData>(); // 스킬 뽑기 확률 정보
     public Dictionary<int, EquipmentData> EquipmentChart { get; private set; } = new Dictionary<int, EquipmentData>(); // 장비 정보
     public Dictionary<int, SkillData> SkillChart { get; private set; } = new Dictionary<int, SkillData>(); // 스킬 정보
+    public Dictionary<int, EffectData> EffectChart { get; private set; } = new Dictionary<int, EffectData>(); // 이펙트 정보
 
     public void Init()
     {
@@ -37,6 +38,8 @@ public class DataManager
         DrawSkillChart = LoadJson<DrawSkillGachaDataLoader, int, DrawSkillGachaData>("DrawSkillGachaInfoData").MakeDict();
         EquipmentChart = LoadJson<EquipmentDataLoader, int, EquipmentData>("EquipmentData").MakeDict();
         SkillChart = LoadJson<SkillDataLoader, int, SkillData>("SkillData").MakeDict();
+        EffectChart = LoadJson<EffectDataLoader, int, EffectData>("EffectData").MakeDict();
+
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

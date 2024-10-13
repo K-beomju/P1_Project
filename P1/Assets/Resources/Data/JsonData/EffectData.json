@@ -1,0 +1,20 @@
+{
+  "effectDatas": [
+    {
+      "DataId": 60001,
+      "Name": "붉은 파동",
+      "Description": "한틱에 공격력 % 데미지 입히는 스킬",
+      "Duration": 1,
+      "TickTime": 0.0,
+      "EffectType": 0
+    },
+    {
+      "DataId": 60002,
+      "Name": "소용돌이",
+      "Description": "한틱당 공격력 50% 도트뎀 5초유지",
+      "Duration": 4,
+      "TickTime": 0.2,
+      "EffectType": 1
+    }
+  ]
+}

@@ -161,6 +161,7 @@ public class Creature : BaseObject
 
         Color originalColor = Sprite.color;
 
+        Sprite.DOComplete(); // 기존 색상 변경 애니메이션 중지
         Sprite.DOColor(Color.red, 0.05f)
             .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
     }

@@ -8,31 +8,25 @@
       "ClassName": "RedWaveSkill",
       "PrefabKey": "Object/Skill/RedWaveEffect",
       "SpriteKey": "Skill/Skill_RedWave",
-      "SoundKey": "asd",
+      "SoundKey": null,
       "OwnedValue": 2.0,
       "DamageMultiplier": 200.0,
       "CoolTime": 5.0,
-      "SkillDuration": 1.0,
-      "SkillRange": 1.0,
-      "SkillCount": 1,
-      "TargetCount": 3
+      "EffectId": 60001
     },
     {
       "DataId": 100101,
       "RareType": 1,
-      "Name": "찌르기",
-      "Description": "스킬 설명 부분",
-      "ClassName": null,
-      "PrefabKey": "asd",
-      "SpriteKey": "Skill/Skill_Prod",
-      "SoundKey": "asd",
+      "Name": "소용돌이",
+      "Description": "플레이어를 중심으로 회전하는 에너지 공격이 적에게 지속적으로  {value}% 데미지를 입힙니다.",
+      "ClassName": "WhirlWindSkill",
+      "PrefabKey": "Object/Skill/WhirlWindEffect",
+      "SpriteKey": "Skill/Skill_WhirlWind",
+      "SoundKey": null,
       "OwnedValue": 2.0,
       "DamageMultiplier": 30.0,
       "CoolTime": 5.0,
-      "SkillDuration": 0.0,
-      "SkillRange": 0.0,
-      "SkillCount": 1,
-      "TargetCount": 3
+      "EffectId": 60002
     },
     {
       "DataId": 100102,
@@ -40,16 +34,13 @@
       "Name": "각성",
       "Description": "스킬 설명 부분",
       "ClassName": null,
-      "PrefabKey": "asd",
-      "SpriteKey": "Skill/Skill_Awaken",
-      "SoundKey": "asd",
-      "OwnedValue": 2.0,
-      "DamageMultiplier": 30.0,
-      "CoolTime": 5.0,
-      "SkillDuration": 0.0,
-      "SkillRange": 0.0,
-      "SkillCount": 1,
-      "TargetCount": 3
+      "PrefabKey": null,
+      "SpriteKey": null,
+      "SoundKey": null,
+      "OwnedValue": 0.0,
+      "DamageMultiplier": 0.0,
+      "CoolTime": 0.0,
+      "EffectId": 0
     }
   ]
 }

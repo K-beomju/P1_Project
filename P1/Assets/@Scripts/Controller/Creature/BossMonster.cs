@@ -52,7 +52,7 @@ public class BossMonster : Monster
     #region Battle
     public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
-        base.OnDamaged(attacker);
+        base.OnDamaged(attacker, effect);
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
         (Managers.UI.SceneUI as UI_GameScene).RefreshBossMonsterHp(this);
     }
