@@ -218,6 +218,7 @@ public class UI_SkillPopup : UI_Popup
             {
                 if (slotIndex >= 0)
                 {
+                    (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[slotIndex].RefreshUI();
                     _skillSlotList[slotIndex].RefreshUI();
                     SetEquipButtonState(true);
                 }
@@ -241,6 +242,7 @@ public class UI_SkillPopup : UI_Popup
             {
                 if (slotIndex >= 0)
                 {
+                    (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[slotIndex].RefreshUI();
                     _skillSlotList[slotIndex].RefreshUI();
                     SetEquipButtonState(false);
                 }
@@ -296,9 +298,9 @@ public class UI_SkillPopup : UI_Popup
                 {
                     if (equipResult >= 0)
                     {
+                        (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[equipResult].RefreshUI();
                         _skillSlotList[slotIndex].RefreshUI();
                         SetEquipButtonState(true);
-
 
                         _placeCompanionItem.gameObject.SetActive(false);
                         GetObject((int)GameObjects.Content_Skill).SetActive(true);

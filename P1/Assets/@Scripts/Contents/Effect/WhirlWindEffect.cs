@@ -37,7 +37,6 @@ public class WhirlWindEffect : EffectBase
     // 소용돌이 스킬이 범위 내 적들에게 데미지를 입히기 위한 메서드
     protected override void ProcessDot()
     {
-        Debug.LogWarning("테스트처리");
         List<Creature> invalidTargets = new List<Creature>(); // 유효하지 않은 타겟들을 추적할 리스트
 
         // HashSet을 복사한 리스트에서 순회

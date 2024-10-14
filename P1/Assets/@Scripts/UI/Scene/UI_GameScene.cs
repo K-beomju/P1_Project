@@ -71,8 +71,7 @@ public class UI_GameScene : UI_Scene
     }
 
     public PlayTab _tab { get; set; } = PlayTab.None;
-    
-    private List<UI_EquipSkillSlot> _equipSkillSlotList = new List<UI_EquipSkillSlot>();
+    public List<UI_EquipSkillSlot> _equipSkillSlotList  { get; set; } = new List<UI_EquipSkillSlot>();
     private bool _isAutoSkillActive = false; // AutoSkill 활성화 상태를 저장하는 변수
 
     protected override bool Init()
@@ -107,16 +106,6 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
-    private void OnEnable()
-    {
-        Managers.Event.AddEvent(EEventType.UpdatedSkillSlot, new Action(UpdatedSkillSlotUI));
-    }
-
-    private void OnDisable()
-    {
-        Managers.Event.RemoveEvent(EEventType.UpdatedSkillSlot, new Action(UpdatedSkillSlotUI));
-    }
-
     private void InitializeUIElements()
     {
         // 6개의 슬롯을 초기화하면서 각 슬롯을 Lock 타입으로 설정
@@ -125,8 +114,6 @@ public class UI_GameScene : UI_Scene
             int index = i;
             _equipSkillSlotList.Add(Get<UI_EquipSkillSlot>(i));
             _equipSkillSlotList[i].SetInfo(index);
-            //_skillSlotList[i]._button.onClick.AddListener(() => OnSkillSlotClicked(index));
-
         }
 
         GetSlider((int)Sliders.Slider_Exp).value = 0;
@@ -283,7 +270,6 @@ public class UI_GameScene : UI_Scene
     {
         foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
         {
-            Managers.Object.Hero.Skills.UpdateHeroSkillData(slot);
             _equipSkillSlotList[slot.Index].RefreshUI();
         }
     }

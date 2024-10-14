@@ -93,14 +93,8 @@ public static class Define
         /// <summary>스킬 아이템 클릭할 때 호출</summary>
         SkillItemClick,
 
-        /// <summary>게임씬 스킬 슬롯 업데이트</summary>
-        UpdatedSkillSlot,
-
         /// <summary>게임씬 스킬 슬롯 쿨타임 체크</summary>
-        CompleteSkillCool, 
-
-        /// <summary>스킬 슬롯 해제할 때 쿨타임 리셋</summary>
-        OnSkillUnEquipped, 
+        CompleteSkillCool
     }
 
     public enum EOwningState

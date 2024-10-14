@@ -28,6 +28,7 @@ public class UI_EquipSkillSlot : UI_Base
     {
         if (base.Init() == false)
             return false;
+
         BindImages(typeof(Images));
         _button = GetComponent<Button>();
         _lockImage = GetImage((int)Images.Image_Lock);
@@ -35,10 +36,10 @@ public class UI_EquipSkillSlot : UI_Base
         _coolTimeImage = GetImage((int)Images.Image_CoolTime);
 
         _button.onClick.AddListener(OnUseSkill);
-
         _iconImage.gameObject.SetActive(false);
         _lockImage.gameObject.SetActive(false);
         _coolTimeImage.gameObject.SetActive(false);
+
         return true;
     }
 
@@ -46,10 +47,8 @@ public class UI_EquipSkillSlot : UI_Base
     {
         _index = index;
         _skillSlot = Managers.Backend.GameData.SkillInventory.SkillSlotList[_index];
-        Managers.Event.RemoveEvent(EEventType.OnSkillUnEquipped, new Action<int>(StopCoolTime));
-        Managers.Event.AddEvent(EEventType.OnSkillUnEquipped, new Action<int>(StopCoolTime));
 
-        if (Init() == false)
+        if(Init() == false)
         {
             RefreshUI();
         }
@@ -62,12 +61,12 @@ public class UI_EquipSkillSlot : UI_Base
             case ESkillSlotType.Lock:
                 _iconImage.gameObject.SetActive(false);
                 _lockImage.gameObject.SetActive(true);
-                break;
+                return;
             case ESkillSlotType.None:
+                StopCoolTime(_index);
                 _iconImage.gameObject.SetActive(false);
                 _lockImage.gameObject.SetActive(false);
-                //Managers.Object.Hero.Skills.RemoveSkill(_index + 1);
-                break;
+                return;
             case ESkillSlotType.Equipped:
                 _iconImage.gameObject.SetActive(true);
                 _lockImage.gameObject.SetActive(false);
@@ -76,13 +75,9 @@ public class UI_EquipSkillSlot : UI_Base
 
         if (_skillSlot.SkillInfoData == null)
             return;
-
+            
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{_skillSlot.SkillInfoData.SpriteKey}");
-        if(_skillSlot.IsCoolTimeActive)
-        {
-            _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));
-            _skillSlot.IsCoolTimeActive = false;
-        }
+        _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));
     }
 
     public void OnUseSkill()
