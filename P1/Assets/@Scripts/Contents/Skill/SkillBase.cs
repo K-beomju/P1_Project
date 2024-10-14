@@ -16,6 +16,7 @@ public class SkillBase : InitBase
     // 스킬을 발동하는 메서드 
     public virtual void DoSkill()
     {
+        
         Debug.LogWarning($"{SkillData.Name} 스킬 발동!");
         ApplySkillEffect();
     }

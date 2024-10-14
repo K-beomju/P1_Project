@@ -77,7 +77,7 @@ public class Hero : Creature
         MoveSpeed = 3;
 
         Skills = gameObject.AddComponent<SkillComponent>();
-        Skills.SetInfo(this, Managers.Backend.GameData.SkillInventory.SkillSlotList);
+        Skills.SetInfo(this);
 
         HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>();
         HpBar._offset = new Vector3(0.0f, -0.2f, 0.0f);

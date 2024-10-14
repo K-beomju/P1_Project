@@ -283,6 +283,7 @@ public class UI_GameScene : UI_Scene
     {
         foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
         {
+            Managers.Object.Hero.Skills.UpdateHeroSkillData(slot);
             _equipSkillSlotList[slot.Index].RefreshUI();
         }
     }

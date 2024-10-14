@@ -86,8 +86,8 @@ namespace BackendData.GameData
         // Skill 각 스킬 슬롯을 담는 List
         private List<SkillSlot> _skillSlotList = new();
 
-        public IReadOnlyDictionary<int, SkillInfoData> SkillInventoryDic => (IReadOnlyDictionary<int, SkillInfoData>)_skillInventoryDic.AsReadOnlyCollection();
-        public IReadOnlyList<SkillSlot> SkillSlotList => (IReadOnlyList<SkillSlot>)_skillSlotList.AsReadOnlyList();
+        public IReadOnlyDictionary<int, SkillInfoData> SkillInventoryDic => _skillInventoryDic;
+        public IReadOnlyList<SkillSlot> SkillSlotList => _skillSlotList;
     }
 
 
