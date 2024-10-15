@@ -3,10 +3,6 @@ using UnityEditor;
 
 public class MyCustomEditorWindow : EditorWindow
 {
-    private string _myString = "Hello, Unity!";
-    private bool _groupEnabled;
-    private bool _toggleValue = true;
-    private float _sliderValue = 1.0f;
 
     // 메뉴에 'My Window' 항목 추가
     [MenuItem("Window/My Custom Editor")]

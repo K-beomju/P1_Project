@@ -28,11 +28,9 @@ public class UI_EquipSkillSlot : UI_Base
     private Image _coolTimeImage;
     private Image _durationImage;
 
-    private int _index; // SkillSlot의 Index만 유지
+    private int _index; 
     private SkillSlot _skillSlot;
     private Coroutine _coolTimeCo;
-
-    private DelayType _delayType = DelayType.CoolTime; 
 
     protected override bool Init()
     {

@@ -9,36 +9,32 @@ public class FireBallEffect : EffectBase
     public Vector3 StartPosition { get; private set; }
     public Vector3 TargetPosition { get; private set; }
     public Action EndCallback { get; private set; }
-    public bool LookAtTarget { get; private set; }
 
+    private float speed = 10;
     public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
     {
         base.SetInfo(templateID, owner, skillData);
-        transform.localScale = new Vector3(
-            Mathf.Abs(transform.localScale.x),
-            Mathf.Abs(transform.localScale.y),
-            Mathf.Abs(transform.localScale.z)
-        ); StartPosition = transform.position;
-        List<Monster> monsters = Managers.Object.Monsters.ToList();
-        monsters.Shuffle<Monster>();
-        TargetPosition = monsters[0].CenterPosition;
-        LookAtTarget = true;
-        EndCallback = () => Managers.Object.Despawn(this);
-        StartCoroutine(CoLaunchProjectile());
-    }
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); 
 
-    protected override void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Monster"))
+        BaseObject Target = FindRandomTarget(Managers.Object.Monsters);
+        StartPosition = transform.position;
+        TargetPosition = Target.transform.position;
+        EndCallback = () =>
         {
-            Creature enemy = other.GetComponent<Creature>();
-        }
+            if(Target.IsValid())
+            {
+                Target.GetComponent<IDamageable>().OnDamaged(Owner, this);
+            }
+            Managers.Object.Despawn(this);
+        };
+
+        StartCoroutine(CoLaunchProjectile());
     }
 
     private IEnumerator CoLaunchProjectile()
     {
         float journeyLength = Vector3.Distance(StartPosition, TargetPosition);
-        float totalTime = journeyLength / 10;
+        float totalTime = journeyLength / speed;
         float elapsedTime = 0;
 
         while (elapsedTime < totalTime)
@@ -48,20 +44,32 @@ public class FireBallEffect : EffectBase
             float normalizedTime = elapsedTime / totalTime;
             transform.position = Vector3.Lerp(StartPosition, TargetPosition, normalizedTime);
 
-            if (LookAtTarget)
-                LookAt2D(TargetPosition - transform.position);
+             LookAt2D(TargetPosition - transform.position);
 
             yield return null;
         }
 
-        //transform.position = TargetPosition;
-        //LookAt2D(TargetPosition - transform.position); // 타겟을 계속 바라보게 함
         EndCallback?.Invoke();
     }
 
-   	protected void LookAt2D(Vector2 forward)
+   	private void LookAt2D(Vector2 forward)
 	{
 		transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg);
 	}
+
+    private BaseObject FindRandomTarget(IEnumerable<BaseObject> objs)
+    {
+        if (Managers.Object.BossMonster != null)
+            return Managers.Object.BossMonster;
+
+        if (Managers.Object.Bot != null)
+            return Managers.Object.Bot;
+
+        BaseObject target = null;
+
+        System.Random rand = new System.Random();
+        target = objs.ElementAt(rand.Next(objs.Count()));
+        return target;
+    }
 
 }
