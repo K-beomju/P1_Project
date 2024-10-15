@@ -43,6 +43,6 @@ public class UI_GoldIconBase : UI_Base
         sequence.Append(_icon.DOAnchorPos(from + UnityEngine.Random.insideUnitCircle * explo_range, 0.25f).SetEase(Ease.OutCubic));
         sequence.Append(_icon.DOAnchorPos(to, 0.5f).SetEase(Ease.InCubic));
         sequence.AppendCallback(() => EndCallBack());
-        sequence.AppendCallback(() => { _icon.gameObject.SetActive(false); });
+        sequence.AppendCallback(() => { Managers.Object.Despawn(this); });
     }
 }

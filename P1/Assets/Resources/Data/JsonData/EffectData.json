@@ -26,6 +26,15 @@
       "TickTime": 0.0,
       "EffectSpawnType": 1,
       "EffectType": 0
+    },
+    {
+      "DataId": 60004,
+      "Name": "파이어볼",
+      "Description": "한틱에 공격력 % 데미지 입히는 스킬",
+      "Duration": 1,
+      "TickTime": 0.0,
+      "EffectSpawnType": 0,
+      "EffectType": 1
     }
   ]
 }

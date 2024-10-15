@@ -54,7 +54,7 @@ public class SkillComponent : MonoBehaviour
         }
     }
 
-    public void SpawnEffect(int index, bool attachToOwner = false)
+    public void SpawnEffect(int index)
     {
         SkillData skillData = SkillDic[index];
         GameObject effectObj = Managers.Object.SpawnGameObject(Owner.CenterPosition, skillData.PrefabKey);

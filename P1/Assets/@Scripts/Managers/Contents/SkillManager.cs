@@ -14,12 +14,14 @@ public class SkillManager
         AllSkillInfos.Add(100100, new SkillInfoData(100100, EOwningState.Unowned, 0, 0, false));
         AllSkillInfos.Add(100101, new SkillInfoData(100101, EOwningState.Unowned, 0, 0, false));
         AllSkillInfos.Add(100102, new SkillInfoData(100102, EOwningState.Unowned, 0, 0, false));
-        
+        AllSkillInfos.Add(100103, new SkillInfoData(100103, EOwningState.Unowned, 0, 0, false));
+
         if(Managers.Backend.GameData.SkillInventory.SkillSlotList[0].SlotType != ESkillSlotType.Lock)
         {
             Managers.Backend.GameData.SkillInventory.AddSkill(100100);
             Managers.Backend.GameData.SkillInventory.AddSkill(100101);
             Managers.Backend.GameData.SkillInventory.AddSkill(100102);
+            Managers.Backend.GameData.SkillInventory.AddSkill(100103);
 
         }
     }

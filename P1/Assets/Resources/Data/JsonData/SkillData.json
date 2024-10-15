@@ -41,6 +41,20 @@
       "CoolTime": 1.0,
       "EffectId": 60003,
       "AttachToOwner": true
+    },
+    {
+      "DataId": 100103,
+      "RareType": 1,
+      "Name": "파이어볼",
+      "Description": "스테이지에 있는 임의의 몬스터에게 {value}% 피해를 입힙니다.",
+      "PrefabKey": "Object/Effect/FireBallEffect",
+      "SpriteKey": "Skill/Skill_FireBall",
+      "SoundKey": null,
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 100.0,
+      "CoolTime": 1.0,
+      "EffectId": 60004,
+      "AttachToOwner": false
     }
   ]
 }

@@ -31,6 +31,7 @@ public class Hero : Creature
 
     private bool isDash = false;
     private bool isMove = false;
+    public bool isStopAI = false;
 
     protected override bool Init()
     {
@@ -76,10 +77,10 @@ public class Hero : Creature
         AttackRange = HeroInfo.AttackRange;
         AttackSpeedRate = HeroInfo.AttackSpeedRate;
         MoveSpeed = 3;
-        
+
         // Buff
         ReduceDmgBuff = new CreatureStat(1);
-        
+
         Skills = gameObject.AddComponent<SkillComponent>();
         Skills.SetInfo(this);
 
@@ -106,7 +107,7 @@ public class Hero : Creature
     #region Anim
     protected override void UpdateAnimation()
     {
-        if(CreatureState == ECreatureState.Dead)
+        if (CreatureState == ECreatureState.Dead)
             Anim.SetTrigger(HeroAnimation.HashDead);
 
         Anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
@@ -145,9 +146,11 @@ public class Hero : Creature
     #region AI Update
     protected override void UpdateIdle()
     {
-        if(!isMove)
-        return;
-        
+        if (isStopAI)
+            return;
+        if (!isMove)
+            return;
+
         Target = FindClosestTarget(Managers.Object.Monsters);
         if (Target != null)
         {
@@ -159,6 +162,9 @@ public class Hero : Creature
 
     protected override void UpdateMove()
     {
+        if (isStopAI)
+            return;
+
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
             BaseObject target = FindClosestTarget(Managers.Object.Monsters);
@@ -231,6 +237,9 @@ public class Hero : Creature
 
     private void ChaseOrAttackTarget(float attackRange)
     {
+if (isStopAI)
+            return;
+
         Vector3 dir = (Target.transform.position - CenterPosition);
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = attackRange * attackRange;
@@ -250,7 +259,7 @@ public class Hero : Creature
             if (!isDash && distToTargetSqr > DASH_DISTANCE_THRESHOLD)
             {
                 isDash = true;
-                ghost.makeGhost = true; 
+                ghost.makeGhost = true;
             }
 
             if (isDash)
@@ -289,7 +298,7 @@ public class Hero : Creature
     {
         base.OnDamaged(attacker, effect);
 
-        if(recoveryCoroutine != null)
+        if (recoveryCoroutine != null)
         {
             StopCoroutine(recoveryCoroutine);
             recoveryCoroutine = null;
@@ -317,11 +326,11 @@ public class Hero : Creature
 
     private IEnumerator RecoveryCo()
     {
-        while(true)
+        while (true)
         {
             yield return recoveryTime;
             Hp += Recovery;
-            if(Hp >= MaxHp)
+            if (Hp >= MaxHp)
             {
                 Hp = MaxHp;
                 yield break;
