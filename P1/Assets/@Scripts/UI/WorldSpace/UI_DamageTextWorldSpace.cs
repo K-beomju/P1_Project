@@ -7,29 +7,29 @@ using static Define;
 
 public class UI_DamageTextWorldSpace : UI_Base
 {
-    private enum TMPTexts
-    {
-        DamageText,
-    }
+	private enum TMPTexts
+	{
+		DamageText,
+	}
 
-    private TMP_Text _damageText;
+	private TMP_Text _damageText;
 
-    protected override bool Init()
-    {
-        if (base.Init() == false)
-            return false;
+	protected override bool Init()
+	{
+		if (base.Init() == false)
+			return false;
 
-        // Bind
-        BindTMPTexts(typeof(TMPTexts));
-        _damageText = GetTMPText((int)TMPTexts.DamageText);
-           
-        Canvas canvas = GetComponent<Canvas>();
-        // 애매함 
-        canvas.sortingOrder = SortingLayers.DAMAGE_FONT;
-        return true;
-    }
+		// Bind
+		BindTMPTexts(typeof(TMPTexts));
+		_damageText = GetTMPText((int)TMPTexts.DamageText);
 
-    public void SetInfo(Vector3 pos, float damage = 0, bool isCritical = false, EffectBase effect = null)
+		Canvas canvas = GetComponent<Canvas>();
+		// 애매함 
+		canvas.sortingOrder = SortingLayers.DAMAGE_FONT;
+		return true;
+	}
+
+	public void SetInfo(Vector3 pos, float damage = 0, bool isCritical = false, EffectBase effect = null)
 	{
 		transform.position = pos + new Vector3(0, 0.25f, 0);
 
@@ -40,9 +40,9 @@ public class UI_DamageTextWorldSpace : UI_Base
 		else if (isCritical)
 		{
 			_damageText.color = Util.HexToColor("EFAD00");
-		} 
+		}
 
-		if(effect != null)
+		if (effect != null)
 		{
 			_damageText.color = Color.red;
 			_damageText.fontSize = 0.5f;
@@ -56,8 +56,8 @@ public class UI_DamageTextWorldSpace : UI_Base
 	private void DoAnimation()
 	{
 		Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOMoveY(transform.position.y + 0.5f, 0.2f))
-        .Join(_damageText.DOFade(0, 0.5f).SetEase(Ease.InQuint))
+		seq.Append(transform.DOMoveY(transform.position.y + 0.5f, 0.2f))
+		.Join(_damageText.DOFade(0, 0.5f).SetEase(Ease.InQuint))
 		.OnComplete(() =>
 		{
 			Managers.Resource.Destroy(gameObject);

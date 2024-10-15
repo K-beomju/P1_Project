@@ -15,11 +15,9 @@ public class Creature : BaseObject
     public float Recovery { get; protected set; }
     public float CriRate { get; protected set; }
     public float CriDmg { get; protected set; }
-
     public float AttackRange { get; protected set; }
     public float AttackDelay { get; protected set; }
     public float AttackSpeedRate { get; protected set; }
-
     public float MoveSpeed { get; protected set; }
     #endregion
 
@@ -28,8 +26,13 @@ public class Creature : BaseObject
     public Rigidbody2D Rigid { get; protected set; }
     public BaseObject Target { get; protected set; }
     public UI_HpBarWorldSpace HpBar { get; protected set; }
+    private Color originalColor = Color.white;
     #endregion
 
+    #region Buff
+    public CreatureStat ReduceDmgBuff;
+
+    #endregion
 
     protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
@@ -73,7 +76,6 @@ public class Creature : BaseObject
 
     public virtual void SetCreatureInfo(int dataTemplateID)
     {
-
     }
 
     public virtual void ReSetStats()
@@ -142,8 +144,16 @@ public class Creature : BaseObject
         else
         {
             float baseStat = attacker.Atk;
-            float ownedValue = effect.SkillData.DamageMultiplier; 
+            float ownedValue = effect.SkillData.DamageMultiplier;
             finalDamage = baseStat * (ownedValue / 100f);  // 공격력의 ownedValue%만큼 데미지 계산
+        }
+
+        // 피해 감소 버프가 있을 경우 최종 피해량에 반영
+        if (ReduceDmgBuff.Value > 1)
+        {
+            Debug.LogWarning("받는 피해 감소가 있습니다." + ReduceDmgBuff.Value);
+            float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1);  // 예: 1 - (1.3 - 1) = 1 - 0.3 = 0.7
+            finalDamage *= damageReductionMultiplier;
         }
 
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
@@ -159,9 +169,8 @@ public class Creature : BaseObject
             CreatureState = ECreatureState.Dead;
         }
 
-        Color originalColor = Sprite.color;
-
-        Sprite.DOComplete(); // 기존 색상 변경 애니메이션 중지
+        Sprite.color = originalColor;
+        Sprite.DOKill(); // 기존 색상 변경 애니메이션 중지
         Sprite.DOColor(Color.red, 0.05f)
             .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
     }

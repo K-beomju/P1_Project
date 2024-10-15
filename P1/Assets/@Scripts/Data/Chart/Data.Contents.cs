@@ -319,7 +319,6 @@ namespace Data
 
         public string Name;
         public string Description;
-        public string ClassName;
         public string PrefabKey;
         public string SpriteKey;
         public string SoundKey;
@@ -328,6 +327,7 @@ namespace Data
         public float DamageMultiplier;
         public float CoolTime;
         public int EffectId;
+        public bool AttachToOwner;
     }
 
     [Serializable]
@@ -351,6 +351,7 @@ namespace Data
         public string Description;
         public int Duration;
         public float TickTime;
+        public EEffectSpawnType EffectSpawnType;
         public EEffectType EffectType;
     }
 

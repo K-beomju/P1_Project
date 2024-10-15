@@ -18,4 +18,5 @@ public class RedWaveEffect : EffectBase
         target.OnDamaged(Owner, this);
     }
 
+
 }

@@ -16,7 +16,6 @@ public class WhirlWindEffect : EffectBase
             if (enemy.IsValid() && !_targetsInRange.Contains(enemy)) // 중복 방지
             {
                 _targetsInRange.Add(enemy); // 범위 내 적 추가
-                ApplyDamage(enemy); // 적에게 즉시 데미지 적용
             }
         }
     }
@@ -48,7 +47,7 @@ public class WhirlWindEffect : EffectBase
             }
             else
             {
-                ApplyDamage(target);  // 범위 내 모든 유효한 적들에게 주기적인 데미지 적용
+                ApplyDamage(target);
             }
         }
 

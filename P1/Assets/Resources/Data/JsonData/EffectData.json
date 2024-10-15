@@ -6,7 +6,8 @@
       "Description": "한틱에 공격력 % 데미지 입히는 스킬",
       "Duration": 1,
       "TickTime": 0.0,
-      "EffectType": 0
+      "EffectSpawnType": 0,
+      "EffectType": 1
     },
     {
       "DataId": 60002,
@@ -14,7 +15,17 @@
       "Description": "한틱당 공격력 50% 도트뎀 5초유지",
       "Duration": 4,
       "TickTime": 0.2,
+      "EffectSpawnType": 1,
       "EffectType": 1
+    },
+    {
+      "DataId": 60003,
+      "Name": "강철의지",
+      "Description": "한틱에 피해감소 % 줄이는 스킬",
+      "Duration": 4,
+      "TickTime": 0.0,
+      "EffectSpawnType": 1,
+      "EffectType": 0
     }
   ]
 }

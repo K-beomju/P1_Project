@@ -44,10 +44,15 @@ public static class Define
         BossMonster
     }
 
-    public enum EEffectType
+    public enum EEffectSpawnType
     {
         Instant,
         HasDuration
+    }
+    public enum EEffectType
+    {
+        Buff,
+        Attack
     }
 
     public enum EUIEvent
@@ -179,6 +184,13 @@ public static class Define
         Growth_Recovery,
         Growth_CriRate,
         Growth_CriDmg
+    }
+
+    public enum EStatModType
+    {
+        Add,
+        PercentAdd,
+        PercentMult
     }
 
 

@@ -64,6 +64,7 @@ public class Hero : Creature
     {
         HeroInfo = Managers.Hero.PlayerHeroInfo;
 
+        // Stat
         Atk = HeroInfo.Atk;
         MaxHp = HeroInfo.MaxHp;
         Hp = MaxHp;
@@ -75,7 +76,10 @@ public class Hero : Creature
         AttackRange = HeroInfo.AttackRange;
         AttackSpeedRate = HeroInfo.AttackSpeedRate;
         MoveSpeed = 3;
-
+        
+        // Buff
+        ReduceDmgBuff = new CreatureStat(1);
+        
         Skills = gameObject.AddComponent<SkillComponent>();
         Skills.SetInfo(this);
 

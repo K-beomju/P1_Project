@@ -8,21 +8,31 @@ using System;
 
 public class UI_EquipSkillSlot : UI_Base
 {
+    public enum DelayType
+    {
+        CoolTime,
+        DurationTime
+    }
+
     public enum Images
     {
         Image_Lock,
         Image_Icon,
-        Image_CoolTime
+        Image_CoolTime,
+        Image_Duration
     }
 
     private Button _button;
     private Image _lockImage;
     private Image _iconImage;
     private Image _coolTimeImage;
+    private Image _durationImage;
 
     private int _index; // SkillSlot의 Index만 유지
     private SkillSlot _skillSlot;
     private Coroutine _coolTimeCo;
+
+    private DelayType _delayType = DelayType.CoolTime; 
 
     protected override bool Init()
     {
@@ -34,12 +44,13 @@ public class UI_EquipSkillSlot : UI_Base
         _lockImage = GetImage((int)Images.Image_Lock);
         _iconImage = GetImage((int)Images.Image_Icon);
         _coolTimeImage = GetImage((int)Images.Image_CoolTime);
+        _durationImage = GetImage((int)Images.Image_Duration);
 
         _button.onClick.AddListener(OnUseSkill);
         _iconImage.gameObject.SetActive(false);
         _lockImage.gameObject.SetActive(false);
         _coolTimeImage.gameObject.SetActive(false);
-
+        _durationImage.gameObject.SetActive(false);
         return true;
     }
 
@@ -77,39 +88,54 @@ public class UI_EquipSkillSlot : UI_Base
             return;
             
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{_skillSlot.SkillInfoData.SpriteKey}");
-        _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));
+        StopCoolTime(_index);
+        _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));    
     }
-
+    
     public void OnUseSkill()
     {
         if(IsSkillReady())
         {
             Managers.Object.Hero.Skills.UseSkill(_index);
-            _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime));
+            _coolTimeCo = StartCoroutine(CoolTimeCo(Managers.Data.EffectChart[_skillSlot.SkillInfoData.Data.EffectId].Duration, DelayType.DurationTime));
             Debug.LogWarning($"{_index + 1}번째 슬롯의 <color=#FF0000>{_skillSlot.SkillInfoData.Name}</color> 스킬이 실행됩니다.");
         }
     }
 
-    private IEnumerator CoolTimeCo(float coolTime)
+    private IEnumerator CoolTimeCo(float coolTime, DelayType delayType)
     {
+        Image delayImage = delayType == DelayType.CoolTime ? _coolTimeImage : _durationImage;
+
         _iconImage.color = Util.HexToColor("919191");
-        _coolTimeImage.gameObject.SetActive(true);
-        _coolTimeImage.fillAmount = 1;
+        delayImage.gameObject.SetActive(true);
+        delayImage.fillAmount = 1;
 
         float elapsedTime = 0f;
 
         while (elapsedTime < coolTime)
         {
             elapsedTime += Time.deltaTime;
-            _coolTimeImage.fillAmount = Mathf.Clamp01(1f - (elapsedTime / coolTime));
+            delayImage.fillAmount = Mathf.Clamp01(1f - (elapsedTime / coolTime));
             yield return null;
         }
 
         _coolTimeCo = null;
         _iconImage.DOColor(Color.white, 0.3f);
-        _coolTimeImage.fillAmount = 0f;
-        _coolTimeImage.gameObject.SetActive(false);
-        Managers.Event.TriggerEvent(EEventType.CompleteSkillCool, _index);
+        delayImage.fillAmount = 0f;
+        delayImage.gameObject.SetActive(false);
+
+        switch(delayType)
+        {
+            // 쿨타임이 지나면 스킬 실행 가능한 상태 
+            case DelayType.CoolTime:
+            Managers.Event.TriggerEvent(EEventType.CompleteSkillCool, _index);
+            break;
+
+            // 스킬 실행 시간이 지나면 쿨타임으로 바꿔줘야함 
+            case DelayType.DurationTime:
+            _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));  
+            break;
+        }
     }
 
     private void StopCoolTime(int slotIndex = -1)
@@ -127,6 +153,8 @@ public class UI_EquipSkillSlot : UI_Base
         _iconImage.color = Color.white;
         _coolTimeImage.fillAmount = 0;
         _coolTimeImage.gameObject.SetActive(false);
+        _durationImage.fillAmount = 0;
+        _durationImage.gameObject.SetActive(false);
     }
 
     public bool IsSkillReady()

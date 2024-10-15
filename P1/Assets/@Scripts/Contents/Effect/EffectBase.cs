@@ -9,7 +9,8 @@ public class EffectBase : BaseObject
     public Hero Owner { get; private set; }
     public SkillData SkillData { get; private set; }
     public EffectData EffectData { get; private set; }
-    public EEffectType EffectType { get; private set; }
+    public EEffectSpawnType EffectSpawnType { get; protected set; }
+    public EEffectType EffectType { get; protected set; }
 
     protected float Duration { get; private set; }
 
@@ -20,6 +21,7 @@ public class EffectBase : BaseObject
         Owner = owner;
         SkillData = skillData;
 
+        EffectSpawnType = EffectData.EffectSpawnType;
         EffectType = EffectData.EffectType;
         Duration = EffectData.Duration;
         Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
@@ -40,22 +42,39 @@ public class EffectBase : BaseObject
         }
     }
 
-    // 데미지를 적용하는 메서드 (하위 클래스에서 구체적으로 구현)
+	protected void AddModifier(CreatureStat stat, object source, int order = 0)
+	{
+		if (SkillData.DamageMultiplier != 0)
+		{
+			StatModifier percentAdd = new StatModifier(SkillData.DamageMultiplier, EStatModType.PercentAdd, order, source);
+			stat.AddModifier(percentAdd);
+		}
+	}
+
+	protected void RemoveModifier(CreatureStat stat, object source)
+	{
+		stat.ClearModifiersFromSource(source);
+	}
+
+    public virtual void ClearEffect()
+    {
+        Managers.Object.Despawn(this);
+    }
+    
+
     protected virtual void ApplyDamage(Creature target)
     {
-        // 구체적인 데미지 계산은 하위 클래스에서 구현
     }
 
     protected virtual void ProcessDot()
     {
-
     }
 
     protected virtual IEnumerator CoStartTimer()
     {
         ProcessDot();
 
-        if (EffectType == EEffectType.HasDuration)
+        if (EffectSpawnType == EEffectSpawnType.HasDuration)
         {
             float sumTime = 0f;
             float remainingDuration = Duration;
@@ -75,10 +94,13 @@ public class EffectBase : BaseObject
                 yield return null;
             }
         }
-        else if (EffectType == EEffectType.Instant)
+        else if (EffectSpawnType == EEffectSpawnType.Instant)
         {
             yield return new WaitForSeconds(Duration); // 단발성 이펙트는 Duration 동안 유지될 수 있음
         }
-        Managers.Object.Despawn(this);
+
+        ClearEffect();
     }
+
+
 }

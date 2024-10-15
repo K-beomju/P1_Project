@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SkillComponent : MonoBehaviour
 {
-    public Dictionary<int, SkillBase> SkillDic = new Dictionary<int, SkillBase>();
+    public Dictionary<int, SkillData> SkillDic = new Dictionary<int, SkillData>();
     public Hero Owner;
 
     public void SetInfo(Hero owner)
@@ -27,33 +27,55 @@ public class SkillComponent : MonoBehaviour
         if (slot.SkillInfoData == null)
             return;
 
-        SkillBase skill = gameObject.AddComponent(Type.GetType(slot.SkillInfoData.Data.ClassName)) as SkillBase;
-        if (skill == null)
+        // SkillData만을 사용하여 스킬을 추가
+        SkillData skillData = slot.SkillInfoData.Data;
+        if (skillData == null)
         {
-            Debug.LogWarning("스킬 생성 실패");
+            Debug.LogWarning("스킬 데이터가 없음");
             return;
         }
-        skill.SetInfo(Owner, slot.SkillInfoData.Data);
-        SkillDic[index] = skill;
-
+        SkillDic[index] = skillData;
     }
 
     public void RemoveSkill(int index)
     {
-        SkillBase skill = SkillDic[index];
-        if (skill == null)
-            return;
-
-        Destroy(skill);
-        SkillDic[index] = null;
+        if (SkillDic.ContainsKey(index))
+        {
+            SkillDic[index] = null;
+        }
     }
 
     public void UseSkill(int index)
     {
-        if (index >= 0 && index < SkillDic.Count)
+        if (SkillDic.ContainsKey(index) && SkillDic[index] != null)
         {
-            SkillDic[index].DoSkill();
+            // SkillData를 사용하여 이펙트를 소환하거나 스킬을 실행
+            SpawnEffect(index);
         }
     }
 
+    public void SpawnEffect(int index, bool attachToOwner = false)
+    {
+        SkillData skillData = SkillDic[index];
+        GameObject effectObj = Managers.Object.SpawnGameObject(Owner.CenterPosition, skillData.PrefabKey);
+        
+        // 이펙트를 주인(Owner)에게 붙일지 여부를 확인
+        if (skillData.AttachToOwner)
+        {
+            effectObj.transform.SetParent(Owner.transform, false);
+            effectObj.transform.localPosition = Vector3.zero;
+        }
+
+        Vector3 ownerScale = Owner.transform.localScale;
+        effectObj.transform.localScale = new Vector3(ownerScale.x > 0 ? Mathf.Abs(effectObj.transform.localScale.x) : -Mathf.Abs(effectObj.transform.localScale.x),
+                                                     effectObj.transform.localScale.y,
+                                                     effectObj.transform.localScale.z);
+
+        // 이펙트의 컴포넌트를 받아와 설정
+        EffectBase effect = effectObj.GetComponent<EffectBase>();
+        if (effect != null)
+        {
+            effect.SetInfo(SkillDic[index].EffectId, Owner, SkillDic[index]);
+        }
+    }
 }

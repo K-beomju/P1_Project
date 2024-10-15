@@ -5,42 +5,42 @@
       "RareType": 1,
       "Name": "붉은 파동",
       "Description": "검에 붉은 기운을 모아 파동을 방출하여 {value}%의 피해를 입힙니다.",
-      "ClassName": "RedWaveSkill",
-      "PrefabKey": "Object/Skill/RedWaveEffect",
+      "PrefabKey": "Object/Effect/RedWaveEffect",
       "SpriteKey": "Skill/Skill_RedWave",
       "SoundKey": null,
       "OwnedValue": 2.0,
       "DamageMultiplier": 200.0,
-      "CoolTime": 5.0,
-      "EffectId": 60001
+      "CoolTime": 1.0,
+      "EffectId": 60001,
+      "AttachToOwner": false
     },
     {
       "DataId": 100101,
       "RareType": 1,
       "Name": "소용돌이",
       "Description": "플레이어를 중심으로 회전하는 에너지 공격이 적에게 지속적으로  {value}% 데미지를 입힙니다.",
-      "ClassName": "WhirlWindSkill",
-      "PrefabKey": "Object/Skill/WhirlWindEffect",
+      "PrefabKey": "Object/Effect/WhirlWindEffect",
       "SpriteKey": "Skill/Skill_WhirlWind",
       "SoundKey": null,
       "OwnedValue": 2.0,
       "DamageMultiplier": 30.0,
-      "CoolTime": 5.0,
-      "EffectId": 60002
+      "CoolTime": 1.0,
+      "EffectId": 60002,
+      "AttachToOwner": true
     },
     {
       "DataId": 100102,
       "RareType": 1,
-      "Name": "각성",
-      "Description": "스킬 설명 부분",
-      "ClassName": null,
-      "PrefabKey": null,
-      "SpriteKey": null,
+      "Name": "강철 의지",
+      "Description": "사용자가 자신의 몸을 강철처럼 단단하게 만들어 일정 시간 동안 받는 모든 피해를 {value}% 감소시킵니다.",
+      "PrefabKey": "Object/Effect/IronWillEffect",
+      "SpriteKey": "Skill/Skill_IronWill",
       "SoundKey": null,
-      "OwnedValue": 0.0,
-      "DamageMultiplier": 0.0,
-      "CoolTime": 0.0,
-      "EffectId": 0
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 0.3,
+      "CoolTime": 1.0,
+      "EffectId": 60003,
+      "AttachToOwner": true
     }
   ]
 }

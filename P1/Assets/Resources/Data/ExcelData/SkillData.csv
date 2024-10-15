@@ -1,4 +1,4 @@
-﻿DataId,RareType,Name,Description,ClassName,PrefabKey,SpriteKey,SoundKey,OwnedValue,DamageMultiplier,CoolTime,EffectId
-100100,Normal,붉은 파동,검에 붉은 기운을 모아 파동을 방출하여 {value}%의 피해를 입힙니다.,RedWaveSkill,Object/Skill/RedWaveEffect,Skill/Skill_RedWave,,2,200,5,60001
-100101,Normal,소용돌이,플레이어를 중심으로 회전하는 에너지 공격이 적에게 지속적으로  {value}% 데미지를 입힙니다.,WhirlWindSkill,Object/Skill/WhirlWindEffect,Skill/Skill_WhirlWind,,2,30,5,60002
-100102,Normal,각성,스킬 설명 부분,,,,,,,,
+﻿DataId,RareType,Name,Description,PrefabKey,SpriteKey,SoundKey,OwnedValue,DamageMultiplier,CoolTime,EffectId,AttachToOwner
+100100,Normal,붉은 파동,검에 붉은 기운을 모아 파동을 방출하여 {value}%의 피해를 입힙니다.,Object/Effect/RedWaveEffect,Skill/Skill_RedWave,,2,200,1,60001,FALSE
+100101,Normal,소용돌이,플레이어를 중심으로 회전하는 에너지 공격이 적에게 지속적으로  {value}% 데미지를 입힙니다.,Object/Effect/WhirlWindEffect,Skill/Skill_WhirlWind,,2,30,1,60002,TRUE
+100102,Normal,강철 의지,사용자가 자신의 몸을 강철처럼 단단하게 만들어 일정 시간 동안 받는 모든 피해를 {value}% 감소시킵니다.,Object/Effect/IronWillEffect,Skill/Skill_IronWill,,2,0.3,1,60003,TRUE

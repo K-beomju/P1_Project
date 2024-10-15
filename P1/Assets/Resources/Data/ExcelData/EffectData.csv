@@ -1,3 +1,4 @@
-﻿DataId,Name,Description,Duration,TickTime,EffectType,
-60001,붉은 파동,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,
-60002,소용돌이,한틱당 공격력 50% 도트뎀 5초유지,4,0.2,HasDuration,
+﻿DataId,Name,Description,Duration,TickTime,EffectSpawnType,EffectType
+60001,붉은 파동,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Attack
+60002,소용돌이,한틱당 공격력 50% 도트뎀 5초유지,4,0.2,HasDuration,Attack
+60003,강철의지,한틱에 피해감소 % 줄이는 스킬,4,0,HasDuration,Buff

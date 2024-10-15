@@ -172,7 +172,7 @@ public class UI_SkillPopup : UI_Popup
         GetTMPText((int)Texts.Text_SkillRare).text = Util.GetRareTypeString(SelectSkillInfo.Data.RareType);
 
         string originalString = SelectSkillInfo.Data.Description;
-        string replacedString = originalString.Replace("{value}", SelectSkillInfo.Data.DamageMultiplier.ToString());
+        string replacedString = originalString.Replace("{value}",   SelectSkillInfo.Data.DamageMultiplier.ToString());
         GetTMPText((int)Texts.Text_SkillDesc).text = replacedString;
         GetTMPText((int)Texts.Text_SkillOwnedValue).text = $"보유효과: 공격력{SelectSkillInfo.Data.OwnedValue}% 증가";
         GetTMPText((int)Texts.Text_SkillCoolTime).text = $"{SelectSkillInfo.Data.CoolTime}초";
