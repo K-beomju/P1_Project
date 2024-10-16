@@ -7,7 +7,9 @@ using UnityEngine;
 public class SkillComponent : MonoBehaviour
 {
     public Dictionary<int, SkillData> SkillDic = new Dictionary<int, SkillData>();
+    private List<EffectBase> activeEffects = new List<EffectBase>();
     public Hero Owner;
+
 
     public void SetInfo(Hero owner)
     {
@@ -76,6 +78,25 @@ public class SkillComponent : MonoBehaviour
         if (effect != null)
         {
             effect.SetInfo(SkillDic[index].EffectId, Owner, SkillDic[index]);
+            effect.ApplyEffect();
+
+            activeEffects.Add(effect);
         }
     }
+
+    public void Clear()
+    {
+
+        foreach (EffectBase effect in activeEffects)
+        {
+            if (effect != null)
+            {
+                effect.ClearEffect();  // 각 이펙트의 ClearEffect 호출
+            }
+        }
+
+        // 리스트 초기화
+        activeEffects.Clear();
+    }
+    
 }

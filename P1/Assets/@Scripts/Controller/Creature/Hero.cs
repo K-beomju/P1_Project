@@ -19,7 +19,7 @@ public class Hero : Creature
     #endregion
 
     public HeroInfo HeroInfo { get; private set; }
-    public SkillComponent Skills;// { get; private set; }
+    public SkillComponent Skills { get; private set; }
 
     private Coroutine comboDelayCoroutine = null;
     private Coroutine recoveryCoroutine = null;
@@ -28,6 +28,8 @@ public class Hero : Creature
     private AnimatorController handController;
     private AnimatorController weaponController;
     private WaitForSeconds recoveryTime = new WaitForSeconds(1);
+
+    public Action OnAttackAction { get; set; } = null;
 
     private bool isDash = false;
     private bool isMove = false;
@@ -134,9 +136,14 @@ public class Hero : Creature
         if (Target.IsValid() == false)
             return;
 
-
-        Target.GetComponent<IDamageable>().OnDamaged(this);
-
+        if (OnAttackAction != null)
+        {
+            OnAttackAction.Invoke();
+        }
+        else
+        {
+            Target.GetComponent<IDamageable>().OnDamaged(this);
+        }
         CreatureState = ECreatureState.Move;
     }
 
@@ -237,7 +244,7 @@ public class Hero : Creature
 
     private void ChaseOrAttackTarget(float attackRange)
     {
-if (isStopAI)
+        if (isStopAI)
             return;
 
         Vector3 dir = (Target.transform.position - CenterPosition);
@@ -314,6 +321,7 @@ if (isStopAI)
         //TODO
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(1f, 1f, () =>
         {
+            Skills.Clear();
             Anim.Rebind();
             Hp = MaxHp;
             CreatureState = ECreatureState.Idle;

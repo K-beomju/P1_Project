@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class IronWillEffect : EffectBase
 {
-    public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
+    public override void ApplyEffect()
     {
-        base.SetInfo(templateID, owner, skillData);
+        base.ApplyEffect();
         AddModifier(Owner.ReduceDmgBuff,this);
     }
 

@@ -25,9 +25,12 @@ public class EffectBase : BaseObject
         EffectType = EffectData.EffectType;
         Duration = EffectData.Duration;
         Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
-
-        StartCoroutine(CoStartTimer());
     }
+
+    public virtual void ApplyEffect()
+	{
+		StartCoroutine(CoStartTimer());
+	}
 
     // 충돌 감지 메서드
     protected virtual void OnTriggerEnter2D(Collider2D other)

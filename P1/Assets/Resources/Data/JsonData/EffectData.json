@@ -7,16 +7,18 @@
       "Duration": 1,
       "TickTime": 0.0,
       "EffectSpawnType": 0,
-      "EffectType": 1
+      "EffectType": 1,
+      "ExplosionKey": null
     },
     {
       "DataId": 60002,
       "Name": "소용돌이",
-      "Description": "한틱당 공격력 50% 도트뎀 5초유지",
+      "Description": "한틱당 공격력 % 도트뎀 5초유지",
       "Duration": 4,
       "TickTime": 0.2,
       "EffectSpawnType": 1,
-      "EffectType": 1
+      "EffectType": 1,
+      "ExplosionKey": null
     },
     {
       "DataId": 60003,
@@ -25,7 +27,8 @@
       "Duration": 4,
       "TickTime": 0.0,
       "EffectSpawnType": 1,
-      "EffectType": 0
+      "EffectType": 0,
+      "ExplosionKey": null
     },
     {
       "DataId": 60004,
@@ -34,7 +37,18 @@
       "Duration": 1,
       "TickTime": 0.0,
       "EffectSpawnType": 0,
-      "EffectType": 1
+      "EffectType": 1,
+      "ExplosionKey": "Object/Effect/Explosion/FireBall"
+    },
+    {
+      "DataId": 60005,
+      "Name": "붉은 그림자",
+      "Description": "기본 공격시 광역 이펙트를 생성해 % 입히는 스킬",
+      "Duration": 4,
+      "TickTime": 0.0,
+      "EffectSpawnType": 1,
+      "EffectType": 1,
+      "ExplosionKey": "Object/Effect/Explosion/CrimsonShadow"
     }
   ]
 }

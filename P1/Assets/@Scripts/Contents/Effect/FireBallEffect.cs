@@ -14,22 +14,30 @@ public class FireBallEffect : EffectBase
     public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
     {
         base.SetInfo(templateID, owner, skillData);
-        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); 
 
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         BaseObject Target = FindRandomTarget(Managers.Object.Monsters);
         StartPosition = transform.position;
         TargetPosition = Target.transform.position;
         EndCallback = () =>
         {
-            if(Target.IsValid())
+            if (Target.IsValid())
             {
+                GameObject effectObj = Managers.Object.SpawnGameObject(Target.CenterPosition, EffectData.ExplosionKey);
+                effectObj.AddComponent<ExplosionEffect>();
+                
                 Target.GetComponent<IDamageable>().OnDamaged(Owner, this);
             }
             Managers.Object.Despawn(this);
         };
-
-        StartCoroutine(CoLaunchProjectile());
     }
+
+    public override void ApplyEffect()
+	{
+        base.ApplyEffect();
+        StartCoroutine(CoLaunchProjectile());
+	}
+
 
     private IEnumerator CoLaunchProjectile()
     {
@@ -44,7 +52,7 @@ public class FireBallEffect : EffectBase
             float normalizedTime = elapsedTime / totalTime;
             transform.position = Vector3.Lerp(StartPosition, TargetPosition, normalizedTime);
 
-             LookAt2D(TargetPosition - transform.position);
+            LookAt2D(TargetPosition - transform.position);
 
             yield return null;
         }
@@ -52,10 +60,10 @@ public class FireBallEffect : EffectBase
         EndCallback?.Invoke();
     }
 
-   	private void LookAt2D(Vector2 forward)
-	{
-		transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg);
-	}
+    private void LookAt2D(Vector2 forward)
+    {
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg);
+    }
 
     private BaseObject FindRandomTarget(IEnumerable<BaseObject> objs)
     {

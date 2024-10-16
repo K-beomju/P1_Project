@@ -353,6 +353,7 @@ namespace Data
         public float TickTime;
         public EEffectSpawnType EffectSpawnType;
         public EEffectType EffectType;
+        public string ExplosionKey;
     }
 
     [Serializable]

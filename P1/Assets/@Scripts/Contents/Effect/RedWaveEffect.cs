@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class RedWaveEffect : EffectBase
 {
-    public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
+    public override void ApplyEffect()
     {
-        base.SetInfo(templateID, owner, skillData);
+        base.ApplyEffect();
         Sprite.DOFade(0, 1);
     }
-
 
     // 데미지 적용 로직
     protected override void ApplyDamage(Creature target)

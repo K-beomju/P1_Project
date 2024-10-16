@@ -225,7 +225,7 @@ public static class Define
 
     public static class SortingLayers
     {
-        public const int SPELL_INDICATOR = 200;
+        public const int AURA = 299;
         public const int UI_HPBAR = 299;
         public const int CREATURE = 300;
         public const int ENV = 300;
