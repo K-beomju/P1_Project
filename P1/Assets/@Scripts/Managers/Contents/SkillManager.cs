@@ -16,28 +16,27 @@ public class SkillManager
         AllSkillInfos.Add(100102, new SkillInfoData(100102, EOwningState.Unowned, 0, 0, false));
         AllSkillInfos.Add(100103, new SkillInfoData(100103, EOwningState.Unowned, 0, 0, false));
         AllSkillInfos.Add(100104, new SkillInfoData(100104, EOwningState.Unowned, 0, 0, false));
+        AllSkillInfos.Add(100105, new SkillInfoData(100105, EOwningState.Unowned, 0, 0, false));
 
-        if(Managers.Backend.GameData.SkillInventory.SkillSlotList[0].SlotType != ESkillSlotType.Lock)
-        {
-            Managers.Backend.GameData.SkillInventory.AddSkill(100100);
-            Managers.Backend.GameData.SkillInventory.AddSkill(100101);
-            Managers.Backend.GameData.SkillInventory.AddSkill(100102);
-            Managers.Backend.GameData.SkillInventory.AddSkill(100103);
-            Managers.Backend.GameData.SkillInventory.AddSkill(100104);
 
-        }
+        Managers.Backend.GameData.SkillInventory.AddSkill(100100);
+        Managers.Backend.GameData.SkillInventory.AddSkill(100101);
+        Managers.Backend.GameData.SkillInventory.AddSkill(100102);
+        Managers.Backend.GameData.SkillInventory.AddSkill(100103);
+        Managers.Backend.GameData.SkillInventory.AddSkill(100104);
+        Managers.Backend.GameData.SkillInventory.AddSkill(100105);
     }
 
     public List<SkillInfoData> GetSkillInfos(bool needsSync = false)
     {
         List<SkillInfoData> skillInfos = AllSkillInfos.Values.ToList();
 
-        if(!needsSync)
-        return skillInfos;
+        if (!needsSync)
+            return skillInfos;
 
         for (int i = 0; i < skillInfos.Count; i++)
         {
-            if(Managers.Backend.GameData.SkillInventory.SkillInventoryDic.TryGetValue(skillInfos[i].DataTemplateID, out var skillInfoData))
+            if (Managers.Backend.GameData.SkillInventory.SkillInventoryDic.TryGetValue(skillInfos[i].DataTemplateID, out var skillInfoData))
             {
                 skillInfos[i] = skillInfoData;
             }
@@ -46,5 +45,5 @@ public class SkillManager
     }
 
 
-    
+
 }

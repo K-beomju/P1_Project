@@ -6,16 +6,22 @@ using UnityEngine;
 
 public class FireBallEffect : EffectBase
 {
-    public Vector3 StartPosition { get; private set; }
-    public Vector3 TargetPosition { get; private set; }
-    public Action EndCallback { get; private set; }
+    public Vector3 StartPosition;
+    public Vector3 TargetPosition;
+    public Action EndCallback;
 
     private float speed = 10;
+
     public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
     {
         base.SetInfo(templateID, owner, skillData);
-
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+    }
+
+    public override void ApplyEffect()
+    {
+        base.ApplyEffect();
+
         BaseObject Target = FindRandomTarget(Managers.Object.Monsters);
         StartPosition = transform.position;
         TargetPosition = Target.transform.position;
@@ -24,19 +30,14 @@ public class FireBallEffect : EffectBase
             if (Target.IsValid())
             {
                 GameObject effectObj = Managers.Object.SpawnGameObject(Target.CenterPosition, EffectData.ExplosionKey);
-                effectObj.AddComponent<ExplosionEffect>();
-                
                 Target.GetComponent<IDamageable>().OnDamaged(Owner, this);
             }
-            Managers.Object.Despawn(this);
+            base.ClearEffect();
         };
-    }
 
-    public override void ApplyEffect()
-	{
-        base.ApplyEffect();
         StartCoroutine(CoLaunchProjectile());
-	}
+
+    }
 
 
     private IEnumerator CoLaunchProjectile()
@@ -67,16 +68,13 @@ public class FireBallEffect : EffectBase
 
     private BaseObject FindRandomTarget(IEnumerable<BaseObject> objs)
     {
-        if (Managers.Object.BossMonster != null)
-            return Managers.Object.BossMonster;
+        // 객체가 없으면 null 반환
+        if (!objs.Any())
+            return null;
 
-        if (Managers.Object.Bot != null)
-            return Managers.Object.Bot;
-
-        BaseObject target = null;
-
+        // 무작위로 타겟 선택
         System.Random rand = new System.Random();
-        target = objs.ElementAt(rand.Next(objs.Count()));
+        BaseObject target = objs.ElementAt(rand.Next(objs.Count()));
         return target;
     }
 

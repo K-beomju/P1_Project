@@ -326,6 +326,7 @@ namespace Data
         public float OwnedValue;
         public float DamageMultiplier;
         public float CoolTime;
+        public int SkillCount;
         public int EffectId;
         public bool AttachToOwner;
     }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4316131857976126317}
   - component: {fileID: 5033290166145766125}
   - component: {fileID: 2959772503587474641}
+  - component: {fileID: 822652048228641551}
   m_Layer: 0
   m_Name: CrimsonShadow
   m_TagString: Untagged
@@ -184,3 +185,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &822652048228641551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27369801119800240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db0a19782a02be4db66b4b66c52dca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

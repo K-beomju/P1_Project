@@ -49,6 +49,16 @@
       "EffectSpawnType": 1,
       "EffectType": 1,
       "ExplosionKey": "Object/Effect/Explosion/CrimsonShadow"
+    },
+    {
+      "DataId": 60006,
+      "Name": "어둠의속박",
+      "Description": "화면에 보이는 모든 적들에게 이펙트를 생성해 % 입히는 스킬",
+      "Duration": 3,
+      "TickTime": 0.0,
+      "EffectSpawnType": 0,
+      "EffectType": 1,
+      "ExplosionKey": "Object/Effect/Explosion/DarkBind"
     }
   ]
 }

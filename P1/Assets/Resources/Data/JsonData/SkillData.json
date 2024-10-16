@@ -11,6 +11,7 @@
       "OwnedValue": 2.0,
       "DamageMultiplier": 200.0,
       "CoolTime": 1.0,
+      "SkillCount": 1,
       "EffectId": 60001,
       "AttachToOwner": false
     },
@@ -25,6 +26,7 @@
       "OwnedValue": 2.0,
       "DamageMultiplier": 30.0,
       "CoolTime": 1.0,
+      "SkillCount": 1,
       "EffectId": 60002,
       "AttachToOwner": true
     },
@@ -39,6 +41,7 @@
       "OwnedValue": 2.0,
       "DamageMultiplier": 0.3,
       "CoolTime": 1.0,
+      "SkillCount": 1,
       "EffectId": 60003,
       "AttachToOwner": true
     },
@@ -53,6 +56,7 @@
       "OwnedValue": 2.0,
       "DamageMultiplier": 4000.0,
       "CoolTime": 1.0,
+      "SkillCount": 1,
       "EffectId": 60004,
       "AttachToOwner": false
     },
@@ -67,8 +71,24 @@
       "OwnedValue": 2.0,
       "DamageMultiplier": 300.0,
       "CoolTime": 1.0,
+      "SkillCount": 1,
       "EffectId": 60005,
       "AttachToOwner": true
+    },
+    {
+      "DataId": 100105,
+      "RareType": 2,
+      "Name": "어둠의 속박",
+      "Description": "어둠의 그림자가 화면에 보이는 모든 적에게 {value}%의 피해를 입힙니다.",
+      "PrefabKey": "Object/Effect/DarkBindEffect",
+      "SpriteKey": "Skill/Skill_DarkBind",
+      "SoundKey": "a",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 4000.0,
+      "CoolTime": 1.0,
+      "SkillCount": 1,
+      "EffectId": 60006,
+      "AttachToOwner": false
     }
   ]
 }

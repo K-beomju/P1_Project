@@ -29,9 +29,8 @@ public class CrimsonShadowEffect : EffectBase
     {
         int rotateZ = UnityEngine.Random.Range(-180, 180);
         GameObject effectObj = Managers.Object.SpawnGameObject(Owner.Target.CenterPosition, EffectData.ExplosionKey);
-        ExplosionEffect effect = effectObj.AddComponent<ExplosionEffect>();
-        effect.SetInfo(EffectData.DataId, Owner, SkillData);
         effectObj.transform.Rotate(new Vector3(0, 0, rotateZ));
+        effectObj.GetComponent<EffectBase>().SetInfo(EffectData.DataId, Owner, SkillData);
     }
 
     public override void ClearEffect()
