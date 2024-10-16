@@ -59,6 +59,16 @@
       "EffectSpawnType": 0,
       "EffectType": 1,
       "ExplosionKey": "Object/Effect/Explosion/DarkBind"
+    },
+    {
+      "DataId": 60007,
+      "Name": "얼음 화살",
+      "Description": "한틱에 공격력 % 데미지 입히는 스킬",
+      "Duration": 1,
+      "TickTime": 0.0,
+      "EffectSpawnType": 0,
+      "EffectType": 1,
+      "ExplosionKey": "Object/Effect/Explosion/HomingArrow"
     }
   ]
 }

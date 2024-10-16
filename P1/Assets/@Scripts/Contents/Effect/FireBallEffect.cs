@@ -8,35 +8,24 @@ public class FireBallEffect : EffectBase
 {
     public Vector3 StartPosition;
     public Vector3 TargetPosition;
-    public Action EndCallback;
 
+    private BaseObject Target;
     private float speed = 10;
 
     public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
     {
         base.SetInfo(templateID, owner, skillData);
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        Target = FindRandomTarget(Managers.Object.Monsters);
+        StartPosition = transform.position;
+        TargetPosition = Target.transform.position;
+
     }
 
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-
-        BaseObject Target = FindRandomTarget(Managers.Object.Monsters);
-        StartPosition = transform.position;
-        TargetPosition = Target.transform.position;
-        EndCallback = () =>
-        {
-            if (Target.IsValid())
-            {
-                GameObject effectObj = Managers.Object.SpawnGameObject(Target.CenterPosition, EffectData.ExplosionKey);
-                Target.GetComponent<IDamageable>().OnDamaged(Owner, this);
-            }
-            base.ClearEffect();
-        };
-
         StartCoroutine(CoLaunchProjectile());
-
     }
 
 
@@ -58,7 +47,13 @@ public class FireBallEffect : EffectBase
             yield return null;
         }
 
-        EndCallback?.Invoke();
+        if (Target.IsValid())
+        {
+            GameObject effectObj = Managers.Object.SpawnGameObject(Target.CenterPosition, EffectData.ExplosionKey);
+            Target.GetComponent<IDamageable>().OnDamaged(Owner, this);
+        }
+        base.ClearEffect();
+
     }
 
     private void LookAt2D(Vector2 forward)

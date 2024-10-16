@@ -89,6 +89,21 @@
       "SkillCount": 1,
       "EffectId": 60006,
       "AttachToOwner": false
+    },
+    {
+      "DataId": 100106,
+      "RareType": 2,
+      "Name": "얼음 화살",
+      "Description": "얼음으로 만들어진 화살이 적을 유도하여 {value}%의 피해를 입힌다.",
+      "PrefabKey": "Object/Effect/HomingArrowEffect",
+      "SpriteKey": "Skill/Skill_HomingArrow",
+      "SoundKey": "a",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 4000.0,
+      "CoolTime": 1.0,
+      "SkillCount": 1,
+      "EffectId": 60007,
+      "AttachToOwner": false
     }
   ]
 }
