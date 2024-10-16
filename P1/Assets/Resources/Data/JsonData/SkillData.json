@@ -104,6 +104,21 @@
       "SkillCount": 1,
       "EffectId": 60007,
       "AttachToOwner": false
+    },
+    {
+      "DataId": 100107,
+      "RareType": 2,
+      "Name": "토네이도 강타",
+      "Description": "적을 빨아들임",
+      "PrefabKey": "Object/Effect/TornadoStrikeEffect",
+      "SpriteKey": "Skill/Skill_TornadoStrike",
+      "SoundKey": "a",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 4000.0,
+      "CoolTime": 1.0,
+      "SkillCount": 1,
+      "EffectId": 60008,
+      "AttachToOwner": false
     }
   ]
 }

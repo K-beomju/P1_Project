@@ -69,6 +69,16 @@
       "EffectSpawnType": 0,
       "EffectType": 1,
       "ExplosionKey": "Object/Effect/Explosion/HomingArrow"
+    },
+    {
+      "DataId": 60008,
+      "Name": "토네이도 강타",
+      "Description": "닿을 때 공격력 % 데미지 입히는 스킬",
+      "Duration": 1,
+      "TickTime": 0.0,
+      "EffectSpawnType": 0,
+      "EffectType": 1,
+      "ExplosionKey": null
     }
   ]
 }
