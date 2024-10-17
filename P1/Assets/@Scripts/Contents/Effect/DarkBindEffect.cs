@@ -19,10 +19,6 @@ public class DarkBindEffect : EffectBase
         }
     }
 
-    public override void ClearEffect()
-    {
-        base.ClearEffect();
-    }
 
     private List<BaseObject> FindVisibleEnemies()
     {

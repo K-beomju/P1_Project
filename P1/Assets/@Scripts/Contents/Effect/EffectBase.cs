@@ -67,6 +67,7 @@ public class EffectBase : BaseObject
 
     protected virtual void ApplyDamage(Creature target)
     {
+        target.OnDamaged(Owner, this);
     }
 
     protected virtual void ProcessDot()

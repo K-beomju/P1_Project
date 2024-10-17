@@ -16,8 +16,4 @@ public class CrimsonShadowExplosion : ExplosionBase
         }
     }
 
-    protected override void ApplyDamage(Creature target)
-    {
-        target.OnDamaged(Owner, this);
-    }
 }

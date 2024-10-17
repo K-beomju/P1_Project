@@ -14,8 +14,4 @@ public class DarkBindExplosion : ExplosionBase
         base.ClearEffect();
     }
 
-    protected override void ApplyDamage(Creature target)
-    {
-        target.OnDamaged(Owner, this);
-    }
 }

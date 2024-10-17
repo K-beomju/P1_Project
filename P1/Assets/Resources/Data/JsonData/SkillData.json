@@ -119,6 +119,21 @@
       "SkillCount": 1,
       "EffectId": 60008,
       "AttachToOwner": false
+    },
+    {
+      "DataId": 100108,
+      "RareType": 3,
+      "Name": "유성우",
+      "Description": "설명",
+      "PrefabKey": "Object/Effect/MeteorRainEffect",
+      "SpriteKey": "Skill/Skill_MeteorRain",
+      "SoundKey": "ㅁ",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 30.0,
+      "CoolTime": 1.0,
+      "SkillCount": 1,
+      "EffectId": 60009,
+      "AttachToOwner": false
     }
   ]
 }
