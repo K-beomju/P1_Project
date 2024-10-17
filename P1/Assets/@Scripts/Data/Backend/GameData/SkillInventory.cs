@@ -127,11 +127,9 @@ namespace BackendData.GameData
 
                 _skillSlotList.Add(new SkillSlot(index, skillSlotType, skillInfoData));
             }
-            if (_skillSlotList[0].SlotType == ESkillSlotType.Lock)
-            {
-                _skillSlotList[0].EmptySlot();
-                _skillSlotList[1].EmptySlot();
-            }
+            
+            _skillSlotList.ForEach(x => x.EmptySlot());
+            
 
         }
 

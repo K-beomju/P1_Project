@@ -75,18 +75,18 @@
       "Name": "토네이도 강타",
       "Description": "닿을 때 공격력 % 데미지 입히는 스킬",
       "Duration": 4,
-      "TickTime": 0.1,
+      "TickTime": 0.5,
       "EffectSpawnType": 1,
       "EffectType": 1,
       "ExplosionKey": null
     },
     {
       "DataId": 60009,
-      "Name": "유성우",
+      "Name": "천벌",
       "Description": "닿을 때 공격력 % 데미지 입히는 스킬",
-      "Duration": 1,
-      "TickTime": 0.0,
-      "EffectSpawnType": 0,
+      "Duration": 3,
+      "TickTime": 1.0,
+      "EffectSpawnType": 1,
       "EffectType": 1,
       "ExplosionKey": null
     }

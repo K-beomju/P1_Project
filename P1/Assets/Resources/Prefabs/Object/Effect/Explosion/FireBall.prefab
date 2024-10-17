@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4534806050590808163}
   - component: {fileID: 2185733214070362384}
   - component: {fileID: 6825640127733125884}
-  - component: {fileID: 8778889101818746439}
+  - component: {fileID: 8532340131090266871}
   m_Layer: 0
   m_Name: FireBall
   m_TagString: Untagged
@@ -107,7 +107,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8778889101818746439
+--- !u!114 &8532340131090266871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,6 +116,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9209698437509091365}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68bf710e9f142624a84e4a286f246227, type: 3}
+  m_Script: {fileID: 11500000, guid: 7feb2925ccbb7df4d806264f8f753712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

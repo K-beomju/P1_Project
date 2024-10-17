@@ -5,6 +5,6 @@
 100103,Normal,파이어볼,스테이지에 있는 임의의 몬스터에게 {value}% 피해를 입힙니다.,Object/Effect/FireBallEffect,Skill/Skill_FireBall,a,2,4000,1,1,60004,FALSE
 100104,Advanced,붉은 그림자,전사의 그림자가 나타나며 {value}%의 광역 피해를 입힙니다.,Object/Effect/CrimsonShadowEffect,Skill/Skill_CrimsonShadow,a,2,300,1,1,60005,TRUE
 100105,Advanced,어둠의 속박,어둠의 그림자가 화면에 보이는 모든 적에게 {value}%의 피해를 입힙니다.,Object/Effect/DarkBindEffect,Skill/Skill_DarkBind,a,2,4000,1,1,60006,FALSE
-100106,Advanced,얼음 화살,얼음으로 만들어진 화살이 적을 유도하여 {value}%의 피해를 입힌다.,Object/Effect/HomingArrowEffect,Skill/Skill_HomingArrow,a,2,4000,1,1,60007,FALSE
+100106,Advanced,얼음 화살,얼음으로 만들어진 화살이 적을 유도하여 {value}%의 피해를 입힌다.,Object/Effect/HomingArrowEffect,Skill/Skill_HomingArrow,a,2,4000,1,5,60007,FALSE
 100107,Advanced,토네이도 강타,적을 빨아들임,Object/Effect/TornadoStrikeEffect,Skill/Skill_TornadoStrike,a,2,30,1,1,60008,FALSE
-100108,Rare,유성우,설명,Object/Effect/MeteorRainEffect,Skill/Skill_MeteorRain,ㅁ,2,30,1,1,60009,FALSE
+100108,Rare,천벌,스킬설명,Object/Effect/DivineWrathEffect,Skill/Skill_DivineWrath,ㅁ,2,30,1,1,60009,FALSE

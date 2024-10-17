@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TornadoStrikeEffect : EffectBase
 {
-    public float pullRadius = 5f;       // 빨아들이는 반경
-    public float pullForce = 0.4f;        // 한 번에 당기는 힘
+    private float pullRadius = 4f;       // 빨아들이는 반경
+    private float pullForce = 0.4f;        // 한 번에 당기는 힘
 
-    private float circleR = 3; //반지름
-    private float deg; //각도
-    private float objSpeed = 100; //원운동 속도
+    private float circleR = 3; 
+    private float objSpeed = 50;
+    private float deg; 
 
     private List<BaseObject> Targets = new List<BaseObject>();
 
@@ -40,7 +40,7 @@ public class TornadoStrikeEffect : EffectBase
                     distanceToMove                      // 매 틱마다 조금씩 당김
                 );
             }
-            //target.GetComponent<IDamageable>().OnDamaged(Owner, this);
+            ApplyDamage(target as Creature);
         }
 
     }

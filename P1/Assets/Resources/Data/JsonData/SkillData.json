@@ -101,7 +101,7 @@
       "OwnedValue": 2.0,
       "DamageMultiplier": 4000.0,
       "CoolTime": 1.0,
-      "SkillCount": 1,
+      "SkillCount": 5,
       "EffectId": 60007,
       "AttachToOwner": false
     },
@@ -123,10 +123,10 @@
     {
       "DataId": 100108,
       "RareType": 3,
-      "Name": "유성우",
-      "Description": "설명",
-      "PrefabKey": "Object/Effect/MeteorRainEffect",
-      "SpriteKey": "Skill/Skill_MeteorRain",
+      "Name": "천벌",
+      "Description": "스킬설명",
+      "PrefabKey": "Object/Effect/DivineWrathEffect",
+      "SpriteKey": "Skill/Skill_DivineWrath",
       "SoundKey": "ㅁ",
       "OwnedValue": 2.0,
       "DamageMultiplier": 30.0,
