@@ -7,4 +7,5 @@
 100105,Advanced,어둠의 속박,어둠의 그림자가 화면에 보이는 모든 적에게 {value}%의 피해를 입힙니다.,Object/Effect/DarkBindEffect,Skill/Skill_DarkBind,a,2,4000,1,1,60006,FALSE
 100106,Advanced,얼음 화살,얼음으로 만들어진 화살이 적을 유도하여 {value}%의 피해를 입힌다.,Object/Effect/HomingArrowEffect,Skill/Skill_HomingArrow,a,2,4000,1,5,60007,FALSE
 100107,Advanced,토네이도 강타,적을 빨아들임,Object/Effect/TornadoStrikeEffect,Skill/Skill_TornadoStrike,a,2,30,1,1,60008,FALSE
-100108,Rare,천벌,스킬설명,Object/Effect/DivineWrathEffect,Skill/Skill_DivineWrath,ㅁ,2,30,1,1,60009,FALSE
+100108,Rare,천벌,스킬설명,Object/Effect/DivineWrathEffect,Skill/Skill_DivineWrath,a,2,30,1,1,60009,FALSE
+100109,Rare,서리의 폭우,스킬설명,Object/Effect/FrostRainEffect,Skill/Skill_FrostRain,a,2,30,1,30,60010,FALSE

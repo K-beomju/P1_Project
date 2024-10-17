@@ -89,6 +89,16 @@
       "EffectSpawnType": 1,
       "EffectType": 1,
       "ExplosionKey": null
+    },
+    {
+      "DataId": 60010,
+      "Name": "서리의 폭우",
+      "Description": "닿을 때 공격력 % 데미지 입히는 스킬",
+      "Duration": 3,
+      "TickTime": 0.0,
+      "EffectSpawnType": 0,
+      "EffectType": 1,
+      "ExplosionKey": null
     }
   ]
 }

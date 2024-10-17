@@ -127,12 +127,27 @@
       "Description": "스킬설명",
       "PrefabKey": "Object/Effect/DivineWrathEffect",
       "SpriteKey": "Skill/Skill_DivineWrath",
-      "SoundKey": "ㅁ",
+      "SoundKey": "a",
       "OwnedValue": 2.0,
       "DamageMultiplier": 30.0,
       "CoolTime": 1.0,
       "SkillCount": 1,
       "EffectId": 60009,
+      "AttachToOwner": false
+    },
+    {
+      "DataId": 100109,
+      "RareType": 3,
+      "Name": "서리의 폭우",
+      "Description": "스킬설명",
+      "PrefabKey": "Object/Effect/FrostRainEffect",
+      "SpriteKey": "Skill/Skill_FrostRain",
+      "SoundKey": "a",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 30.0,
+      "CoolTime": 1.0,
+      "SkillCount": 30,
+      "EffectId": 60010,
       "AttachToOwner": false
     }
   ]
