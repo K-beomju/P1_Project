@@ -6,4 +6,4 @@
 60005,붉은 그림자,기본 공격시 광역 이펙트를 생성해 % 입히는 스킬,4,0,HasDuration,Attack,Object/Effect/Explosion/CrimsonShadow
 60006,어둠의속박,화면에 보이는 모든 적들에게 이펙트를 생성해 % 입히는 스킬,3,0,Instant,Attack,Object/Effect/Explosion/DarkBind
 60007,얼음 화살,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Attack,Object/Effect/Explosion/HomingArrow
-60008,토네이도 강타,닿을 때 공격력 % 데미지 입히는 스킬,1,0,Instant,Attack,
+60008,토네이도 강타,닿을 때 공격력 % 데미지 입히는 스킬,4,0.3,HasDuration,Attack,

@@ -128,10 +128,11 @@ public class Monster : Creature, IDamageable
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
         _isDamaged = true;
         // 플레이어에게 데미지를 입히는 코루틴 시작
-        if (_damageCoroutine == null)
+        if (_damageCoroutine != null)
         {
-            _damageCoroutine = StartCoroutine(DealDamageToPlayer());
+            StopCoroutine(_damageCoroutine);
         }
+        _damageCoroutine = StartCoroutine(DealDamageToPlayer());
 
         CreatureState = ECreatureState.Idle;
     }

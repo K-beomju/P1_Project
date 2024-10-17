@@ -5,9 +5,11 @@ using UnityEngine;
 public class TornadoStrikeEffect : EffectBase
 {
     public float pullRadius = 5f;       // 빨아들이는 반경
-    public float pullForce = 2f;        // 한 번에 당기는 힘
-    public float duration = 5f;         // 토네이도 지속 시간
-    public float pullInterval = 0.2f;   // 당기는 주기 (0.2초)
+    public float pullForce = 0.4f;        // 한 번에 당기는 힘
+
+    private float circleR = 3; //반지름
+    private float deg; //각도
+    private float objSpeed = 100; //원운동 속도
 
     private List<BaseObject> Targets = new List<BaseObject>();
 
@@ -15,47 +17,32 @@ public class TornadoStrikeEffect : EffectBase
     {
         base.SetInfo(templateID, owner, skillData);
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        Targets = FindTargets(Managers.Object.Monsters);  // 주변의 적들 찾기
     }
 
     public override void ApplyEffect()
     {
         base.ApplyEffect();
-        StartCoroutine(CoPullEnemies());
+        StartCoroutine(MoveCircleCo());
     }
 
-    // 적을 천천히 나눠서 당기는 코루틴
-    private IEnumerator CoPullEnemies()
+    protected override void ProcessDot()
     {
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
+        Targets = FindTargets(Managers.Object.Monsters);  // 주변의 적들 찾기
+        foreach (var target in Targets)
         {
-            elapsedTime += pullInterval; // 매 틱마다 0.2초 증가
-
-            foreach (var target in Targets)
+            if (target.IsValid())
             {
-                if (target.IsValid())
-                {
-                    // 현재 위치와 토네이도 중심의 거리 계산
-                    Vector3 direction = (transform.position - target.transform.position).normalized;
-                    
-                    // 나눠서 끌어당기기: 이동할 거리를 점진적으로 줄이기
-                    float distanceToMove = pullForce * pullInterval;  // 0.2초마다 당길 거리 계산
+                float distanceToMove = pullForce;
 
-                    // 적을 부드럽게 토네이도 중심으로 이동시키기
-                    target.transform.position = Vector3.MoveTowards(
-                        target.transform.position,           // 현재 위치
-                        transform.position,                 // 토네이도 중심 위치
-                        distanceToMove                      // 매 틱마다 조금씩 당김
-                    );
-                }
+                target.transform.position = Vector3.MoveTowards(
+                    target.transform.position,           // 현재 위치
+                    transform.position,                 // 토네이도 중심 위치
+                    distanceToMove                      // 매 틱마다 조금씩 당김
+                );
             }
-
-            yield return new WaitForSeconds(pullInterval);  // 0.2초마다 당기기
+            //target.GetComponent<IDamageable>().OnDamaged(Owner, this);
         }
 
-        base.ClearEffect();  // 토네이도 종료 후 클리어
     }
 
     // 범위 내의 적들 찾기
@@ -72,6 +59,29 @@ public class TornadoStrikeEffect : EffectBase
         }
 
         return visibleEnemies;
+    }
+
+
+    // Ower 원형 그리며 이동 
+    private IEnumerator MoveCircleCo()
+    {
+        while (true)
+        {
+            deg += Time.deltaTime * objSpeed;
+            if (deg < 360)
+            {
+                var rad = Mathf.Deg2Rad * (deg);
+                var x = circleR * Mathf.Sin(rad);
+                var y = circleR * Mathf.Cos(rad);
+                transform.position = Owner.transform.position + new Vector3(x, y);
+            }
+            else
+            {
+                deg = 0;
+            }
+            yield return null;
+        }
+
     }
 
     // 시각적으로 토네이도 범위를 확인하기 위한 디버그 코드
