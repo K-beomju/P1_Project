@@ -68,7 +68,7 @@
       "TickTime": 0.0,
       "EffectSpawnType": 0,
       "EffectType": 1,
-      "ExplosionKey": "Object/Effect/Explosion/HomingArrow"
+      "ExplosionKey": "Object/Effect/Projectile/HomingArrow"
     },
     {
       "DataId": 60008,
@@ -98,7 +98,7 @@
       "TickTime": 0.0,
       "EffectSpawnType": 0,
       "EffectType": 1,
-      "ExplosionKey": null
+      "ExplosionKey": "Object/Effect/Explosion/FrostRainArrow"
     }
   ]
 }

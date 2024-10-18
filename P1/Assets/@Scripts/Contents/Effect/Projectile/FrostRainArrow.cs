@@ -17,6 +17,19 @@ public class FrostRainArrow : ProjectileBase
         moveSpeed = 10;
     }
 
+    protected override void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Monster"))
+        {
+            Creature enemy = other.GetComponent<Creature>();
+            if (enemy != null)
+            {
+                Managers.Object.SpawnGameObject(enemy.CenterPosition, EffectData.ExplosionKey);
+                base.ApplyDamage(enemy);
+            }
+        }
+    }
+
     protected override IEnumerator CoLaunchProjectile()
     {
         float screenBottomY = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y;
