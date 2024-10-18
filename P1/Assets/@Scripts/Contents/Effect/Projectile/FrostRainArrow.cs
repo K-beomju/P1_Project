@@ -24,7 +24,9 @@ public class FrostRainArrow : ProjectileBase
             Creature enemy = other.GetComponent<Creature>();
             if (enemy != null)
             {
-                Managers.Object.SpawnGameObject(enemy.CenterPosition, EffectData.ExplosionKey);
+                ExplosionBase explosion = 
+                Managers.Object.SpawnGameObject(enemy.CenterPosition, EffectData.ExplosionKey).GetComponent<ExplosionBase>();
+                explosion.ApplyEffect();
                 base.ApplyDamage(enemy);
             }
         }

@@ -9,4 +9,4 @@
 60008,토네이도 강타,닿을 때 공격력 % 데미지 입히는 스킬,4,0.5,HasDuration,Attack,,
 60009,천벌,닿을 때 공격력 % 데미지 입히는 스킬,3,1,HasDuration,Attack,,
 60010,서리의 폭우,닿을 때 공격력 % 데미지 입히는 스킬,3,0,Instant,Attack,Object/Effect/Projectile/FrostRainArrow,Object/Effect/Explosion/FrostRainArrow
-60011,어둠의 전사,플레이어 주변의 적 공격,3,0,Instant,Attack,,Object/Effect/Explosion/DarkWarrior
+60011,어둠의 전사,플레이어 주변의 적 공격,3,0.1,Instant,Attack,,Object/Effect/Explosion/DarkWarrior

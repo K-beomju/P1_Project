@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
 public class ExplosionBase : EffectBase
 {
     protected Animator Anim { get; set; }
+    public Creature Target { get; set; }
 
     protected override bool Init()
     {
@@ -14,7 +14,8 @@ public class ExplosionBase : EffectBase
 
         Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
         Anim = GetComponent<Animator>();
-        StartCoroutine(CoStartTimer());
+        if (ShouldStartTimer())
+            StartCoroutine(CoStartTimer());
         return true;
     }
 
@@ -23,5 +24,8 @@ public class ExplosionBase : EffectBase
         yield return new WaitUntil(() => Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.99f);
         base.ClearEffect();
     }
+
+    protected virtual bool ShouldStartTimer() => true;
+
 }
 

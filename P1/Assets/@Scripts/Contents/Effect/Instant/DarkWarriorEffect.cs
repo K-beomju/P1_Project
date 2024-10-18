@@ -72,7 +72,10 @@ public class DarkWarriorEffect : EffectBase
             // 몬스터가 존재하면 효과 적용
             if (monsters[i] != null)
             {
-                Managers.Object.SpawnGameObject(monsters[i].transform.position, EffectData.ExplosionKey);
+                DarkWarrior darkWarrior = Managers.Object.
+                    SpawnGameObject(monsters[i].transform.position, EffectData.ExplosionKey).GetComponent<DarkWarrior>();
+                darkWarrior.SetInfo(EffectData.DataId, Owner, SkillData);
+                darkWarrior.Target = monsters[i].GetComponent<Creature>();
             }
             yield return new WaitForSeconds(0.1f);
         }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6365195763224767464}
   - component: {fileID: 2673408095276236830}
   - component: {fileID: 7459894715785114507}
-  - component: {fileID: 6725032312943673741}
+  - component: {fileID: 760493155510610143}
   m_Layer: 0
   m_Name: DarkWarrior
   m_TagString: Untagged
@@ -107,7 +107,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6725032312943673741
+--- !u!114 &760493155510610143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,6 +116,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8100745702729562154}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7feb2925ccbb7df4d806264f8f753712, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e1da107865571c4a9c2ec6291baadfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
