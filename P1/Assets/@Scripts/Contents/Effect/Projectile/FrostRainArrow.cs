@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class FrostRainArrow : ProjectileBase
 {
+    public Vector2 startPos { get; set; }
     // 새로운 SetInfo 메서드 (오버로딩)
-    public void SetInfo(int templateID, Hero owner, Data.SkillData skillData, Vector3 startPos)
+    public override void SetInfo(int templateID, Hero owner, Data.SkillData skillData)
     {
         // base의 SetInfo 호출
         base.SetInfo(templateID, owner, skillData);

@@ -24,10 +24,12 @@ public class FrostRainEffect : EffectBase
             Vector3 startPos = new Vector3(xPos, yPos, 0);
 
             GameObject arrow = Managers.Object.SpawnGameObject(startPos, "Object/Effect/Projectile/FrostRainArrow");
-            frostRainArrows.Add(arrow);
+            if (arrow != null)
+                frostRainArrows.Add(arrow);
 
             FrostRainArrow rainArrow = arrow.GetComponent<FrostRainArrow>();
-            rainArrow.SetInfo(EffectData.DataId, Owner, SkillData, startPos);
+            rainArrow.startPos = startPos;
+            rainArrow.SetInfo(EffectData.DataId, Owner, SkillData);
             rainArrow.ApplyEffect();
 
             yield return spawnDelay;
@@ -36,10 +38,11 @@ public class FrostRainEffect : EffectBase
 
     public override void ClearEffect()
     {
-        for (int i = 0; i < frostRainArrows.Count; i++)
+        // 공통적으로 사용되는 정리 로직
+        foreach (var arrow in frostRainArrows)
         {
-            if (frostRainArrows[i] != null)
-                Managers.Resource.Destroy(frostRainArrows[i]);
+            if (arrow != null)
+                Managers.Resource.Destroy(arrow);
         }
         base.ClearEffect();
     }

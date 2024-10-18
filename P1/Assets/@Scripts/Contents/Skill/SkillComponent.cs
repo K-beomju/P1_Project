@@ -51,10 +51,7 @@ public class SkillComponent : MonoBehaviour
     {
         if (SkillDic.ContainsKey(index) && SkillDic[index] != null)
         {
-            // SkillData를 사용하여 이펙트를 소환하거나 스킬을 실행
-            //for(int i = 0; i < SkillDic[index].SkillCount; i++)
             SpawnEffect(index);
-            
         }
     }
 
