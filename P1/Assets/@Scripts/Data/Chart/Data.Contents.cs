@@ -354,6 +354,7 @@ namespace Data
         public float TickTime;
         public EEffectSpawnType EffectSpawnType;
         public EEffectType EffectType;
+        public string ProjectileKey;
         public string ExplosionKey;
     }
 

@@ -149,6 +149,21 @@
       "SkillCount": 30,
       "EffectId": 60010,
       "AttachToOwner": false
+    },
+    {
+      "DataId": 100110,
+      "RareType": 3,
+      "Name": "어둠의 전사",
+      "Description": "스킬설명",
+      "PrefabKey": "Object/Effect/DarkWarriorEffect",
+      "SpriteKey": "Skill/Skill_DarkWarrior",
+      "SoundKey": "a",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 30.0,
+      "CoolTime": 1.0,
+      "SkillCount": 1,
+      "EffectId": 60011,
+      "AttachToOwner": false
     }
   ]
 }

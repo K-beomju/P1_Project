@@ -21,6 +21,7 @@ public class SkillManager
         AllSkillInfos.Add(100107, new SkillInfoData(100107, EOwningState.Unowned, 0, 0, false));
         AllSkillInfos.Add(100108, new SkillInfoData(100108, EOwningState.Unowned, 0, 0, false));
         AllSkillInfos.Add(100109, new SkillInfoData(100109, EOwningState.Unowned, 0, 0, false));
+        AllSkillInfos.Add(100110, new SkillInfoData(100110, EOwningState.Unowned, 0, 0, false));
 
 
         Managers.Backend.GameData.SkillInventory.AddSkill(100100);
@@ -33,6 +34,7 @@ public class SkillManager
         Managers.Backend.GameData.SkillInventory.AddSkill(100107);
         Managers.Backend.GameData.SkillInventory.AddSkill(100108);
         Managers.Backend.GameData.SkillInventory.AddSkill(100109);
+        Managers.Backend.GameData.SkillInventory.AddSkill(100110);
 
     }
 

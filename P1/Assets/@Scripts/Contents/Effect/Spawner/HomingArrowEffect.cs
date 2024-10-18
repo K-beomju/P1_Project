@@ -17,7 +17,7 @@ public class HomingArrowEffect : EffectBase
     {
         for (int i = 0; i < SkillData.SkillCount; i++)
         {
-            GameObject arrow = Managers.Object.SpawnGameObject(Owner.CenterPosition, EffectData.ExplosionKey);
+            GameObject arrow = Managers.Object.SpawnGameObject(Owner.CenterPosition, EffectData.ProjectileKey);
             if (arrow != null)
             {
                 homingArrows.Add(arrow);

@@ -23,7 +23,7 @@ public class FrostRainEffect : EffectBase
 
             Vector3 startPos = new Vector3(xPos, yPos, 0);
 
-            GameObject arrow = Managers.Object.SpawnGameObject(startPos, "Object/Effect/Projectile/FrostRainArrow");
+            GameObject arrow = Managers.Object.SpawnGameObject(startPos, EffectData.ProjectileKey);
             if (arrow != null)
                 frostRainArrows.Add(arrow);
 
