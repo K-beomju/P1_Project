@@ -10,7 +10,6 @@ public class EffectBase : BaseObject
     public SkillData SkillData { get; private set; }
     public EffectData EffectData { get; private set; }
     public EEffectSpawnType EffectSpawnType { get; protected set; }
-    public EEffectType EffectType { get; protected set; }
 
     protected float Duration { get; private set; }
 
@@ -22,7 +21,6 @@ public class EffectBase : BaseObject
         SkillData = skillData;
 
         EffectSpawnType = EffectData.EffectSpawnType;
-        EffectType = EffectData.EffectType;
         Duration = EffectData.Duration;
         Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
     }
@@ -63,7 +61,8 @@ public class EffectBase : BaseObject
     {
         Managers.Object.Despawn(this);
     }
-    
+
+    // HasDuration : 도드틸 ProcessDot으로 구현, Instant : 일회성 : ApplyDamage
 
     protected virtual void ApplyDamage(Creature target)
     {

@@ -5,7 +5,7 @@ using static Define;
 public class ExplosionBase : EffectBase
 {
     protected Animator Anim { get; set; }
-    public Creature Target { get; set; }
+    protected Creature Target { get; set; }
 
     protected override bool Init()
     {

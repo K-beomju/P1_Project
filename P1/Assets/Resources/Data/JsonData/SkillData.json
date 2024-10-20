@@ -164,6 +164,21 @@
       "SkillCount": 1,
       "EffectId": 60011,
       "AttachToOwner": false
+    },
+    {
+      "DataId": 100111,
+      "RareType": 3,
+      "Name": "슈루탄",
+      "Description": "스킬설명",
+      "PrefabKey": "Object/Effect/ExplosiveGrenadeEffect",
+      "SpriteKey": "Skill/Skill_ExplosiveGrenade",
+      "SoundKey": "a",
+      "OwnedValue": 2.0,
+      "DamageMultiplier": 30.0,
+      "CoolTime": 1.0,
+      "SkillCount": 3,
+      "EffectId": 60012,
+      "AttachToOwner": false
     }
   ]
 }

@@ -7,15 +7,15 @@ public class DarkBindEffect : EffectBase
 {
     public override void ApplyEffect()
     {
+        base.ApplyEffect();
         List<BaseObject> visibleEnemies = FindVisibleEnemies();
         foreach (var enemy in visibleEnemies)
         {
             GameObject effectObj = Managers.Object.SpawnGameObject(enemy.CenterPosition, EffectData.ExplosionKey);
             effectObj.transform.SetParent(enemy.transform, false);
             effectObj.transform.localPosition = new Vector3(0, 0.3f,0);
-            DarkBindExplosion effectBase = effectObj.GetComponent<DarkBindExplosion>();
-            effectBase.SetInfo(EffectData.DataId, Owner, SkillData);
-            effectBase.Target = enemy as Creature;
+            DarkBindExplosionEx effectBase = effectObj.GetComponent<DarkBindExplosionEx>();
+            effectBase.SetInfo(EffectData.DataId, Owner, SkillData,enemy as Creature);
         }
     }
 

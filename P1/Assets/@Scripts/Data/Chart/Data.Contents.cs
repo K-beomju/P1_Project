@@ -353,7 +353,6 @@ namespace Data
         public int Duration;
         public float TickTime;
         public EEffectSpawnType EffectSpawnType;
-        public EEffectType EffectType;
         public string ProjectileKey;
         public string ExplosionKey;
     }

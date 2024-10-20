@@ -37,7 +37,7 @@ public class HomingArrow : ProjectileBase
     }
 
 
-    protected override  IEnumerator CoLaunchProjectile()
+    protected override IEnumerator CoLaunchProjectile()
     {
         if(!Target.IsValid())
         {

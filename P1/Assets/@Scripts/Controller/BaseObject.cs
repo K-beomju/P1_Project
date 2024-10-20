@@ -9,8 +9,16 @@ public class BaseObject : InitBase
     public Collider2D Collider { get; protected set; }
     public SpriteRenderer Sprite { get; protected set; }
 
-    public Vector3 CenterPosition => Collider.bounds.center;
+    public Vector3 CenterPosition
+    {
+        get
+        {
+            if (Collider == null || Collider.Equals(null))
+                return transform.position; // Collider가 없으면 transform.position 반환
 
+            return Collider.bounds.center;
+        }
+    }
     public int DataTemplateID { get; set; }
 
     protected override bool Init()

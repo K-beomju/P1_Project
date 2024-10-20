@@ -1,12 +1,13 @@
-﻿DataId,Name,Description,Duration,TickTime,EffectSpawnType,EffectType,ProjectileKey,ExplosionKey
-60001,붉은 파동,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Attack,,
-60002,소용돌이,한틱당 공격력 % 도트뎀 5초유지,4,0.2,HasDuration,Attack,,
-60003,강철의지,한틱에 피해감소 % 줄이는 스킬,4,0,HasDuration,Buff,,
-60004,파이어볼,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Attack,,Object/Effect/Explosion/FireBall
-60005,붉은 그림자,기본 공격시 광역 이펙트를 생성해 % 입히는 스킬,4,0,HasDuration,Attack,,Object/Effect/Explosion/CrimsonShadow
-60006,어둠의속박,화면에 보이는 모든 적들에게 이펙트를 생성해 % 입히는 스킬,3,0,Instant,Attack,,Object/Effect/Explosion/DarkBind
-60007,얼음 화살,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Attack,Object/Effect/Projectile/HomingArrow,
-60008,토네이도 강타,닿을 때 공격력 % 데미지 입히는 스킬,4,0.5,HasDuration,Attack,,
-60009,천벌,닿을 때 공격력 % 데미지 입히는 스킬,3,1,HasDuration,Attack,,
-60010,서리의 폭우,닿을 때 공격력 % 데미지 입히는 스킬,3,0,Instant,Attack,Object/Effect/Projectile/FrostRainArrow,Object/Effect/Explosion/FrostRainArrow
-60011,어둠의 전사,플레이어 주변의 적 공격,3,0.1,Instant,Attack,,Object/Effect/Explosion/DarkWarrior
+﻿DataId,Name,Description,Duration,TickTime,EffectSpawnType,ProjectileKey,ExplosionKey
+60001,붉은 파동,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,,
+60002,소용돌이,한틱당 공격력 % 도트뎀 5초유지,4,0.2,HasDuration,,
+60003,강철의지,한틱에 피해감소 % 줄이는 스킬,4,0,HasDuration,,
+60004,파이어볼,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,,Object/Effect/Explosion/FireBall
+60005,붉은 그림자,기본 공격시 광역 이펙트를 생성해 % 입히는 스킬,4,0,HasDuration,,Object/Effect/Explosion/CrimsonShadow
+60006,어둠의속박,화면에 보이는 모든 적들에게 이펙트를 생성해 % 입히는 스킬,3,0,Instant,,Object/Effect/Explosion/DarkBind
+60007,얼음 화살,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Object/Effect/Projectile/HomingArrow,
+60008,토네이도 강타,닿을 때 공격력 % 데미지 입히는 스킬,4,0.5,HasDuration,,
+60009,천벌,닿을 때 공격력 % 데미지 입히는 스킬,3,1,HasDuration,,
+60010,서리의 폭우,닿을 때 공격력 % 데미지 입히는 스킬,3,0,Instant,Object/Effect/Projectile/FrostRainArrow,Object/Effect/Explosion/FrostRainArrow
+60011,어둠의 전사,플레이어 주변의 적 공격,3,0.1,Instant,,Object/Effect/Explosion/DarkWarrior
+60012,슈루탄,플레이어 주변에 슈루탄 떨굼,3,0,Instant,Object/Effect/Projectile/ExplosiveGrenade,Object/Effect/Explosion/ExplosiveGrenade

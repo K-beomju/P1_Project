@@ -38,7 +38,6 @@ public class DarkWarriorEffect : EffectBase
 
     public override void ApplyEffect()
     {
-        base.ApplyEffect();
         StartCoroutine(ShowDarkWarrior());
     }
 
@@ -72,10 +71,9 @@ public class DarkWarriorEffect : EffectBase
             // 몬스터가 존재하면 효과 적용
             if (monsters[i] != null)
             {
-                DarkWarrior darkWarrior = Managers.Object.
-                    SpawnGameObject(monsters[i].transform.position, EffectData.ExplosionKey).GetComponent<DarkWarrior>();
-                darkWarrior.SetInfo(EffectData.DataId, Owner, SkillData);
-                darkWarrior.Target = monsters[i].GetComponent<Creature>();
+                DarkWarriorEx darkWarrior = Managers.Object.
+                    SpawnGameObject(monsters[i].transform.position, EffectData.ExplosionKey).GetComponent<DarkWarriorEx>();
+                darkWarrior.SetInfo(EffectData.DataId, Owner, SkillData, monsters[i].GetComponent<Creature>());
             }
             yield return new WaitForSeconds(0.1f);
         }

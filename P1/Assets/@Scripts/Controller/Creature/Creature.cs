@@ -152,7 +152,7 @@ public class Creature : BaseObject
         if (ReduceDmgBuff.Value > 1)
         {
             Debug.LogWarning("받는 피해 감소가 있습니다." + ReduceDmgBuff.Value);
-            float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1);  // 예: 1 - (1.3 - 1) = 1 - 0.3 = 0.7
+            float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1); 
             finalDamage *= damageReductionMultiplier;
         }
 
