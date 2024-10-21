@@ -25,9 +25,13 @@ namespace BackendData.GameData
         // 각 스탯레벨 담는 Dic
         private Dictionary<string, int> _upgradeStatDic = new();
 
+        // 각 특성레벨 담는 Dic
+        private Dictionary<string, int> _upgradeAttrDic = new();
+
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeStatDic => (IReadOnlyDictionary<string, int>)_upgradeStatDic.AsReadOnlyCollection();
+        public IReadOnlyDictionary<string, int> UpgradeAttrDic => (IReadOnlyDictionary<string, int>)_upgradeAttrDic.AsReadOnlyCollection();
 
     }
 
@@ -43,15 +47,25 @@ namespace BackendData.GameData
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
             StageLevel = 1;
+
             _purseDic.Clear();
-            _purseDic.Add("Gold", 0);
-            _purseDic.Add("Dia", 0);
+            _purseDic.Add(EGoodType.Gold.ToString(), 0);
+            _purseDic.Add(EGoodType.Dia.ToString(), 0);
+
             _upgradeStatDic.Clear();
-            _upgradeStatDic.Add("Growth_Atk", 1);
-            _upgradeStatDic.Add("Growth_Hp", 1);
-            _upgradeStatDic.Add("Growth_Recovery", 1);
-            _upgradeStatDic.Add("Growth_CriRate", 1);
-            _upgradeStatDic.Add("Growth_CriDmg", 1);
+            _upgradeStatDic.Add(EHeroUpgradeType.Growth_Atk.ToString(), 1);
+            _upgradeStatDic.Add(EHeroUpgradeType.Growth_Hp.ToString(), 1);
+            _upgradeStatDic.Add(EHeroUpgradeType.Growth_Recovery.ToString(), 1);
+            _upgradeStatDic.Add(EHeroUpgradeType.Growth_CriRate.ToString(), 1);
+            _upgradeStatDic.Add(EHeroUpgradeType.Growth_CriDmg.ToString(), 1);
+
+            _upgradeAttrDic.Clear();
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_Atk.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_Hp.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_CriRate.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_CriDmg.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_SkillTime.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_SkillDmg.ToString(), 1);
         }
 
         // Backend.GameData.GetMyData 호출 이후 리턴된 값을 파싱하여 캐싱하는 함수
@@ -72,6 +86,12 @@ namespace BackendData.GameData
             foreach (var column in Data["UpgradeStat"].Keys)
             {
                 _upgradeStatDic.Add(column, int.Parse(Data["UpgradeStat"][column].ToString()));
+            }
+
+            
+            foreach (var column in Data["UpgradeAttr"].Keys)
+            {
+                _upgradeAttrDic.Add(column, int.Parse(Data["UpgradeAttr"][column].ToString()));
             }
 
         }
@@ -96,11 +116,12 @@ namespace BackendData.GameData
             param.Add("StageLevel", StageLevel);
             param.Add("Purse", _purseDic);
             param.Add("UpgradeStat", _upgradeStatDic);
+            param.Add("UpgradeAttr", _upgradeAttrDic);
 
             return param;
         }
 
-        #region User Methods 
+        #region Good,Exp 
 
         // 유저의 재화를 변경하는 함수
         public void AddAmount(EGoodType goodType, int amount)
@@ -149,7 +170,7 @@ namespace BackendData.GameData
 
         #endregion
 
-        #region Stage Methods 
+        #region Stage 
 
         // 유저의 스테이지 정보를 변경하는 함수
         public void UpdateStageLevel(int stageLevel)
@@ -162,7 +183,7 @@ namespace BackendData.GameData
 
         #endregion
 
-        #region Upgrade(Growth)
+        #region Upgrade
         public void LevelUpHeroUpgrade(EHeroUpgradeType upgradeType)
         {
             string key = upgradeType.ToString();
@@ -178,6 +199,23 @@ namespace BackendData.GameData
             Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
         }
+
+        public void LevelUpHeroAttribute(EHeroAttrType attrType)
+        {
+            string key = attrType.ToString();
+            if (_upgradeAttrDic.ContainsKey(key))
+            {
+                _upgradeAttrDic[key]++;
+            }
+            else
+            {
+                _upgradeAttrDic.Add(key, 1);
+            }
+
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
+            Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
+        }
+
         #endregion
 
 

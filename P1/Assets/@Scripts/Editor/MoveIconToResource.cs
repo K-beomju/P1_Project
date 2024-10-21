@@ -4,14 +4,14 @@ using System.IO;
 
 public class MoveIconToResource
 {
-    [MenuItem("Assets/Move to Resource/Sprite", false, 0)] // 우클릭 메뉴에 추가
+    [MenuItem("Assets/Move to Resource/Skill", false, 0)] // 우클릭 메뉴에 추가
     private static void MoveToSkill()
     {
         // 선택된 에셋 경로 가져오기
         string selectedPath = AssetDatabase.GetAssetPath(Selection.activeObject);
         
         // 이동할 목적지 폴더 경로 설정
-        string destinationPath = "Assets/Resources/Sprite";
+        string destinationPath = "Assets/Resources/Sprite/Skill";
 
         if (!Directory.Exists(destinationPath))
         {
@@ -35,7 +35,7 @@ public class MoveIconToResource
     }
 
     // 메뉴가 활성화되는 조건: 선택된 것이 파일이어야 함
-    [MenuItem("Assets/Move to Resource/Sprite", true)]
+    [MenuItem("Assets/Move to Resource/Skill", true)]
     private static bool ValidateMoveToSkill()
     {
         // 선택된 것이 유효한지 확인 (파일이 선택된 경우에만 활성화)

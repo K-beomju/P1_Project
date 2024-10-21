@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class Define
 {
+    #region GamePlay
+
     public enum EScene
     {
         Unknown,
@@ -36,6 +38,10 @@ public static class Define
         BossStage
     }
 
+    #endregion
+
+    #region Entity
+
     public enum EObjectType
     {
         None,
@@ -44,16 +50,24 @@ public static class Define
         BossMonster
     }
 
-    public enum EEffectSpawnType
+    public enum ECreatureState
     {
-        Instant,
-        HasDuration
+        None,
+        Idle,
+        Move,
+        Attack,
+        Dead
     }
-    public enum EEffectType
+
+    public enum EHeroMoveState
     {
-        Buff,
-        Attack
+        None,
+        TargetMonster
     }
+
+    #endregion
+
+    #region Event
 
     public enum EUIEvent
     {
@@ -102,25 +116,30 @@ public static class Define
         CompleteSkillCool
     }
 
+    #endregion
+
+    #region Effect
+
+    public enum EEffectSpawnType
+    {
+        Instant,
+        HasDuration
+    }
+
+    public enum EEffectType
+    {
+        Buff,
+        Attack
+    }
+
+    #endregion
+
+    #region Draw (Skill & Equipment)
+
     public enum EOwningState
     {
         Unowned,
         Owned,
-    }
-
-    public enum ECreatureState
-    {
-        None,
-        Idle,
-        Move,
-        Attack,
-        Dead
-    }
-
-    public enum EHeroMoveState
-    {
-        None,
-        TargetMonster
     }
 
     public enum ESound
@@ -128,14 +147,6 @@ public static class Define
         Bgm,
         Effect,
         Max,
-    }
-
-
-    public enum EGoodType
-    {
-        None,
-        Gold,
-        Dia
     }
 
     public enum EDrawType
@@ -177,6 +188,17 @@ public static class Define
         Ring
     }
 
+    #endregion
+
+    #region Upgrade
+
+    public enum EGoodType
+    {
+        None,
+        Gold,
+        Dia
+    }
+
     public enum EHeroUpgradeType
     {
         Growth_Atk,
@@ -186,6 +208,16 @@ public static class Define
         Growth_CriDmg
     }
 
+    public enum EHeroAttrType
+    {
+        Growth_Atk,
+        Growth_Hp,
+        Growth_CriRate,
+        Growth_CriDmg,
+        Growth_SkillTime,
+        Growth_SkillDmg
+    }
+
     public enum EStatModType
     {
         Add,
@@ -193,6 +225,7 @@ public static class Define
         PercentMult
     }
 
+    #endregion
 
     public enum ELayer
     {

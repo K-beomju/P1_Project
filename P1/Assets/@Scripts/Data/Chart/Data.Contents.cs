@@ -208,6 +208,35 @@ namespace Data
             return dict;
         }
     }
+
+
+    [Serializable]
+    public class HeroAttributeInfoData
+    {
+        public EHeroAttrType HeroAttrType;
+        public string Remark;
+        public float Value;
+        public float IncreaseValue;
+    }
+
+    [Serializable]
+    public class HeroAttributeInfoDataLoader : ILoader<EHeroAttrType, HeroAttributeInfoData>
+    {
+        public List<HeroAttributeInfoData> HeroAttributeInfoDataList = new List<HeroAttributeInfoData>();
+
+        public Dictionary<EHeroAttrType, HeroAttributeInfoData> MakeDict()
+        {
+            Dictionary<EHeroAttrType, HeroAttributeInfoData> dict = new Dictionary<EHeroAttrType, HeroAttributeInfoData>();
+            foreach (HeroAttributeInfoData infoData in HeroAttributeInfoDataList)
+            {
+                dict.Add(infoData.HeroAttrType, infoData);
+            }
+
+            return dict;
+        }
+    }
+
+
     #endregion
 
     #region DrawData

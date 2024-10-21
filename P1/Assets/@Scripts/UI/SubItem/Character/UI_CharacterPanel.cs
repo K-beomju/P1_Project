@@ -38,11 +38,11 @@ public class UI_CharacterPanel : UI_Base
         Bind<UI_CompanionItem>(typeof(EquipmentItems));
         BindButtons(typeof(Buttons));
 
-        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Atk).SetInfo(Define.EHeroUpgradeType.Growth_Atk);
-        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Hp).SetInfo(Define.EHeroUpgradeType.Growth_Hp);
-        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Recovery).SetInfo(Define.EHeroUpgradeType.Growth_Recovery);
-        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_CriRate).SetInfo(Define.EHeroUpgradeType.Growth_CriRate);
-        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_CriDmg).SetInfo(Define.EHeroUpgradeType.Growth_CriDmg);
+        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Atk).SetInfo(EHeroUpgradeType.Growth_Atk);
+        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Hp).SetInfo(EHeroUpgradeType.Growth_Hp);
+        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Recovery).SetInfo(EHeroUpgradeType.Growth_Recovery);
+        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_CriRate).SetInfo(EHeroUpgradeType.Growth_CriRate);
+        Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_CriDmg).SetInfo(EHeroUpgradeType.Growth_CriDmg);
 
         GetButton((int)Buttons.Btn_RingSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Ring));
         GetButton((int)Buttons.Btn_ArmorSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Armor));

@@ -9,6 +9,7 @@ using Data;
 public class HeroInfo
 {
     public int Level { get; set; }
+
     #region Stat
     public float Atk { get; private set; }
     public float MaxHp { get; private set; }
@@ -19,6 +20,15 @@ public class HeroInfo
     public float AttackRange { get; private set; }
     public float AttackDelay { get; private set; }
     public float AttackSpeedRate { get; private set; }
+    #endregion
+
+    #region Attribute
+    public float AtkAttr { get; private set; }
+    public float MaxHpAttr { get; private set; }
+    public float CriRateAttr { get; private set; }
+    public float CriDmgAttr { get; private set; }
+    public float SkillTimeAttr { get; private set; }
+    public float SkillDmgAttr { get; private set; }
     #endregion
 
     public int DataTemplateID { get; private set; }
@@ -35,12 +45,21 @@ public class HeroInfo
 
     public void CalculateInfoStat()
     {
-        // StatCalculator 클래스를 이용하여 계산
+        // 스탯 레벨 계산
         Atk = CalculateStat(EHeroUpgradeType.Growth_Atk);
         MaxHp = CalculateStat(EHeroUpgradeType.Growth_Hp);
         Recovery = CalculateStat(EHeroUpgradeType.Growth_Recovery);
         CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
         CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
+
+        // 특성 레벨 계산 
+        AtkAttr = CaculateAttribute(EHeroAttrType.Growth_Atk);
+        MaxHpAttr = CaculateAttribute(EHeroAttrType.Growth_Hp);
+        CriRateAttr = CaculateAttribute(EHeroAttrType.Growth_CriRate);
+        CriDmgAttr = CaculateAttribute(EHeroAttrType.Growth_CriDmg);
+        SkillTimeAttr = CaculateAttribute(EHeroAttrType.Growth_SkillTime);
+        SkillDmgAttr = CaculateAttribute(EHeroAttrType.Growth_SkillDmg);
+
         // 장비 효과 적용
         Atk = ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);
         MaxHp = ApplyEquipmentEffect(EEquipmentType.Armor, MaxHp);
@@ -65,6 +84,17 @@ public class HeroInfo
         int currentLevel = Managers.Backend.GameData.UserData.UpgradeStatDic[upgradeType.ToString()];
 
         // 최종 값 계산
+        return baseValue + (increaseValue * (currentLevel - 1));
+    }
+
+    // 특성 계산 
+    private float CaculateAttribute(EHeroAttrType attrType)
+    {
+        var attributeData = Managers.Data.HeroAttributeChart[attrType];
+        float baseValue = attributeData.Value;
+        float increaseValue = attributeData.IncreaseValue;
+        int currentLevel = Managers.Backend.GameData.UserData.UpgradeAttrDic[attrType.ToString()];
+
         return baseValue + (increaseValue * (currentLevel - 1));
     }
 

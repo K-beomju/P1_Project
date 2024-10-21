@@ -1,0 +1,40 @@
+{
+  "HeroAttributeInfoDataList": [
+    {
+      "HeroAttrType": 0,
+      "Remark": "공격력 증가+",
+      "Value": 5.0,
+      "IncreaseValue": 1.0
+    },
+    {
+      "HeroAttrType": 1,
+      "Remark": "체력 증가+",
+      "Value": 5.0,
+      "IncreaseValue": 1.0
+    },
+    {
+      "HeroAttrType": 2,
+      "Remark": "치명타 확률+",
+      "Value": 5.0,
+      "IncreaseValue": 1.0
+    },
+    {
+      "HeroAttrType": 3,
+      "Remark": "치명타 데미지+",
+      "Value": 5.0,
+      "IncreaseValue": 1.0
+    },
+    {
+      "HeroAttrType": 4,
+      "Remark": "스킬 쿨타임-",
+      "Value": 5.0,
+      "IncreaseValue": 1.0
+    },
+    {
+      "HeroAttrType": 5,
+      "Remark": "스킬 데미지+",
+      "Value": 5.0,
+      "IncreaseValue": 1.0
+    }
+  ]
+}
