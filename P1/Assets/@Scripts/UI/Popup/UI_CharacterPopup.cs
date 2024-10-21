@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Define;
-using static UI_DrawPopup;
 
 public class UI_CharacterPopup : UI_Popup
 {
@@ -45,8 +42,6 @@ public class UI_CharacterPopup : UI_Popup
     UI_RelicsPanel _relicsPanel;
 
 
-    private Dictionary<ECharacterSection, (Button, GameObject)> _characterPanels;
-
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -82,6 +77,7 @@ public class UI_CharacterPopup : UI_Popup
     public void RefreshUI()
     {
         _characterPanel.gameObject.SetActive(false);
+        _attributePanel.gameObject.SetActive(false);
         GetButton((int)Buttons.Btn_Character).interactable = true;
         GetButton((int)Buttons.Btn_Attribute).interactable = true;
         GetButton((int)Buttons.Btn_Relics).interactable = true;
@@ -96,6 +92,9 @@ public class UI_CharacterPopup : UI_Popup
                 break;
             case ECharacterSection.Attribute:
                 GetButton((int)Buttons.Btn_Attribute).interactable = false;
+                
+                _attributePanel.gameObject.SetActive(true);
+                //_attributePanel
                 break;
             case ECharacterSection.Relics:
                 GetButton((int)Buttons.Btn_Relics).interactable = false;
