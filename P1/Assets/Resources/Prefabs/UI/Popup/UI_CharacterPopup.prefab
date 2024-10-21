@@ -960,7 +960,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 879c84f07f3934accaf40a123f6fee4c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2819,8 +2819,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -274.28506, y: 90}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -251.73048, y: 90}
+  m_SizeDelta: {x: 245.1092, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3440105205809669924
 CanvasRenderer:
@@ -2877,15 +2877,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3619,7 +3619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -174.28506, y: 90}
+  m_AnchoredPosition: {x: -155.91, y: 89.549}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1550692460017331002
@@ -3677,15 +3677,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 4
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4425,6 +4425,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_AttributeGrowthInvenSlot_SkillTime
       objectReference: {fileID: 0}
+    - target: {fileID: 6647848570797937290, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2413f93b578364d0a9e409df00ad71c0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4693,6 +4697,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_AttributeGrowthInvenSlot_Atk
       objectReference: {fileID: 0}
+    - target: {fileID: 6647848570797937290, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 879c84f07f3934accaf40a123f6fee4c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5387,6 +5395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_AttributeGrowthInvenSlot_SkillDmg
       objectReference: {fileID: 0}
+    - target: {fileID: 6647848570797937290, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2cf87a94f0f304a3794b97a45908166b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5489,6 +5501,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_AttributeGrowthInvenSlot_CriDmg
       objectReference: {fileID: 0}
+    - target: {fileID: 6647848570797937290, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3ef52a597a5b3411ca3b0e29414ea392, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5757,6 +5773,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_AttributeGrowthInvenSlot_CriRate
       objectReference: {fileID: 0}
+    - target: {fileID: 6647848570797937290, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a984e1806bf5d45d882a831f7ca0e3eb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6133,8 +6153,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4440131743755599037, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
       propertyPath: m_Name
-      value: UI_AttributeGrowthInvenSlot_Hp
+      value: UI_AttributeGrowthInvenSlot_MaxHp
       objectReference: {fileID: 0}
+    - target: {fileID: 6647848570797937290, guid: 70d06f25aee8a564091b562aaccf6692, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 85ef9913e6df8458a84555be3c9e5dcd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

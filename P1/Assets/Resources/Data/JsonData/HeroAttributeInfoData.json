@@ -2,39 +2,45 @@
   "HeroAttributeInfoDataList": [
     {
       "HeroAttrType": 0,
-      "Remark": "공격력 증가+",
+      "Name": "공격력 증가",
       "Value": 5.0,
-      "IncreaseValue": 1.0
+      "IncreaseValue": 1.0,
+      "SpriteKey": "Attribute/Atk"
     },
     {
       "HeroAttrType": 1,
-      "Remark": "체력 증가+",
+      "Name": "최대 체력 증가",
       "Value": 5.0,
-      "IncreaseValue": 1.0
+      "IncreaseValue": 1.0,
+      "SpriteKey": "Attribute/MaxHp"
     },
     {
       "HeroAttrType": 2,
-      "Remark": "치명타 확률+",
+      "Name": "치명타 확률 증가",
       "Value": 5.0,
-      "IncreaseValue": 1.0
+      "IncreaseValue": 1.0,
+      "SpriteKey": "Attribute/CriRate"
     },
     {
       "HeroAttrType": 3,
-      "Remark": "치명타 데미지+",
+      "Name": "치명타 데미지 증가",
       "Value": 5.0,
-      "IncreaseValue": 1.0
+      "IncreaseValue": 1.0,
+      "SpriteKey": "Attribute/CriDmg"
     },
     {
       "HeroAttrType": 4,
-      "Remark": "스킬 쿨타임-",
+      "Name": "스킬 쿨타임 감소",
       "Value": 5.0,
-      "IncreaseValue": 1.0
+      "IncreaseValue": 1.0,
+      "SpriteKey": "Attribute/SkillTime"
     },
     {
       "HeroAttrType": 5,
-      "Remark": "스킬 데미지+",
+      "Name": "스킬 데미지 증가",
       "Value": 5.0,
-      "IncreaseValue": 1.0
+      "IncreaseValue": 1.0,
+      "SpriteKey": "Attribute/SkillDmg"
     }
   ]
 }

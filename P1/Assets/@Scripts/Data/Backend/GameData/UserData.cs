@@ -61,7 +61,7 @@ namespace BackendData.GameData
 
             _upgradeAttrDic.Clear();
             _upgradeAttrDic.Add(EHeroAttrType.Growth_Atk.ToString(), 1);
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_Hp.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Growth_MaxHp.ToString(), 1);
             _upgradeAttrDic.Add(EHeroAttrType.Growth_CriRate.ToString(), 1);
             _upgradeAttrDic.Add(EHeroAttrType.Growth_CriDmg.ToString(), 1);
             _upgradeAttrDic.Add(EHeroAttrType.Growth_SkillTime.ToString(), 1);

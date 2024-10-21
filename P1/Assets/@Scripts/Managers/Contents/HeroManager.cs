@@ -54,7 +54,7 @@ public class HeroInfo
 
         // 특성 레벨 계산 
         AtkAttr = CaculateAttribute(EHeroAttrType.Growth_Atk);
-        MaxHpAttr = CaculateAttribute(EHeroAttrType.Growth_Hp);
+        MaxHpAttr = CaculateAttribute(EHeroAttrType.Growth_MaxHp);
         CriRateAttr = CaculateAttribute(EHeroAttrType.Growth_CriRate);
         CriDmgAttr = CaculateAttribute(EHeroAttrType.Growth_CriDmg);
         SkillTimeAttr = CaculateAttribute(EHeroAttrType.Growth_SkillTime);

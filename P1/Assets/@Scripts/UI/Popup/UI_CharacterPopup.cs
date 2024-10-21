@@ -94,7 +94,6 @@ public class UI_CharacterPopup : UI_Popup
                 GetButton((int)Buttons.Btn_Attribute).interactable = false;
                 
                 _attributePanel.gameObject.SetActive(true);
-                _attributePanel.RefreshUI();
                 break;
             case ECharacterSection.Relics:
                 GetButton((int)Buttons.Btn_Relics).interactable = false;

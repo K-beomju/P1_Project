@@ -12,14 +12,14 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
         Text_AbLevel
     }
 
-    public enum Images
+    public enum Images 
     {
         Image_AbIcon
     }
 
-    private TMP_Text levelText;
-    private Image iconImage;
-
+    private TMP_Text _levelText;
+    private Image _iconImage;
+    private Button _slotButton;
     private EHeroAttrType _heroAttrType;
 
     protected override bool Init()
@@ -29,11 +29,21 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
 
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
-        levelText = GetTMPText((int)Texts.Text_AbLevel);
-        iconImage = GetImage((int)Images.Image_AbIcon);
-
+        _levelText = GetTMPText((int)Texts.Text_AbLevel);
+        _iconImage = GetImage((int)Images.Image_AbIcon);
+        _slotButton = GetComponent<Button>();
         UpdateSlotInfoUI();
         return true;
+    }
+
+    private void OnEnable() 
+    {
+        UpdateSlotInfoUI();
+    }
+
+    private void OnDisable() 
+    {
+        
     }
 
     public void SetInfo(EHeroAttrType attrType)
@@ -42,6 +52,7 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
 
         if (Init() == false)
         {
+            _slotButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.AttributeItemClick, attrType));
             UpdateSlotInfoUI();
         }
     }
@@ -53,7 +64,14 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
             Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
             return;
         }
-        levelText.text =  $"Lv {level}";
+
+        Data.HeroAttributeInfoData attriData = Managers.Data.HeroAttributeChart[_heroAttrType];
+
+        _slotButton.onClick.RemoveAllListeners();
+        _slotButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.AttributeItemClick, attriData));
+
+        _levelText.text =  $"Lv {level}";
+        _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{attriData.SpriteKey}");
 
     }
 }

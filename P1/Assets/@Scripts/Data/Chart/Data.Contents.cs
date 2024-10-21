@@ -214,9 +214,10 @@ namespace Data
     public class HeroAttributeInfoData
     {
         public EHeroAttrType HeroAttrType;
-        public string Remark;
+        public string Name;
         public float Value;
         public float IncreaseValue;
+        public string SpriteKey;
     }
 
     [Serializable]

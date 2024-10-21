@@ -113,7 +113,10 @@ public static class Define
         SkillItemClick,
 
         /// <summary>게임씬 스킬 슬롯 쿨타임 체크</summary>
-        CompleteSkillCool
+        CompleteSkillCool,
+
+        /// <summary>특성 아이템 클릭할 때 호출</summary>
+        AttributeItemClick,
     }
 
     #endregion
@@ -211,7 +214,7 @@ public static class Define
     public enum EHeroAttrType
     {
         Growth_Atk,
-        Growth_Hp,
+        Growth_MaxHp,
         Growth_CriRate,
         Growth_CriDmg,
         Growth_SkillTime,
