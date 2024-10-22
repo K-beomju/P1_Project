@@ -87,6 +87,17 @@ public class UI_EquipSkillSlot : UI_Base
             
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{_skillSlot.SkillInfoData.SpriteKey}");
         StopCoolTime(_index);
+       
+        // 스킬 쿨타임 계산
+        float baseCoolTime = _skillSlot.SkillInfoData.Data.CoolTime;
+        float skillTimeAttr = Managers.Hero.PlayerHeroInfo.SkillTimeAttr; // 특성으로 인한 쿨타임 감소 퍼센트
+
+        // 특성 적용된 쿨타임 계산
+        float adjustedCoolTime = baseCoolTime * (1 - skillTimeAttr / 100f);
+        adjustedCoolTime = Mathf.Max(0f, adjustedCoolTime); // 쿨타임이 음수가 되지 않도록 보정
+
+        Debug.Log($"스킬 기본 쿨타임: {baseCoolTime}, 특성 쿨타임 감소: {skillTimeAttr}%, 적용된 쿨타임: {adjustedCoolTime}");
+
         _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));    
     }
     

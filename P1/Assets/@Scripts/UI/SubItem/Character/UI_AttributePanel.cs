@@ -95,7 +95,7 @@ public class UI_AttributePanel : UI_Base
             Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
             return;
         }
-        
+        CheckUpgradeInteractive();
         Data.HeroAttributeInfoData attriData = Managers.Data.HeroAttributeChart[SelectAttrType];
 
         GetTMPText((int)Texts.Text_AttributeLevel).text = $"Lv {level}";
@@ -139,6 +139,15 @@ public class UI_AttributePanel : UI_Base
         {
             StopCoroutine(_coolTime);
             _coolTime = null;
+        }
+    }
+
+    private void CheckUpgradeInteractive()
+    {
+        if (Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
+        {
+            int price = Util.GetAttributeCost(SelectAttrType, level + 1);
+            GetButton((int)Buttons.Btn_Upgrade).interactable = CanUpgrade(price);
         }
     }
 

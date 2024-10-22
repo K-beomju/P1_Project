@@ -23,5 +23,25 @@ public class MyCustomEditorWindow : EditorWindow
         {
             Managers.Object.Hero.isStopAI = false;
         }
+        if (GUILayout.Button("게임 데이터 저장", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            Managers.Backend.UpdateAllGameData(callback => {
+            if (callback == null)
+            {
+                Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
+                return;
+            }
+
+            if (callback.IsSuccess())
+            {
+                Debug.Log("저장 성공, 저장에 성공했습니다.");
+            }
+            else
+            {
+                Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+            }
+
+        });
+        }
     }
 }

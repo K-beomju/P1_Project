@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Define;
 
 public class UI_CharacterPopup : UI_Popup
 {
@@ -82,6 +83,7 @@ public class UI_CharacterPopup : UI_Popup
         GetButton((int)Buttons.Btn_Attribute).interactable = _characterSection != ECharacterSection.Attribute;
         GetButton((int)Buttons.Btn_Relics).interactable =  _characterSection != ECharacterSection.Relics;
         (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(Define.EGoodType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
+        Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
 
         switch (_characterSection)
         {

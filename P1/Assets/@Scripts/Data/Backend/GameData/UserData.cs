@@ -89,13 +89,11 @@ namespace BackendData.GameData
                 _upgradeStatDic.Add(column, int.Parse(Data["UpgradeStat"][column].ToString()));
             }
 
-            
+
             foreach (var column in Data["UpgradeAttr"].Keys)
             {
                 _upgradeAttrDic.Add(column, int.Parse(Data["UpgradeAttr"][column].ToString()));
             }
-            
-            _purseDic[EGoodType.ExpPoint.ToString()] = 100;
         }
 
         public override string GetTableName()
@@ -216,7 +214,7 @@ namespace BackendData.GameData
             {
                 _upgradeAttrDic.Add(key, 1);
             }
-
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             Managers.Event.TriggerEvent(EEventType.HeroAttributeUpdated);
         }
 

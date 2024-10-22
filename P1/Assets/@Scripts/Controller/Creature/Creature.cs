@@ -146,13 +146,22 @@ public class Creature : BaseObject
             float baseStat = attacker.Atk;
             float ownedValue = effect.SkillData.DamageMultiplier;
             finalDamage = baseStat * (ownedValue / 100f);  // 공격력의 ownedValue%만큼 데미지 계산
+
+            // 스킬 데미지 특성 적용
+            if (attacker is Hero)
+            {
+                HeroInfo heroInfo = Managers.Hero.PlayerHeroInfo;
+                float skillDmgAttr = heroInfo.SkillDmgAttr; // 특성으로 인한 스킬 데미지 증가 퍼센트
+                finalDamage *= (1 + skillDmgAttr / 100f);
+                Debug.Log($"스킬 데미지 특성 적용: {skillDmgAttr}% 증가, 최종 데미지: {finalDamage}");
+            }
         }
 
         // 피해 감소 버프가 있을 경우 최종 피해량에 반영
         if (ReduceDmgBuff.Value > 1)
         {
             Debug.LogWarning("받는 피해 감소가 있습니다." + ReduceDmgBuff.Value);
-            float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1); 
+            float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1);
             finalDamage *= damageReductionMultiplier;
         }
 

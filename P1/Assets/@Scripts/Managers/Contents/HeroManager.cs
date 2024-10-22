@@ -13,7 +13,7 @@ public class HeroInfo
     #region Stat
     public float Atk { get; private set; }
     public float MaxHp { get; private set; }
-    public float Recovery { get; private set; } 
+    public float Recovery { get; private set; }
     public float CriRate { get; private set; }
     public float CriDmg { get; private set; }
 
@@ -52,6 +52,12 @@ public class HeroInfo
         CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
         CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
 
+     
+        Debug.LogWarning("기존 공격력 : " + Atk);
+        Debug.LogWarning("기존 최대체력 : " + MaxHp);
+        Debug.LogWarning("기존 치명타 확률 : " + CriRate);
+        Debug.LogWarning("기존 치명타 데미지 : " + CriDmg);
+
         // 특성 레벨 계산 
         AtkAttr = CaculateAttribute(EHeroAttrType.Attribute_Atk);
         MaxHpAttr = CaculateAttribute(EHeroAttrType.Attribute_MaxHp);
@@ -60,10 +66,36 @@ public class HeroInfo
         SkillTimeAttr = CaculateAttribute(EHeroAttrType.Attribute_SkillTime);
         SkillDmgAttr = CaculateAttribute(EHeroAttrType.Attribute_SkillDmg);
 
-        // 장비 효과 적용
-        Atk = ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);
-        MaxHp = ApplyEquipmentEffect(EEquipmentType.Armor, MaxHp);
+        // 장비 보너스 퍼센트 합산
+        float AtkEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Weapon);
+        float MaxHpEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Armor);
 
+        Debug.LogWarning("장비 공격력 보너스 퍼센트 : " + AtkEquipmentPer);
+        Debug.LogWarning("장비 최대체력 보너스 퍼센트 : " + MaxHpEquipmentPer);
+
+        // 총 보너스 퍼센트 합산 (장비 + 특성)
+        float totalAtkPer = AtkEquipmentPer + AtkAttr;
+        float totalMaxHpPer = MaxHpEquipmentPer + MaxHpAttr;
+        float totalCriRatePer = CriRateAttr;
+        float totalCriDmgPer = CriDmgAttr;
+
+        Debug.LogWarning("총 공격력 보너스 퍼센트 (장비 + 특성) : " + totalAtkPer);
+        Debug.LogWarning("총 최대체력 보너스 퍼센트 (장비 + 특성) : " + totalMaxHpPer);
+        Debug.LogWarning("총 치명타 확률 보너스 퍼센트 (특성) : " + totalCriRatePer);
+        Debug.LogWarning("총 치명타 데미지 보너스 퍼센트 (특성) : " + totalCriDmgPer);
+
+        // 최종 스탯 계산
+        Atk = Atk * (1 + totalAtkPer / 100f);
+        MaxHp = MaxHp * (1 + totalMaxHpPer / 100f);
+        CriRate = CriRate * (1 + totalCriRatePer / 100f);
+        CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
+
+        Debug.LogWarning("최종 공격력 : " + Atk);
+        Debug.LogWarning("최종 최대체력 : " + MaxHp);
+        Debug.LogWarning("최종 치명타 확률 : " + CriRate);
+        Debug.LogWarning("최종 치명타 데미지 : " + CriDmg);
+        
+        // 기타 스탯 설정
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
         AttackSpeedRate = Data.AttackSpeedRate;
@@ -91,53 +123,35 @@ public class HeroInfo
     private float CaculateAttribute(EHeroAttrType attrType)
     {
         var attributeData = Managers.Data.HeroAttributeChart[attrType];
-        float baseValue = attributeData.Value;
         float increaseValue = attributeData.IncreaseValue;
         int currentLevel = Managers.Backend.GameData.UserData.UpgradeAttrDic[attrType.ToString()];
 
-        return baseValue + (increaseValue * (currentLevel - 1));
+        return increaseValue * currentLevel;
     }
 
 
-    // 장비 효과 적용
-    private float ApplyEquipmentEffect(EEquipmentType equipmentType, float baseStat)
+    // 장비 보너스 퍼센트 합산 함수
+    private float GetTotalEquipmentBonusPercentage(EEquipmentType equipmentType)
     {
         // 보유한 장비 효과 및 장착된 장비 효과 가져오기
         float ownedValue = Managers.Equipment.OwnedEquipmentValues(equipmentType);
         float equipValue = Managers.Equipment.EquipEquipmentValue(equipmentType);
 
-        // 보유 효과가 존재하면 먼저 적용
-        if (ownedValue != 0)
-        {
-            baseStat *= (1 + ownedValue / 100f);
-        }
-
-        // 장착 효과가 존재하면 추가로 적용
-        if (equipValue != 0)
-        {
-            baseStat *= (1 + equipValue / 100f);
-        }
-
-        return baseStat; // 최종 스탯 반환
+        // 보유 효과와 장착 효과의 퍼센트를 합산
+        return ownedValue + equipValue;
     }
-
 
     // 총전투력 계산 함수
     private float CalculateTotalCombatPower(HeroInfo hero)
     {
-        // 모든 스탯을 단순히 합산하여 총 전투력을 계산합니다.
+        // 모든 스탯을 단순히 합산하여 총 전투력을 계산
         float totalCombatPower = 0.0f;
 
-        // HeroInfo 클래스에서 제공하는 각 스탯의 값을 합산
-        totalCombatPower += hero.Atk;       // 공격력
-        totalCombatPower += hero.MaxHp;     // 체력
-        totalCombatPower += hero.Recovery;  // 회복력
-        totalCombatPower += hero.CriRate;   // 치명타 확률
-        totalCombatPower += hero.CriDmg;    // 치명타 데미지
-        //totalCombatPower += hero.AttackRange; // 공격 범위
-        //totalCombatPower += hero.AttackDelay; // 공격 딜레이
-        //totalCombatPower += hero.AttackSpeedRate; // 공격 속도
-
+        totalCombatPower += hero.Atk;
+        totalCombatPower += hero.MaxHp;
+        totalCombatPower += hero.Recovery;
+        totalCombatPower += hero.CriRate;
+        totalCombatPower += hero.CriDmg;
         return totalCombatPower;
     }
 }
