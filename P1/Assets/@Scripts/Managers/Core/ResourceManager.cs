@@ -20,8 +20,8 @@ public class ResourceManager
 			return null;
 		}
 
-			// if (pooling)
-			// return Managers.Pool.Pop(prefab);
+		if (pooling)
+			return Managers.Pool.Pop(prefab);
 
 		return Instantiate(prefab, parent);
 	}
