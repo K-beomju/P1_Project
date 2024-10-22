@@ -14,7 +14,7 @@ public class MyCustomEditorWindow : EditorWindow
 
     // 창에 표시될 내용 정의
     private void OnGUI()
-    {        
+    {
         if (GUILayout.Button("플레이어 이동 제어", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
             Managers.Object.Hero.isStopAI = true;
@@ -25,23 +25,29 @@ public class MyCustomEditorWindow : EditorWindow
         }
         if (GUILayout.Button("게임 데이터 저장", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.Backend.UpdateAllGameData(callback => {
-            if (callback == null)
+            Managers.Backend.UpdateAllGameData(callback =>
             {
-                Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
-                return;
-            }
+                if (callback == null)
+                {
+                    Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
+                    return;
+                }
 
-            if (callback.IsSuccess())
-            {
-                Debug.Log("저장 성공, 저장에 성공했습니다.");
-            }
-            else
-            {
-                Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
-            }
+                if (callback.IsSuccess())
+                {
+                    Debug.Log("저장 성공, 저장에 성공했습니다.");
+                }
+                else
+                {
+                    Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                }
 
-        });
+            });
+        }
+        if (GUILayout.Button("레벨업 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            UI_LevelUpBase levelUpBase = Managers.UI.ShowBaseUI<UI_LevelUpBase>();
+            levelUpBase.ShowLevelUpUI(3);
         }
     }
 }

@@ -168,8 +168,12 @@ public class HeroManager
         Managers.Event.AddEvent(EEventType.PlayerLevelUp, new Action<int>(level =>
         {
             // 히어로의 레벨 업데이트
-            PlayerHeroInfo.Level = Managers.Backend.GameData.UserData.Level;
+            PlayerHeroInfo.Level = level;
             PlayerHeroInfo.CalculateInfoStat();
+
+            UI_LevelUpBase levelUpBase = Managers.UI.ShowBaseUI<UI_LevelUpBase>();
+            levelUpBase.ShowLevelUpUI(level);
+
         }));
 
         PlayerHeroInfo.CalculateInfoStat();
