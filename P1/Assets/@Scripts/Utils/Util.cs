@@ -109,6 +109,31 @@ public static class Util
         return startCost + increaseCount * increaseCost;
     }
 
+    public static int GetAttributeCost(EHeroAttrType attrType, int level)
+    {
+        List<int> ReferenceLevelList = Managers.Data.HeroAttributeCostChart[attrType].ReferenceLevelList; 
+        List<int> StartCostList = Managers.Data.HeroAttributeCostChart[attrType].StartCostList; 
+        List<int> IncreaseCostList = Managers.Data.HeroAttributeCostChart[attrType].IncreaseCostList; 
+
+        int startCost = 0;
+        int increaseCost = 0;
+
+        int i = 0;
+        for (i = 0; i < ReferenceLevelList.Count; i++)
+        {
+            if (level <= ReferenceLevelList[i])
+            {
+                startCost = StartCostList[i];
+                increaseCost = IncreaseCostList[i];
+                break;
+            }
+        }
+
+        int increaseCount = level - (i == 0 ? 0 : ReferenceLevelList[i - 1]) - 1;
+        return startCost + increaseCount * increaseCost;
+    }
+
+
     public static string GetHeroUpgradeString(EHeroUpgradeType type)
     {
         return type switch

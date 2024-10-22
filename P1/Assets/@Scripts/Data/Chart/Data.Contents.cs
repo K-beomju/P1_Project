@@ -237,6 +237,35 @@ namespace Data
         }
     }
 
+    [Serializable]
+    public class HeroAttributeCostInfoData
+    {
+        public EHeroAttrType HeroAttrType;
+        public string Remark;
+        public List<int> ReferenceLevelList = new List<int>();
+        public List<EGoodType> GoodList = new List<EGoodType>();
+        public List<int> StartCostList = new List<int>();
+        public List<int> IncreaseCostList = new List<int>();
+    }
+
+    [Serializable]
+    public class HeroAttributeCostInfoDataLoader : ILoader<EHeroAttrType, HeroAttributeCostInfoData>
+    {
+        public List<HeroAttributeCostInfoData> HeroAttributeCostInfoDataList = new List<HeroAttributeCostInfoData>();
+
+        public Dictionary<EHeroAttrType, HeroAttributeCostInfoData> MakeDict()
+        {
+            Dictionary<EHeroAttrType, HeroAttributeCostInfoData> dict = new Dictionary<EHeroAttrType, HeroAttributeCostInfoData>();
+            foreach (HeroAttributeCostInfoData infoData in HeroAttributeCostInfoDataList)
+            {
+                dict.Add(infoData.HeroAttrType, infoData);
+            }
+
+            return dict;
+        }
+    }
+
+
 
     #endregion
 

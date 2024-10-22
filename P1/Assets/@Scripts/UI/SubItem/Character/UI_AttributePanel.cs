@@ -19,17 +19,9 @@ public class UI_AttributePanel : UI_Base
         Text_Amount
     }
 
-    private Data.HeroAttributeInfoData selectAttributeInfo;
-    public Data.HeroAttributeInfoData SelectAttributeInfo
+    public enum Buttons
     {
-        get { return selectAttributeInfo; }
-        set
-        {
-            if (selectAttributeInfo != value)
-            {
-                selectAttributeInfo = value;
-            }
-        }
+        Btn_Upgrade
     }
 
     public enum UI_AttributeGrowthSlots
@@ -42,6 +34,22 @@ public class UI_AttributePanel : UI_Base
         UI_AttributeGrowthInvenSlot_SkillDmg
     }
 
+    private EHeroAttrType selectAttrType;
+    public EHeroAttrType SelectAttrType
+    {
+        get { return selectAttrType; }
+        set
+        {
+            if (selectAttrType != value)
+            {
+                selectAttrType = value;
+            }
+        }
+    }
+
+    private Coroutine _coolTime;
+
+
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -50,43 +58,101 @@ public class UI_AttributePanel : UI_Base
         Bind<UI_AttributeGrowhInvenSlot>(typeof(UI_AttributeGrowthSlots));
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
+        BindButtons(typeof(Buttons));
 
-        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_Atk).SetInfo(EHeroAttrType.Growth_Atk);
-        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_MaxHp).SetInfo(EHeroAttrType.Growth_MaxHp);
-        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_CriRate).SetInfo(EHeroAttrType.Growth_CriRate);
-        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_CriDmg).SetInfo(EHeroAttrType.Growth_CriDmg);
-        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_SkillTime).SetInfo(EHeroAttrType.Growth_SkillTime);
-        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_SkillDmg).SetInfo(EHeroAttrType.Growth_SkillDmg);
+        GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPressUpgradeButton, EUIEvent.Pressed);
+        GetButton((int)Buttons.Btn_Upgrade).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
 
+        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_Atk).SetInfo(EHeroAttrType.Attribute_Atk);
+        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_MaxHp).SetInfo(EHeroAttrType.Attribute_MaxHp);
+        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_CriRate).SetInfo(EHeroAttrType.Attribute_CriRate);
+        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_CriDmg).SetInfo(EHeroAttrType.Attribute_CriDmg);
+        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_SkillTime).SetInfo(EHeroAttrType.Attribute_SkillTime);
+        Get<UI_AttributeGrowhInvenSlot>((int)UI_AttributeGrowthSlots.UI_AttributeGrowthInvenSlot_SkillDmg).SetInfo(EHeroAttrType.Attribute_SkillDmg);
+
+        ShowAttributeDetailUI(EHeroAttrType.Attribute_Atk);
         return true;
     }
 
     void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.AttributeItemClick, new Action<Data.HeroAttributeInfoData>(ShowAttributeDetailUI));
+        Managers.Event.AddEvent(EEventType.AttributeItemClick, new Action<EHeroAttrType>(ShowAttributeDetailUI));
+
     }
 
     void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.AttributeItemClick, new Action<Data.HeroAttributeInfoData>(ShowAttributeDetailUI));
+        Managers.Event.RemoveEvent(EEventType.AttributeItemClick, new Action<EHeroAttrType>(ShowAttributeDetailUI));
     }
 
 
-    public void ShowAttributeDetailUI(Data.HeroAttributeInfoData attriData)
+    public void ShowAttributeDetailUI(EHeroAttrType attrType)
     {
-        if (SelectAttributeInfo == attriData)
-            return;
+        SelectAttrType = attrType;
 
-        SelectAttributeInfo = attriData;
-
-        if (!Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(attriData.HeroAttrType.ToString(), out int level))
+        if (!Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
         {
             Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
             return;
         }
+        
+        Data.HeroAttributeInfoData attriData = Managers.Data.HeroAttributeChart[SelectAttrType];
 
         GetTMPText((int)Texts.Text_AttributeLevel).text = $"Lv {level}";
-        GetTMPText((int)Texts.Text_AttributeName).text = SelectAttributeInfo.Name;
-        GetImage((int)Images.Image_SelectAbIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{SelectAttributeInfo.SpriteKey}");
+        GetTMPText((int)Texts.Text_AttributeName).text = attriData.Name;
+        GetTMPText((int)Texts.Text_AttributeValue).text =
+        $"{attriData.IncreaseValue * level}% => {attriData.IncreaseValue * (level + 1)}%";
+        GetTMPText((int)Texts.Text_AttributeName).text = attriData.Name;
+        GetTMPText((int)Texts.Text_Amount).text = $"{Util.GetAttributeCost(SelectAttrType, level + 1):N0}";;
+
+        GetImage((int)Images.Image_SelectAbIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{attriData.SpriteKey}");
+    }
+
+    private void OnPressUpgradeButton()
+    {
+        if (_coolTime != null)
+            return;
+
+        try
+        {
+            if (Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
+            {
+                int price = Util.GetAttributeCost(SelectAttrType, level + 1);
+                if (CanUpgrade(price))
+                {
+                    Managers.Backend.GameData.UserData.AddAmount(EGoodType.ExpPoint, -price);
+                    Managers.Backend.GameData.UserData.LevelUpHeroAttribute(SelectAttrType);
+                    ShowAttributeDetailUI(SelectAttrType);
+                }
+            }
+            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"OnPressUpgradeButton({EGoodType.Gold}) 중 에러가 발생하였습니다\n{e}");
+        }
+    }
+
+    private void OnPointerUp()
+    {
+        if (_coolTime != null)
+        {
+            StopCoroutine(_coolTime);
+            _coolTime = null;
+        }
+    }
+
+    bool CanUpgrade(float cost)
+    {
+        if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(EGoodType.ExpPoint.ToString(), out float amount))
+            return false;
+
+        return amount >= cost;
+    }
+
+    private IEnumerator CoStartUpgradeCoolTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        _coolTime = null;
     }
 }

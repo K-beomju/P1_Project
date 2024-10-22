@@ -78,25 +78,21 @@ public class UI_CharacterPopup : UI_Popup
     {
         _characterPanel.gameObject.SetActive(false);
         _attributePanel.gameObject.SetActive(false);
-        GetButton((int)Buttons.Btn_Character).interactable = true;
-        GetButton((int)Buttons.Btn_Attribute).interactable = true;
-        GetButton((int)Buttons.Btn_Relics).interactable = true;
+        GetButton((int)Buttons.Btn_Character).interactable = _characterSection != ECharacterSection.Character;
+        GetButton((int)Buttons.Btn_Attribute).interactable = _characterSection != ECharacterSection.Attribute;
+        GetButton((int)Buttons.Btn_Relics).interactable =  _characterSection != ECharacterSection.Relics;
+        (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(Define.EGoodType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
 
         switch (_characterSection)
         {
             case ECharacterSection.Character:
-                GetButton((int)Buttons.Btn_Character).interactable = false;
-
                 _characterPanel.gameObject.SetActive(true);
                 _characterPanel.RefreshUI();
                 break;
             case ECharacterSection.Attribute:
-                GetButton((int)Buttons.Btn_Attribute).interactable = false;
-                
                 _attributePanel.gameObject.SetActive(true);
                 break;
             case ECharacterSection.Relics:
-                GetButton((int)Buttons.Btn_Relics).interactable = false;
                 break;
         }
 

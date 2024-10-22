@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -38,12 +39,12 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
 
     private void OnEnable() 
     {
-        UpdateSlotInfoUI();
+        Managers.Event.AddEvent(EEventType.HeroAttributeUpdated, new Action(UpdateSlotInfoUI));
     }
 
     private void OnDisable() 
     {
-        
+        Managers.Event.RemoveEvent(EEventType.HeroAttributeUpdated, new Action(UpdateSlotInfoUI));
     }
 
     public void SetInfo(EHeroAttrType attrType)
@@ -52,7 +53,6 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
 
         if (Init() == false)
         {
-            _slotButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.AttributeItemClick, attrType));
             UpdateSlotInfoUI();
         }
     }
@@ -68,7 +68,7 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
         Data.HeroAttributeInfoData attriData = Managers.Data.HeroAttributeChart[_heroAttrType];
 
         _slotButton.onClick.RemoveAllListeners();
-        _slotButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.AttributeItemClick, attriData));
+        _slotButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.AttributeItemClick, _heroAttrType));
 
         _levelText.text =  $"Lv {level}";
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{attriData.SpriteKey}");

@@ -1,0 +1,196 @@
+{
+  "HeroAttributeCostInfoDataList": [
+    {
+      "HeroAttrType": 0,
+      "Remark": "특성 공격",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "StartCostList": [
+        5,
+        10,
+        20,
+        40,
+        80
+      ],
+      "IncreaseCostList": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    {
+      "HeroAttrType": 1,
+      "Remark": "특성 최대체력",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "StartCostList": [
+        10,
+        20,
+        30,
+        50,
+        100
+      ],
+      "IncreaseCostList": [
+        5,
+        10,
+        15,
+        20,
+        25
+      ]
+    },
+    {
+      "HeroAttrType": 2,
+      "Remark": "특성 치명타 확률",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "StartCostList": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "IncreaseCostList": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "HeroAttrType": 3,
+      "Remark": "특성 치명타 피해",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "StartCostList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "IncreaseCostList": [
+        10,
+        20,
+        30,
+        40,
+        50
+      ]
+    },
+    {
+      "HeroAttrType": 4,
+      "Remark": "특성 스킬 쿨타임",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "StartCostList": [
+        15,
+        30,
+        45,
+        60,
+        75
+      ],
+      "IncreaseCostList": [
+        5,
+        10,
+        15,
+        20,
+        25
+      ]
+    },
+    {
+      "HeroAttrType": 5,
+      "Remark": "특성 스킬 데미지",
+      "ReferenceLevelList": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "GoodList": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "StartCostList": [
+        15,
+        30,
+        45,
+        60,
+        75
+      ],
+      "IncreaseCostList": [
+        5,
+        10,
+        15,
+        20,
+        25
+      ]
+    }
+  ]
+}

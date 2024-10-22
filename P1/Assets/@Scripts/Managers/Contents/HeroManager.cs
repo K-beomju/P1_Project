@@ -53,12 +53,12 @@ public class HeroInfo
         CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
 
         // 특성 레벨 계산 
-        AtkAttr = CaculateAttribute(EHeroAttrType.Growth_Atk);
-        MaxHpAttr = CaculateAttribute(EHeroAttrType.Growth_MaxHp);
-        CriRateAttr = CaculateAttribute(EHeroAttrType.Growth_CriRate);
-        CriDmgAttr = CaculateAttribute(EHeroAttrType.Growth_CriDmg);
-        SkillTimeAttr = CaculateAttribute(EHeroAttrType.Growth_SkillTime);
-        SkillDmgAttr = CaculateAttribute(EHeroAttrType.Growth_SkillDmg);
+        AtkAttr = CaculateAttribute(EHeroAttrType.Attribute_Atk);
+        MaxHpAttr = CaculateAttribute(EHeroAttrType.Attribute_MaxHp);
+        CriRateAttr = CaculateAttribute(EHeroAttrType.Attribute_CriRate);
+        CriDmgAttr = CaculateAttribute(EHeroAttrType.Attribute_CriDmg);
+        SkillTimeAttr = CaculateAttribute(EHeroAttrType.Attribute_SkillTime);
+        SkillDmgAttr = CaculateAttribute(EHeroAttrType.Attribute_SkillDmg);
 
         // 장비 효과 적용
         Atk = ApplyEquipmentEffect(EEquipmentType.Weapon, Atk);

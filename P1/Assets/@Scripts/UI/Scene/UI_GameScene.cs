@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D.IK;
 using UnityEngine.UI;
 using static Define;
 
@@ -58,6 +59,7 @@ public class UI_GameScene : UI_Scene
     {
         UI_GoodItem_Gold,
         UI_GoodItem_Dia,
+        UI_GoodItem_ExpPoint
     }
 
     public enum EquipSkillSlots
@@ -71,7 +73,7 @@ public class UI_GameScene : UI_Scene
     }
 
     public PlayTab _tab { get; set; } = PlayTab.None;
-    public List<UI_EquipSkillSlot> _equipSkillSlotList  { get; set; } = new List<UI_EquipSkillSlot>();
+    public List<UI_EquipSkillSlot> _equipSkillSlotList { get; set; } = new List<UI_EquipSkillSlot>();
     private bool _isAutoSkillActive = false; // AutoSkill 활성화 상태를 저장하는 변수
 
     protected override bool Init()
@@ -96,6 +98,8 @@ public class UI_GameScene : UI_Scene
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EGoodType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint).SetInfo(EGoodType.ExpPoint);
+
 
         InitializeUIElements();
 
@@ -122,6 +126,8 @@ public class UI_GameScene : UI_Scene
 
         GetTMPText((int)Texts.ExpValueText).text = string.Empty;
         GetTMPText((int)Texts.RemainMonsterValueText).text = string.Empty;
+
+        GetGoodItem(EGoodType.ExpPoint).gameObject.SetActive(false);
     }
 
     private void RefreshUI()
@@ -170,7 +176,7 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
-    #region Good, Exp
+    #region Good, Dia,
 
     public UI_GoodItem GetGoodItem(EGoodType goodType)
     {
@@ -178,6 +184,7 @@ public class UI_GameScene : UI_Scene
         {
             EGoodType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
             EGoodType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
+            EGoodType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
             _ => null,
         };
     }
@@ -260,6 +267,23 @@ public class UI_GameScene : UI_Scene
         {
             Managers.UI.ClosePopupUI();
             ShowPopupActiveGameUI(true);
+
+            switch (tab)
+            {
+                case PlayTab.Character:
+                    GetGoodItem(EGoodType.ExpPoint).gameObject.SetActive(false);
+                    break;
+                case PlayTab.Equipment:
+                    break;
+                case PlayTab.Skill:
+                    break;
+                case PlayTab.Dungeon:
+                    break;
+                case PlayTab.Draw:
+                    break;
+                case PlayTab.Shop:
+                    break;
+            }
         }
     }
 

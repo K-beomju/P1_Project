@@ -1,7 +1,7 @@
 ﻿EHeroAttrType,Name,Value,IncreaseValue,SpriteKey
-Growth_Atk,공격력 증가,5,1,Attribute/Atk
-Growth_MaxHp,최대 체력 증가,5,1,Attribute/MaxHp
-Growth_CriRate,치명타 확률 증가,5,1,Attribute/CriRate
-Growth_CriDmg,치명타 데미지 증가,5,1,Attribute/CriDmg
-Growth_SkillTime,스킬 쿨타임 감소,5,1,Attribute/SkillTime
-Growth_SkillDmg,스킬 데미지 증가,5,1,Attribute/SkillDmg
+Attribute_Atk,공격력 증가,5,1,Attribute/Atk
+Attribute_MaxHp,최대 체력 증가,5,1,Attribute/MaxHp
+Attribute_CriRate,치명타 확률 증가,5,1,Attribute/CriRate
+Attribute_CriDmg,치명타 데미지 증가,5,1,Attribute/CriDmg
+Attribute_SkillTime,스킬 쿨타임 감소,5,1,Attribute/SkillTime
+Attribute_SkillDmg,스킬 데미지 증가,5,1,Attribute/SkillDmg

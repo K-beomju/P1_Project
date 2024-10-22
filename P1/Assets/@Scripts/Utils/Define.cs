@@ -117,6 +117,9 @@ public static class Define
 
         /// <summary>특성 아이템 클릭할 때 호출</summary>
         AttributeItemClick,
+
+        /// <summary>영웅 특성 업그레이드 정보 갱신</summary>
+        HeroAttributeUpdated,
     }
 
     #endregion
@@ -199,7 +202,8 @@ public static class Define
     {
         None,
         Gold,
-        Dia
+        Dia,
+        ExpPoint
     }
 
     public enum EHeroUpgradeType
@@ -212,13 +216,13 @@ public static class Define
     }
 
     public enum EHeroAttrType
-    {
-        Growth_Atk,
-        Growth_MaxHp,
-        Growth_CriRate,
-        Growth_CriDmg,
-        Growth_SkillTime,
-        Growth_SkillDmg
+    {    
+        Attribute_Atk,
+        Attribute_MaxHp,
+        Attribute_CriRate,
+        Attribute_CriDmg,
+        Attribute_SkillTime,
+        Attribute_SkillDmg
     }
 
     public enum EStatModType

@@ -51,6 +51,7 @@ namespace BackendData.GameData
             _purseDic.Clear();
             _purseDic.Add(EGoodType.Gold.ToString(), 0);
             _purseDic.Add(EGoodType.Dia.ToString(), 0);
+            _purseDic.Add(EGoodType.ExpPoint.ToString(), 0);
 
             _upgradeStatDic.Clear();
             _upgradeStatDic.Add(EHeroUpgradeType.Growth_Atk.ToString(), 1);
@@ -60,12 +61,12 @@ namespace BackendData.GameData
             _upgradeStatDic.Add(EHeroUpgradeType.Growth_CriDmg.ToString(), 1);
 
             _upgradeAttrDic.Clear();
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_Atk.ToString(), 1);
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_MaxHp.ToString(), 1);
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_CriRate.ToString(), 1);
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_CriDmg.ToString(), 1);
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_SkillTime.ToString(), 1);
-            _upgradeAttrDic.Add(EHeroAttrType.Growth_SkillDmg.ToString(), 1);
+            _upgradeAttrDic.Add(EHeroAttrType.Attribute_Atk.ToString(), 0);
+            _upgradeAttrDic.Add(EHeroAttrType.Attribute_MaxHp.ToString(), 0);
+            _upgradeAttrDic.Add(EHeroAttrType.Attribute_CriRate.ToString(), 0);
+            _upgradeAttrDic.Add(EHeroAttrType.Attribute_CriDmg.ToString(), 0);
+            _upgradeAttrDic.Add(EHeroAttrType.Attribute_SkillTime.ToString(), 0);
+            _upgradeAttrDic.Add(EHeroAttrType.Attribute_SkillDmg.ToString(), 0);
         }
 
         // Backend.GameData.GetMyData 호출 이후 리턴된 값을 파싱하여 캐싱하는 함수
@@ -93,7 +94,8 @@ namespace BackendData.GameData
             {
                 _upgradeAttrDic.Add(column, int.Parse(Data["UpgradeAttr"][column].ToString()));
             }
-
+            
+            _purseDic[EGoodType.ExpPoint.ToString()] = 100;
         }
 
         public override string GetTableName()
@@ -159,6 +161,9 @@ namespace BackendData.GameData
         // 유저의 레벨을 변경하는 함수
         public void LevelUp()
         {
+            // 레벨업 포인트 1씩 늘려줌 
+            AddAmount(EGoodType.ExpPoint, 1);
+
             Exp -= MaxExp;
 
             MaxExp = Util.CalculateRequiredExp(Level);
@@ -212,8 +217,7 @@ namespace BackendData.GameData
                 _upgradeAttrDic.Add(key, 1);
             }
 
-            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
-            Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
+            Managers.Event.TriggerEvent(EEventType.HeroAttributeUpdated);
         }
 
         #endregion
