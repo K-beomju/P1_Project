@@ -171,9 +171,7 @@ public class HeroManager
             PlayerHeroInfo.Level = level;
             PlayerHeroInfo.CalculateInfoStat();
 
-            UI_LevelUpBase levelUpBase = Managers.UI.ShowBaseUI<UI_LevelUpBase>();
-            levelUpBase.ShowLevelUpUI(level);
-
+            Managers.UI.ShowBaseUI<UI_LevelUpBase>().ShowLevelUpUI(level);
         }));
 
         PlayerHeroInfo.CalculateInfoStat();

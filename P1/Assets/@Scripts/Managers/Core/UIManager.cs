@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class UIManager
 
 	private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 	private Dictionary<string, UI_Popup> _popups = new Dictionary<string, UI_Popup>();
+	private Dictionary<string, UI_Base> _bases = new Dictionary<string, UI_Base>();
 
 	private UI_Scene _sceneUI = null;
 	public UI_Scene SceneUI
@@ -112,13 +114,37 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-		GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Base/{name}");
-		GameObject go = Managers.Resource.Instantiate(prefab);
-		T baseUI = Util.GetOrAddComponent<T>(go);
+		// 딕셔너리에서 재사용 가능한 UI 검색
+		if (_bases.TryGetValue(name, out UI_Base ui_Base))
+		{
+			ui_Base.gameObject.SetActive(true);
+			return ui_Base as T;
+		}
 
-		go.transform.SetParent(Root.transform);
+		// 새로운 UI 생성
+		GameObject go = Managers.Resource.Instantiate($"UI/Base/{name}", Root.transform, false);
+		ui_Base = Util.GetOrAddComponent<T>(go);
 
-		return baseUI;
+		// 재사용을 위해 딕셔너리에 저장
+		_bases[name] = ui_Base;
+
+		ui_Base.gameObject.SetActive(true);
+
+		return ui_Base as T;
+	}
+
+	public T ShowPooledUI<T>(string name = null) where T : UI_Base
+	{
+		if (string.IsNullOrEmpty(name))
+			name = typeof(T).Name;
+
+		// 풀링 시스템을 통해 새로운 UI 생성
+		GameObject go = Managers.Resource.Instantiate($"UI/Base/{name}", Root.transform, true);
+		UI_Base ui_Base = Util.GetOrAddComponent<T>(go);
+
+		ui_Base.gameObject.SetActive(true);
+
+		return ui_Base as T;
 	}
 
 	public T ShowSceneUI<T>(string name = null) where T : UI_Scene
@@ -126,16 +152,14 @@ public class UIManager
 		if (string.IsNullOrEmpty(name))
 			name = typeof(T).Name;
 
-		GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Scene/{name}");
-		GameObject go = Managers.Resource.Instantiate(prefab);
+		GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}", Root.transform);
 		T sceneUI = Util.GetOrAddComponent<T>(go);
 		_sceneUI = sceneUI;
-
-		go.transform.SetParent(Root.transform);
 
 		return sceneUI;
 	}
 
+    // 딕셔너리에서 팝업을 찾음, 없으면 생성
 	public T ShowPopupUI<T>(string name = null) where T : UI_Popup
 	{
 		if (string.IsNullOrEmpty(name))
@@ -143,16 +167,17 @@ public class UIManager
 
 		if (_popups.TryGetValue(name, out UI_Popup popup) == false)
 		{
-			GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
-			GameObject go = Managers.Resource.Instantiate(prefab);
-
+			GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}", Root.transform);
 			popup = Util.GetOrAddComponent<T>(go);
+
+        	// 새로 생성된 팝업을 딕셔너리에 저장
 			_popups[name] = popup;
 		}
 
+    	// 스택에 푸시하여 팝업 관리
 		_popupStack.Push(popup);
 		popup.gameObject.SetActive(true);
-		
+
 		return popup as T;
 	}
 
@@ -162,12 +187,10 @@ public class UIManager
 
 		if (_popups.TryGetValue(name, out UI_Popup popup) == false)
 		{
-			GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
-			GameObject go = Managers.Resource.Instantiate(prefab);
+			GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}", Root.transform);
 			popup = go.GetComponent<UI_Popup>();
 			_popups[name] = popup;
 		}
-		popup.transform.SetParent(Root.transform);
 		_popupStack.Push(popup);
 	}
 

@@ -46,8 +46,12 @@ public class MyCustomEditorWindow : EditorWindow
         }
         if (GUILayout.Button("레벨업 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            UI_LevelUpBase levelUpBase = Managers.UI.ShowBaseUI<UI_LevelUpBase>();
-            levelUpBase.ShowLevelUpUI(3);
+            Managers.UI.ShowBaseUI<UI_LevelUpBase>().ShowLevelUpUI(3);
+        }
+        if (GUILayout.Button("스테이지 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(3);
+
         }
     }
 }

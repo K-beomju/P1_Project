@@ -162,7 +162,7 @@ public class Monster : Creature, IDamageable
             Managers.Backend.GameData.UserData.AddExp(gameScene.StageInfo.MonsterExpReward);
             if (ObjectType == EObjectType.Monster)
             {
-                UI_GoldIconBase goldIcon = Managers.UI.ShowBaseUI<UI_GoldIconBase>();
+                UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
                 goldIcon.SetGoldIconAtPosition(transform.position, () =>
                 {
                     try
