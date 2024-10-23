@@ -72,8 +72,6 @@ public class UI_LevelUpBase : UI_Base
         _sequence.OnComplete(() =>
         {
             gameObject.SetActive(false);
-
-            //Managers.Object.Despawn(this);
         });
     }
 }

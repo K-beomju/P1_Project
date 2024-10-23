@@ -176,6 +176,7 @@ public class Creature : BaseObject
         {
             OnDead();
             CreatureState = ECreatureState.Dead;
+            return;
         }
 
         Sprite.color = originalColor;

@@ -73,6 +73,7 @@ public class UI_GameScene : UI_Scene
     }
 
     public PlayTab _tab { get; set; } = PlayTab.None;
+
     public List<UI_EquipSkillSlot> _equipSkillSlotList { get; set; } = new List<UI_EquipSkillSlot>();
     private bool _isAutoSkillActive = false; // AutoSkill 활성화 상태를 저장하는 변수
 
@@ -88,6 +89,7 @@ public class UI_GameScene : UI_Scene
         Bind<CanvasGroup>(typeof(CanvasGroups));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
+
 
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
@@ -286,6 +288,8 @@ public class UI_GameScene : UI_Scene
             }
         }
     }
+
+
 
     #endregion
 

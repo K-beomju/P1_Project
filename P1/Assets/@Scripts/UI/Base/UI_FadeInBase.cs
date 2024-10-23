@@ -32,13 +32,14 @@ public class UI_FadeInBase : UI_Base
 
     public void ShowFadeIn(float fadeOutTime, float fadeInTime, Action fadeOutCallBack = null, Action fadeInCallBack = null)
     {
+        fadeImage.DOFade(0, 0);
         fadeImage.DOFade(1, fadeOutTime).OnComplete(() =>
         {
             fadeOutCallBack?.Invoke();
             fadeImage.DOFade(0, fadeInTime).OnComplete(() =>
             {
                 fadeInCallBack?.Invoke();
-                Managers.Resource.Destroy(this.gameObject);
+                gameObject.SetActive(false);
             });
         });
     }
