@@ -100,8 +100,8 @@ public class Hero : Creature
         MaxHp = HeroInfo.MaxHp;
         Hp = MaxHp;
 
-        Debug.Log($"공격력 {Atk}");
-        Debug.Log($"체력 {Hp}");
+        // Debug.Log($"공격력 {Atk}");
+        // Debug.Log($"체력 {Hp}");
 
         Debug.Log($"{Level} 레벨에서 공식계산 다시합니다.");
     }

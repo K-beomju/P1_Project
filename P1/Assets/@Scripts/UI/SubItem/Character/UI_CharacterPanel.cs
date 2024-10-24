@@ -7,6 +7,11 @@ using static Define;
 
 public class UI_CharacterPanel : UI_Base
 {
+    public enum Texts 
+    {
+        Text_TotalPower
+    }
+
     public enum Buttons
     {
         Btn_RingSlot,
@@ -37,6 +42,7 @@ public class UI_CharacterPanel : UI_Base
         Bind<UI_CharacterGrowthInvenSlot>(typeof(UI_CharacterGrowthSlots));
         Bind<UI_CompanionItem>(typeof(EquipmentItems));
         BindButtons(typeof(Buttons));
+        BindTMPTexts(typeof(Texts));
 
         Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Atk).SetInfo(EHeroUpgradeType.Growth_Atk);
         Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_Hp).SetInfo(EHeroUpgradeType.Growth_Hp);
@@ -59,11 +65,29 @@ public class UI_CharacterPanel : UI_Base
         return true;
     }
 
+    private void OnEnable() 
+    {
+        Managers.Event.AddEvent(EEventType.HeroTotalPowerUpdated, new Action(ShowTotalPowerText));    
+    }
+
+    private void OnDisable() 
+    {
+        Managers.Event.RemoveEvent(EEventType.HeroTotalPowerUpdated, new Action(ShowTotalPowerText));    
+    }
+
     public void RefreshUI()
     {
         UpdateEquipmentSlot();
+        ShowTotalPowerText();
     }
 
+    // 전투력 표시 텍스트 함수 
+    private void ShowTotalPowerText()
+    {
+        GetTMPText((int)Texts.Text_TotalPower).text = Util.ConvertToTotalPower(Managers.Hero.PlayerHeroInfo.CurrentTotalPower);
+    }
+
+    // 장비 슬롯 클릭시 장비 팝업으로 이동하는 함수 
     private void HandleEquipmentPopup(EEquipmentType equipmentType)
     {
         Managers.UI.ClosePopupUI();
@@ -71,6 +95,7 @@ public class UI_CharacterPanel : UI_Base
         (Managers.UI.SceneUI as UI_GameScene)._tab = UI_GameScene.PlayTab.Equipment;
     }
 
+    // 장비 슬롯 업데이트 함수 
     public void UpdateEquipmentSlot()
     {
         UpdateEquipmentUI(EEquipmentType.Weapon, EquipmentItems.UI_EquipmentItem_Weapon);
@@ -95,6 +120,4 @@ public class UI_CharacterPanel : UI_Base
             equipmentItem.gameObject.SetActive(false);
         }
     }
-
-
 }

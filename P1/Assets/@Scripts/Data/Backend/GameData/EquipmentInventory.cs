@@ -107,7 +107,7 @@ namespace BackendData.GameData
             if (_equipmentInventoryDic.TryGetValue(dataTemplateID, out EquipmentInfoData equipEquipmentInfo))
             {
                 equipEquipmentInfo.Count += 1;
-                Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
+                Managers.Hero.PlayerHeroInfo.CalculateInfoStat(false);
             }
             else
             {
@@ -140,7 +140,7 @@ namespace BackendData.GameData
 
                 // 새롭게 장착한 장비도 인벤토리 Dictionary에 업데이트 (동기화)
                 _equipmentInventoryDic[dataTemplateID] = equipmentInventoryData;
-                Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
+                Managers.Hero.PlayerHeroInfo.CalculateInfoStat(true);
             }
             else
             {

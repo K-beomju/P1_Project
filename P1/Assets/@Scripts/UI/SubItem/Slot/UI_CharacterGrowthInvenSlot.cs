@@ -24,6 +24,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     private EHeroUpgradeType _heroUpgradeType;
     private Coroutine _coolTime;
+    private bool isUpgraded = false;
 
     protected override bool Init()
     {
@@ -104,9 +105,12 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
                 {
                     Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, -price);
                     Managers.Backend.GameData.UserData.LevelUpHeroUpgrade(_heroUpgradeType);
+
+                    if (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp)
+                        isUpgraded = true;
                 }
             }
-            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
+            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
         }
         catch (Exception e)
         {
@@ -123,6 +127,15 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
             StopCoroutine(_coolTime);
             _coolTime = null;
         }
+
+        // 한번이라도 업그레이드 했을 때
+        if (isUpgraded && (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp))
+        {
+            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);    
+            Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            isUpgraded = false;
+        }
+
     }
 
     private void CheckUpgradeInteractive()

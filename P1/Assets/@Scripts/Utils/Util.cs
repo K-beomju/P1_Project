@@ -87,9 +87,9 @@ public static class Util
     #region Upgrade System 
     public static int GetUpgradeCost(EHeroUpgradeType upgradeType, int level)
     {
-        List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostChart[upgradeType].ReferenceLevelList; 
-        List<int> StartCostList = Managers.Data.HeroUpgradeCostChart[upgradeType].StartCostList; 
-        List<int> IncreaseCostList = Managers.Data.HeroUpgradeCostChart[upgradeType].IncreaseCostList; 
+        List<int> ReferenceLevelList = Managers.Data.HeroUpgradeCostChart[upgradeType].ReferenceLevelList;
+        List<int> StartCostList = Managers.Data.HeroUpgradeCostChart[upgradeType].StartCostList;
+        List<int> IncreaseCostList = Managers.Data.HeroUpgradeCostChart[upgradeType].IncreaseCostList;
 
         int startCost = 0;
         int increaseCost = 0;
@@ -111,9 +111,9 @@ public static class Util
 
     public static int GetAttributeCost(EHeroAttrType attrType, int level)
     {
-        List<int> ReferenceLevelList = Managers.Data.HeroAttributeCostChart[attrType].ReferenceLevelList; 
-        List<int> StartCostList = Managers.Data.HeroAttributeCostChart[attrType].StartCostList; 
-        List<int> IncreaseCostList = Managers.Data.HeroAttributeCostChart[attrType].IncreaseCostList; 
+        List<int> ReferenceLevelList = Managers.Data.HeroAttributeCostChart[attrType].ReferenceLevelList;
+        List<int> StartCostList = Managers.Data.HeroAttributeCostChart[attrType].StartCostList;
+        List<int> IncreaseCostList = Managers.Data.HeroAttributeCostChart[attrType].IncreaseCostList;
 
         int startCost = 0;
         int increaseCost = 0;
@@ -349,6 +349,7 @@ public static class Util
 
     #endregion
 
+    #region Convert Value 
 
     public static string ConvertToKoreanUnits(long number)
     {
@@ -376,42 +377,29 @@ public static class Util
         return string.Join("", parts);
     }
 
-    public static List<T> ParseList<T>(string data)
+    public static string ConvertToTotalPower(float totalPower)
     {
-        List<T> resultList = new List<T>();
-        string[] values = data.Split('&');
+        string[] suffixes = { "", "A", "B", "C", "D", "E", "F", "G" };
+        int suffixIndex = 0;
 
-        foreach (string value in values)
+        while (totalPower >= 1000 && suffixIndex < suffixes.Length - 1)
         {
-            try
-            {
-                // 빈 문자열이나 공백인 경우 무시
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    continue;
-                }
-                T convertedValue;
-
-                // Enum 타입 처리
-                if (typeof(T).IsEnum)
-                {
-                    convertedValue = (T)Enum.Parse(typeof(T), value);
-                }
-                else
-                {
-                    // 기본 타입 처리 (int, float, double 등)
-                    convertedValue = (T)Convert.ChangeType(value, typeof(T));
-                }
-
-                resultList.Add(convertedValue);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to convert {value} to {typeof(T)}: {e.Message}");
-            }
+            totalPower /= 1000;
+            suffixIndex++;
         }
 
-        return resultList;
+
+        // 1000 이하일 때는 소수점 없이 정수만 표시
+        if (suffixIndex == 0)
+        {
+            return $"{totalPower:N0}"; // 소수점 없이 출력
+        }
+
+        // 소수점 한 자리까지만 표기
+        return $"{totalPower:F1}{suffixes[suffixIndex]}";
     }
+
+    #endregion
+
 
 }

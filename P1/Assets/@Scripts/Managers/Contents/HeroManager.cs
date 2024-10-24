@@ -9,6 +9,8 @@ using Data;
 public class HeroInfo
 {
     public int Level { get; set; }
+    public float CurrentTotalPower { get; private set; }
+    public float AdjustTotalPower { get; private set; }
 
     #region Stat
     public float Atk { get; private set; }
@@ -43,8 +45,10 @@ public class HeroInfo
     }
 
 
-    public void CalculateInfoStat()
+    public void CalculateInfoStat(bool totalPowerUI = false)
     {
+        float previousTotalPower = CurrentTotalPower;
+
         // 스탯 레벨 계산
         Atk = CalculateStat(EHeroUpgradeType.Growth_Atk);
         MaxHp = CalculateStat(EHeroUpgradeType.Growth_Hp);
@@ -52,11 +56,11 @@ public class HeroInfo
         CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
         CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
 
-     
+
         Debug.LogWarning("기존 공격력 : " + Atk);
-        Debug.LogWarning("기존 최대체력 : " + MaxHp);
-        Debug.LogWarning("기존 치명타 확률 : " + CriRate);
-        Debug.LogWarning("기존 치명타 데미지 : " + CriDmg);
+        // Debug.LogWarning("기존 최대체력 : " + MaxHp);
+        // Debug.LogWarning("기존 치명타 확률 : " + CriRate);
+        // Debug.LogWarning("기존 치명타 데미지 : " + CriDmg);
 
         // 특성 레벨 계산 
         AtkAttr = CaculateAttribute(EHeroAttrType.Attribute_Atk);
@@ -71,7 +75,7 @@ public class HeroInfo
         float MaxHpEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Armor);
 
         Debug.LogWarning("장비 공격력 보너스 퍼센트 : " + AtkEquipmentPer);
-        Debug.LogWarning("장비 최대체력 보너스 퍼센트 : " + MaxHpEquipmentPer);
+        // Debug.LogWarning("장비 최대체력 보너스 퍼센트 : " + MaxHpEquipmentPer);
 
         // 총 보너스 퍼센트 합산 (장비 + 특성)
         float totalAtkPer = AtkEquipmentPer + AtkAttr;
@@ -80,9 +84,9 @@ public class HeroInfo
         float totalCriDmgPer = CriDmgAttr;
 
         Debug.LogWarning("총 공격력 보너스 퍼센트 (장비 + 특성) : " + totalAtkPer);
-        Debug.LogWarning("총 최대체력 보너스 퍼센트 (장비 + 특성) : " + totalMaxHpPer);
-        Debug.LogWarning("총 치명타 확률 보너스 퍼센트 (특성) : " + totalCriRatePer);
-        Debug.LogWarning("총 치명타 데미지 보너스 퍼센트 (특성) : " + totalCriDmgPer);
+        // Debug.LogWarning("총 최대체력 보너스 퍼센트 (장비 + 특성) : " + totalMaxHpPer);
+        // Debug.LogWarning("총 치명타 확률 보너스 퍼센트 (특성) : " + totalCriRatePer);
+        // Debug.LogWarning("총 치명타 데미지 보너스 퍼센트 (특성) : " + totalCriDmgPer);
 
         // 최종 스탯 계산
         Atk = Atk * (1 + totalAtkPer / 100f);
@@ -91,10 +95,10 @@ public class HeroInfo
         CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
 
         Debug.LogWarning("최종 공격력 : " + Atk);
-        Debug.LogWarning("최종 최대체력 : " + MaxHp);
-        Debug.LogWarning("최종 치명타 확률 : " + CriRate);
-        Debug.LogWarning("최종 치명타 데미지 : " + CriDmg);
-        
+        // Debug.LogWarning("최종 최대체력 : " + MaxHp);
+        // Debug.LogWarning("최종 치명타 확률 : " + CriRate);
+        // Debug.LogWarning("최종 치명타 데미지 : " + CriDmg);
+
         // 기타 스탯 설정
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
@@ -103,7 +107,19 @@ public class HeroInfo
         if (Managers.Object.Hero != null)
             Managers.Object.Hero.ReSetStats();
 
-        Debug.Log("총 전투력: " + CalculateTotalCombatPower(this));
+
+
+        // 전투력 변화 계산
+        if (CurrentTotalPower == 0)
+        {
+            CurrentTotalPower = CalculateTotalCombatPower(this);
+            Debug.Log($"초기 전투력 설정: {CurrentTotalPower}");
+            return;
+        }
+
+        CurrentTotalPower = CalculateTotalCombatPower(this);
+        AdjustTotalPower = CurrentTotalPower - previousTotalPower;
+        Debug.Log($"총 전투력: {CurrentTotalPower}");
     }
 
     // 스탯 계산
@@ -144,14 +160,13 @@ public class HeroInfo
     // 총전투력 계산 함수
     private float CalculateTotalCombatPower(HeroInfo hero)
     {
+        float AtkBonusValue = 2f;
+
         // 모든 스탯을 단순히 합산하여 총 전투력을 계산
         float totalCombatPower = 0.0f;
 
-        totalCombatPower += hero.Atk;
+        totalCombatPower += hero.Atk * AtkBonusValue;
         totalCombatPower += hero.MaxHp;
-        totalCombatPower += hero.Recovery;
-        totalCombatPower += hero.CriRate;
-        totalCombatPower += hero.CriDmg;
         return totalCombatPower;
     }
 }

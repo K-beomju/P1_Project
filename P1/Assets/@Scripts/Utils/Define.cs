@@ -120,6 +120,9 @@ public static class Define
 
         /// <summary>영웅 특성 업그레이드 정보 갱신</summary>
         HeroAttributeUpdated,
+
+        /// <summary>영웅 전투력 갱신</summary>
+        HeroTotalPowerUpdated,
     }
 
     #endregion

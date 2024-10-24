@@ -51,7 +51,10 @@ public class MyCustomEditorWindow : EditorWindow
         if (GUILayout.Button("스테이지 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
             Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(3);
-
+        }
+        if (GUILayout.Button("전투력 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            //Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
         }
     }
 }
