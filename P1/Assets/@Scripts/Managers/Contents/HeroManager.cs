@@ -45,7 +45,7 @@ public class HeroInfo
     }
 
 
-    public void CalculateInfoStat(bool totalPowerUI = false)
+    public void CalculateInfoStat(Action<bool> totalPowerChanged = null)
     {
         float previousTotalPower = CurrentTotalPower;
 
@@ -120,6 +120,10 @@ public class HeroInfo
         CurrentTotalPower = CalculateTotalCombatPower(this);
         AdjustTotalPower = CurrentTotalPower - previousTotalPower;
         Debug.Log($"총 전투력: {CurrentTotalPower}");
+
+        // 전투력 변화가 있는지 확인 후 콜백 실행
+        bool isPowerChanged = AdjustTotalPower != 0;
+        totalPowerChanged?.Invoke(isPowerChanged);
     }
 
     // 스탯 계산

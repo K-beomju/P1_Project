@@ -48,6 +48,7 @@ public class UI_AttributePanel : UI_Base
     }
 
     private Coroutine _coolTime;
+    private bool isUpgraded = false;
 
 
     protected override bool Init()
@@ -103,7 +104,7 @@ public class UI_AttributePanel : UI_Base
         GetTMPText((int)Texts.Text_AttributeValue).text =
         $"{attriData.IncreaseValue * level}% => {attriData.IncreaseValue * (level + 1)}%";
         GetTMPText((int)Texts.Text_AttributeName).text = attriData.Name;
-        GetTMPText((int)Texts.Text_Amount).text = $"{Util.GetAttributeCost(SelectAttrType, level + 1):N0}";;
+        GetTMPText((int)Texts.Text_Amount).text = $"{Util.GetAttributeCost(SelectAttrType, level + 1):N0}"; ;
 
         GetImage((int)Images.Image_SelectAbIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{attriData.SpriteKey}");
     }
@@ -123,6 +124,9 @@ public class UI_AttributePanel : UI_Base
                     Managers.Backend.GameData.UserData.AddAmount(EGoodType.ExpPoint, -price);
                     Managers.Backend.GameData.UserData.LevelUpHeroAttribute(SelectAttrType);
                     ShowAttributeDetailUI(SelectAttrType);
+
+                    if (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp)
+                        isUpgraded = true;
                 }
             }
             _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
@@ -139,6 +143,14 @@ public class UI_AttributePanel : UI_Base
         {
             StopCoroutine(_coolTime);
             _coolTime = null;
+        }
+
+        // 한번이라도 업그레이드 했을 때
+        if (isUpgraded && (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp))
+        {
+            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);    
+            Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            isUpgraded = false;
         }
     }
 

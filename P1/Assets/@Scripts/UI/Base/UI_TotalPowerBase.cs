@@ -42,7 +42,7 @@ public class UI_TotalPowerBase : UI_Base
             return false;
 
         Canvas canvas = GetComponent<Canvas>();
-        canvas.sortingOrder = SortingLayers.UI_SCENE;
+        canvas.sortingOrder = SortingLayers.UI_TOTALPOWER;
 
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
@@ -83,7 +83,6 @@ public class UI_TotalPowerBase : UI_Base
 
         AdJustType type = adjustTotalPower > 0f ? AdJustType.Increase : AdJustType.Decrease;
         _adJustmentImage.transform.localRotation = Quaternion.Euler(0, 0, type == AdJustType.Increase ? 0 : 180);
-        Debug.LogWarning(type);
 
         _adJustTotalPowerText.gameObject.SetActive(true);
         _adJustTotalPowerText.text = Mathf.Abs(roundedAdjustTotalPower).ToString("N0");

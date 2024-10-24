@@ -136,6 +136,18 @@ public class UI_DrawResultPopup : UI_Popup
             yield return wait;
         }
 
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) => {
+            if(changed)
+            {
+                Debug.LogWarning("전투력 변경 있음.");
+                Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            }
+            else
+            {
+                Debug.LogWarning("전투력 변경 없음.");
+            }
+        });
+
         InteractiveButtons(true);
     }
 

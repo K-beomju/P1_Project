@@ -95,7 +95,7 @@ namespace BackendData.GameData
                 _upgradeAttrDic.Add(column, int.Parse(Data["UpgradeAttr"][column].ToString()));
             }
 
-            //AddAmount(EGoodType.Gold, 1000000000);
+            AddAmount(EGoodType.ExpPoint, 1000000000);
         }
 
         public override string GetTableName()
@@ -201,7 +201,7 @@ namespace BackendData.GameData
                 _upgradeStatDic.Add(key, 1);
             }
 
-            Managers.Hero.PlayerHeroInfo.CalculateInfoStat(true);
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
         }
 
@@ -216,7 +216,7 @@ namespace BackendData.GameData
             {
                 _upgradeAttrDic.Add(key, 1);
             }
-            Managers.Hero.PlayerHeroInfo.CalculateInfoStat(true);
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             Managers.Event.TriggerEvent(EEventType.HeroAttributeUpdated);
         }
 
