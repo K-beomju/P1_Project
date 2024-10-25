@@ -64,7 +64,6 @@ public class UI_CompanionItem : UI_Base
         ItemData = itemData;
 
         // Item 공통 초기화 
-        _fadeImage.gameObject.SetActive(false);
         _companionButton.onClick.RemoveAllListeners();
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{ItemData.SpriteKey}");
 
@@ -95,6 +94,7 @@ public class UI_CompanionItem : UI_Base
             // 목록 아이템 -> 모든 UI 데이터 표시 
             case EItemDisplayType.Basic:
                 // Active
+                _fadeImage.gameObject.SetActive(false);
                 GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(true);
                 GetTMPText((int)Texts.Text_Level).gameObject.SetActive(true);
                 GetImage((int)Images.Image_Equip).gameObject.SetActive(isEquipped);
@@ -110,34 +110,24 @@ public class UI_CompanionItem : UI_Base
             // 아이템 디테일 -> 이미지만 표시 
             case EItemDisplayType.ImageOnly:
             case EItemDisplayType.SlotItem:
+                _fadeImage.gameObject.SetActive(false);
                 GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
                 GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
                 GetImage((int)Images.Image_Equip).gameObject.SetActive(false);
                 break;
+            case EItemDisplayType.Draw:
+                _fadeImage.gameObject.SetActive(true);
+                _fadeImage.color = Color.white;
+                _fadeImage.DOFade(0, 0.1f); // 아이콘 페이드 효과
+
+                GetImage((int)Images.Image_Equip).gameObject.SetActive(false);
+                GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
+                GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
+                GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
+                break;
         }
-
-
     }
 
-
-    // 아이템 뽑기 UI 설정 메서드 (장비 전용)
-    public void SetDrawInfo(Item itemData)
-    {
-        _fadeImage.gameObject.SetActive(true);
-        _fadeImage.color = Color.white;
-        _fadeImage.DOFade(0, 0.1f); // 아이콘 페이드 효과
-
-        GetImage((int)Images.Image_Equip).gameObject.SetActive(false);
-        GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
-        GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
-        GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
-
-        if (itemData is SkillInfoData skillInfo)
-            GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillInfo.Data.RareType);
-        else if (itemData is EquipmentInfoData equipmentInfo)
-            GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentInfo.Data.RareType);
-        _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{itemData.SpriteKey}");
-    }
 
     // Z축 기준으로 랜덤하게 흔드는 애니메이션 실행 (DOShakeRotation 사용)
     public void PlayShakeAnimation(float duration = 1f, float strength = 30, int vibrato = 15, float randomness = 90)

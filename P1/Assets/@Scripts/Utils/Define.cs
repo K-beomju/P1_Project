@@ -129,7 +129,8 @@ public static class Define
     {
         Basic, 
         ImageOnly,
-        SlotItem
+        SlotItem,
+        Draw
     }
     
     #endregion

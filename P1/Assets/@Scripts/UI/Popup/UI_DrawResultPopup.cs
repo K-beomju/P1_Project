@@ -123,7 +123,7 @@ public class UI_DrawResultPopup : UI_Popup
 
                 // 아이템 설정 및 활성화
                 UI_CompanionItem drawItem = _drawItems[i];
-                drawItem.SetDrawInfo(equipmentInfoData);
+                drawItem.DisplayItem(equipmentInfoData, EItemDisplayType.Draw);
                 drawItem.gameObject.SetActive(true);
             }
             catch (Exception e)
