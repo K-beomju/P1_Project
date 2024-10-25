@@ -23,7 +23,7 @@ public class EquipmentManager
         for (int i = 0; i < count; i++)
         {
             int index = startIndex + i;
-            var equipmentInfo = new EquipmentInfoData(index, EOwningState.Unowned, 0, 0, false);
+            var equipmentInfo = new EquipmentInfoData(index, EOwningState.Unowned, 1, 0, false);
             AllEquipmentInfos.Add(equipmentInfo.DataTemplateID, equipmentInfo);
         }
     }
@@ -60,7 +60,7 @@ public class EquipmentManager
         {
             if (equipment.Data.EquipmentType == type)
             {
-                ownedValues += equipment.Data.OwnedValue;
+                ownedValues += equipment.Data.OwnedValue + (equipment.Data.OwnedIncreaseRate * equipment.Level);
             }
         }
 
@@ -75,9 +75,10 @@ public class EquipmentManager
         // 장착된 장비 중 해당 타입의 장비 효과 합산
         foreach (var equipment in Managers.Backend.GameData.EquipmentInventory.EquipmentEquipDic.Values)
         {
-            if (equipment.Data.EquipmentType == type)
+            if (equipment.Data.EquipmentType == type && equipment.IsEquipped)
             {
-                equipValue += equipment.Data.EquippedValue;
+                equipValue += equipment.Data.EquippedValue + (equipment.Data.EquippedIncreaseRate * equipment.Level);
+                Debug.Log("asd");
             }
         }
 

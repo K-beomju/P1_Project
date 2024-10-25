@@ -36,7 +36,9 @@ public class UI_EquipmentPopup : UI_Popup
         Text_EquipmentRare,
         Text_EquipmentLevel,
         Text_OwendAmount,
-        Text_EquipmentValueText
+        Text_EquipmentValueText,
+
+        Text_TotalEquipmentOwnedValue
     }
 
     public enum Sliders
@@ -125,52 +127,60 @@ public class UI_EquipmentPopup : UI_Popup
             return;
 
         EquipmentType = type;
-        RefreshUI();
+        RefreshUI(sort: true);
     }
 
     public void SetInfo(EEquipmentType type)
     {
         EquipmentType = type;
-        RefreshUI();
+        RefreshUI(sort: true);
     }
 
     // 장비 타입을 바꿨을 때 Item 갱신 
-    public void RefreshUI()
+    public void RefreshUI(bool sort = true)
     {
-        // 장비 인벤토리 중 장착된 장비 찾기 
-        EquipmentInfoData equippedInfo = Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.Values
-            .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType && equipmentInfo.IsEquipped);
-
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
 
-        if (equippedInfo != null)
+        if (sort)
         {
-            // 장착된 장비가 있으면 해당 장비를 보여줍니다.
-            ShowEquipmentDetailUI(equippedInfo);
-        }
-        else
-        {
-            // 장착된 장비가 없으면 소유한 장비나 가장 낮은 등급의 장비를 보여줍니다.
-            EquipmentInfoData ownedEquipment = equipmentInfos
-                .Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned)
-                .LastOrDefault();
+            // 장비 인벤토리 중 장착된 장비 찾기 
+            EquipmentInfoData equippedInfo = Managers.Backend.GameData.EquipmentInventory.EquipmentInventoryDic.Values
+            .FirstOrDefault(equipmentInfo => equipmentInfo.Data.EquipmentType == EquipmentType && equipmentInfo.IsEquipped);
 
-            if (ownedEquipment != null)
+            if (equippedInfo != null)
             {
-                ShowEquipmentDetailUI(ownedEquipment);
+                // 장착된 장비가 있으면 해당 장비를 보여줍니다.
+                ShowEquipmentDetailUI(equippedInfo);
             }
             else
             {
-                // 소유한 장비가 없을 때 가장 낮은 등급의 장비를 보여줍니다.
-                EquipmentInfoData lowestRareEquipment = equipmentInfos
-                    .OrderBy(equipmentInfo => equipmentInfo.Data.RareType)
-                    .FirstOrDefault();
+                // 장착된 장비가 없으면 소유한 장비나 가장 낮은 등급의 장비를 보여줍니다.
+                EquipmentInfoData ownedEquipment = equipmentInfos
+                    .Where(equipmentInfo => equipmentInfo.OwningState == EOwningState.Owned)
+                    .LastOrDefault();
 
-                if (lowestRareEquipment != null)
+                if (ownedEquipment != null)
                 {
-                    ShowEquipmentDetailUI(lowestRareEquipment);
+                    ShowEquipmentDetailUI(ownedEquipment);
+                }
+                else
+                {
+                    // 소유한 장비가 없을 때 가장 낮은 등급의 장비를 보여줍니다.
+                    EquipmentInfoData lowestRareEquipment = equipmentInfos
+                        .OrderBy(equipmentInfo => equipmentInfo.Data.RareType)
+                        .FirstOrDefault();
+
+                    if (lowestRareEquipment != null)
+                    {
+                        ShowEquipmentDetailUI(lowestRareEquipment);
+                    }
                 }
             }
+
+        }
+        else
+        {
+            ShowEquipmentDetailUI(SelectEquipmentInfo);
         }
 
 
@@ -178,21 +188,26 @@ public class UI_EquipmentPopup : UI_Popup
         {
             equipmentItems[i].SetItemInfo(equipmentInfos[i]);
         }
+
+        GetTMPText((int)Texts.Text_TotalEquipmentOwnedValue).text = $"보유효과: <color=#FFF42A>{Util.GetEquipmentStatType(EquipmentType)} +{Managers.Equipment.OwnedEquipmentValues(EquipmentType):N0}%</color>";
+        GetButton((int)Buttons.Btn_BatchEnhance).interactable = IsCheckOnceEnhanceEquipment();
     }
 
     // 장비 Item을 클릭했을 때 보여주는 부분 
     public void ShowEquipmentDetailUI(EquipmentInfoData _equipmentInfo)
     {
-        if (SelectEquipmentInfo == _equipmentInfo)
-            return;
         SelectEquipmentInfo = _equipmentInfo;
 
-        equipmentItem.SetItemInfo(SelectEquipmentInfo, false);
+        equipmentItem.SetItemInfo(SelectEquipmentInfo, false, false);
         GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
         GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
+
         GetTMPText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
+
+        float ownedValue = SelectEquipmentInfo.Data.OwnedValue + (SelectEquipmentInfo.Data.OwnedIncreaseRate * SelectEquipmentInfo.Level);
+        float equipValue = SelectEquipmentInfo.Data.EquippedValue + (SelectEquipmentInfo.Data.EquippedIncreaseRate * SelectEquipmentInfo.Level);
         GetTMPText((int)Texts.Text_EquipmentValueText).text
-        = $"<color=#FFA500>장착 효과 : {SelectEquipmentInfo.Data.EquippedValue}%</color> \n<color=#00FF00>보유 효과 : {SelectEquipmentInfo.Data.OwnedValue}%</color>";
+        = $"보유 효과 : 공격력<color=#00FF00> +{ownedValue:N1}%</color>\n장착 효과 : {Util.GetEquipmentStatType(EquipmentType)}<color=#FFA500> +{equipValue:N1}%</color>";
 
         int currentCount = SelectEquipmentInfo.Count;
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
@@ -202,7 +217,7 @@ public class UI_EquipmentPopup : UI_Popup
 
 
 
-        GetButton((int)Buttons.Btn_Equip).interactable = !SelectEquipmentInfo.IsEquipped && SelectEquipmentInfo.OwningState == EOwningState.Owned;
+        GetButton((int)Buttons.Btn_Equip).interactable = SelectEquipmentInfo.OwningState == EOwningState.Owned && !SelectEquipmentInfo.IsEquipped;
         GetButton((int)Buttons.Btn_Enhance).interactable =
         SelectEquipmentInfo.OwningState == EOwningState.Owned && SelectEquipmentInfo.Count >= Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
     }
@@ -216,7 +231,7 @@ public class UI_EquipmentPopup : UI_Popup
         try
         {
             Managers.Backend.GameData.EquipmentInventory.EquipEquipment(SelectEquipmentInfo.DataTemplateID);
-            GetButton((int)Buttons.Btn_Equip).interactable = false;
+            RefreshUI(false);
         }
         catch (Exception e)
         {
@@ -227,13 +242,17 @@ public class UI_EquipmentPopup : UI_Popup
     // 강화
     private void OnEnhanceEquipment()
     {
+        if (SelectEquipmentInfo.OwningState == EOwningState.Unowned)
+            return;
+
         int maxCount = Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
         if (SelectEquipmentInfo.Count >= maxCount)
         {
             try
             {
                 Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(SelectEquipmentInfo, maxCount);
-                ShowEquipmentDetailUI(SelectEquipmentInfo);
+                RefreshUI(false);
+
             }
             catch (Exception e)
             {
@@ -281,9 +300,7 @@ public class UI_EquipmentPopup : UI_Popup
             // 강화 가능한 장비인지 확인
             if (equipment.OwningState == EOwningState.Owned)
             {
-                // 강화 가능한 최대 레벨 (예시로 설정한 값, 필요시 실제 최대 레벨 값으로 대체)
-                int maxLevel = 100;  // 실제 최대 레벨 값으로 대체하세요.
-
+                int maxLevel = 100;  
                 // 현재 장비 레벨이 최대 레벨보다 낮고, 강화가 가능한 경우 반복하여 강화 수행
                 while (equipment.Level < maxLevel)
                 {
@@ -318,13 +335,7 @@ public class UI_EquipmentPopup : UI_Popup
         if (enhancedCount > 0)
         {
             Debug.Log($"{enhancedCount}개의 장비가 최대 레벨까지 일괄 강화되었습니다.");
-            equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
-            for (int i = 0; i < equipmentItems.Count; i++)
-            {
-                equipmentItems[i].SetItemInfo(equipmentInfos[i]);
-            }
-            ShowEquipmentDetailUI(SelectEquipmentInfo);
-
+            RefreshUI(false);
         }
         else
         {
@@ -335,4 +346,23 @@ public class UI_EquipmentPopup : UI_Popup
 
     #endregion
 
+    private bool IsCheckOnceEnhanceEquipment()
+    {
+        bool canEnhance = false;
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
+
+        foreach (var equipment in equipmentInfos)
+        {
+            if (equipment.OwningState == EOwningState.Owned)
+            {
+                int maxCount = Util.GetUpgradeEquipmentMaxCount(equipment.Level);
+                if (equipment.Count >= maxCount)
+                {
+                    return canEnhance = true;
+                }
+            }
+        }
+
+        return canEnhance;
+    }
 }

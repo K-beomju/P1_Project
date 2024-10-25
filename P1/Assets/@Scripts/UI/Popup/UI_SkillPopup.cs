@@ -166,7 +166,7 @@ public class UI_SkillPopup : UI_Popup
             return;
 
         SelectSkillInfo = skillInfo;
-        _companionItem.SetItemInfo(SelectSkillInfo, false);
+        _companionItem.SetItemInfo(SelectSkillInfo, false, false);
         GetTMPText((int)Texts.Text_SkillName).text = SelectSkillInfo.Data.Name;
         GetTMPText((int)Texts.Text_SkillLevel).text = $"Lv. {SelectSkillInfo.Level}";
         GetTMPText((int)Texts.Text_SkillRare).text = Util.GetRareTypeString(SelectSkillInfo.Data.RareType);

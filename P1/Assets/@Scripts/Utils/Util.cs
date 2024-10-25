@@ -152,7 +152,24 @@ public static class Util
 
     public static int GetUpgradeEquipmentMaxCount(int level)
     {
-        return level + 1;
+        // 레벨에 따라 최대 장비 개수를 설정
+        if (level < 1 || level > 100)
+        {
+            return 0; // 유효하지 않은 레벨
+        }
+
+        // 레벨에 따른 최대 장비 개수
+        if (level == 1) return 2;
+        if (level == 2) return 3;
+        if (level == 3) return 4;
+        if (level == 4) return 5;
+        if (level == 5) return 7;
+        if (level == 6) return 9;
+        if (level == 7) return 11;
+        if (level == 8) return 13;
+        if (level >= 9) return 15; // 9레벨부터 100레벨까지는 15개로 일정
+
+        return 0; // 기본적으로 0을 반환
     }
     #endregion
 
@@ -217,6 +234,24 @@ public static class Util
                 break;
         }
         return equipmentString;
+    }
+
+    public static string GetEquipmentStatType(EEquipmentType type)
+    {
+        string statType = string.Empty;
+        switch (type)
+        {
+            case EEquipmentType.Weapon:
+                statType = "공격력";
+                break;
+            case EEquipmentType.Armor:
+                statType = "체력";
+                break;
+            case EEquipmentType.Ring:
+                statType = "스킬 공격력";
+                break;
+        }
+        return statType;
     }
 
 

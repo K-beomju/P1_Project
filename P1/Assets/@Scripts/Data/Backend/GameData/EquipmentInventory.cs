@@ -167,10 +167,23 @@ namespace BackendData.GameData
             _equipmentInventoryDic[equipmentInfoData.DataTemplateID].Count -= maxCount;
 
             // 만약 현재 착용한 장비를 업그레이드 했다면, 착용 장비 딕셔너리 업데이트
-            if (_equipmentEquipDic.ContainsKey(equipmentInfoData.Data.EquipmentType.ToString()))
+            if (equipmentInfoData.IsEquipped && _equipmentEquipDic.ContainsKey(equipmentInfoData.Data.EquipmentType.ToString()))
             {
                 _equipmentEquipDic[equipmentInfoData.Data.EquipmentType.ToString()] = _equipmentInventoryDic[equipmentInfoData.DataTemplateID];
             }
+
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
+             {
+                 if (changed)
+                 {
+                     Debug.LogWarning("전투력 변경 있음.");
+                     Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+                 }
+                 else
+                 {
+                     Debug.LogWarning("전투력 변경 없음.");
+                 }
+             });
 
         }
 

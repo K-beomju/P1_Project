@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using BackendData.GameData;
 using static Define;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 
 public class UI_CompanionItem : UI_Base
@@ -21,7 +22,13 @@ public class UI_CompanionItem : UI_Base
 
     public enum Texts
     {
-        Text_Level
+        Text_Level,
+        Text_ValueText
+    }
+
+    public enum Sliders 
+    {
+        Slider_Count
     }
 
     private Image _iconImage;
@@ -35,6 +42,7 @@ public class UI_CompanionItem : UI_Base
             return false;
         BindImages(typeof(Images));
         BindTMPTexts(typeof(Texts));
+        BindSliders(typeof(Sliders));
 
         _iconImage = GetImage((int)Images.Image_Icon);
         _fadeImage = GetImage((int)Images.Image_Fade);
@@ -42,7 +50,7 @@ public class UI_CompanionItem : UI_Base
         return true;
     }
 
-    public void SetItemInfo(Item itemData, bool showLvText = true, bool isSlot = false)
+    public void SetItemInfo(Item itemData, bool showLvText = true, bool showCtSlider = true, bool isSlot = false)
     {
         if (itemData == null)
         {
@@ -59,6 +67,7 @@ public class UI_CompanionItem : UI_Base
             _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, itemData));
 
         bool isOwned = itemData.OwningState == EOwningState.Owned;
+        GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(showCtSlider);
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(!isOwned);
         GetTMPText((int)Texts.Text_Level).gameObject.SetActive(showLvText && isOwned);
         if (isOwned)
@@ -72,9 +81,17 @@ public class UI_CompanionItem : UI_Base
 
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{itemData.SpriteKey}");
 
+        int currentCount = itemData.Count; 
+        int maxCount =  Util.GetUpgradeEquipmentMaxCount(itemData.Level);
+        GetSlider((int)Sliders.Slider_Count).maxValue = maxCount;
+        GetSlider((int)Sliders.Slider_Count).value = currentCount;
+        GetTMPText((int)Texts.Text_ValueText).text = $"{currentCount}/{maxCount}";
+
         // 슬롯이 아닌 경우 아이콘 크기 조정
         if (!isSlot && itemData is SkillInfoData)
+        {
             _iconImage.rectTransform.sizeDelta = new Vector2(120, 120);
+        }
     }
 
     // 아이템 뽑기 UI 설정 메서드 (장비 전용)
@@ -85,6 +102,7 @@ public class UI_CompanionItem : UI_Base
 
         GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
         GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
+        GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
 
         if (itemData is SkillInfoData skillInfo)
             GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillInfo.Data.RareType);

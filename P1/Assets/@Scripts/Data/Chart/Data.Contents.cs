@@ -353,8 +353,10 @@ namespace Data
         public EEquipmentType EquipmentType;
         public string SpriteKey;
         public string Name;
-        public float OwnedValue;
-        public float EquippedValue;
+        public float OwnedValue;            // 보유효과 기본 수치
+        public float OwnedIncreaseRate;     // 보유효과 증가율
+        public float EquippedValue;         // 장착효과 기본 수치  
+        public float EquippedIncreaseRate;  // 장착효과 증가율 
     }
 
     [Serializable]

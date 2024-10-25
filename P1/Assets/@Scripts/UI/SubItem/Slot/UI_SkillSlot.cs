@@ -64,7 +64,7 @@ public class UI_SkillSlot : UI_Base
         if (skillSlot.SkillInfoData == null)
             return;
 
-        _companionItem.SetItemInfo(skillSlot.SkillInfoData, true, true);
+        _companionItem.SetItemInfo(skillSlot.SkillInfoData, true, false, true);
     }
 
     public void EnableButton(bool enable) 
