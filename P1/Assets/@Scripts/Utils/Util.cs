@@ -386,33 +386,7 @@ public static class Util
 
     #region Convert Value 
 
-    public static string ConvertToKoreanUnits(long number)
-    {
-        if (number == 0) return "0";
-
-        // 단위 정의 (4자리마다 '만', '억', '조' 사용)
-        string[] units = { "", "만", "억", "조" };
-        int unitIndex = 0;
-        List<string> parts = new List<string>();
-
-        // 단위를 나누면서 나머지 값을 저장
-        while (number > 0 && unitIndex < units.Length)
-        {
-            long remainder = number % 10000; // 4자리마다 나머지 값 추출
-            if (remainder > 0)
-            {
-                // 나머지가 0이 아닐 때만 단위와 함께 리스트에 추가
-                parts.Insert(0, $"{remainder:N0}{units[unitIndex]}");
-            }
-            number /= 10000;
-            unitIndex++;
-        }
-
-        // 리스트를 문자열로 합쳐서 반환
-        return string.Join("", parts);
-    }
-
-    public static string ConvertToTotalPower(float totalPower)
+    public static string ConvertToTotalCurrency(float totalPower)
     {
         string[] suffixes = { "", "A", "B", "C", "D", "E", "F", "G" };
         int suffixIndex = 0;
@@ -430,8 +404,14 @@ public static class Util
             return $"{totalPower:N0}"; // 소수점 없이 출력
         }
 
-        // 소수점 한 자리까지만 표기
-        return $"{totalPower:F1}{suffixes[suffixIndex]}";
+
+        // 100,000 이상일 때는 천의 자리까지만 표기하고 소수점 없애기
+        if (totalPower >= 100)
+        {
+            return $"{totalPower:F0}{suffixes[suffixIndex]}"; // 정수만 표시
+        }
+
+        return $"{totalPower:F1}{suffixes[suffixIndex]}"; 
     }
 
     #endregion

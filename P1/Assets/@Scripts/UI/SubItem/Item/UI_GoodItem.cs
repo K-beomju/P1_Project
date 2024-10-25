@@ -51,7 +51,7 @@ public class UI_GoodItem : UI_Base
         if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(goodType.ToString(), out float amount))
             return;
 
-        GetTMPText((int)Texts.GoodText).text = Util.ConvertToKoreanUnits((long)amount);
+        GetTMPText((int)Texts.GoodText).text = Util.ConvertToTotalCurrency((long)amount);
     }
 
     public RectTransform GetGoodIcon()

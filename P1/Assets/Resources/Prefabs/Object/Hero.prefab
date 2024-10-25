@@ -270,6 +270,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Level: 0
+  ReduceDmgBuff:
+    _value: 0
+  isStopAI: 0
 --- !u!114 &6701599503685322916
 MonoBehaviour:
   m_ObjectHideFlags: 0

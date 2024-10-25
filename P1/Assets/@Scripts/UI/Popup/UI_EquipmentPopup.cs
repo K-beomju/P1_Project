@@ -6,6 +6,8 @@ using UnityEngine;
 using BackendData.GameData;
 using static Define;
 using static UnityEditor.Progress;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class UI_EquipmentPopup : UI_Popup
 {
@@ -39,6 +41,11 @@ public class UI_EquipmentPopup : UI_Popup
         Text_EquipmentValueText,
 
         Text_TotalEquipmentOwnedValue
+    }
+
+    public enum Images
+    {
+        Image_HighlightedItem
     }
 
     public enum Sliders
@@ -86,6 +93,7 @@ public class UI_EquipmentPopup : UI_Popup
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
+        BindImages(typeof(Images));
 
         GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => OnClickButton(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EEquipmentType.Armor));
@@ -103,10 +111,9 @@ public class UI_EquipmentPopup : UI_Popup
         equipmentItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);
         for (int i = 0; i < 24; i++)
         {
-            var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.Content_Equipment).transform);
+            var item = GetObject((int)GameObjects.Content_Equipment).transform.GetChild(i).GetComponent<UI_CompanionItem>();
             equipmentItems.Add(item);
         }
-
         EquipmentType = EEquipmentType.Weapon;
         return true;
     }
@@ -141,6 +148,11 @@ public class UI_EquipmentPopup : UI_Popup
     {
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
 
+        for (int i = 0; i < equipmentItems.Count; i++)
+        {
+            equipmentItems[i].DisplayItem(equipmentInfos[i], EItemDisplayType.Basic);
+        }
+
         if (sort)
         {
             // 장비 인벤토리 중 장착된 장비 찾기 
@@ -161,6 +173,7 @@ public class UI_EquipmentPopup : UI_Popup
 
                 if (ownedEquipment != null)
                 {
+                    Debug.Log("장착된 장비가 없음");
                     ShowEquipmentDetailUI(ownedEquipment);
                 }
                 else
@@ -172,7 +185,9 @@ public class UI_EquipmentPopup : UI_Popup
 
                     if (lowestRareEquipment != null)
                     {
+                        Debug.Log("소유한 장비가 없음");
                         ShowEquipmentDetailUI(lowestRareEquipment);
+                        Debug.Log(lowestRareEquipment.Name);
                     }
                 }
             }
@@ -183,12 +198,6 @@ public class UI_EquipmentPopup : UI_Popup
             ShowEquipmentDetailUI(SelectEquipmentInfo);
         }
 
-
-        for (int i = 0; i < equipmentItems.Count; i++)
-        {
-            equipmentItems[i].SetItemInfo(equipmentInfos[i]);
-        }
-
         GetTMPText((int)Texts.Text_TotalEquipmentOwnedValue).text = $"보유효과: <color=#FFF42A>{Util.GetEquipmentStatType(EquipmentType)} +{Managers.Equipment.OwnedEquipmentValues(EquipmentType):N0}%</color>";
         GetButton((int)Buttons.Btn_BatchEnhance).interactable = IsCheckOnceEnhanceEquipment();
     }
@@ -197,8 +206,13 @@ public class UI_EquipmentPopup : UI_Popup
     public void ShowEquipmentDetailUI(EquipmentInfoData _equipmentInfo)
     {
         SelectEquipmentInfo = _equipmentInfo;
+        if(SelectEquipmentInfo.Data == null)
+        {
+            Debug.LogWarning("선택된 장비 아이템 데이터가 존재하지 않습니다.");
+            return;
+        }
 
-        equipmentItem.SetItemInfo(SelectEquipmentInfo, false, false);
+        equipmentItem.DisplayItem(SelectEquipmentInfo, EItemDisplayType.ImageOnly);
         GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
         GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
 
@@ -216,12 +230,22 @@ public class UI_EquipmentPopup : UI_Popup
         GetTMPText((int)Texts.Text_OwendAmount).text = $"{currentCount} / {maxCount}";
 
 
-
         GetButton((int)Buttons.Btn_Equip).interactable = SelectEquipmentInfo.OwningState == EOwningState.Owned && !SelectEquipmentInfo.IsEquipped;
         GetButton((int)Buttons.Btn_Enhance).interactable =
         SelectEquipmentInfo.OwningState == EOwningState.Owned && SelectEquipmentInfo.Count >= Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
-    }
 
+        // Highlighted Item
+        UI_CompanionItem selectedItem = GetSelectItem(SelectEquipmentInfo.DataTemplateID);
+        if (selectedItem != null) // null 체크
+        {
+            // 아이템의 위치를 설정
+            GetImage((int)Images.Image_HighlightedItem).rectTransform.anchoredPosition = selectedItem.ItemPosition();
+        }
+        else
+        {
+            Debug.LogWarning("선택한 아이템을 찾을 수 없습니다.");
+        }
+    }
 
     #region Button Action
 
@@ -279,12 +303,17 @@ public class UI_EquipmentPopup : UI_Popup
             {
                 Managers.Backend.GameData.EquipmentInventory.EquipEquipment(bestEquipment.DataTemplateID);
                 ShowEquipmentDetailUI(bestEquipment);
+                RefreshUI(false);
                 GetButton((int)Buttons.Btn_Equip).interactable = false;
             }
             catch (Exception e)
             {
                 throw new Exception($"OnAutoEquipment({bestEquipment}) 중 에러가 발생하였습니다\n{e}");
             }
+        }
+        else
+        {
+            Debug.Log("착용할 장비가 없습니다.");
         }
     }
 
@@ -300,7 +329,7 @@ public class UI_EquipmentPopup : UI_Popup
             // 강화 가능한 장비인지 확인
             if (equipment.OwningState == EOwningState.Owned)
             {
-                int maxLevel = 100;  
+                int maxLevel = 100;
                 // 현재 장비 레벨이 최대 레벨보다 낮고, 강화가 가능한 경우 반복하여 강화 수행
                 while (equipment.Level < maxLevel)
                 {
@@ -364,5 +393,17 @@ public class UI_EquipmentPopup : UI_Popup
         }
 
         return canEnhance;
+    }
+
+    private UI_CompanionItem GetSelectItem(int selectEquipmentID)
+    {
+        for (int i = 0; i < equipmentItems.Count; i++)
+        {
+            if (equipmentItems[i].ItemData != null && equipmentItems[i].ItemData.DataTemplateID == selectEquipmentID)
+            {
+                return equipmentItems[i];
+            }
+        }
+        return null;
     }
 }

@@ -156,7 +156,7 @@ public class UI_SkillPopup : UI_Popup
         //////////////////////////// 스킬 아이템 목록 부분 
         for (int i = 0; i < _companionItems.Count; i++)
         {
-            _companionItems[i].SetItemInfo(skillInfos[i]);
+            _companionItems[i].DisplayItem(skillInfos[i], EItemDisplayType.Basic);
         }
     }
 
@@ -166,7 +166,7 @@ public class UI_SkillPopup : UI_Popup
             return;
 
         SelectSkillInfo = skillInfo;
-        _companionItem.SetItemInfo(SelectSkillInfo, false, false);
+        _companionItem.DisplayItem(SelectSkillInfo, EItemDisplayType.ImageOnly);
         GetTMPText((int)Texts.Text_SkillName).text = SelectSkillInfo.Data.Name;
         GetTMPText((int)Texts.Text_SkillLevel).text = $"Lv. {SelectSkillInfo.Level}";
         GetTMPText((int)Texts.Text_SkillRare).text = Util.GetRareTypeString(SelectSkillInfo.Data.RareType);
@@ -221,6 +221,7 @@ public class UI_SkillPopup : UI_Popup
                     (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[slotIndex].RefreshUI();
                     _skillSlotList[slotIndex].RefreshUI();
                     SetEquipButtonState(true);
+                    RefreshUI();
                 }
                 else
                 {
@@ -245,6 +246,7 @@ public class UI_SkillPopup : UI_Popup
                     (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[slotIndex].RefreshUI();
                     _skillSlotList[slotIndex].RefreshUI();
                     SetEquipButtonState(false);
+                    RefreshUI();
                 }
             });
         }
@@ -258,7 +260,7 @@ public class UI_SkillPopup : UI_Popup
     {
         _placeCompanionItem.gameObject.SetActive(true);
         _placeCompanionItem.PlayShakeAnimation();
-        _placeCompanionItem.SetItemInfo(SelectSkillInfo);
+        _placeCompanionItem.DisplayItem(SelectSkillInfo, EItemDisplayType.ImageOnly);
         GetObject((int)GameObjects.Content_Skill).SetActive(false);
 
         // 모든 슬롯의 버튼을 비활성화하여 교체 대기 상태로 전환

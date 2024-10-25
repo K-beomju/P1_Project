@@ -95,7 +95,10 @@ namespace BackendData.GameData
                 _upgradeAttrDic.Add(column, int.Parse(Data["UpgradeAttr"][column].ToString()));
             }
 
-            AddAmount(EGoodType.ExpPoint, 1000000000);
+            AddAmount(EGoodType.ExpPoint, 1100);
+            AddAmount(EGoodType.Dia, 1000000000);
+            AddAmount(EGoodType.Gold, 185000);
+
         }
 
         public override string GetTableName()

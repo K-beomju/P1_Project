@@ -84,7 +84,7 @@ public class UI_CharacterPanel : UI_Base
     // 전투력 표시 텍스트 함수 
     private void ShowTotalPowerText()
     {
-        GetTMPText((int)Texts.Text_TotalPower).text = Util.ConvertToTotalPower(Managers.Hero.PlayerHeroInfo.CurrentTotalPower);
+        GetTMPText((int)Texts.Text_TotalPower).text = Util.ConvertToTotalCurrency(Managers.Hero.PlayerHeroInfo.CurrentTotalPower);
     }
 
     // 장비 슬롯 클릭시 장비 팝업으로 이동하는 함수 
@@ -110,9 +110,8 @@ public class UI_CharacterPanel : UI_Base
         //만약에 장착된 장비가 있다면
         if (Managers.Backend.GameData.EquipmentInventory.EquipmentEquipDic.TryGetValue(type.ToString(), out EquipmentInfoData equipmentInfoData))
         {
-            int dataId = equipmentInfoData.DataTemplateID;
             equipmentItem.gameObject.SetActive(true);
-            equipmentItem.SetItemInfo(equipmentInfoData);
+            equipmentItem.DisplayItem(equipmentInfoData, EItemDisplayType.ImageOnly);
 
         }
         else

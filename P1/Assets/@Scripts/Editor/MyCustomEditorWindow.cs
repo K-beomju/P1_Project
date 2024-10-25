@@ -3,6 +3,7 @@ using UnityEditor;
 
 public class MyCustomEditorWindow : EditorWindow
 {
+    private string currencyInputValue = "1000"; // 재화 기본값
 
     // 메뉴에 'My Window' 항목 추가
     [MenuItem("Window/My Custom Editor")]
@@ -54,7 +55,58 @@ public class MyCustomEditorWindow : EditorWindow
         }
         if (GUILayout.Button("전투력 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            //Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
         }
+
+        // 재화 충전 입력 필드
+        GUILayout.Label("충전할 재화 수량 입력:", GUILayout.Width(position.width));
+        currencyInputValue = GUILayout.TextField(currencyInputValue, GUILayout.Width(position.width)); // 사용자 입력
+
+        // 버튼을 수평으로 배치
+        GUILayout.BeginVertical(); // 세로 정렬 시작
+
+        GUILayout.BeginHorizontal(); // 수평 정렬 시작
+        if (GUILayout.Button("골드 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        {
+            if (int.TryParse(currencyInputValue, out int goldAmount))
+            {
+                Managers.Backend.GameData.UserData.AddAmount(Define.EGoodType.Gold, goldAmount);
+                Debug.Log($"충전된 골드: {goldAmount}"); 
+            }
+            else
+            {
+                Debug.LogError("유효하지 않은 골드 입력입니다."); 
+            }
+        }
+
+        if (GUILayout.Button("경험치 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        {
+            if (int.TryParse(currencyInputValue, out int expAmount))
+            {
+                Managers.Backend.GameData.UserData.AddAmount(Define.EGoodType.ExpPoint, expAmount);
+                Debug.Log($"충전된 경험치: {expAmount}"); 
+            }
+            else
+            {
+                Debug.LogError("유효하지 않은 경험치 입력입니다."); 
+            }
+        }
+
+        if (GUILayout.Button("Dia 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        {
+            if (int.TryParse(currencyInputValue, out int diaAmount))
+            {
+                Managers.Backend.GameData.UserData.AddAmount(Define.EGoodType.Dia, diaAmount);
+                Debug.Log($"충전된 다이아: {diaAmount}"); 
+            }
+            else
+            {
+                Debug.LogError("유효하지 않은 다이아 입력입니다."); 
+            }
+        }
+        GUILayout.EndHorizontal(); // 수평 정렬 종료
+
+        GUILayout.EndVertical(); // 세로 정렬 종료
+
     }
 }

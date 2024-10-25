@@ -125,6 +125,13 @@ public static class Define
         HeroTotalPowerUpdated,
     }
 
+    public enum EItemDisplayType 
+    {
+        Basic, 
+        ImageOnly,
+        SlotItem
+    }
+    
     #endregion
 
     #region Effect
