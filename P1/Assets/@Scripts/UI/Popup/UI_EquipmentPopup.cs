@@ -5,9 +5,6 @@ using System.Linq;
 using UnityEngine;
 using BackendData.GameData;
 using static Define;
-using static UnityEditor.Progress;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 
 public class UI_EquipmentPopup : UI_Popup
 {
@@ -105,7 +102,6 @@ public class UI_EquipmentPopup : UI_Popup
         GetObject((int)GameObjects.BG).BindEvent(() =>
         {
             (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
-
         }, EUIEvent.Click);
 
         equipmentItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);
@@ -206,7 +202,7 @@ public class UI_EquipmentPopup : UI_Popup
     public void ShowEquipmentDetailUI(EquipmentInfoData _equipmentInfo)
     {
         SelectEquipmentInfo = _equipmentInfo;
-        if(SelectEquipmentInfo.Data == null)
+        if (SelectEquipmentInfo.Data == null)
         {
             Debug.LogWarning("선택된 장비 아이템 데이터가 존재하지 않습니다.");
             return;
@@ -320,56 +316,67 @@ public class UI_EquipmentPopup : UI_Popup
     // 일괄 강화 - 최대 레벨까지 강화
     private void OnBatchEnhanceEquipment()
     {
+        if (!IsCheckOnceEnhanceEquipment())
+            return;
+
+        // 장비 ID, 장비 기존 레벨 
+        Dictionary<EquipmentInfoData, int> equipmentEnhanceDic = new Dictionary<EquipmentInfoData, int>();
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
 
         int enhancedCount = 0;
 
         foreach (var equipment in equipmentInfos)
         {
-            // 강화 가능한 장비인지 확인
-            if (equipment.OwningState == EOwningState.Owned)
-            {
-                int maxLevel = 100;
-                // 현재 장비 레벨이 최대 레벨보다 낮고, 강화가 가능한 경우 반복하여 강화 수행
-                while (equipment.Level < maxLevel)
-                {
-                    // 강화에 필요한 최대 개수 확인
-                    int maxCount = Util.GetUpgradeEquipmentMaxCount(equipment.Level);
+            // 소유한 장비가 아닌지 확인
+            if (equipment.OwningState != EOwningState.Owned)
+                continue;
 
-                    // 현재 개수가 최대 강화 개수 이상일 때만 강화 수행
-                    if (equipment.Count >= maxCount)
+
+            int maxLevel = 100;
+            // 현재 장비 레벨이 최대 레벨보다 낮고, 강화가 가능한 경우 반복하여 강화 수행
+            while (equipment.Level < maxLevel)
+            {
+                // 강화에 필요한 최대 개수 확인
+                int maxCount = Util.GetUpgradeEquipmentMaxCount(equipment.Level);
+
+                // 현재 개수가 부족하면 루프 종료
+                if (equipment.Count < maxCount)
+                    break;
+
+                try
+                {
+                    // 기존 레벨을 저장해야 해서 데이터 업데이트 전 미리 담아줌 
+                    if (equipmentEnhanceDic.TryAdd(equipment, equipment.Level))
                     {
-                        try
-                        {
-                            // 장비 강화 수행
-                            Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(equipment, maxCount);
-                            enhancedCount++;
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogError($"OnBatchEnhanceEquipment({equipment.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
-                            break; // 에러 발생 시 해당 장비 강화 중단
-                        }
+                        enhancedCount++;
                     }
-                    else
-                    {
-                        // 현재 개수가 부족하여 더 이상 강화할 수 없으면 루프 종료
-                        break;
-                    }
+
+                    // 장비 강화 수행
+                    Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(equipment, maxCount);
+
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"OnBatchEnhanceEquipment({equipment.DataTemplateID}) 중 에러가 발생하였습니다\n{e}");
+                    break; // 에러 발생 시 해당 장비 강화 중단
                 }
             }
+
+        }
+
+        if (enhancedCount <= 0)
+        {
+            Debug.Log("강화할 수 있는 장비가 없습니다.");
+            return;
         }
 
         // 강화가 완료되면 UI를 갱신합니다.
-        if (enhancedCount > 0)
-        {
-            Debug.Log($"{enhancedCount}개의 장비가 최대 레벨까지 일괄 강화되었습니다.");
-            RefreshUI(false);
-        }
-        else
-        {
-            Debug.Log("강화할 수 있는 장비가 없습니다.");
-        }
+        var popupUI = Managers.UI.ShowPopupUI<UI_BatchEnhancePopup>();
+        popupUI.ShowBatchEnhanceItem(equipmentEnhanceDic, equipmentInfos);
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
+        Debug.Log($"{enhancedCount}개의 장비가 최대 레벨까지 일괄 강화되었습니다.");
+        RefreshUI(false);
+
     }
 
 
@@ -379,7 +386,6 @@ public class UI_EquipmentPopup : UI_Popup
     {
         bool canEnhance = false;
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
-
         foreach (var equipment in equipmentInfos)
         {
             if (equipment.OwningState == EOwningState.Owned)

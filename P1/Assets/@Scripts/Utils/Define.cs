@@ -130,7 +130,8 @@ public static class Define
         Basic, 
         ImageOnly,
         SlotItem,
-        Draw
+        Draw,
+        Enhance
     }
     
     #endregion

@@ -354,7 +354,8 @@ public class UI_GameScene : UI_Scene
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
 
     }
-
+    
+    // 주 Content 팝업들을 닫을 땐 탭도 초기화 시켜주어야 함. 
     public void CloseDrawPopup(UI_Popup popup)
     {
         Managers.UI.ClosePopupUI(popup);

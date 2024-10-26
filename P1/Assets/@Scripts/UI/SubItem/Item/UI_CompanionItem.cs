@@ -22,7 +22,8 @@ public class UI_CompanionItem : UI_Base
     public enum Texts
     {
         Text_Level,
-        Text_ValueText
+        Text_ValueText,
+        Text_EnhanceLevel
     }
 
     public enum Sliders
@@ -37,7 +38,6 @@ public class UI_CompanionItem : UI_Base
     private RectTransform _rectTransform;
 
     public Item ItemData { get; private set; }
-    private EItemDisplayType _displayType;
 
     protected override bool Init()
     {
@@ -95,6 +95,8 @@ public class UI_CompanionItem : UI_Base
             case EItemDisplayType.Basic:
                 // Active
                 _fadeImage.gameObject.SetActive(false);
+                GetTMPText((int)Texts.Text_EnhanceLevel).gameObject.SetActive(false);
+
                 GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(true);
                 GetTMPText((int)Texts.Text_Level).gameObject.SetActive(true);
                 GetImage((int)Images.Image_Equip).gameObject.SetActive(isEquipped);
@@ -110,6 +112,16 @@ public class UI_CompanionItem : UI_Base
             // 아이템 디테일 -> 이미지만 표시 
             case EItemDisplayType.ImageOnly:
             case EItemDisplayType.SlotItem:
+
+                _fadeImage.gameObject.SetActive(false);
+                GetTMPText((int)Texts.Text_EnhanceLevel).gameObject.SetActive(false);
+                GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
+                GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
+                GetImage((int)Images.Image_Equip).gameObject.SetActive(false);
+                break;
+            case EItemDisplayType.Enhance:
+                GetTMPText((int)Texts.Text_EnhanceLevel).gameObject.SetActive(true);
+
                 _fadeImage.gameObject.SetActive(false);
                 GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
                 GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
@@ -124,8 +136,15 @@ public class UI_CompanionItem : UI_Base
                 GetImage((int)Images.Image_Unowned).gameObject.SetActive(false);
                 GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
                 GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
+                GetTMPText((int)Texts.Text_EnhanceLevel).gameObject.SetActive(false);
                 break;
         }
+    }
+
+    public void DisplayEnhanceLevel(int prevLevel, EquipmentInfoData equipmentInfoData)
+    {
+        DisplayItem(equipmentInfoData, EItemDisplayType.Enhance);
+        GetTMPText((int)Texts.Text_EnhanceLevel).text = $"{prevLevel}   >  {equipmentInfoData.Level}";
     }
 
 
