@@ -144,7 +144,18 @@ public class UI_CompanionItem : UI_Base
     public void DisplayEnhanceLevel(int prevLevel, EquipmentInfoData equipmentInfoData)
     {
         DisplayItem(equipmentInfoData, EItemDisplayType.Enhance);
-        GetTMPText((int)Texts.Text_EnhanceLevel).text = $"{prevLevel}   >  {equipmentInfoData.Level}";
+          // 텍스트 변경 효과
+    var textComponent = GetTMPText((int)Texts.Text_EnhanceLevel);
+    textComponent.color = Color.yellow; // 텍스트 색상 변경 (강화 시 색상)
+    textComponent.rectTransform.DOScale(1.2f, 0.15f).OnComplete(() =>
+    {
+        textComponent.DOText($"{prevLevel}   >  {equipmentInfoData.Level}", 0.3f)
+            .OnComplete(() => 
+            {
+                textComponent.color = Color.white; // 색상 원상복구
+                textComponent.rectTransform.DOScale(1f, 0.15f); // 크기 원상복구
+            });
+    });
     }
 
 

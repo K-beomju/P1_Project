@@ -17,7 +17,7 @@ public class UI_BatchEnhancePopup : UI_Popup
     }
 
     private List<UI_CompanionItem> equipmentItems = new List<UI_CompanionItem>();
-
+    private WaitForSeconds createDelay = new WaitForSeconds(0.1f);
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -46,7 +46,11 @@ public class UI_BatchEnhancePopup : UI_Popup
     public void ShowBatchEnhanceItem(Dictionary<EquipmentInfoData, int> enhanceEquipmentDic, List<EquipmentInfoData> equipmentInfos)
     {
         equipmentItems.ForEach(item => item.gameObject.SetActive(false));
-    
+        StartCoroutine(ShowBatchEnhanceItemCo(enhanceEquipmentDic, equipmentInfos));
+    }
+
+    private IEnumerator ShowBatchEnhanceItemCo(Dictionary<EquipmentInfoData, int> enhanceEquipmentDic, List<EquipmentInfoData> equipmentInfos)
+    {
         int index = 0;
         foreach (var equipmentInfo in equipmentInfos)
         {
@@ -65,6 +69,7 @@ public class UI_BatchEnhancePopup : UI_Popup
 
                 item.DisplayEnhanceLevel(enhanceEquipmentDic[equipmentInfo], equipmentInfo);
                 index++;
+                yield return createDelay;
             }
         }
     }
