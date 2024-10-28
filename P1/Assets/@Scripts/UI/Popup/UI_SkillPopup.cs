@@ -133,7 +133,7 @@ public class UI_SkillPopup : UI_Popup
         // 스킬 인벤토리 중 스킬 장비 찾기 
         SkillInfoData equippedInfo = Managers.Backend.GameData.SkillInventory.SkillInventoryDic.Values.FirstOrDefault(skillinfo => skillinfo.IsEquipped);
 
-        List<SkillInfoData> skillInfos = Managers.Skill.GetSkillInfos(true);
+        List<SkillInfoData> skillInfos = Managers.Skill.GetSkillInfos();
 
         //////////////////////////// ShowSkillDetailUI 부분 
         if (equippedInfo != null)

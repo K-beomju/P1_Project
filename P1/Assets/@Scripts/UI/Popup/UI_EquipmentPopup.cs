@@ -76,7 +76,7 @@ public class UI_EquipmentPopup : UI_Popup
             if (equipmentType != value)
             {
                 equipmentType = value;
-                GetTMPText((int)Texts.Text_EquipmentType).text = Util.GetEquipmentString(value);
+                GetTMPText((int)Texts.Text_EquipmentType).text = Util.GetEquipemntType(value);
             }
         }
     }
@@ -110,6 +110,7 @@ public class UI_EquipmentPopup : UI_Popup
             var item = GetObject((int)GameObjects.Content_Equipment).transform.GetChild(i).GetComponent<UI_CompanionItem>();
             equipmentItems.Add(item);
         }
+
         EquipmentType = EEquipmentType.Weapon;
         return true;
     }
@@ -142,7 +143,7 @@ public class UI_EquipmentPopup : UI_Popup
     // 장비 타입을 바꿨을 때 Item 갱신 
     public void RefreshUI(bool sort = true)
     {
-        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
         for (int i = 0; i < equipmentItems.Count; i++)
         {
@@ -285,7 +286,7 @@ public class UI_EquipmentPopup : UI_Popup
     // 자동 장착 
     private void OnAutoEquipment()
     {
-        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
         EquipmentInfoData bestEquipment = equipmentInfos
         .Where(info => info.OwningState == EOwningState.Owned)
@@ -321,7 +322,7 @@ public class UI_EquipmentPopup : UI_Popup
 
         // 장비 ID, 장비 기존 레벨 
         Dictionary<EquipmentInfoData, int> equipmentEnhanceDic = new Dictionary<EquipmentInfoData, int>();
-        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
         int enhancedCount = 0;
 
@@ -385,7 +386,7 @@ public class UI_EquipmentPopup : UI_Popup
     private bool IsCheckOnceEnhanceEquipment()
     {
         bool canEnhance = false;
-        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType, true);
+        List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
         foreach (var equipment in equipmentInfos)
         {
             if (equipment.OwningState == EOwningState.Owned)

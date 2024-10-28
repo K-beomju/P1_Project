@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static Define;
 
 public static class Extension
 {
@@ -47,4 +48,9 @@ public static class Extension
 			(list[k], list[n]) = (list[n], list[k]); //swap
 		}
 	}
+
+	public static bool IsEquipmentType(this EDrawType type)
+    {
+        return type == EDrawType.Weapon || type == EDrawType.Armor || type == EDrawType.Ring;
+    }
 }

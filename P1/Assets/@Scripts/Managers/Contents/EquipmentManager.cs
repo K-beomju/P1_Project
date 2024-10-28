@@ -29,14 +29,11 @@ public class EquipmentManager
     }
 
     // 특정 타입의 장비 정보 리스트 반환
-    public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type, bool needsSync = false)
+    public List<EquipmentInfoData> GetEquipmentTypeInfos(EEquipmentType type)
     {
         List<EquipmentInfoData> equipmentInfos = AllEquipmentInfos.Values
             .Where(equipmentInfo => equipmentInfo.Data.EquipmentType == type)
             .ToList();
-
-        if (!needsSync)
-         return equipmentInfos;
 
         for (int i = 0; i < equipmentInfos.Count; i++)
         {

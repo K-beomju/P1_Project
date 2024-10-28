@@ -19,6 +19,7 @@ namespace BackendData.GameData
         public EquipmentData Data { get; private set; }
         public override string Name => Data.Name;
         public override string SpriteKey => Data.SpriteKey;
+        public override ERareType RareType => Data.RareType;
 
         public EquipmentInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
      : base(dataTemplateID, owningState, level, count, isEquipped)

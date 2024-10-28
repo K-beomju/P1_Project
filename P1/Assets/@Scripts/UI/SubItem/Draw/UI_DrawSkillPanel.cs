@@ -1,6 +1,9 @@
+using BackendData.GameData;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static Define;
 
 public class UI_DrawSkillPanel : UI_Base
@@ -25,6 +28,17 @@ public class UI_DrawSkillPanel : UI_Base
         Btn_DrawThirty,
     }
 
+    public enum Toggles
+    {
+        Toggle_DrawDirection
+    }
+
+    private DrawData _drawData;
+    private EDrawType _drawType = EDrawType.Skill;
+
+    private int _drawLevel;
+    private int _totalCount;
+    private bool _drawDirection = false;
 
     protected override bool Init()
     {
@@ -34,6 +48,7 @@ public class UI_DrawSkillPanel : UI_Base
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         BindButtons(typeof(Buttons));
+        Bind<Toggle>(typeof(Toggles));
 
         GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => ShowProbabilityPopup());
 
@@ -41,13 +56,48 @@ public class UI_DrawSkillPanel : UI_Base
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawSkill(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawSkill(30));
 
+        // 버튼 클릭 시 Toggle의 값을 변경합니다.
+        Toggle drawDirectionToggle = Get<Toggle>((int)Toggles.Toggle_DrawDirection);
+        GetButton((int)Buttons.Btn_SkipDrawVisual).onClick.AddListener(() => drawDirectionToggle.isOn = !drawDirectionToggle.isOn);
+        drawDirectionToggle.onValueChanged.AddListener((bool isOn) => _drawDirection = isOn);
+
         return true;
+    }
+
+    private void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.DrawSkillUIUpdated, new Action(UpdateSkillUI));
+    }
+
+    private void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.DrawSkillUIUpdated, new Action(UpdateSkillUI));
     }
 
     public void RefreshUI()
     {
-
+        UpdateSkillUI();
     }
+
+    public void UpdateSkillUI()
+    {
+        _drawData = Managers.Backend.GameData.DrawLevelData.DrawDic[_drawType.ToString()];
+
+        if (_drawData == null)
+        {
+            Debug.LogWarning("장비 게임 데이터가 없음");
+            return;
+        }
+        _drawLevel = _drawData.DrawLevel;
+        _totalCount = _drawData.DrawCount;
+
+        GetTMPText((int)Texts.Text_DrawSkillLevel).text = $"스킬 뽑기 Lv. {_drawLevel}";
+        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp}";
+
+        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawSkillChart[_drawLevel].MaxExp;
+        GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+    }
+
 
 
     #region Draw Logic
@@ -57,13 +107,13 @@ public class UI_DrawSkillPanel : UI_Base
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
 
-        //var equipmentIdList = Util.GetEquipmentDrawResults(_currentEquipmentType, drawCount, _drawLevel);
-        //popupUI.RefreshUI(_currentEquipmentType, drawCount, equipmentIdList);
+        var skillIdList = Util.GetDrawSystemResults(_drawType, drawCount, _drawLevel);
+        popupUI.RefreshUI(_drawType, drawCount, skillIdList, _drawDirection);
     }
 
     private void ShowProbabilityPopup()
     {
-        //Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_currentEquipmentType);
+        Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_drawType);
     }
 
     #endregion

@@ -15,6 +15,7 @@ namespace BackendData.GameData
         // 장비 또는 스킬의 공통 속성
         public abstract string Name { get; }
         public abstract string SpriteKey { get; }
+        public abstract ERareType RareType { get; }
         //public abstract EItemType ItemType { get; } // 아이템 타입(스킬, 장비) 구분용 Enum
 
         protected Item(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)

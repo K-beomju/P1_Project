@@ -100,8 +100,11 @@ public static class Define
         /// <summary>뽑기 진행 중 레벨 정보가 업데이트될 때 호출</summary>
         DrawDataUpdated,
 
-        /// <summary>뽑기 관련 UI가 갱신될 때 호출</summary>
+        /// <summary>장비 뽑기 관련 UI가 갱신될 때 호출</summary>
         DrawEquipmentUIUpdated,
+
+        /// <summary>스킬 뽑기 관련 UI가 갱신될 때 호출</summary>
+        DrawSkillUIUpdated,
 
         /// <summary>뽑기 레벨업 시 UI 갱신을 위해 호출</summary>
         DrawLevelUpUIUpdated,
@@ -169,7 +172,9 @@ public static class Define
 
     public enum EDrawType
     {
-        Equipment,
+        Weapon,
+        Armor,
+        Ring,
         Skill
     }
 
@@ -263,7 +268,7 @@ public static class Define
 
     public const float DASH_DISTANCE_THRESHOLD = 9f;
     public const float LERP_SPEED = 0.1f;
-    public const float CREATRE_EQUIPMENT_DELAY = 0.03f;
+    public const float CREATRE_DRAWITEM_DELAY = 0.03f;
 
     public static class HeroAnimation
     {

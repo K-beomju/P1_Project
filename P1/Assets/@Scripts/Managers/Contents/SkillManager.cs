@@ -40,12 +40,9 @@ public class SkillManager
 
     }
 
-    public List<SkillInfoData> GetSkillInfos(bool needsSync = false)
+    public List<SkillInfoData> GetSkillInfos()
     {
         List<SkillInfoData> skillInfos = AllSkillInfos.Values.ToList();
-
-        if (!needsSync)
-            return skillInfos;
 
         for (int i = 0; i < skillInfos.Count; i++)
         {

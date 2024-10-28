@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
-using static UnityEditor.Progress;
 
 public class UI_DrawResultPopup : UI_Popup
 {
@@ -27,7 +26,7 @@ public class UI_DrawResultPopup : UI_Popup
     }
 
     private List<UI_CompanionItem> _drawItems = new List<UI_CompanionItem>();
-    private EEquipmentType _type;
+    private EDrawType _type;
 
     private int _level;
     private int _drawCount;
@@ -45,9 +44,13 @@ public class UI_DrawResultPopup : UI_Popup
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() =>
         {
             ClosePopupUI();
-            Managers.Event.TriggerEvent(EEventType.DrawEquipmentUIUpdated);
+
+            if (_type.IsEquipmentType())
+                Managers.Event.TriggerEvent(EEventType.DrawEquipmentUIUpdated);
+            if (_type == EDrawType.Skill)
+                Managers.Event.TriggerEvent(EEventType.DrawSkillUIUpdated);
         });
-        GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawEquipment());
+        GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawItem());
         for (int i = 0; i < 30; i++)
         {
             var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.DrawItemGroup).transform);
@@ -61,32 +64,32 @@ public class UI_DrawResultPopup : UI_Popup
     private void OnEnable()
     {
         Managers.Event.AddEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
-        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
+        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetDrawTypeString(_type)} 뽑기 Lv. {level}"));
     }
 
     private void OnDisable()
     {
         Managers.Event.RemoveEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
-         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {level}"));
+         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetDrawTypeString(_type)} 뽑기 Lv. {level}"));
     }
 
-    public void RefreshUI(EEquipmentType type, int drawCount, List<int> resultList, bool drawDirection)
+    public void RefreshUI(EDrawType type, int drawCount, List<int> resultList, bool drawDirection)
     {
         _type = type;
         _level = Managers.Backend.GameData.DrawLevelData.DrawDic[_type.ToString()].DrawLevel;  // 최신 레벨 가져오기
         _drawCount = drawCount;
         _drawDirection = drawDirection;
 
-        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetEquipmentString(_type)} 뽑기 Lv. {_level}";
+        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetDrawTypeString(_type)} 뽑기 Lv. {_level}";
         GetTMPText((int)Texts.Text_Retry).text = $"{_drawCount}회";
 
         InteractiveButtons(false);
         StartCoroutine(CreateEquipmentItem(resultList));
     }
 
-    private void RetryDrawEquipment()
+    private void RetryDrawItem()
     {
-        List<int> resultList = Util.GetEquipmentDrawResults(_type, _drawCount, _level);
+        List<int> resultList = Util.GetDrawSystemResults(_type, _drawCount, _level);
         RefreshUI(_type, _drawCount, resultList, _drawDirection);
     }
 
@@ -94,15 +97,26 @@ public class UI_DrawResultPopup : UI_Popup
     {
         _drawItems.ForEach(item => item.gameObject.SetActive(false));
 
-        WaitForSeconds wait = new WaitForSeconds(CREATRE_EQUIPMENT_DELAY);
+        WaitForSeconds wait = new WaitForSeconds(CREATRE_DRAWITEM_DELAY);
 
         // 결과 목록에 해당하는 장비 데이터를 한 번에 미리 검증하여 유효한지 확인
         foreach (var resultId in resultList)
         {
-            if (!Managers.Equipment.AllEquipmentInfos.ContainsKey(resultId))
+            if (_type.IsEquipmentType())
             {
-                Debug.LogWarning($"Equipment.AllEquipmentInfo에 장비 ID {resultId}가 없습니다.");
-                yield break;
+                if (!Managers.Equipment.AllEquipmentInfos.ContainsKey(resultId))
+                {
+                    Debug.LogWarning($"Equipment.AllEquipmentInfo에 장비 ID {resultId}가 없습니다.");
+                    yield break;
+                }
+            }
+            if (_type == EDrawType.Skill)
+            {
+                if (!Managers.Skill.AllSkillInfos.ContainsKey(resultId))
+                {
+                    Debug.LogWarning($"Equipment.AllSkillInfos에 스킬 ID {resultId}가 없습니다.");
+                    yield break;
+                }
             }
         }
 
@@ -110,34 +124,56 @@ public class UI_DrawResultPopup : UI_Popup
         for (int i = 0; i < Mathf.Min(resultList.Count, _drawItems.Count); i++)
         {
             int resultId = resultList[i];
+            BackendData.GameData.Item itemData = null;   
 
-            if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultId, out EquipmentInfoData equipmentInfoData))
+
+            if (_type.IsEquipmentType())
             {
-                continue;
+                if (!Managers.Equipment.AllEquipmentInfos.TryGetValue(resultId, out EquipmentInfoData equipmentInfoData))
+                {
+                    continue;
+                }
+                itemData = equipmentInfoData;
+            }
+            if (_type == EDrawType.Skill)
+            {
+                if (!Managers.Skill.AllSkillInfos.TryGetValue(resultId, out SkillInfoData skillInfoData))
+                {
+                    continue;
+                }
+                itemData = skillInfoData;
             }
 
+        
             try
             {
-                // 장비 인벤토리에 추가
-                Managers.Backend.GameData.EquipmentInventory.AddEquipment(equipmentInfoData.DataTemplateID);
-
-                // 아이템 설정 및 활성화
-                UI_CompanionItem drawItem = _drawItems[i];
-                drawItem.DisplayItem(equipmentInfoData, EItemDisplayType.Draw);
-                drawItem.gameObject.SetActive(true);
+                if (_type.IsEquipmentType())
+                {
+                    // 장비 인벤토리에 추가
+                    Managers.Backend.GameData.EquipmentInventory.AddEquipment(itemData.DataTemplateID);
+                }
+                if (_type == EDrawType.Skill)
+                {
+                    // 스킬 인벤토리에 추가
+                    Managers.Backend.GameData.SkillInventory.AddSkill(itemData.DataTemplateID);
+                }
+                    UI_CompanionItem drawItem = _drawItems[i];
+                    drawItem.DisplayItem(itemData, EItemDisplayType.Draw);
+                    drawItem.gameObject.SetActive(true);
             }
             catch (Exception e)
             {
-                Debug.LogError($"CreateEquipmentItem({equipmentInfoData}, {equipmentInfoData.DataTemplateID}) 중 에러가 발생하였습니다: {e}");
+                Debug.LogError($"CreateEquipmentItem({itemData}, {itemData.DataTemplateID}) 중 에러가 발생하였습니다: {e}");
                 yield break;  // 에러 발생 시, 더 이상 아이템을 생성하지 않고 종료
             }
 
-            if(!_drawDirection)
-            yield return wait;
+            if (!_drawDirection)
+                yield return wait;
         }
 
-        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) => {
-            if(changed)
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
+        {
+            if (changed)
             {
                 Debug.LogWarning("전투력 변경 있음.");
                 Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();

@@ -3,6 +3,7 @@ using UnityEngine;
 using BackendData.GameData;
 
 using static Define;
+using System.Linq;
 
 public class UI_DrawProbabilityPopup : UI_Popup
 {
@@ -28,10 +29,10 @@ public class UI_DrawProbabilityPopup : UI_Popup
 
     // 레벨 관리 변수
     private int _currentLevel;
-    private EEquipmentType _currentType;
+    private EDrawType _currentType;
 
     // 레벨별 확률 데이터 캐싱을 위한 Dictionary
-    private Dictionary<int, List<float>> _cachedProbabilityData;
+    private Dictionary<EDrawType, Dictionary<int, List<float>>> _cachedProbabilityData;
 
     protected override bool Init()
     {
@@ -53,39 +54,63 @@ public class UI_DrawProbabilityPopup : UI_Popup
         GetObject((int)GameObjects.BG).BindEvent(() => Managers.UI.ClosePopupUI(this), EUIEvent.Click);
         // 확률 데이터를 캐싱하는 함수 호출
         CacheProbabilityData();
-
         return true;
     }
 
     private void CacheProbabilityData()
     {
         // 레벨별 확률 데이터를 캐싱할 Dictionary 초기화
-        _cachedProbabilityData = new Dictionary<int, List<float>>();
+        _cachedProbabilityData = new Dictionary<EDrawType, Dictionary<int, List<float>>>();
 
-        // 1부터 10까지의 레벨에 대한 확률 데이터를 캐싱
-        for (int level = 1; level <= 10; level++)
+        // 장비 (3개), 스킬 (1개) = 4번 
+        for (int drawInventory = 0; drawInventory < 4; drawInventory++)
         {
-            // 레벨별 gachaData를 가져와 각 리스트의 데이터를 결합하여 List<float>로 저장
-            var gachaData = Managers.Data.DrawEquipmentChart[level]; //Managers.Data.GachaDataDic[level];
-            List<float> drawProbability = new List<float>();
-            drawProbability.AddRange(gachaData.NormalDrawList);
-            drawProbability.AddRange(gachaData.AdvancedDrawList);
-            drawProbability.AddRange(gachaData.RareDrawList);
-            drawProbability.AddRange(gachaData.LegendaryDrawList);
-            drawProbability.AddRange(gachaData.MythicalDrawList);
-            drawProbability.AddRange(gachaData.CelestialDrawList);
+            EDrawType drawType = (EDrawType)drawInventory;
 
-            // 해당 레벨의 확률 데이터를 Dictionary에 추가
-            _cachedProbabilityData[level] = drawProbability;
+            // drawType에 대한 Dictionary가 존재하지 않으면 초기화
+            if (!_cachedProbabilityData.ContainsKey(drawType))
+            {
+                _cachedProbabilityData[drawType] = new Dictionary<int, List<float>>();
+            }
+
+            // 1부터 10까지의 레벨에 대한 확률 데이터를 캐싱
+            for (int level = 1; level <= 10; level++)
+            {
+                Data.DrawGachaData gachaData = null;
+
+                if (drawType.IsEquipmentType())
+                    gachaData = Managers.Data.DrawEquipmentChart[level];
+                if (drawType == EDrawType.Skill)
+                    gachaData = Managers.Data.DrawSkillChart[level];
+
+                if (gachaData == null)
+                {
+                    Debug.LogWarning($"{drawType} 가챠 데이터가 존재하지 않습니다");
+                    return;
+                }
+
+                // 레벨별 gachaData를 가져와 각 리스트의 데이터를 결합하여 List<float>로 저장
+                List<float> drawProbability = new List<float>();
+                drawProbability.AddRange(gachaData.NormalDrawList);
+                drawProbability.AddRange(gachaData.AdvancedDrawList);
+                drawProbability.AddRange(gachaData.RareDrawList);
+                drawProbability.AddRange(gachaData.LegendaryDrawList);
+                drawProbability.AddRange(gachaData.MythicalDrawList);
+                drawProbability.AddRange(gachaData.CelestialDrawList);
+
+                // 해당 레벨의 확률 데이터를 Dictionary에 추가
+                _cachedProbabilityData[drawType][level] = drawProbability;
+            }
         }
+
     }
 
-    public void RefreshUI(EEquipmentType type)
+    public void RefreshUI(EDrawType type)
     {
-        var equipmentData = Managers.Backend.GameData.DrawLevelData.DrawDic[type.ToString()]; 
+        var drawData = Managers.Backend.GameData.DrawLevelData.DrawDic[type.ToString()];
         _currentType = type;
-        _currentLevel = equipmentData.DrawLevel; // 초기 레벨 설정
-
+        _currentLevel = drawData.DrawLevel; // 초기 레벨 설정
+        drawPbItems.ForEach(x => x.gameObject.SetActive(false));
         UpdateLevelText();
         UpdateDrawProbabilityUI(); // UI 갱신 시 캐싱된 데이터 사용
     }
@@ -93,15 +118,27 @@ public class UI_DrawProbabilityPopup : UI_Popup
     private void UpdateDrawProbabilityUI()
     {
         // 캐싱된 데이터에서 현재 레벨의 확률 데이터를 가져옴
-        if (_cachedProbabilityData.TryGetValue(_currentLevel, out var drawProbability))
+        if (_cachedProbabilityData.TryGetValue(_currentType, out var drawProbability) && drawProbability.TryGetValue(_currentLevel, out var probabilityList))
         {
-            List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(_currentType);
+            List<Item> itemInfos = null;
 
-            for (int i = 0; i < drawPbItems.Count; i++)
+            if (_currentType.IsEquipmentType())
+                itemInfos = Managers.Equipment.GetEquipmentTypeInfos(Util.ParseEnum<EEquipmentType>(_currentType.ToString())).Cast<Item>().ToList();
+            else if (_currentType == EDrawType.Skill)
+                itemInfos = Managers.Skill.GetSkillInfos().Cast<Item>().ToList();
+
+            for (int i = 0; i < itemInfos.Count; i++)
             {
-                if (i < drawProbability.Count)
-                    drawPbItems[i].RefreshUI(equipmentInfos[i], drawProbability[i]);
+                if (i < probabilityList.Count)
+                {
+                    drawPbItems[i].gameObject.SetActive(true);
+                    drawPbItems[i].RefreshUI(itemInfos[i], probabilityList[i]);
+                }
             }
+        }
+        else
+        {
+            Debug.LogWarning($"확률 데이터가 존재하지 않습니다: Type: {_currentType}, Level: {_currentLevel}");
         }
     }
 
@@ -129,6 +166,6 @@ public class UI_DrawProbabilityPopup : UI_Popup
 
     private void UpdateLevelText()
     {
-        GetTMPText((int)Texts.Text_DrawTypeLevel).text = $"{Util.GetEquipmentString(_currentType)} 뽑기 Lv. {_currentLevel}";
+        GetTMPText((int)Texts.Text_DrawTypeLevel).text = $"{Util.GetDrawTypeString(_currentType)} 뽑기 Lv. {_currentLevel}";
     }
 }

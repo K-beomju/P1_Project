@@ -271,7 +271,7 @@ namespace Data
 
     #region DrawData
     [Serializable]
-    public class DrawEquipmentGachaData
+    public class DrawGachaData
     {
         public int Level;
         public int MaxExp;
@@ -290,6 +290,11 @@ namespace Data
         public List<int> LegendaryEqIdList = new List<int>();
         public List<int> MythicalEqIdList = new List<int>();
         public List<int> CelestialEqIdList = new List<int>();
+    }
+
+    [Serializable]
+    public class DrawEquipmentGachaData : DrawGachaData
+    {
 
     }
 
@@ -307,25 +312,8 @@ namespace Data
     }
 
     [Serializable]
-    public class DrawSkillGachaData
+    public class DrawSkillGachaData : DrawGachaData
     {
-        public int Level;
-        public int MaxExp;
-
-        public List<float> DrawProbabilityList;
-        public List<float> NormalDrawList;
-        public List<float> AdvancedDrawList;
-        public List<float> RareDrawList;
-        public List<float> LegendaryDrawList;
-        public List<float> MythicalDrawList;
-        public List<float> CelestialDrawList;
-
-        public List<int> NormalEqIdList;
-        public List<int> AdvancedEqIdList;
-        public List<int> RareEqIdList;
-        public List<int> LegendaryEqIdList;
-        public List<int> MythicalEqIdList;
-        public List<int> CelestialEqIdList;
 
     }
 

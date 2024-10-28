@@ -73,7 +73,7 @@ public class UI_CompanionItem : UI_Base
             GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillInfo.Data.RareType);
 
             // 스킬 슬롯 아이템 -> 이미지 사이즈 조정
-            if (displayType == EItemDisplayType.Basic || displayType == EItemDisplayType.ImageOnly)
+            if (displayType == EItemDisplayType.Basic || displayType == EItemDisplayType.ImageOnly || displayType == EItemDisplayType.Draw)
                 _iconImage.rectTransform.sizeDelta = new Vector2(120, 120);
 
         }

@@ -41,6 +41,8 @@ namespace BackendData.GameData
             _drawDic.Add("Weapon", new DrawData(1, 0));
             _drawDic.Add("Armor", new DrawData(1, 0));
             _drawDic.Add("Ring", new DrawData(1, 0));
+            _drawDic.Add("Skill", new DrawData(1, 0));
+
         }
 
         protected override void SetServerDataToLocal(JsonData Data)
@@ -73,16 +75,26 @@ namespace BackendData.GameData
         #region Draw Methods 
 
         // 유저의 뽑기 횟수를 변경하는 함수
-        public void AddDrawCount(EEquipmentType equipmentType)
+        public void AddDrawCount(EDrawType drawType)
         {
             IsChangedData = true;
-            string key = equipmentType.ToString();
+            string key = drawType.ToString();
 
             _drawDic[key].DrawCount++;
 
-            while (_drawDic[key].DrawCount >= Managers.Data.DrawEquipmentChart[_drawDic[key].DrawLevel].MaxExp) //GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
+            if (drawType.IsEquipmentType())
             {
-                DrawLevelUp(key);
+                while (_drawDic[key].DrawCount >= Managers.Data.DrawEquipmentChart[_drawDic[key].DrawLevel].MaxExp) //GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
+                {
+                    DrawLevelUp(key);
+                }
+            }
+            if(drawType == EDrawType.Skill)
+            {
+                while (_drawDic[key].DrawCount >= Managers.Data.DrawSkillChart[_drawDic[key].DrawLevel].MaxExp) //GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
+                {
+                    DrawLevelUp(key);
+                }
             }
 
         }

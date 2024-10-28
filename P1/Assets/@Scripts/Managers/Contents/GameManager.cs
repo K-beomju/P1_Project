@@ -17,7 +17,7 @@ public class GameManager
 	public void Init()
 	{
 
-		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EEquipmentType>((type) =>
+		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EDrawType>((type) =>
 		{
             try { 
                 Managers.Backend.GameData.DrawLevelData.AddDrawCount(type);

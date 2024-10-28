@@ -75,13 +75,13 @@ public class UI_DrawPopup : UI_Popup
         {
             case EDrawSection.Equipment:
                 GetButton((int)Buttons.Btn_Equipment).interactable = false;
-
                 _drawEquipmentPanel.gameObject.SetActive(true);
                 _drawEquipmentPanel.RefreshUI();
                 break;
             case EDrawSection.Skill:
                 GetButton((int)Buttons.Btn_Skill).interactable = false;
                 _drawSkillPanel.gameObject.SetActive(true);
+                _drawSkillPanel.RefreshUI();
                 break;
         }
     }

@@ -60,7 +60,8 @@ namespace BackendData.GameData
         public SkillData Data { get; private set; }
         public override string Name => Data.Name;
         public override string SpriteKey => Data.SpriteKey;
-
+        public override ERareType RareType => Data.RareType;
+        
         public SkillInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
             : base(dataTemplateID, owningState, level, count, isEquipped)
         {

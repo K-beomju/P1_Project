@@ -24,16 +24,13 @@ public class UI_DrawProbabilityItem : UI_Base
 
         BindImages(typeof(Images));
         BindTMPTexts(typeof(Texts));
-
-
-
         return true;
     }
 
-    public void RefreshUI(EquipmentInfoData equipmentInfo, float drawProbability)
+    public void RefreshUI(Item itemData, float drawProbability)
     {
-        GetImage((int)Images.Image_Rare).color = Util.GetRareTypeColor(equipmentInfo.Data.RareType);
-        GetTMPText((int)Texts.Text_EquipmentName).text = equipmentInfo.Data.Name;
+        GetImage((int)Images.Image_Rare).color = Util.GetRareTypeColor(itemData.RareType);
+        GetTMPText((int)Texts.Text_EquipmentName).text = itemData.Name;
         GetTMPText((int)Texts.Text_EquipmentProbability).text = $"{drawProbability}%";
 
     }

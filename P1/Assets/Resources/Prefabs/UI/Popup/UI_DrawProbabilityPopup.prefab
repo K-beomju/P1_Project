@@ -784,8 +784,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBB34\uAE30 \uBF51\uAE30 Lv.1"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5330616d84269ab4791d09f3fcbd3fc2, type: 2}
-  m_sharedMaterial: {fileID: 5526482756327961706, guid: 5330616d84269ab4791d09f3fcbd3fc2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
+  m_sharedMaterial: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1863,7 +1863,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 16984721689513156}
   m_Direction: 2
   m_Value: 1.0000005
-  m_Size: 0.6748143
+  m_Size: 0.6748142
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2072,6 +2072,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2174,6 +2178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2276,6 +2284,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2378,6 +2390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2480,6 +2496,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2582,6 +2602,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2600,6 +2624,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2423539292705383725}
     m_Modifications:
+    - target: {fileID: 445836827783936295, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
+    - target: {fileID: 445836827783936295, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
+    - target: {fileID: 445836827783936295, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5527616399687565763, guid: d1cf0442701576f43835479c91d30973, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2687,6 +2723,10 @@ PrefabInstance:
     - target: {fileID: 6372936070947204832, guid: d1cf0442701576f43835479c91d30973, type: 3}
       propertyPath: m_Name
       value: UI_DrawProbabilityItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2790,6 +2830,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2892,6 +2936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3102,6 +3150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3204,6 +3256,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3306,6 +3362,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3408,6 +3468,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3510,6 +3574,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3612,6 +3680,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3714,6 +3786,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3816,6 +3892,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3918,6 +3998,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4020,6 +4104,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4122,6 +4210,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4224,6 +4316,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4326,6 +4422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4428,6 +4528,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4530,6 +4634,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_DrawProbabilityItem (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 8536316290286757317, guid: d1cf0442701576f43835479c91d30973, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

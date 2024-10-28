@@ -45,11 +45,11 @@ public class UI_DrawEquipmentPanel : UI_Base
         Toggle_DrawDirection
     }
 
-    private Dictionary<EEquipmentType, Image> _iconImages;
-    private Dictionary<EEquipmentType, Sprite> _portalEqIconDic;
+    private Dictionary<EDrawType, Image> _iconImages;
+    private Dictionary<EDrawType, Sprite> _portalEqIconDic;
 
     private DrawData _drawData;
-    private EEquipmentType _currentEquipmentType = EEquipmentType.None;
+    private EDrawType _drawType = EDrawType.Skill;
 
     private Image _portalImage;
 
@@ -68,18 +68,18 @@ public class UI_DrawEquipmentPanel : UI_Base
         BindImages(typeof(Images));
         Bind<Toggle>(typeof(Toggles));
 
-        _iconImages = new Dictionary<EEquipmentType, Image>
+        _iconImages = new Dictionary<EDrawType, Image>
         {
-            { EEquipmentType.Weapon, GetImage((int)Images.BG_IconSword) },
-            { EEquipmentType.Armor, GetImage((int)Images.BG_IconArmor) },
-            { EEquipmentType.Ring, GetImage((int)Images.BG_IconRing) }
+            { EDrawType.Weapon, GetImage((int)Images.BG_IconSword) },
+            { EDrawType.Armor, GetImage((int)Images.BG_IconArmor) },
+            { EDrawType.Ring, GetImage((int)Images.BG_IconRing) }
         };
 
-        _portalEqIconDic = new Dictionary<EEquipmentType, Sprite>
+        _portalEqIconDic = new Dictionary<EDrawType, Sprite>
         {
-            { EEquipmentType.Weapon,   Managers.Resource.Load<Sprite>($"Sprites/WeaponIcon") },
-            { EEquipmentType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/Armor/Armor_24") },
-            { EEquipmentType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/RingIcon") }
+            { EDrawType.Weapon,   Managers.Resource.Load<Sprite>($"Sprites/WeaponIcon") },
+            { EDrawType.Armor,  Managers.Resource.Load<Sprite>($"Sprites/Armor/Armor_24") },
+            { EDrawType.Ring,  Managers.Resource.Load<Sprite>($"Sprites/RingIcon") }
         };
         _portalImage = GetImage((int)Images.Image_PortalEquipment);
 
@@ -89,16 +89,16 @@ public class UI_DrawEquipmentPanel : UI_Base
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
 
-        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnClickButton(EEquipmentType.Weapon));
-        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EEquipmentType.Armor));
-        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EEquipmentType.Ring));
+        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnClickButton(EDrawType.Weapon));
+        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EDrawType.Armor));
+        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EDrawType.Ring));
 
         // 버튼 클릭 시 Toggle의 값을 변경합니다.
         Toggle drawDirectionToggle = Get<Toggle>((int)Toggles.Toggle_DrawDirection);
         GetButton((int)Buttons.Btn_SkipDrawVisual).onClick.AddListener(() => drawDirectionToggle.isOn = !drawDirectionToggle.isOn);
         drawDirectionToggle.onValueChanged.AddListener((bool isOn) => _drawDirection = isOn);
 
-        _currentEquipmentType = EEquipmentType.Weapon;
+        _drawType = EDrawType.Weapon;
         return true;
     }
 
@@ -112,12 +112,12 @@ public class UI_DrawEquipmentPanel : UI_Base
         Managers.Event.RemoveEvent(EEventType.DrawEquipmentUIUpdated, new Action(UpdateEquipmentUI));
     }
 
-    void OnClickButton(EEquipmentType type)
+    void OnClickButton(EDrawType type)
     {
-        if (_currentEquipmentType == type)
+        if (_drawType == type)
             return;
 
-        _currentEquipmentType = type;
+        _drawType = type;
         RefreshUI();
     }
 
@@ -128,16 +128,16 @@ public class UI_DrawEquipmentPanel : UI_Base
         {
             icon.Value.color = Util.HexToColor("#848484");
         }
-        _iconImages[_currentEquipmentType].color = Color.white;
+        _iconImages[_drawType].color = Color.white;
 
-        _portalImage.sprite = _portalEqIconDic[_currentEquipmentType];
+        _portalImage.sprite = _portalEqIconDic[_drawType];
 
         UpdateEquipmentUI();
     }
 
     public void UpdateEquipmentUI()
     {
-        _drawData = Managers.Backend.GameData.DrawLevelData.DrawDic[_currentEquipmentType.ToString()];
+        _drawData = Managers.Backend.GameData.DrawLevelData.DrawDic[_drawType.ToString()];
 
         if (_drawData == null)
         {
@@ -147,7 +147,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         _drawLevel = _drawData.DrawLevel;
         _totalCount = _drawData.DrawCount;
 
-        GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetEquipmentString(_currentEquipmentType)} 뽑기 Lv. {_drawLevel}";
+        GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetDrawTypeString(_drawType)} 뽑기 Lv. {_drawLevel}";
         GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp}";
 
         GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp;
@@ -163,13 +163,13 @@ public class UI_DrawEquipmentPanel : UI_Base
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawResultPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
 
-        var equipmentIdList = Util.GetEquipmentDrawResults(_currentEquipmentType, drawCount, _drawLevel);
-        popupUI.RefreshUI(_currentEquipmentType, drawCount, equipmentIdList, _drawDirection);
+        var equipmentIdList = Util.GetDrawSystemResults(_drawType, drawCount, _drawLevel);
+        popupUI.RefreshUI(_drawType, drawCount, equipmentIdList, _drawDirection);
     }
 
     private void ShowProbabilityPopup()
     {
-        Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_currentEquipmentType);
+        Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_drawType);
     }
 
     #endregion
