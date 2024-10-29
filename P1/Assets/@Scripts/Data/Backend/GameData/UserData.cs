@@ -3,6 +3,7 @@ using LitJson;
 using BackEnd;
 using Unity.VisualScripting;
 using static Define;
+using System;
 
 namespace BackendData.GameData
 {
@@ -28,10 +29,15 @@ namespace BackendData.GameData
         // 각 특성레벨 담는 Dic
         private Dictionary<string, int> _upgradeAttrDic = new();
 
+        // 각 유물갯수 담는 Dic
+        private Dictionary<string, int> _ownedRelicDic = new();
+
+
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeStatDic => (IReadOnlyDictionary<string, int>)_upgradeStatDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeAttrDic => (IReadOnlyDictionary<string, int>)_upgradeAttrDic.AsReadOnlyCollection();
+        public IReadOnlyDictionary<string, int> OwnedRelicDic => (IReadOnlyDictionary<string, int>)_ownedRelicDic.AsReadOnlyCollection();
 
     }
 
@@ -43,30 +49,40 @@ namespace BackendData.GameData
 
         protected override void InitializeData()
         {
+            StageLevel = 1;
             Level = 1;
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
-            StageLevel = 1;
 
+            // 재화 정보 초기화 
             _purseDic.Clear();
-            _purseDic.Add(EGoodType.Gold.ToString(), 0);
-            _purseDic.Add(EGoodType.Dia.ToString(), 0);
-            _purseDic.Add(EGoodType.ExpPoint.ToString(), 0);
+            foreach (EGoodType goodType in Enum.GetValues(typeof(EGoodType)))
+            {
+                _purseDic.Add(goodType.ToString(), 0);
+            }
 
+            // 스탯 레벨 정보 초기화 
             _upgradeStatDic.Clear();
-            _upgradeStatDic.Add(EHeroUpgradeType.Growth_Atk.ToString(), 1);
-            _upgradeStatDic.Add(EHeroUpgradeType.Growth_Hp.ToString(), 1);
-            _upgradeStatDic.Add(EHeroUpgradeType.Growth_Recovery.ToString(), 1);
-            _upgradeStatDic.Add(EHeroUpgradeType.Growth_CriRate.ToString(), 1);
-            _upgradeStatDic.Add(EHeroUpgradeType.Growth_CriDmg.ToString(), 1);
+            foreach (EHeroUpgradeType upgradeType in Enum.GetValues(typeof(EHeroUpgradeType)))
+            {
+                _upgradeStatDic.Add(upgradeType.ToString(), 0);
+            }
 
+            // 특성 레벨 정보 초기화 
             _upgradeAttrDic.Clear();
-            _upgradeAttrDic.Add(EHeroAttrType.Attribute_Atk.ToString(), 0);
-            _upgradeAttrDic.Add(EHeroAttrType.Attribute_MaxHp.ToString(), 0);
-            _upgradeAttrDic.Add(EHeroAttrType.Attribute_CriRate.ToString(), 0);
-            _upgradeAttrDic.Add(EHeroAttrType.Attribute_CriDmg.ToString(), 0);
-            _upgradeAttrDic.Add(EHeroAttrType.Attribute_SkillTime.ToString(), 0);
-            _upgradeAttrDic.Add(EHeroAttrType.Attribute_SkillDmg.ToString(), 0);
+            foreach (EHeroAttrType attrType in Enum.GetValues(typeof(EHeroAttrType)))
+            {
+                _upgradeAttrDic.Add(attrType.ToString(), 0);
+            }
+
+            // 유물 보유 정보 초기화 
+            _ownedRelicDic.Clear();
+            foreach (EHeroRelicType relicType in Enum.GetValues(typeof(EHeroRelicType)))
+            {
+                _ownedRelicDic.Add(relicType.ToString(), 0);
+            }
+
+
         }
 
         // Backend.GameData.GetMyData 호출 이후 리턴된 값을 파싱하여 캐싱하는 함수
@@ -89,10 +105,14 @@ namespace BackendData.GameData
                 _upgradeStatDic.Add(column, int.Parse(Data["UpgradeStat"][column].ToString()));
             }
 
-
             foreach (var column in Data["UpgradeAttr"].Keys)
             {
                 _upgradeAttrDic.Add(column, int.Parse(Data["UpgradeAttr"][column].ToString()));
+            }
+
+            foreach (var column in Data["OwnedRelic"].Keys)
+            {
+                _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
 
             AddAmount(EGoodType.ExpPoint, 1100);
@@ -122,6 +142,7 @@ namespace BackendData.GameData
             param.Add("Purse", _purseDic);
             param.Add("UpgradeStat", _upgradeStatDic);
             param.Add("UpgradeAttr", _upgradeAttrDic);
+            param.Add("OwnedRelic", _ownedRelicDic);
 
             return param;
         }

@@ -12,21 +12,22 @@ public interface ILoader<Key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, StageInfoData> StageChart { get; private set; } = new Dictionary<int, StageInfoData>(); // 스테이지 정보
-    public Dictionary<int, CreatureUpgradeStatInfoData> CreatureUpgradeStatChart { get; private set; } = new Dictionary<int, CreatureUpgradeStatInfoData>(); // 생명체 업그레이드 스탯 정보
-    public Dictionary<int, HeroInfoData> HeroChart { get; private set; } = new Dictionary<int, HeroInfoData>(); // 영웅 정보
-    public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> HeroUpgradeChart { get; private set; } = new Dictionary<EHeroUpgradeType, HeroUpgradeInfoData>();  // 영웅 업그레이드 스탯 정보
-    public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> HeroUpgradeCostChart { get; private set; } = new Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData>(); // 영웅 업그레이드 스탯 가격 정보
-    public Dictionary<EHeroAttrType, HeroAttributeInfoData> HeroAttributeChart { get; private set; } = new Dictionary<EHeroAttrType, HeroAttributeInfoData>();  // 영웅 업그레이드 특성 정보
-    public Dictionary<EHeroAttrType, HeroAttributeCostInfoData> HeroAttributeCostChart { get; private set; } = new Dictionary<EHeroAttrType, HeroAttributeCostInfoData>(); // 영웅 업그레이드 특성 가격 정보
+    public Dictionary<int, StageInfoData> StageChart { get; private set; } = new(); // 스테이지 정보
+    public Dictionary<int, CreatureUpgradeStatInfoData> CreatureUpgradeStatChart { get; private set; } = new(); // 생명체 업그레이드 스탯 정보
+    public Dictionary<int, HeroInfoData> HeroChart { get; private set; } = new(); // 영웅 정보
+    public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> HeroUpgradeChart { get; private set; } = new();  // 영웅 업그레이드 스탯 정보
+    public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> HeroUpgradeCostChart { get; private set; } = new(); // 영웅 업그레이드 스탯 가격 정보
+    public Dictionary<EHeroAttrType, HeroAttributeInfoData> HeroAttributeChart { get; private set; } = new();  // 영웅 업그레이드 특성 정보
+    public Dictionary<EHeroRelicType, HeroRelicInfoData> HeroRelicChart { get; private set; } = new();  // 영웅 업그레이드 유물 정보
+    public Dictionary<EHeroAttrType, HeroAttributeCostInfoData> HeroAttributeCostChart { get; private set; } = new(); // 영웅 업그레이드 특성 가격 정보
 
-    public Dictionary<int, MonsterInfoData> MonsterChart { get; private set; } = new Dictionary<int, MonsterInfoData>();  // 일반 몬스터 정보
-    public Dictionary<int, BossMonsterInfoData> BossMonsterChart { get; private set; } = new Dictionary<int, BossMonsterInfoData>();// 보스 몬스터 정보 
-    public Dictionary<int, DrawEquipmentGachaData> DrawEquipmentChart { get; private set; } = new Dictionary<int, DrawEquipmentGachaData>();// 장비 뽑기 확률 정보
-    public Dictionary<int, DrawSkillGachaData> DrawSkillChart { get; private set; } = new Dictionary<int, DrawSkillGachaData>(); // 스킬 뽑기 확률 정보
-    public Dictionary<int, EquipmentData> EquipmentChart { get; private set; } = new Dictionary<int, EquipmentData>(); // 장비 정보
-    public Dictionary<int, SkillData> SkillChart { get; private set; } = new Dictionary<int, SkillData>(); // 스킬 정보
-    public Dictionary<int, EffectData> EffectChart { get; private set; } = new Dictionary<int, EffectData>(); // 이펙트 정보
+    public Dictionary<int, MonsterInfoData> MonsterChart { get; private set; } = new();  // 일반 몬스터 정보
+    public Dictionary<int, BossMonsterInfoData> BossMonsterChart { get; private set; } = new(); // 보스 몬스터 정보 
+    public Dictionary<int, DrawEquipmentGachaData> DrawEquipmentChart { get; private set; } = new();// 장비 뽑기 확률 정보
+    public Dictionary<int, DrawSkillGachaData> DrawSkillChart { get; private set; } = new(); // 스킬 뽑기 확률 정보
+    public Dictionary<int, EquipmentData> EquipmentChart { get; private set; } = new(); // 장비 정보
+    public Dictionary<int, SkillData> SkillChart { get; private set; } = new(); // 스킬 정보
+    public Dictionary<int, EffectData> EffectChart { get; private set; } = new(); // 이펙트 정보
 
     public void Init()
     {
@@ -38,6 +39,7 @@ public class DataManager
         HeroUpgradeChart = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
         HeroUpgradeCostChart = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
         HeroAttributeChart = LoadJson<HeroAttributeInfoDataLoader, EHeroAttrType, HeroAttributeInfoData>("HeroAttributeInfoData").MakeDict();
+        HeroRelicChart = LoadJson<HeroRelicInfoDataLoader, EHeroRelicType, HeroRelicInfoData>("HeroRelicInfoData").MakeDict();
         HeroAttributeCostChart = LoadJson<HeroAttributeCostInfoDataLoader, EHeroAttrType, HeroAttributeCostInfoData>("HeroAttributeCostInfoData").MakeDict();
         DrawEquipmentChart = LoadJson<DrawEquipmentGachaDataLoader, int, DrawEquipmentGachaData>("DrawEquipmentGachaInfoData").MakeDict();
         DrawSkillChart = LoadJson<DrawSkillGachaDataLoader, int, DrawSkillGachaData>("DrawSkillGachaInfoData").MakeDict();

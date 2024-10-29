@@ -17,17 +17,21 @@ public class DataTransformer : EditorWindow
 	public static void ParseExcelDataToJson()
 	{
 		Debug.Log("DataTransformer Completed");
-		ParseExcelDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
-        ParseExcelDataToJson<DrawSkillGachaDataLoader, DrawSkillGachaData>("DrawSkillGachaInfo");
-		ParseExcelDataToJson<DrawEquipmentGachaDataLoader, DrawEquipmentGachaData>("DrawEquipmentGachaInfo");
-		ParseExcelDataToJson<CreatureUpgradeStatInfoDataLoader, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfo");
 		ParseExcelDataToJson<StageInfoDataLoader, StageInfoData>("StageInfo");
+		ParseExcelDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
 		ParseExcelDataToJson<BossMonsterInfoDataLoader, BossMonsterInfoData>("BossMonsterInfo");
+		ParseExcelDataToJson<CreatureUpgradeStatInfoDataLoader, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfo");
+
 		ParseExcelDataToJson<HeroInfoDataLoader, HeroInfoData>("HeroInfo");
 		ParseExcelDataToJson<HeroUpgradeInfoDataLoader, HeroUpgradeInfoData>("HeroUpgradeInfo");
 		ParseExcelDataToJson<HeroUpgradeCostInfoDataLoader, HeroUpgradeCostInfoData>("HeroUpgradeCostInfo");
 		ParseExcelDataToJson<HeroAttributeInfoDataLoader, HeroAttributeInfoData>("HeroAttributeInfo");
 		ParseExcelDataToJson<HeroAttributeCostInfoDataLoader, HeroAttributeCostInfoData>("HeroAttributeCostInfo");
+		ParseExcelDataToJson<HeroRelicInfoDataLoader, HeroRelicInfoData>("HeroRelicInfo");
+
+		ParseExcelDataToJson<DrawEquipmentGachaDataLoader, DrawEquipmentGachaData>("DrawEquipmentGachaInfo");
+        ParseExcelDataToJson<DrawSkillGachaDataLoader, DrawSkillGachaData>("DrawSkillGachaInfo");
+
 		ParseExcelDataToJson<EquipmentDataLoader, EquipmentData>("Equipment");
         ParseExcelDataToJson<SkillDataLoader, SkillData>("Skill");
         ParseExcelDataToJson<EffectDataLoader, EffectData>("Effect");

@@ -4,18 +4,30 @@ using System.IO;
 
 public class MoveIconToResource
 {
-    [MenuItem("Assets/Move to Resource/Skill", false, 0)] // 우클릭 메뉴에 추가
+    [MenuItem("Assets/Move to Resource/Skill", false, 0)] // 우클릭 메뉴에 "Skill" 옵션 추가
     private static void MoveToSkill()
+    {
+        MoveToResource("Skill");
+    }
+
+    [MenuItem("Assets/Move to Resource/Relic", false, 1)] // 우클릭 메뉴에 "Relic" 옵션 추가
+    private static void MoveToRelic()
+    {
+        MoveToResource("Relic");
+    }
+
+    private static void MoveToResource(string resourceType)
     {
         // 선택된 에셋 경로 가져오기
         string selectedPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-        
+
         // 이동할 목적지 폴더 경로 설정
-        string destinationPath = "Assets/Resources/Sprites";
+        string destinationPath = $"Assets/Resources/Sprites/{resourceType}";
 
         if (!Directory.Exists(destinationPath))
         {
-            Debug.LogWarning(destinationPath + "라는 경로는 없습니다.,,ㅡㅡ");
+            Debug.LogWarning($"{destinationPath}라는 경로는 없습니다.,,ㅡㅡ");
+            return;
         }
 
         // 파일 이름 추출
@@ -37,6 +49,17 @@ public class MoveIconToResource
     // 메뉴가 활성화되는 조건: 선택된 것이 파일이어야 함
     [MenuItem("Assets/Move to Resource/Skill", true)]
     private static bool ValidateMoveToSkill()
+    {
+        return ValidateMoveToResource();
+    }
+
+    [MenuItem("Assets/Move to Resource/Relic", true)]
+    private static bool ValidateMoveToRelic()
+    {
+        return ValidateMoveToResource();
+    }
+
+    private static bool ValidateMoveToResource()
     {
         // 선택된 것이 유효한지 확인 (파일이 선택된 경우에만 활성화)
         return Selection.activeObject != null && !AssetDatabase.IsValidFolder(AssetDatabase.GetAssetPath(Selection.activeObject));

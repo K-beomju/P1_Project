@@ -79,6 +79,8 @@ public class UI_CharacterPopup : UI_Popup
     {
         _characterPanel.gameObject.SetActive(false);
         _attributePanel.gameObject.SetActive(false);
+        _relicsPanel.gameObject.SetActive(false);
+
         GetButton((int)Buttons.Btn_Character).interactable = _characterSection != ECharacterSection.Character;
         GetButton((int)Buttons.Btn_Attribute).interactable = _characterSection != ECharacterSection.Attribute;
         GetButton((int)Buttons.Btn_Relics).interactable =  _characterSection != ECharacterSection.Relics;
@@ -95,6 +97,7 @@ public class UI_CharacterPopup : UI_Popup
                 _attributePanel.gameObject.SetActive(true);
                 break;
             case ECharacterSection.Relics:
+                _relicsPanel.gameObject.SetActive(true);
                 break;
         }
 

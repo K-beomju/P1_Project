@@ -13,7 +13,7 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
         Text_AbLevel
     }
 
-    public enum Images 
+    public enum Images
     {
         Image_AbIcon
     }
@@ -37,12 +37,12 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
         return true;
     }
 
-    private void OnEnable() 
+    private void OnEnable()
     {
         Managers.Event.AddEvent(EEventType.HeroAttributeUpdated, new Action(UpdateSlotInfoUI));
     }
 
-    private void OnDisable() 
+    private void OnDisable()
     {
         Managers.Event.RemoveEvent(EEventType.HeroAttributeUpdated, new Action(UpdateSlotInfoUI));
     }
@@ -67,11 +67,19 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
 
         Data.HeroAttributeInfoData attriData = Managers.Data.HeroAttributeChart[_heroAttrType];
 
+        if (attriData == null)
+        {
+            Debug.LogWarning($"HeroAttributeInfoData가 없습니다");
+            return;
+        }
+
+        if (_iconImage.sprite == null)
+            _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{attriData.SpriteKey}");
+
+
         _slotButton.onClick.RemoveAllListeners();
         _slotButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.AttributeItemClick, _heroAttrType));
 
-        _levelText.text =  $"Lv {level}";
-        _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{attriData.SpriteKey}");
-
+        _levelText.text = $"Lv {level}";
     }
 }

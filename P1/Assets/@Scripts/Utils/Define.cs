@@ -124,6 +124,9 @@ public static class Define
         /// <summary>영웅 특성 업그레이드 정보 갱신</summary>
         HeroAttributeUpdated,
 
+        /// <summary>영웅 유물 정보 갱신</summary>
+        HeroRelicUpdated,
+
         /// <summary>영웅 전투력 갱신</summary>
         HeroTotalPowerUpdated,
     }
@@ -240,6 +243,17 @@ public static class Define
         Attribute_CriDmg,
         Attribute_SkillTime,
         Attribute_SkillDmg
+    }
+
+    public enum EHeroRelicType
+    {
+        Relic_Atk,
+        Relic_MaxHp,
+        Relic_Recovery,
+        Relic_MonsterDmg,
+        Relic_BossMonsterDmg,
+        Relic_ExpRate,
+        Relic_GoldRate
     }
 
     public enum EStatModType

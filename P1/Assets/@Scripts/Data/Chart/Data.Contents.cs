@@ -265,6 +265,34 @@ namespace Data
         }
     }
 
+    [Serializable]
+    public class HeroRelicInfoData
+    {
+        public EHeroRelicType HeroRelicType;
+        public string Name;
+        public string Remark;
+        public string SpriteKey;
+        public float IncreaseValue;
+        public int MaxCount;
+    }
+
+    [Serializable]
+    public class HeroRelicInfoDataLoader : ILoader<EHeroRelicType, HeroRelicInfoData>
+    {
+        public List<HeroRelicInfoData> HeroRelicInfoDatas = new List<HeroRelicInfoData>();
+
+        public Dictionary<EHeroRelicType, HeroRelicInfoData> MakeDict()
+        {
+            Dictionary<EHeroRelicType, HeroRelicInfoData> dict = new Dictionary<EHeroRelicType, HeroRelicInfoData>();
+            foreach (HeroRelicInfoData infoData in HeroRelicInfoDatas)
+            {
+                dict.Add(infoData.HeroRelicType, infoData);
+            }
+
+            return dict;
+        }
+    }
+
 
 
     #endregion
