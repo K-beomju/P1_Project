@@ -124,7 +124,7 @@ public class UI_DrawResultPopup : UI_Popup
         for (int i = 0; i < Mathf.Min(resultList.Count, _drawItems.Count); i++)
         {
             int resultId = resultList[i];
-            BackendData.GameData.Item itemData = null;   
+            BackendData.GameData.Item itemData = null;
 
 
             if (_type.IsEquipmentType())
@@ -144,7 +144,7 @@ public class UI_DrawResultPopup : UI_Popup
                 itemData = skillInfoData;
             }
 
-        
+
             try
             {
                 if (_type.IsEquipmentType())
@@ -157,9 +157,9 @@ public class UI_DrawResultPopup : UI_Popup
                     // 스킬 인벤토리에 추가
                     Managers.Backend.GameData.SkillInventory.AddSkill(itemData.DataTemplateID);
                 }
-                    UI_CompanionItem drawItem = _drawItems[i];
-                    drawItem.DisplayItem(itemData, EItemDisplayType.Draw);
-                    drawItem.gameObject.SetActive(true);
+                UI_CompanionItem drawItem = _drawItems[i];
+                drawItem.DisplayItem(itemData, EItemDisplayType.Draw);
+                drawItem.gameObject.SetActive(true);
             }
             catch (Exception e)
             {

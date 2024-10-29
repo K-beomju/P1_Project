@@ -81,9 +81,9 @@ public class UI_RelicGrowInvenSlot : UI_Base
             _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{relicData.SpriteKey}");
 
 
-        _nameInCountText.text = $"{relicData.Name} [ <color=#6BFF9F>{0}</color> / {relicData.MaxCount} ]";
+        _nameInCountText.text = $"{relicData.Name} [ <color=#6BFF9F>{count}</color> / {relicData.MaxCount} ]";
         _remarkInValueText.text = $"{relicData.Remark} {relicData.IncreaseValue * count}%";
-        _baseDecsText.text = $"{relicData.Remark} {relicData.IncreaseValue}%\n x 보유 갯수";
+        _baseDecsText.text = $"{relicData.Remark}\n {relicData.IncreaseValue}% x 보유 갯수";
 
 
 

@@ -6,7 +6,7 @@
       "Remark": "공격력 증가 +",
       "SpriteKey": "Relic/Relic_Atk",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     },
     {
       "HeroRelicType": 1,
@@ -14,7 +14,7 @@
       "Remark": "최대체력 증가 +",
       "SpriteKey": "Relic/Relic_MaxHp",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     },
     {
       "HeroRelicType": 2,
@@ -22,7 +22,7 @@
       "Remark": "체력 회복 증가 +",
       "SpriteKey": "Relic/Relic_Recovery",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     },
     {
       "HeroRelicType": 3,
@@ -30,7 +30,7 @@
       "Remark": "일반 몬스터 피해량 +",
       "SpriteKey": "Relic/Relic_MonsterDmg",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     },
     {
       "HeroRelicType": 4,
@@ -38,7 +38,7 @@
       "Remark": "보스 몬스터 피해량 +",
       "SpriteKey": "Relic/Relic_BossMonsterDmg",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     },
     {
       "HeroRelicType": 5,
@@ -46,7 +46,7 @@
       "Remark": "경험치 획득량 +",
       "SpriteKey": "Relic/Relic_ExpRate",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     },
     {
       "HeroRelicType": 6,
@@ -54,7 +54,7 @@
       "Remark": "골드 획득량 +",
       "SpriteKey": "Relic/Relic_GoldRate",
       "IncreaseValue": 0.1,
-      "MaxCount": 300
+      "MaxCount": 30
     }
   ]
 }

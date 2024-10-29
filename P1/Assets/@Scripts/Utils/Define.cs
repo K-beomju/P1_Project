@@ -173,12 +173,19 @@ public static class Define
         Max,
     }
 
+    // 뽑기에서 뽑을 아이템 
     public enum EDrawType
     {
         Weapon,
         Armor,
         Ring,
         Skill
+    }
+
+    // 획득할 수 있는 아이템 
+    public enum EItemType 
+    {
+        Relic
     }
 
     public enum ESkillSlotType

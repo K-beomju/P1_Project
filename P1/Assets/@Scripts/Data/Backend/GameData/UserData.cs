@@ -4,6 +4,7 @@ using BackEnd;
 using Unity.VisualScripting;
 using static Define;
 using System;
+using UnityEngine;
 
 namespace BackendData.GameData
 {
@@ -215,6 +216,7 @@ namespace BackendData.GameData
         #region Upgrade
         public void LevelUpHeroUpgrade(EHeroUpgradeType upgradeType)
         {
+            IsChangedData = true;
             string key = upgradeType.ToString();
             if (_upgradeStatDic.ContainsKey(key))
             {
@@ -231,6 +233,7 @@ namespace BackendData.GameData
 
         public void LevelUpHeroAttribute(EHeroAttrType attrType)
         {
+            IsChangedData = true;
             string key = attrType.ToString();
             if (_upgradeAttrDic.ContainsKey(key))
             {
@@ -243,9 +246,22 @@ namespace BackendData.GameData
             Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             Managers.Event.TriggerEvent(EEventType.HeroAttributeUpdated);
         }
-
         #endregion
 
+        #region Relic
+        public void AddRelic(EHeroRelicType relicType, int count)
+        {
+            IsChangedData = true;
+            if (_ownedRelicDic.ContainsKey(relicType.ToString()))
+            {
+                _ownedRelicDic[relicType.ToString()] += count;
+            }
+            else
+            {
+                Debug.LogWarning(relicType);
+            }
+        }
+        #endregion
 
     }
 
