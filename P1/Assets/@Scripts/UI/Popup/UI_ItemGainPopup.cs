@@ -62,7 +62,6 @@ public class UI_ItemGainPopup : UI_Popup
             if (_type == EItemType.Relic)
             {
                 gainedItem.DisplayItem(Managers.Data.HeroRelicChart[(EHeroRelicType)gainItem.Key], gainItem.Value);
-                //Managers.Backend.GameData.UserData.AddRelic((EHeroRelicType)gainItem.Key, gainItem.Value);
             }
             gainedItem.gameObject.SetActive(true);
             index++;

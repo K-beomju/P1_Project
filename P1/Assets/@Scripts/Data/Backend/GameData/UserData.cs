@@ -66,7 +66,7 @@ namespace BackendData.GameData
             _upgradeStatDic.Clear();
             foreach (EHeroUpgradeType upgradeType in Enum.GetValues(typeof(EHeroUpgradeType)))
             {
-                _upgradeStatDic.Add(upgradeType.ToString(), 0);
+                _upgradeStatDic.Add(upgradeType.ToString(), 1);
             }
 
             // 특성 레벨 정보 초기화 
@@ -156,6 +156,12 @@ namespace BackendData.GameData
             IsChangedData = true;
             string key = goodType.ToString();
 
+            // GoldRateRelic 적용 (만약 재화가 골드인 경우)
+            if (goodType == EGoodType.Gold && Managers.Hero.PlayerHeroInfo != null)
+            {
+                amount = (int)(amount * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
+            }
+
             if (!_purseDic.ContainsKey(key))
             {
                 _purseDic.Add(key, amount);
@@ -172,6 +178,11 @@ namespace BackendData.GameData
         public void AddExp(int exp)
         {
             IsChangedData = true;
+
+            // ExpRateRelic 적용
+            if(Managers.Hero.PlayerHeroInfo != null)
+            exp = (int)(exp * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
+   
             Exp += exp;
 
             // 레벨업 처리
@@ -260,6 +271,9 @@ namespace BackendData.GameData
             {
                 Debug.LogWarning(relicType);
             }
+            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
+            Managers.Event.TriggerEvent(EEventType.HeroRelicUpdated);
+
         }
         #endregion
 

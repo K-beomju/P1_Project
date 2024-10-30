@@ -55,7 +55,7 @@ public class GameScene : BaseScene
         ChapterLevel = 1;
         //Managers.Backend.GameData.UserData.AddAmount(EGoodType.ExpPoint, 100);
 
-        //SetupStage();
+        SetupStage();
         //Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
         return true;
     }

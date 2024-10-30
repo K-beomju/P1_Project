@@ -1,8 +1,8 @@
 ﻿RelicType,Name,Remark,SpiteKey,IncreaseValue,MaxCount
-Relic_Atk,전사의 분노,공격력 증가 +,Relic/Relic_Atk,0.1,30
-Relic_MaxHp,생명의 방패,최대체력 증가 +,Relic/Relic_MaxHp,0.1,30
-Relic_Recovery,회복의 샘,체력 회복 증가 +,Relic/Relic_Recovery,0.1,30
-Relic_MonsterDmg,사냥꾼의 이빨,일반 몬스터 피해량 +,Relic/Relic_MonsterDmg,0.1,30
-Relic_BossMonsterDmg,대적자의 검,보스 몬스터 피해량 +,Relic/Relic_BossMonsterDmg,0.1,30
-Relic_ExpRate,지혜의 책,경험치 획득량 +,Relic/Relic_ExpRate,0.1,30
-Relic_GoldRate,부의 상징,골드 획득량 +,Relic/Relic_GoldRate,0.1,30
+Relic_Atk,전사의 분노,공격력 증가 +,Relic/Relic_Atk,1,300
+Relic_MaxHp,생명의 방패,최대체력 증가 +,Relic/Relic_MaxHp,1,300
+Relic_Recovery,회복의 샘,체력 회복 증가 +,Relic/Relic_Recovery,2.5,300
+Relic_MonsterDmg,사냥꾼의 이빨,일반 몬스터 피해량 +,Relic/Relic_MonsterDmg,1,300
+Relic_BossMonsterDmg,대적자의 검,보스 몬스터 피해량 +,Relic/Relic_BossMonsterDmg,1,300
+Relic_ExpRate,지혜의 책,경험치 획득량 +,Relic/Relic_ExpRate,0.2,300
+Relic_GoldRate,부의 상징,골드 획득량 +,Relic/Relic_GoldRate,0.2,300

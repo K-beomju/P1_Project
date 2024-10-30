@@ -151,16 +151,31 @@ public class Creature : BaseObject
             if (attacker is Hero)
             {
                 HeroInfo heroInfo = Managers.Hero.PlayerHeroInfo;
-                float skillDmgAttr = heroInfo.SkillDmgAttr; // 특성으로 인한 스킬 데미지 증가 퍼센트
-                finalDamage *= (1 + skillDmgAttr / 100f);
-                Debug.Log($"스킬 데미지 특성 적용: {skillDmgAttr}% 증가, 최종 데미지: {finalDamage}");
+                float skillDmgBonus = 1.0f + heroInfo.SkillDmgAttr / 100f;
+                finalDamage *= skillDmgBonus;
+
+                //Debug.Log($"스킬 데미지 특성 적용: {heroInfo.SkillDmgAttr}% 증가, 최종 데미지: {finalDamage}");
             }
+        }
+
+        // 일반 몬스터 공격력, 보스 몬스터 공격력 계산 
+        if (attacker is Hero)
+        {
+            HeroInfo heroInfo = Managers.Hero.PlayerHeroInfo;
+            float monsterDmgBonusPercentage =
+                (this is BossMonster ? heroInfo.BossMonsterDmgRelic : heroInfo.MonsterDmgRelic);
+
+            // 정확한 퍼센트 값으로 변환 후 적용
+            float monsterDmgBonus = 1.0f + monsterDmgBonusPercentage / 100f;
+            finalDamage *= monsterDmgBonus;
+
+            //Debug.Log($"몬스터/보스 추가 데미지 적용: {monsterDmgBonusPercentage}% 증가, 최종 데미지: {finalDamage}");
         }
 
         // 피해 감소 버프가 있을 경우 최종 피해량에 반영
         if (ReduceDmgBuff.Value > 1)
         {
-            Debug.LogWarning("받는 피해 감소가 있습니다." + ReduceDmgBuff.Value);
+            //Debug.LogWarning("받는 피해 감소가 있습니다." + ReduceDmgBuff.Value);
             float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1);
             finalDamage *= damageReductionMultiplier;
         }

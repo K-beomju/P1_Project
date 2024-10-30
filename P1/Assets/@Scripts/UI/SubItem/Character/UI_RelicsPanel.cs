@@ -58,32 +58,66 @@ public class UI_RelicsPanel : UI_Base
 
         Dictionary<Enum, int> drawRelicDic = new();
         Array values = Enum.GetValues(typeof(EHeroRelicType));
-        int indexCount = 0;
+        List<EHeroRelicType> eligibleRelics = new List<EHeroRelicType>();
 
-        for (int i = 0; i < drawCount + indexCount; i++)
+        // Prepare the list of eligible relics
+        foreach (EHeroRelicType relic in values)
         {
-            int random = UnityEngine.Random.Range(0, values.Length);
-            EHeroRelicType selectedRelic = (EHeroRelicType)values.GetValue(random);
-
-            // 만약 뽑은 유물이 최대치보다 작을 경우 
-            if(Managers.Backend.GameData.UserData.OwnedRelicDic[selectedRelic.ToString()] < Managers.Data.HeroRelicChart[selectedRelic].MaxCount)
+            int ownedCount = Managers.Backend.GameData.UserData.OwnedRelicDic[relic.ToString()];
+            int maxCount = Managers.Data.HeroRelicChart[relic].MaxCount;
+            if (ownedCount < maxCount)
             {
-                if(drawRelicDic.ContainsKey(selectedRelic))
-                {
-                    drawRelicDic[selectedRelic] += 1;
-                }
-                else
-                {
-                    drawRelicDic.Add(selectedRelic, 1);
-                }
+                eligibleRelics.Add(relic);
+            }
+        }
 
-                Managers.Backend.GameData.UserData.AddRelic(selectedRelic, 1);
+        // Check if there are any eligible relics
+        if (eligibleRelics.Count == 0)
+        {
+            Debug.Log("All relics have reached their maximum count.");
+            return;
+        }
+
+        for (int i = 0; i < drawCount;)
+        {
+            if (eligibleRelics.Count == 0)
+            {
+                Debug.Log("더 이상 뽑을 유물이 없습니다.");
+                break;
+            }
+
+            int randomIndex = UnityEngine.Random.Range(0, eligibleRelics.Count);
+            EHeroRelicType selectedRelic = eligibleRelics[randomIndex];
+
+            // 선택된 유물이 최대치에 도달했는지 확인
+            int ownedCount = Managers.Backend.GameData.UserData.OwnedRelicDic[selectedRelic.ToString()];
+            int maxCount = Managers.Data.HeroRelicChart[selectedRelic].MaxCount;
+            if (ownedCount >= maxCount)
+            {
+                // 유물을 획득 가능한 리스트에서 제거
+                eligibleRelics.RemoveAt(randomIndex);
+                continue; // 뽑기 횟수를 증가시키지 않고 다음 루프로
+            }
+
+            // 유물 획득 및 데이터 업데이트
+            if (drawRelicDic.ContainsKey(selectedRelic))
+            {
+                drawRelicDic[selectedRelic] += 1;
             }
             else
             {
-                indexCount++;
-                Debug.Log(indexCount);
+                drawRelicDic.Add(selectedRelic, 1);
             }
+            Managers.Backend.GameData.UserData.AddRelic(selectedRelic, 1);
+
+            // 유물이 최대치에 도달했는지 다시 확인
+            ownedCount++;
+            if (ownedCount >= maxCount)
+            {
+                eligibleRelics.RemoveAt(randomIndex);
+            }
+
+            i++; // 뽑기 횟수 증가
         }
 
         popupUI.RefreshUI(EItemType.Relic, drawRelicDic);

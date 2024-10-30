@@ -33,6 +33,16 @@ public class HeroInfo
     public float SkillDmgAttr { get; private set; }
     #endregion
 
+    #region Relic
+    public float AtkRelic { get; private set; }
+    public float MaxHpRelic { get; private set; }
+    public float RecoveryRelic { get; private set; }
+    public float MonsterDmgRelic { get; private set; }
+    public float BossMonsterDmgRelic { get; private set; }
+    public float ExpRateRelic { get; private set; }
+    public float GoldRateRelic { get; private set; }
+    #endregion
+
     public int DataTemplateID { get; private set; }
     public HeroInfoData Data { get; private set; }
 
@@ -56,11 +66,10 @@ public class HeroInfo
         CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
         CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
 
-
         Debug.LogWarning("기존 공격력 : " + Atk);
-        // Debug.LogWarning("기존 최대체력 : " + MaxHp);
-        // Debug.LogWarning("기존 치명타 확률 : " + CriRate);
-        // Debug.LogWarning("기존 치명타 데미지 : " + CriDmg);
+        Debug.LogWarning("기존 최대체력 : " + MaxHp);
+        Debug.LogWarning("기존 치명타 확률 : " + CriRate);
+        Debug.LogWarning("기존 치명타 데미지 : " + CriDmg);
 
         // 특성 레벨 계산 
         AtkAttr = CaculateAttribute(EHeroAttrType.Attribute_Atk);
@@ -70,6 +79,15 @@ public class HeroInfo
         SkillTimeAttr = CaculateAttribute(EHeroAttrType.Attribute_SkillTime);
         SkillDmgAttr = CaculateAttribute(EHeroAttrType.Attribute_SkillDmg);
 
+        // 유물 레벨 계산 
+        AtkRelic = CaculateRelic(EHeroRelicType.Relic_Atk);
+        MaxHpRelic = CaculateRelic(EHeroRelicType.Relic_MaxHp);
+        RecoveryRelic = CaculateRelic(EHeroRelicType.Relic_Recovery);
+        MonsterDmgRelic = CaculateRelic(EHeroRelicType.Relic_MonsterDmg);
+        BossMonsterDmgRelic = CaculateRelic(EHeroRelicType.Relic_BossMonsterDmg);
+        ExpRateRelic = CaculateRelic(EHeroRelicType.Relic_ExpRate);
+        GoldRateRelic = CaculateRelic(EHeroRelicType.Relic_GoldRate);
+
         // 장비 보너스 퍼센트 합산
         float AtkEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Weapon);
         float MaxHpEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Armor);
@@ -78,8 +96,9 @@ public class HeroInfo
         // Debug.LogWarning("장비 최대체력 보너스 퍼센트 : " + MaxHpEquipmentPer);
 
         // 총 보너스 퍼센트 합산 (장비 + 특성)
-        float totalAtkPer = AtkEquipmentPer + AtkAttr;
-        float totalMaxHpPer = MaxHpEquipmentPer + MaxHpAttr;
+        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic;
+        float totalMaxHpPer = MaxHpEquipmentPer + MaxHpAttr + MaxHpRelic;
+        float totalRecoveryPer = RecoveryRelic;
         float totalCriRatePer = CriRateAttr;
         float totalCriDmgPer = CriDmgAttr;
 
@@ -91,6 +110,7 @@ public class HeroInfo
         // 최종 스탯 계산
         Atk = Atk * (1 + totalAtkPer / 100f);
         MaxHp = MaxHp * (1 + totalMaxHpPer / 100f);
+        Recovery = Recovery * (1 + totalRecoveryPer / 100f);
         CriRate = CriRate * (1 + totalCriRatePer / 100f);
         CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
 
@@ -124,6 +144,8 @@ public class HeroInfo
         // 전투력 변화가 있는지 확인 후 콜백 실행
         bool isPowerChanged = AdjustTotalPower != 0;
         totalPowerChanged?.Invoke(isPowerChanged);
+
+        Debug.Log(MonsterDmgRelic);
     }
 
     // 스탯 계산
@@ -148,6 +170,17 @@ public class HeroInfo
 
         return increaseValue * currentLevel;
     }
+
+    // 유물 계산 
+    private float CaculateRelic(EHeroRelicType relicType)
+    {
+        var relicData = Managers.Data.HeroRelicChart[relicType];
+        float increaseValue = relicData.IncreaseValue;
+        int currentLevel = Managers.Backend.GameData.UserData.OwnedRelicDic[relicType.ToString()];
+
+        return increaseValue * currentLevel;
+    }
+
 
 
     // 장비 보너스 퍼센트 합산 함수

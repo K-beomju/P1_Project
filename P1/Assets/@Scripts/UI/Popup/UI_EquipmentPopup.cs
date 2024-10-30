@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using BackendData.GameData;
 using static Define;
+using UnityEngine.UI;
 
 public class UI_EquipmentPopup : UI_Popup
 {
@@ -92,6 +93,7 @@ public class UI_EquipmentPopup : UI_Popup
         BindSliders(typeof(Sliders));
         BindImages(typeof(Images));
 
+        GetImage((int)Images.Image_HighlightedItem).gameObject.SetActive(false);
         GetButton((int)Buttons.Btn_Weapon).onClick.AddListener(() => OnClickButton(EEquipmentType.Weapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EEquipmentType.Ring));
@@ -110,6 +112,7 @@ public class UI_EquipmentPopup : UI_Popup
             var item = GetObject((int)GameObjects.Content_Equipment).transform.GetChild(i).GetComponent<UI_CompanionItem>();
             equipmentItems.Add(item);
         }
+        //GetObject((int)GameObjects.Content_Equipment).GetComponent<GridLayoutGroup>().enabled = false;
 
         EquipmentType = EEquipmentType.Weapon;
         return true;
@@ -195,7 +198,7 @@ public class UI_EquipmentPopup : UI_Popup
             ShowEquipmentDetailUI(SelectEquipmentInfo);
         }
 
-        GetTMPText((int)Texts.Text_TotalEquipmentOwnedValue).text = $"보유효과: <color=#FFF42A>{Util.GetEquipmentStatType(EquipmentType)} +{Managers.Equipment.OwnedEquipmentValues(EquipmentType):N0}%</color>";
+        GetTMPText((int)Texts.Text_TotalEquipmentOwnedValue).text = $"보유효과 : <color=#FFF42A>{Util.GetEquipmentStatType(EquipmentType)} +{Util.ConvertToTotalCurrency(Managers.Equipment.OwnedEquipmentValues(EquipmentType))}%</color>";
         GetButton((int)Buttons.Btn_BatchEnhance).interactable = IsCheckOnceEnhanceEquipment();
     }
 
@@ -231,11 +234,19 @@ public class UI_EquipmentPopup : UI_Popup
         GetButton((int)Buttons.Btn_Enhance).interactable =
         SelectEquipmentInfo.OwningState == EOwningState.Owned && SelectEquipmentInfo.Count >= Util.GetUpgradeEquipmentMaxCount(SelectEquipmentInfo.Level);
 
+                
         // Highlighted Item
+        StartCoroutine(HighlightedItemCO());
+    }
+
+    private IEnumerator HighlightedItemCO()
+    {
+        yield return new WaitForEndOfFrame();
         UI_CompanionItem selectedItem = GetSelectItem(SelectEquipmentInfo.DataTemplateID);
         if (selectedItem != null) // null 체크
         {
             // 아이템의 위치를 설정
+            GetImage((int)Images.Image_HighlightedItem).gameObject.SetActive(true);
             GetImage((int)Images.Image_HighlightedItem).rectTransform.anchoredPosition = selectedItem.ItemPosition();
         }
         else
