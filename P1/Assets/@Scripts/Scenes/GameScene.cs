@@ -53,7 +53,6 @@ public class GameScene : BaseScene
         InitializeUI();
 
         ChapterLevel = 1;
-        //Managers.Backend.GameData.UserData.AddAmount(EGoodType.ExpPoint, 100);
 
         SetupStage();
         //Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
@@ -70,7 +69,6 @@ public class GameScene : BaseScene
 
     private void InitializeGameComponents()
     {
-        Managers.Game.Init();
         Managers.Hero.Init();
         Managers.Equipment.Init();
         Managers.Skill.Init();
@@ -92,7 +90,6 @@ public class GameScene : BaseScene
         Managers.UI.CacheAllPopups();
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
-        sceneUI.UpdateStageUI(false);
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
@@ -139,7 +136,7 @@ public class GameScene : BaseScene
 
         GameSceneState = EGameSceneState.Play;
 
-        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(CharacterData.StageLevel);
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(CharacterData.StageLevel);
     }
 
     #region GameSceneState

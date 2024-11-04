@@ -1,102 +1,97 @@
 using Data;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
 
-
 public class GameManager
 {
-	private Tilemap _tileMap;
-	private int _killMonsters;
-	private int _maxMonsters;
+    private Tilemap _tileMap;
+    private int _killMonsters;
+    private int _maxMonsters;
+    private EDungeonType DungeonType;
 
-	public void Init()
-	{
+    public void SetMonsterCount(int killMonsters, int maxMonsters)
+    {
+        _killMonsters = killMonsters;
+        _maxMonsters = maxMonsters;
 
-		Managers.Event.AddEvent(EEventType.DrawDataUpdated, new Action<EDrawType>((type) =>
-		{
-            try { 
-                Managers.Backend.GameData.DrawLevelData.AddDrawCount(type);
-            } 
-            catch(Exception e) {
-                throw new Exception($"EEventType.DrawDataUpdated({type}) 중 에러가 발생하였습니다\n{e}");
+        Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _killMonsters, _maxMonsters);
+    }
+
+    public void SpawnMonster(StageInfoData stageInfo, bool isBoss = false)
+    {
+        if (_tileMap == null)
+        {
+            _tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
+            _tileMap.CompressBounds();
+        }
+
+        Vector3 heroPosition = Managers.Object.Hero.transform.position;
+
+        if (!isBoss)
+        {
+            for (int i = 0; i < stageInfo.KillMonsterCount; i++)
+            {
+                Vector3 spawnPosition;
+                do
+                {
+                    spawnPosition = GetRandomPositionInTileMap(_tileMap.cellBounds);
+                }
+                while (Vector3.Distance(spawnPosition, heroPosition) < 5f);
+
+                Managers.Object.Spawn<Monster>(spawnPosition, stageInfo.MonsterDataIdList[Random.Range(0, stageInfo.MonsterDataIdList.Count)]);
             }
-        }));
+        }
+        else
+        {
+            Managers.Object.Spawn<BossMonster>(Vector3.zero, stageInfo.BossDataId);
+        }
+    }
 
-	}
-	#region MonsterSpawn
+    public void SpawnMonster(DungeonInfoData dungeonInfo)
+    {
+        for (int i = 0; i < dungeonInfo.KillMonsterCount; i++)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
+            Managers.Object.Spawn<Monster>(spawnPosition, dungeonInfo.MonsterDataIdList[Random.Range(0, dungeonInfo.MonsterDataIdList.Count)]);
+        }
+    }
 
-	public void SetMonsterCount(int killMonsters, int maxMonsters)
-	{
-		_killMonsters = killMonsters;
-		_maxMonsters = maxMonsters;
+    public void OnMonsterDestroyed()
+    {
+        _killMonsters += 1;
+        SetMonsterCount(_killMonsters, _maxMonsters);
+    }
 
-		Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _killMonsters, _maxMonsters);
-	}
+    public bool ClearStage()
+    {
+        return _killMonsters >= _maxMonsters;
+    }
 
-	public void SpawnMonster(StageInfoData stageInfo, bool isBoss = false)
-	{
-		if (_tileMap == null)
-		{
-			_tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
-			_tileMap.CompressBounds();
-		}
+    public EDungeonType GetCurrentDungeon()
+    {
+        return DungeonType;
+    }
 
-		Vector3 heroPosition = Managers.Object.Hero.transform.position; // 플레이어의 현재 위치 가져오기
+    public void SetCurrentDungeon(EDungeonType dungeon)
+    {
+        DungeonType = dungeon;
+    }
 
-		if (!isBoss) // 노말 스테이지
-		{
-			for (int i = 0; i < stageInfo.KillMonsterCount; i++)
-			{
-				Vector3 spawnPosition = Vector3.zero;
+    public void Clear()
+    {
+        DungeonType = EDungeonType.Unknown;
+    }
 
-				// 플레이어와의 거리가 최소 5 이상일 때까지 위치를 찾기
-				do
-				{
-					spawnPosition = GetRandomPositionInTileMap(_tileMap.cellBounds); // 타일맵 안의 랜덤 위치 얻기
-				}
-				while (Vector3.Distance(spawnPosition, heroPosition) < 5f); // 플레이어와의 거리가 5 미만이면 다시 찾음
+    private Vector3 GetRandomPositionInTileMap(BoundsInt bounds)
+    {
+        int randomX = Random.Range(bounds.xMin, bounds.xMax);
+        int randomY = Random.Range(bounds.yMin, bounds.yMax);
 
-				Managers.Object.Spawn<Monster>(spawnPosition, stageInfo.MonsterDataIdList[UnityEngine.Random.Range(0, stageInfo.MonsterDataIdList.Count)]);
-			}
-		}
-		else // 보스 스테이지
-		{
-			Managers.Object.Spawn<BossMonster>(Vector3.zero, stageInfo.BossDataId);
-		}
-	}
+        Vector3Int randomCellPosition = new Vector3Int(randomX, randomY, 0);
+        Vector3 worldPosition = _tileMap.CellToWorld(randomCellPosition);
 
-	public void OnMonsterDestroyed()
-	{
-		_killMonsters += 1;
-		// 몬스터가 파괴될 때마다 UI를 업데이트
-		SetMonsterCount(_killMonsters, _maxMonsters);
-	}
-
-	public bool ClearStage()
-	{
-		return _killMonsters >= _maxMonsters;
-	}
-
-	// 타일맵 안에서 랜덤한 위치를 얻는 함수
-	private Vector3 GetRandomPositionInTileMap(BoundsInt bounds)
-	{
-		// 타일맵의 셀 범위 안에서 랜덤한 X, Y 좌표 선택
-		int randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax); // 타일맵의 셀 X 범위에서 랜덤 값
-		int randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax); // 타일맵의 셀 Y 범위에서 랜덤 값
-
-		// 랜덤 셀 좌표를 월드 좌표로 변환
-		Vector3Int randomCellPosition = new Vector3Int(randomX, randomY, 0);
-		Vector3 worldPosition = _tileMap.CellToWorld(randomCellPosition);
-
-		// 반환할 때 Z 좌표는 0으로 고정
-		return new Vector3(worldPosition.x, worldPosition.y, 0);
-	}
-
-	#endregion
-
+        return new Vector3(worldPosition.x, worldPosition.y, 0);
+    }
 }

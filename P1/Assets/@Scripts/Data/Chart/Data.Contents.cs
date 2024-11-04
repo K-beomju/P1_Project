@@ -448,9 +448,59 @@ namespace Data
     }
     #endregion
 
-    
+    #region DungeonData
+    [Serializable]
+    public class DungeonInfoData
+    {
+        public int DungeonLevel;
+        public int KillMonsterCount;
+        public int BossDataId;
+        public int DungeonTimeLimit;
+        public List<int> MonsterDataIdList = new List<int>();
+        public int MonsterLevel;
+        public int DungeonClearReward;
+    }
 
-    
+    [Serializable]
+    public class GoldDungeonInfoData : DungeonInfoData
+    {
+
+    }
+
+    [Serializable]
+    public class GoldDungeonInfoDataLoader : ILoader<int, GoldDungeonInfoData>
+    {
+        public List<GoldDungeonInfoData> goldDungeonInfoDatas = new List<GoldDungeonInfoData>();
+        public Dictionary<int, GoldDungeonInfoData> MakeDict()
+        {
+            Dictionary<int, GoldDungeonInfoData> dict = new Dictionary<int, GoldDungeonInfoData>();
+            foreach (GoldDungeonInfoData effect in goldDungeonInfoDatas)
+                dict.Add(effect.DungeonLevel, effect);
+            return dict;
+        }
+    }
+
+    [Serializable]
+    public class DiaDungeonInfoData : DungeonInfoData
+    {
+        
+    }
+
+    [Serializable]
+    public class DiaDungeonInfoDataLoader : ILoader<int, DiaDungeonInfoData>
+    {
+        public List<DiaDungeonInfoData> diaDungeonInfoDatas = new List<DiaDungeonInfoData>();
+        public Dictionary<int, DiaDungeonInfoData> MakeDict()
+        {
+            Dictionary<int, DiaDungeonInfoData> dict = new Dictionary<int, DiaDungeonInfoData>();
+            foreach (DiaDungeonInfoData effect in diaDungeonInfoDatas)
+                dict.Add(effect.DungeonLevel, effect);
+            return dict;
+        }
+    }
+
+
+    #endregion
 
 
 }

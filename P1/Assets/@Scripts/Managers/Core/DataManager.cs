@@ -29,6 +29,10 @@ public class DataManager
     public Dictionary<int, SkillData> SkillChart { get; private set; } = new(); // 스킬 정보
     public Dictionary<int, EffectData> EffectChart { get; private set; } = new(); // 이펙트 정보
 
+    public Dictionary<int, GoldDungeonInfoData> GoldDungeonChart { get; private set; } = new(); // 골드 던전 정보
+    public Dictionary<int, DiaDungeonInfoData> DiaDungeonChart { get; private set; } = new(); // 다이아 던전 정보
+
+
     public void Init()
     {
         StageChart = LoadJson<StageInfoDataLoader, int, StageInfoData>("StageInfoData").MakeDict();
@@ -46,6 +50,8 @@ public class DataManager
         EquipmentChart = LoadJson<EquipmentDataLoader, int, EquipmentData>("EquipmentData").MakeDict();
         SkillChart = LoadJson<SkillDataLoader, int, SkillData>("SkillData").MakeDict();
         EffectChart = LoadJson<EffectDataLoader, int, EffectData>("EffectData").MakeDict();
+        GoldDungeonChart = LoadJson<GoldDungeonInfoDataLoader, int, GoldDungeonInfoData>("GoldDungeonInfoData").MakeDict();
+        DiaDungeonChart = LoadJson<DiaDungeonInfoDataLoader, int, DiaDungeonInfoData>("DiaDungeonInfoData").MakeDict();
 
     }
 

@@ -180,9 +180,9 @@ namespace BackendData.GameData
             IsChangedData = true;
 
             // ExpRateRelic 적용
-            if(Managers.Hero.PlayerHeroInfo != null)
-            exp = (int)(exp * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
-   
+            if (Managers.Hero.PlayerHeroInfo != null)
+                exp = (int)(exp * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
+
             Exp += exp;
 
             // 레벨업 처리

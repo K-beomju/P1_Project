@@ -159,8 +159,8 @@ public class UI_GameScene : UI_Scene
     {
         GetTMPText((int)Texts.RemainMonsterValueText).text = $"{killMonster} / {maxMonster}";
 
-        GetSlider((int)Sliders.Slider_StageInfo).value = killMonster;
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = maxMonster;
+        GetSlider((int)Sliders.Slider_StageInfo).value = killMonster;
     }
 
     public void RefreshBossMonsterHp(BossMonster boss)

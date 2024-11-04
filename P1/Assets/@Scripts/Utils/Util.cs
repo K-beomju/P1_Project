@@ -134,19 +134,6 @@ public static class Util
         return startCost + increaseCount * increaseCost;
     }
 
-
-    public static string GetHeroUpgradeString(EHeroUpgradeType type)
-    {
-        return type switch
-        {
-            EHeroUpgradeType.Growth_Atk => "공격력",
-            EHeroUpgradeType.Growth_Hp => "체력",
-            EHeroUpgradeType.Growth_Recovery => "체력 회복",
-            EHeroUpgradeType.Growth_CriRate => "치명타 확률",
-            EHeroUpgradeType.Growth_CriDmg => "치명타 피해",
-            _ => throw new ArgumentException($"Unknown rare type String: {type}")
-        };
-    }
     #endregion
 
     #region Equipment System
@@ -190,19 +177,6 @@ public static class Util
         };
     }
 
-    public static string GetRareTypeString(ERareType type)
-    {
-        return type switch
-        {
-            ERareType.Normal => "일반",
-            ERareType.Advanced => "고급",
-            ERareType.Rare => "희귀",
-            ERareType.Legendary => "전설",
-            ERareType.Mythical => "신화",
-            ERareType.Celestial => "천상",
-            _ => throw new ArgumentException($"Unknown rare type String: {type}")
-        };
-    }
 
     public static Color GetRareTypeColor(ERareType type)
     {
@@ -216,68 +190,6 @@ public static class Util
             ERareType.Celestial => HexToColor("#FFE74E"),
             _ => throw new ArgumentException($"Unknown rare type String: {type}")
         };
-    }
-
-
-    public static string GetDrawTypeString(EDrawType type)
-    {
-        string drawString = string.Empty;
-        switch (type)
-        {
-            case EDrawType.Weapon:
-                drawString = "무기";
-                break;
-            case EDrawType.Armor:
-                drawString = "갑옷";
-                break;
-            case EDrawType.Ring:
-                drawString = "반지";
-                break;
-            case EDrawType.Skill:
-                drawString = "스킬";
-                break;
-        }
-
-        return drawString;
-    }
-
-    public static string GetEquipemntType(EEquipmentType type)
-    {
-        string equipmentString = string.Empty;
-        switch (type)
-        {
-            case EEquipmentType.Weapon:
-                equipmentString = "무기";
-                break;
-            case EEquipmentType.Armor:
-                equipmentString = "갑옷";
-                break;
-            case EEquipmentType.Ring:
-                equipmentString = "반지";
-                break;
-
-        }
-
-        return equipmentString;
-    }
-
-
-    public static string GetEquipmentStatType(EEquipmentType type)
-    {
-        string statType = string.Empty;
-        switch (type)
-        {
-            case EEquipmentType.Weapon:
-                statType = "공격력";
-                break;
-            case EEquipmentType.Armor:
-                statType = "체력";
-                break;
-            case EEquipmentType.Ring:
-                statType = "스킬 공격력";
-                break;
-        }
-        return statType;
     }
 
 
@@ -310,7 +222,7 @@ public static class Util
             int drawItemIndex = GetDrawItemIndexForRareType(gachaData, rareType);
             int dataID = GetItemDataID(gachaData, rareType, drawItemIndex, weightValue);
             resultEqList.Add(dataID);
-            Managers.Event.TriggerEvent(EEventType.DrawDataUpdated, type);
+            Managers.Backend.GameData.DrawLevelData.AddDrawCount(type);
 
         }
 
@@ -461,6 +373,83 @@ public static class Util
 
         return $"{totalPower:F1}{suffixes[suffixIndex]}";
     }
+
+
+    public static string GetHeroUpgradeString(EHeroUpgradeType type)
+    {
+        return type switch
+        {
+            EHeroUpgradeType.Growth_Atk => "공격력",
+            EHeroUpgradeType.Growth_Hp => "체력",
+            EHeroUpgradeType.Growth_Recovery => "체력 회복",
+            EHeroUpgradeType.Growth_CriRate => "치명타 확률",
+            EHeroUpgradeType.Growth_CriDmg => "치명타 피해",
+            _ => throw new ArgumentException($"Unknown rare type String: {type}")
+        };
+    }
+
+    public static string GetRareTypeString(ERareType type)
+    {
+        return type switch
+        {
+            ERareType.Normal => "일반",
+            ERareType.Advanced => "고급",
+            ERareType.Rare => "희귀",
+            ERareType.Legendary => "전설",
+            ERareType.Mythical => "신화",
+            ERareType.Celestial => "천상",
+            _ => throw new ArgumentException($"Unknown rare type String: {type}")
+        };
+    }
+
+    public static string GetDrawTypeString(EDrawType type)
+    {
+        return type switch
+        {
+            EDrawType.Weapon => "무기",
+            EDrawType.Armor => "갑옷",
+            EDrawType.Ring => "반지",
+            EDrawType.Skill => "스킬",
+            _ => throw new ArgumentException($"Unknown DrawType String: {type}")
+        };
+    }
+
+    public static string GetEquipemntType(EEquipmentType type)
+    {
+        return type switch
+        {
+            EEquipmentType.Weapon => "무기",
+            EEquipmentType.Armor => "갑옷",
+            EEquipmentType.Ring => "반지",
+            _ => throw new ArgumentException($"Unknown EquipemntType String: {type}")
+        };
+    }
+
+
+    public static string GetEquipmentStatType(EEquipmentType type)
+    {
+        return type switch
+        {
+            EEquipmentType.Weapon => "공격력",
+            EEquipmentType.Armor => "체력",
+            EEquipmentType.Ring => "스킬 공격력",
+            _ => throw new ArgumentException($"Unknown EquipmentStat String: {type}")
+        };
+    }
+
+    public static string GetDungeonType(EDungeonType type)
+    {
+        return type switch
+        {
+            EDungeonType.Gold => "골드 던전",
+            EDungeonType.Dia => "다이아 던전",
+            EDungeonType.Promotion => "승격전",
+            EDungeonType.WorldBoss => "월드보스전",
+            _ => throw new ArgumentException($"Unknown GetDungeonType String: {type}")
+        };
+    }
+
+
 
     #endregion
 

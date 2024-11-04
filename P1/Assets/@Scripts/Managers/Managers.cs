@@ -47,7 +47,7 @@ public class Managers : MonoBehaviour
     #region Server
     private BackendManager _backend = new BackendManager();
 
-    public static BackendManager Backend { get {  return Instance?._backend; } }
+    public static BackendManager Backend { get { return Instance?._backend; } }
     #endregion
 
     public static void Init()

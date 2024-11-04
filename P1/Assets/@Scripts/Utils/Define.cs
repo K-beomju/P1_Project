@@ -97,10 +97,7 @@ public static class Define
 
         /// <summary>플레이어 레벨업 시 호출</summary>
         PlayerLevelUp,
-
-        /// <summary>뽑기 진행 중 레벨 정보가 업데이트될 때 호출</summary>
-        DrawDataUpdated,
-
+        
         /// <summary>장비 뽑기 관련 UI가 갱신될 때 호출</summary>
         DrawEquipmentUIUpdated,
 
@@ -322,6 +319,7 @@ public static class Define
     #region Dungeon
     public enum EDungeonType
     {
+        Unknown,
         Gold,
         Dia,
         Promotion,

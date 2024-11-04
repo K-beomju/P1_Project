@@ -36,6 +36,9 @@ public class DataTransformer : EditorWindow
         ParseExcelDataToJson<SkillDataLoader, SkillData>("Skill");
         ParseExcelDataToJson<EffectDataLoader, EffectData>("Effect");
 
+        ParseExcelDataToJson<GoldDungeonInfoDataLoader, GoldDungeonInfoData>("GoldDungeonInfo");
+        ParseExcelDataToJson<DiaDungeonInfoDataLoader, DiaDungeonInfoData>("DiaDungeonInfo");
+
 	}
 
 	#region Helpers

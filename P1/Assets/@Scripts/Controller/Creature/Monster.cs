@@ -37,7 +37,7 @@ public class Monster : Creature, IDamageable
     public override void SetCreatureInfo(int dataTemplateID)
     {
         MonsterInfoData data = Managers.Data.MonsterChart[dataTemplateID];
-        Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
+        //Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
         Atk = data.Atk + Managers.Data.CreatureUpgradeStatChart[dataTemplateID].IncreaseAtk; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatChart[dataTemplateID].IncreaseMaxHp; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
@@ -158,33 +158,47 @@ public class Monster : Creature, IDamageable
                 StopCoroutine(_damageCoroutine);
                 _damageCoroutine = null;
             }
-            GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
 
-            Managers.Backend.GameData.CharacterData.AddExp(gameScene.StageInfo.MonsterExpReward);
-            if (ObjectType == EObjectType.Monster)
+            switch (Managers.Scene.GetCurrentScene<BaseScene>())
             {
-                UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
-                goldIcon.SetGoldIconAtPosition(transform.position, () =>
-                {
-                    try
+                case GameScene gameScene:
+
+                    gameScene = Managers.Scene.GetCurrentScene<GameScene>();
+                    Managers.Backend.GameData.CharacterData.AddExp(gameScene.StageInfo.MonsterExpReward);
+
+                    if (ObjectType == EObjectType.Monster)
                     {
-                        Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.Gold, gameScene.StageInfo.MonsterGoldReward);
+                        UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
+                        goldIcon.SetGoldIconAtPosition(transform.position, () =>
+                        {
+                            try
+                            {
+                                Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.Gold, gameScene.StageInfo.MonsterGoldReward);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new Exception($"OnDead -> AddAmount ({EGoodType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
+                            }
+                        });
+                        
                     }
-                    catch (Exception e)
+                    else if (ObjectType == EObjectType.BossMonster)
                     {
-                        throw new Exception($"OnDead -> AddAmount ({EGoodType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
+                        //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
+                        //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
                     }
-                });
+
+                break;
+                case DungeonScene dungeonScene:
+
+                break;
             }
-            else if (ObjectType == EObjectType.BossMonster)
-            {
-                //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
-                //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
-            }
+            
             Managers.Game.OnMonsterDestroyed();
             Managers.Object.Despawn(this);
         }
-        catch(Exception e) {
+        catch (Exception e)
+        {
             throw new Exception($"Monster OnDead 중 에러가 발생하였습니다\n{e}");
         }
     }
