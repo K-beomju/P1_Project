@@ -132,15 +132,15 @@ public static class Define
         HeroTotalPowerUpdated,
     }
 
-    public enum EItemDisplayType 
+    public enum EItemDisplayType
     {
-        Basic, 
+        Basic,
         ImageOnly,
         SlotItem,
         Draw,
         Enhance
     }
-    
+
     #endregion
 
     #region Effect
@@ -184,7 +184,7 @@ public static class Define
     }
 
     // 획득할 수 있는 아이템 
-    public enum EItemType 
+    public enum EItemType
     {
         Relic
     }
@@ -244,7 +244,7 @@ public static class Define
     }
 
     public enum EHeroAttrType
-    {    
+    {
         Attribute_Atk,
         Attribute_MaxHp,
         Attribute_CriRate,
@@ -320,13 +320,25 @@ public static class Define
 
 
     #region Dungeon
-    public enum EDungeonType 
+    public enum EDungeonType
     {
         Gold,
         Dia,
         Promotion,
         WorldBoss
     }
+
+    #endregion
+
+
+    #region UI 
+    public enum EFadeType
+    {
+        FadeIn,
+        FadeOut,
+        FadeInOut,
+    }
+
 
     #endregion
 }

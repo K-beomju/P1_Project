@@ -16,12 +16,15 @@ public class DungeonScene : BaseScene
         SceneType = EScene.DungeonScene;
         Managers.Scene.SetCurrentScene(this);
 
-         // Server
+        // Server
         InitailizeBackend();
-        // Data
-        InitializeGameComponents();
-        InitializeScene();
-        InitializeUI();
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 
+        fadeInCallBack: () =>
+        {
+            InitializeGameComponents();
+            InitializeScene();
+            InitializeUI();
+        });
 
         return true;
     }
@@ -42,7 +45,8 @@ public class DungeonScene : BaseScene
     }
 
     private void InitializeUI()
-    {     
+    {
+
         sceneUI = Managers.UI.ShowSceneUI<UI_DungeonScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 

@@ -30,14 +30,14 @@ public class UI_DungeonInfoItem : UI_Base
 
     private void OnButtonClick()
     {
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(1f, 1f, () =>
-             {
+        var fadeUI = Managers.UI.ShowBaseUI<UI_FadeInBase>();
+        fadeUI.sceneMove = true;
+        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_TOTALPOWER + 1);
+        fadeUI.ShowFadeInOut(EFadeType.FadeOut, 1f, 0, 
+        fadeOutCallBack: () => {
+            Managers.Scene.LoadScene(EScene.DungeonScene);
+        });
 
-             }, () =>
-             {
-                 Managers.Scene.LoadScene(EScene.DungeonScene);
-
-             });
     }
 
 

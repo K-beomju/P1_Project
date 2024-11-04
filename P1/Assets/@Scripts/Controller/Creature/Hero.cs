@@ -313,7 +313,7 @@ public class Hero : Creature
     public override void OnDead()
     {
         //TODO
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeIn(1f, 1f, () =>
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, () =>
         {
             Skills.Clear();
             Anim.Rebind();

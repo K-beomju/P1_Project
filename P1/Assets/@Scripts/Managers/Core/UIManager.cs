@@ -233,5 +233,6 @@ public class UIManager
 	{
 		CloseAllPopupUI();
 		_sceneUI = null;
+		_bases.Clear();
 	}
 }
