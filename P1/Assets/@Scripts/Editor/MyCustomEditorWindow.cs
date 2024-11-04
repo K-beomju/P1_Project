@@ -70,7 +70,7 @@ public class MyCustomEditorWindow : EditorWindow
         {
             if (int.TryParse(currencyInputValue, out int goldAmount))
             {
-                Managers.Backend.GameData.UserData.AddAmount(Define.EGoodType.Gold, goldAmount);
+                Managers.Backend.GameData.CharacterData.AddAmount(Define.EGoodType.Gold, goldAmount);
                 Debug.Log($"충전된 골드: {goldAmount}"); 
             }
             else
@@ -83,7 +83,7 @@ public class MyCustomEditorWindow : EditorWindow
         {
             if (int.TryParse(currencyInputValue, out int expAmount))
             {
-                Managers.Backend.GameData.UserData.AddAmount(Define.EGoodType.ExpPoint, expAmount);
+                Managers.Backend.GameData.CharacterData.AddAmount(Define.EGoodType.ExpPoint, expAmount);
                 Debug.Log($"충전된 경험치: {expAmount}"); 
             }
             else
@@ -96,7 +96,7 @@ public class MyCustomEditorWindow : EditorWindow
         {
             if (int.TryParse(currencyInputValue, out int diaAmount))
             {
-                Managers.Backend.GameData.UserData.AddAmount(Define.EGoodType.Dia, diaAmount);
+                Managers.Backend.GameData.CharacterData.AddAmount(Define.EGoodType.Dia, diaAmount);
                 Debug.Log($"충전된 다이아: {diaAmount}"); 
             }
             else

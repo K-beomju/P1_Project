@@ -67,7 +67,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     public void UpdateSlotInfoUI()
     {
-        if (!Managers.Backend.GameData.UserData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
+        if (!Managers.Backend.GameData.CharacterData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
         {
             Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
             return;
@@ -98,13 +98,13 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         try
         {
 
-            if (Managers.Backend.GameData.UserData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
+            if (Managers.Backend.GameData.CharacterData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
             {
                 int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
                 if (CanUpgrade(price))
                 {
-                    Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, -price);
-                    Managers.Backend.GameData.UserData.LevelUpHeroUpgrade(_heroUpgradeType);
+                    Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.Gold, -price);
+                    Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(_heroUpgradeType);
 
                     if (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp)
                         isUpgraded = true;
@@ -140,7 +140,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     private void CheckUpgradeInteractive()
     {
-        if (Managers.Backend.GameData.UserData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
+        if (Managers.Backend.GameData.CharacterData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
         {
             int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
             GetButton((int)Buttons.Btn_Upgrade).interactable = CanUpgrade(price);
@@ -149,7 +149,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     bool CanUpgrade(float cost)
     {
-        if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(EGoodType.Gold.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EGoodType.Gold.ToString(), out float amount))
             return false;
 
         return amount >= cost;

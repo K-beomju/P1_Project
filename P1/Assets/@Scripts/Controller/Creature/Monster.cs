@@ -5,7 +5,6 @@ using Data;
 using DG.Tweening;
 using UnityEngine;
 using static Define;
-using static UnityEditor.Progress;
 
 public class Monster : Creature, IDamageable
 {
@@ -89,6 +88,8 @@ public class Monster : Creature, IDamageable
 
     protected override void UpdateMove()
     {
+
+
         if (_isDamaged)  // 공격을 받았다면 이동하지 않음
         {
             CreatureState = ECreatureState.Idle;
@@ -159,7 +160,7 @@ public class Monster : Creature, IDamageable
             }
             GameScene gameScene = Managers.Scene.GetCurrentScene<GameScene>();
 
-            Managers.Backend.GameData.UserData.AddExp(gameScene.StageInfo.MonsterExpReward);
+            Managers.Backend.GameData.CharacterData.AddExp(gameScene.StageInfo.MonsterExpReward);
             if (ObjectType == EObjectType.Monster)
             {
                 UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
@@ -167,7 +168,7 @@ public class Monster : Creature, IDamageable
                 {
                     try
                     {
-                        Managers.Backend.GameData.UserData.AddAmount(EGoodType.Gold, gameScene.StageInfo.MonsterGoldReward);
+                        Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.Gold, gameScene.StageInfo.MonsterGoldReward);
                     }
                     catch (Exception e)
                     {

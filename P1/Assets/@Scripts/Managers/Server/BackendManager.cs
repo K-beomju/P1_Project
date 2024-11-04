@@ -28,19 +28,21 @@ public class BackendManager
 
     // 게임 정보 관리 데이터만 모아놓은 클래스
     public class BackendGameData {
-        public readonly BackendData.GameData.UserData UserData = new();
+        public readonly BackendData.GameData.CharacterData CharacterData = new();
         public readonly BackendData.GameData.EquipmentInventory EquipmentInventory = new();
         public readonly BackendData.GameData.SkillInventory SkillInventory = new();
         public readonly BackendData.GameData.DrawLevelData DrawLevelData = new();
+        public readonly BackendData.GameData.DungeonData DungeonData = new();
 
         public readonly Dictionary<string, BackendData.Base.GameData>
             GameDataList = new Dictionary<string, BackendData.Base.GameData>();
 
         public BackendGameData() {
+            GameDataList.Add("내 던전 정보", DungeonData);
             GameDataList.Add("내 장비 정보", EquipmentInventory);
             GameDataList.Add("내 스킬 정보", SkillInventory);
             GameDataList.Add("내 뽑기 정보", DrawLevelData);
-            GameDataList.Add("내 유저 정보", UserData);
+            GameDataList.Add("내 유저 정보", CharacterData);
         }
     }
 

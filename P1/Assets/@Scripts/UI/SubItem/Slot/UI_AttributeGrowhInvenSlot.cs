@@ -59,7 +59,7 @@ public class UI_AttributeGrowhInvenSlot : UI_Base
 
     public void UpdateSlotInfoUI()
     {
-        if (!Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(_heroAttrType.ToString(), out int level))
+        if (!Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(_heroAttrType.ToString(), out int level))
         {
             Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
             return;

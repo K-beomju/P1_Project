@@ -79,6 +79,8 @@ namespace BackendData.GameData
         // Skill 각 스킬 슬롯을 담는 List
         private List<SkillSlot> _skillSlotList = new();
 
+        public bool IsAutoSkill { get; private set; }
+
         public IReadOnlyDictionary<int, SkillInfoData> SkillInventoryDic => _skillInventoryDic;
         public IReadOnlyList<SkillSlot> SkillSlotList => _skillSlotList;
     }
@@ -95,10 +97,14 @@ namespace BackendData.GameData
             {
                 _skillSlotList.Add(new SkillSlot(i, slotType: ESkillSlotType.Lock, null));
             }
+            IsAutoSkill = false;
+
         }
 
         protected override void SetServerDataToLocal(JsonData Data)
         {
+            IsAutoSkill = bool.Parse(Data["IsAutoSkill"].ToString());
+            
             foreach (var column in Data["SkillInventory"].Keys)
             {
                 int dataId = int.Parse(Data["SkillInventory"][column]["DataTemplateID"].ToString());
@@ -147,9 +153,18 @@ namespace BackendData.GameData
         public override Param GetParam()
         {
             Param param = new Param();
+
+            param.Add("IsAutoSkill", IsAutoSkill);
             param.Add("SkillInventory", _skillInventoryDic);
             param.Add("SkillSlot", _skillSlotList);
             return param;
+        }
+
+        public void ActiveAutoSkill()
+        {
+            IsChangedData = true;
+            IsAutoSkill = !IsAutoSkill;
+            Debug.Log(IsAutoSkill);
         }
 
         public void AddSkill(int dataTemplateID)

@@ -23,17 +23,14 @@ namespace BackendData.GameData
         }
     }
 
-    public partial class DrawLevelData
+    public  class DrawLevelData : Base.GameData
     {
+
         // Draw 각 뽑기 데이터를 담는 Dic
         private Dictionary<string, DrawData> _drawDic = new();
 
         public IReadOnlyDictionary<string, DrawData> DrawDic => (IReadOnlyDictionary<string, DrawData>)_drawDic.AsReadOnlyCollection();
 
-    }
-
-    public partial class DrawLevelData : Base.GameData
-    {
 
         protected override void InitializeData()
         {

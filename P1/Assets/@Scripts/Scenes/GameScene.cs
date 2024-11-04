@@ -34,7 +34,7 @@ public class GameScene : BaseScene
     public float BossBattleTimeLimit { get; private set; }
 
     public StageInfoData StageInfo { get; private set; }
-    private BackendData.GameData.UserData UserData;
+    private BackendData.GameData.CharacterData CharacterData;
 
     protected override bool Init()
     {
@@ -63,7 +63,7 @@ public class GameScene : BaseScene
 
     private void InitailizeBackend()
     {
-        UserData = Managers.Backend.GameData.UserData;
+        CharacterData = Managers.Backend.GameData.CharacterData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
         StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
     }
@@ -96,7 +96,7 @@ public class GameScene : BaseScene
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
-        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, UserData.Level, UserData.Exp, UserData.MaxExp); // 경험치 갱신 이벤트
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
 
     }
 
@@ -131,7 +131,7 @@ public class GameScene : BaseScene
 
     private void SetupStage()
     {
-        StageInfo = Managers.Data.StageChart[UserData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
+        StageInfo = Managers.Data.StageChart[CharacterData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
         Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
 
         BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;
@@ -139,7 +139,7 @@ public class GameScene : BaseScene
 
         GameSceneState = EGameSceneState.Play;
 
-        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(UserData.StageLevel);
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().RefreshShowDisplayStage(CharacterData.StageLevel);
     }
 
     #region GameSceneState
@@ -202,8 +202,8 @@ public class GameScene : BaseScene
     private IEnumerator MoveToStageAfterDelay(int stageDelta)
     {
         yield return new WaitForSeconds(0.5f);
-        UserData.UpdateStageLevel(stageDelta);
-        Debug.LogWarning($"다음 스테이지 {UserData.StageLevel} 입니다!");
+        CharacterData.UpdateStageLevel(stageDelta);
+        Debug.LogWarning($"다음 스테이지 {CharacterData.StageLevel} 입니다!");
         SetupStage();
         GameSceneState = EGameSceneState.Play;
     }
@@ -226,6 +226,7 @@ public class GameScene : BaseScene
         for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
         {
             Monster monster = Managers.Object.Monsters.ElementAt(i);
+            monster.isStopAI = true;
             Managers.Object.Despawn(monster);
         }
 
@@ -247,11 +248,11 @@ public class GameScene : BaseScene
 
     public string GetCurrentStage()
     {
-        return $"{ChapterLevel}-{UserData.StageLevel}";
+        return $"{ChapterLevel}-{CharacterData.StageLevel}";
     }
 
     public override void Clear()
     {
-
+        KillAllMonsters();
     }
 }

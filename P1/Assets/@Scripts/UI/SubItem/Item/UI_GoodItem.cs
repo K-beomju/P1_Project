@@ -48,7 +48,7 @@ public class UI_GoodItem : UI_Base
         if (goodType == EGoodType.None)
             return;
 
-        if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(goodType.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(goodType.ToString(), out float amount))
             return;
 
         GetTMPText((int)Texts.GoodText).text = Util.ConvertToTotalCurrency((long)amount);

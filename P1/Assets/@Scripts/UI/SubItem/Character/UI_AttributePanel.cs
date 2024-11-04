@@ -91,7 +91,7 @@ public class UI_AttributePanel : UI_Base
     {
         SelectAttrType = attrType;
 
-        if (!Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
+        if (!Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
         {
             Debug.LogWarning($"UpdateSlotInfoUI도중 {level}이 없습니다");
             return;
@@ -116,13 +116,13 @@ public class UI_AttributePanel : UI_Base
 
         try
         {
-            if (Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
+            if (Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
             {
                 int price = Util.GetAttributeCost(SelectAttrType, level + 1);
                 if (CanUpgrade(price))
                 {
-                    Managers.Backend.GameData.UserData.AddAmount(EGoodType.ExpPoint, -price);
-                    Managers.Backend.GameData.UserData.LevelUpHeroAttribute(SelectAttrType);
+                    Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.ExpPoint, -price);
+                    Managers.Backend.GameData.CharacterData.LevelUpHeroAttribute(SelectAttrType);
                     ShowAttributeDetailUI(SelectAttrType);
 
                     if (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp)
@@ -156,7 +156,7 @@ public class UI_AttributePanel : UI_Base
 
     private void CheckUpgradeInteractive()
     {
-        if (Managers.Backend.GameData.UserData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
+        if (Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
         {
             int price = Util.GetAttributeCost(SelectAttrType, level + 1);
             GetButton((int)Buttons.Btn_Upgrade).interactable = CanUpgrade(price);
@@ -165,7 +165,7 @@ public class UI_AttributePanel : UI_Base
 
     bool CanUpgrade(float cost)
     {
-        if (!Managers.Backend.GameData.UserData.PurseDic.TryGetValue(EGoodType.ExpPoint.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EGoodType.ExpPoint.ToString(), out float amount))
             return false;
 
         return amount >= cost;

@@ -34,6 +34,7 @@ public class Creature : BaseObject
 
     #endregion
 
+    #region State
     protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
     {
@@ -47,6 +48,8 @@ public class Creature : BaseObject
             }
         }
     }
+    public bool isStopAI { get; set; } = false;
+    #endregion
 
     protected override bool Init()
     {
@@ -92,6 +95,9 @@ public class Creature : BaseObject
     {
         while (true)
         {
+            if (isStopAI)
+                yield return null;
+
             switch (CreatureState)
             {
                 case ECreatureState.Idle:

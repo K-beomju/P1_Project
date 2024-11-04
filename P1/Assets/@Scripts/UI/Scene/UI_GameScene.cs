@@ -75,7 +75,6 @@ public class UI_GameScene : UI_Scene
     public PlayTab _tab { get; set; } = PlayTab.None;
 
     public List<UI_EquipSkillSlot> _equipSkillSlotList { get; set; } = new List<UI_EquipSkillSlot>();
-    private bool _isAutoSkillActive = false; // AutoSkill 활성화 상태를 저장하는 변수
 
     protected override bool Init()
     {
@@ -114,7 +113,7 @@ public class UI_GameScene : UI_Scene
 
     private void InitializeUIElements()
     {
-        // 6개의 슬롯을 초기화하면서 각 슬롯을 Lock 타입으로 설정
+        // 6개의 슬롯을 초기화
         for (int i = 0; i < 6; i++)
         {
             int index = i;
@@ -130,6 +129,8 @@ public class UI_GameScene : UI_Scene
         GetTMPText((int)Texts.RemainMonsterValueText).text = string.Empty;
 
         GetGoodItem(EGoodType.ExpPoint).gameObject.SetActive(false);
+
+        UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
 
     private void RefreshUI()
@@ -253,7 +254,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_SkillPopup>().RefreshUI();
                     break;
                 case PlayTab.Dungeon:
-                    Managers.UI.ShowPopupUI<UI_DungeonPopup>();
+                    Managers.UI.ShowPopupUI<UI_DungeonPopup>().RefreshUI();
                     break;
                 case PlayTab.Draw:
                     Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();
@@ -304,9 +305,13 @@ public class UI_GameScene : UI_Scene
 
     public void ActiveAutoSkill()
     {
-        _isAutoSkillActive = !_isAutoSkillActive;
+        Managers.Backend.GameData.SkillInventory.ActiveAutoSkill();
+        UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
+    }
 
-        if (_isAutoSkillActive)
+    private void UpdateAutoSkillUI(bool isAutoSkill)
+    {
+        if (isAutoSkill)
         {
             Debug.Log("Auto Skill 기능이 활성화되었습니다.");
             GetTMPText((int)Texts.Text_AutoSkill).text = "AUTO\nON";
@@ -321,10 +326,9 @@ public class UI_GameScene : UI_Scene
         }
     }
 
-
     public void CheckUseSkillSlot(int slotIndex = -1)
     {
-        if (!_isAutoSkillActive) return;
+        if (!Managers.Backend.GameData.SkillInventory.IsAutoSkill) return;
 
 
         // slotIndex가 -1인 경우 모든 슬롯을 검사하여 사용할 수 있는 스킬이 있는지 확인
@@ -354,7 +358,7 @@ public class UI_GameScene : UI_Scene
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
 
     }
-    
+
     // 주 Content 팝업들을 닫을 땐 탭도 초기화 시켜주어야 함. 
     public void CloseDrawPopup(UI_Popup popup)
     {

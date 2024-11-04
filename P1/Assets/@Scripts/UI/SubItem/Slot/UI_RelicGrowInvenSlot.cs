@@ -62,7 +62,7 @@ public class UI_RelicGrowInvenSlot : UI_Base
 
     public void UpdateSlotInfoUI()
     {
-        if (!Managers.Backend.GameData.UserData.OwnedRelicDic.TryGetValue(_heroRelicType.ToString(), out int count))
+        if (!Managers.Backend.GameData.CharacterData.OwnedRelicDic.TryGetValue(_heroRelicType.ToString(), out int count))
         {
             Debug.LogWarning($"UpdateSlotInfoUI도중 {count}이 없습니다");
             return;

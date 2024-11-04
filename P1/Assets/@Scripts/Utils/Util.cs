@@ -465,4 +465,29 @@ public static class Util
     #endregion
 
 
+    #region Dungeon
+
+    public static int DungenEntranceMaxValue(EDungeonType dungeonType)
+    {
+        int entranceValue = 0;
+        switch (dungeonType)
+        {
+            case EDungeonType.Gold:
+                entranceValue = 2;
+                break;
+            case EDungeonType.Dia:
+                entranceValue = 2;
+                break;
+            case EDungeonType.Promotion:
+                entranceValue = 1;
+                break;
+            case EDungeonType.WorldBoss:
+                entranceValue = 1;
+                break;
+        }
+        return entranceValue;
+    }
+
+    #endregion
+
 }

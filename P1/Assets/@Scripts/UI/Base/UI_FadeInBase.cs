@@ -27,6 +27,9 @@ public class UI_FadeInBase : UI_Base
 
         BindImages(typeof(Images));
         fadeImage = GetImage((int)Images.Image_Fade);
+
+        DontDestroyOnLoad(this);
+        transform.SetParent(null);
         return true;
     }
 

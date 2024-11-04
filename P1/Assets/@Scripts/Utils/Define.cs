@@ -12,6 +12,7 @@ public static class Define
         TitleScene,
         LoadingScene,
         GameScene,
+        DungeonScene
     }
 
     public enum EGameSceneState
@@ -317,5 +318,16 @@ public static class Define
 
     }
 
+
+    #region Dungeon
+    public enum EDungeonType 
+    {
+        Gold,
+        Dia,
+        Promotion,
+        WorldBoss
+    }
+
+    #endregion
 }
 

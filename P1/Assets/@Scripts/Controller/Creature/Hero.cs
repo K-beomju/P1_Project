@@ -33,7 +33,6 @@ public class Hero : Creature
 
     private bool isDash = false;
     private bool isMove = false;
-    public bool isStopAI = false;
 
     protected override bool Init()
     {
@@ -153,8 +152,6 @@ public class Hero : Creature
     #region AI Update
     protected override void UpdateIdle()
     {
-        if (isStopAI)
-            return;
         if (!isMove)
             return;
 
@@ -169,9 +166,6 @@ public class Hero : Creature
 
     protected override void UpdateMove()
     {
-        if (isStopAI)
-            return;
-
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
             BaseObject target = FindClosestTarget(Managers.Object.Monsters);

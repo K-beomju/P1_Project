@@ -48,7 +48,7 @@ public class HeroInfo
 
     public HeroInfo(int dataTemplateID)
     {
-        Level = Managers.Backend.GameData.UserData.Level;
+        Level = Managers.Backend.GameData.CharacterData.Level;
         Debug.Log($"현재 레벨 : {Level}");
         DataTemplateID = dataTemplateID;
         Data = Managers.Data.HeroChart[dataTemplateID];
@@ -155,7 +155,7 @@ public class HeroInfo
         var upgradeData = Managers.Data.HeroUpgradeChart[upgradeType];
         float baseValue = upgradeData.Value;
         float increaseValue = upgradeData.IncreaseValue;
-        int currentLevel = Managers.Backend.GameData.UserData.UpgradeStatDic[upgradeType.ToString()];
+        int currentLevel = Managers.Backend.GameData.CharacterData.UpgradeStatDic[upgradeType.ToString()];
 
         // 최종 값 계산
         return baseValue + (increaseValue * (currentLevel - 1));
@@ -166,7 +166,7 @@ public class HeroInfo
     {
         var attributeData = Managers.Data.HeroAttributeChart[attrType];
         float increaseValue = attributeData.IncreaseValue;
-        int currentLevel = Managers.Backend.GameData.UserData.UpgradeAttrDic[attrType.ToString()];
+        int currentLevel = Managers.Backend.GameData.CharacterData.UpgradeAttrDic[attrType.ToString()];
 
         return increaseValue * currentLevel;
     }
@@ -176,7 +176,7 @@ public class HeroInfo
     {
         var relicData = Managers.Data.HeroRelicChart[relicType];
         float increaseValue = relicData.IncreaseValue;
-        int currentLevel = Managers.Backend.GameData.UserData.OwnedRelicDic[relicType.ToString()];
+        int currentLevel = Managers.Backend.GameData.CharacterData.OwnedRelicDic[relicType.ToString()];
 
         return increaseValue * currentLevel;
     }

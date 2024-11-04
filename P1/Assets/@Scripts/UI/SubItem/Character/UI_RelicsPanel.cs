@@ -63,7 +63,7 @@ public class UI_RelicsPanel : UI_Base
         // Prepare the list of eligible relics
         foreach (EHeroRelicType relic in values)
         {
-            int ownedCount = Managers.Backend.GameData.UserData.OwnedRelicDic[relic.ToString()];
+            int ownedCount = Managers.Backend.GameData.CharacterData.OwnedRelicDic[relic.ToString()];
             int maxCount = Managers.Data.HeroRelicChart[relic].MaxCount;
             if (ownedCount < maxCount)
             {
@@ -90,7 +90,7 @@ public class UI_RelicsPanel : UI_Base
             EHeroRelicType selectedRelic = eligibleRelics[randomIndex];
 
             // 선택된 유물이 최대치에 도달했는지 확인
-            int ownedCount = Managers.Backend.GameData.UserData.OwnedRelicDic[selectedRelic.ToString()];
+            int ownedCount = Managers.Backend.GameData.CharacterData.OwnedRelicDic[selectedRelic.ToString()];
             int maxCount = Managers.Data.HeroRelicChart[selectedRelic].MaxCount;
             if (ownedCount >= maxCount)
             {
@@ -108,7 +108,7 @@ public class UI_RelicsPanel : UI_Base
             {
                 drawRelicDic.Add(selectedRelic, 1);
             }
-            Managers.Backend.GameData.UserData.AddRelic(selectedRelic, 1);
+            Managers.Backend.GameData.CharacterData.AddRelic(selectedRelic, 1);
 
             // 유물이 최대치에 도달했는지 다시 확인
             ownedCount++;
@@ -126,9 +126,9 @@ public class UI_RelicsPanel : UI_Base
     // 모든 유물이 MaxCount에 도달했는지 확인하는 메서드
     private bool AreAllRelicsMaxedOut()
     {
-        foreach (var relicPair in Managers.Backend.GameData.UserData.OwnedRelicDic)
+        foreach (var relicPair in Managers.Backend.GameData.CharacterData.OwnedRelicDic)
         {
-            var relicType = (EHeroRelicType)System.Enum.Parse(typeof(EHeroRelicType), relicPair.Key);
+            var relicType = (EHeroRelicType)Enum.Parse(typeof(EHeroRelicType), relicPair.Key);
             if (relicPair.Value < Managers.Data.HeroRelicChart[relicType].MaxCount)
             {
                 return false; // 하나라도 MaxCount 미만이면 false 반환
