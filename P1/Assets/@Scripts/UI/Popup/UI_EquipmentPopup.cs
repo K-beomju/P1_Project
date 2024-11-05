@@ -50,8 +50,7 @@ public class UI_EquipmentPopup : UI_Popup
     {
         Slider_EquipmentCount
     }
-
-
+    
     private UI_CompanionItem equipmentItem;
     private List<UI_CompanionItem> equipmentItems = new List<UI_CompanionItem>();
 
@@ -112,7 +111,6 @@ public class UI_EquipmentPopup : UI_Popup
             var item = GetObject((int)GameObjects.Content_Equipment).transform.GetChild(i).GetComponent<UI_CompanionItem>();
             equipmentItems.Add(item);
         }
-        //GetObject((int)GameObjects.Content_Equipment).GetComponent<GridLayoutGroup>().enabled = false;
 
         EquipmentType = EEquipmentType.Weapon;
         return true;
@@ -146,6 +144,10 @@ public class UI_EquipmentPopup : UI_Popup
     // 장비 타입을 바꿨을 때 Item 갱신 
     public void RefreshUI(bool sort = true)
     {
+        GetButton((int)Buttons.Btn_Weapon).interactable = EquipmentType != EEquipmentType.Weapon;
+        GetButton((int)Buttons.Btn_Armor).interactable = EquipmentType != EEquipmentType.Armor;
+        GetButton((int)Buttons.Btn_Ring).interactable =  EquipmentType != EEquipmentType.Ring;
+
         List<EquipmentInfoData> equipmentInfos = Managers.Equipment.GetEquipmentTypeInfos(EquipmentType);
 
         for (int i = 0; i < equipmentItems.Count; i++)
