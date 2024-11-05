@@ -87,5 +87,13 @@ namespace BackendData.GameData
 
             _dungeonkeyDic[key] += amount;
         }
+
+        public void IncreaseDungeonLevel(EDungeonType dungeonType)
+        {
+            IsChangedData = true;
+            string key = dungeonType.ToString();
+
+            _dungeonLevelDic[key] += 1;
+        }
     }
 }

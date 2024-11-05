@@ -167,13 +167,14 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoStageClear()
     {
-        var popupUI = Managers.UI.ShowPopupUI<UI_ClearPopup>();
-        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_TOTALPOWER + 1);
+        var popupUI = Managers.UI.ShowPopupUI<UI_DungeonClearPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
         clearRewardDic.Add(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
-        popupUI.RefreshUI(clearRewardDic);
+        popupUI.RefreshUI(DungeonType, clearRewardDic);
 
         Debug.Log($"던전 클리어! {DungeonInfo.ItemType} {DungeonInfo.DungeonClearReward} 보상 지급");
         Managers.Backend.GameData.CharacterData.AddAmount(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
+        Managers.Backend.GameData.DungeonData.IncreaseDungeonLevel(DungeonType);
         // 팝업 띄우고 보상 주고 다시 게임씬으로 
         yield return null;
     }

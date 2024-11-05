@@ -223,7 +223,9 @@ public static class Define
         Gold = 1,
         Dia,
         ExpPoint,
-        Relic
+        Relic,
+        GoldDungeonKey,
+        DiaDungeonKey
     }
 
     public enum EHeroUpgradeType
@@ -307,6 +309,7 @@ public static class Define
         public const int UI_SCENE = 500;
         public const int UI_RESULTPOPUP = 600;
         public const int UI_TOTALPOWER = 610;
+        public const int UI_NOTIFICATION = 610;
         public const int UI_FADEPOPUP = 620;
     }
 

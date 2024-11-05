@@ -9,6 +9,16 @@
       "ItemType": 2,
       "Remark": "다이아",
       "SpriteKey": "Item/Dia"
+    },
+    {
+      "ItemType": 5,
+      "Remark": "골드 던전 키",
+      "SpriteKey": "Item/GoldDungeonKey"
+    },
+    {
+      "ItemType": 6,
+      "Remark": "다이아 던전 키",
+      "SpriteKey": "Item/DiaDungeonKey"
     }
   ]
 }

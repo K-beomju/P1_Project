@@ -47,7 +47,9 @@ public class MyCustomEditorWindow : EditorWindow
         }
         if (GUILayout.Button("레벨업 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.UI.ShowBaseUI<UI_LevelUpBase>().ShowLevelUpUI(3);
+                        Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("ASDASDad");
+
+           // Managers.UI.ShowBaseUI<UI_LevelUpBase>().ShowLevelUpUI(3);
         }
         if (GUILayout.Button("전투력 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
@@ -103,6 +105,10 @@ public class MyCustomEditorWindow : EditorWindow
         GUILayout.EndHorizontal(); // 수평 정렬 종료
 
         GUILayout.EndVertical(); // 세로 정렬 종료
+        if (GUILayout.Button("플레이어 공격력 증가", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade( Define.EHeroUpgradeType.Growth_Atk);
+        }
 
     }
 }
