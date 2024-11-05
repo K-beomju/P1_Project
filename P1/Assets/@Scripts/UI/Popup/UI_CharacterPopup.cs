@@ -84,7 +84,7 @@ public class UI_CharacterPopup : UI_Popup
         GetButton((int)Buttons.Btn_Character).interactable = _characterSection != ECharacterSection.Character;
         GetButton((int)Buttons.Btn_Attribute).interactable = _characterSection != ECharacterSection.Attribute;
         GetButton((int)Buttons.Btn_Relics).interactable =  _characterSection != ECharacterSection.Relics;
-        (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(Define.EGoodType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
+        (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(Define.EItemType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
 
         switch (_characterSection)

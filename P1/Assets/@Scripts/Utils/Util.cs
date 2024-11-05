@@ -456,25 +456,16 @@ public static class Util
 
     #region Dungeon
 
-    public static int DungenEntranceMaxValue(EDungeonType dungeonType)
+    public static int DungenEntranceMaxValue(EDungeonType type)
     {
-        int entranceValue = 0;
-        switch (dungeonType)
+        return type switch
         {
-            case EDungeonType.Gold:
-                entranceValue = 2;
-                break;
-            case EDungeonType.Dia:
-                entranceValue = 2;
-                break;
-            case EDungeonType.Promotion:
-                entranceValue = 1;
-                break;
-            case EDungeonType.WorldBoss:
-                entranceValue = 1;
-                break;
-        }
-        return entranceValue;
+            EDungeonType.Gold => 2,
+            EDungeonType.Dia => 2,
+            EDungeonType.Promotion => 1,
+            EDungeonType.WorldBoss => 1,
+            _ => throw new ArgumentException($"Unknown GetDungeonType String: {type}")
+        };
     }
 
     #endregion

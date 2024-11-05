@@ -173,11 +173,11 @@ public class Monster : Creature, IDamageable
                         {
                             try
                             {
-                                Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.Gold, gameScene.StageInfo.MonsterGoldReward);
+                                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, gameScene.StageInfo.MonsterGoldReward);
                             }
                             catch (Exception e)
                             {
-                                throw new Exception($"OnDead -> AddAmount ({EGoodType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
+                                throw new Exception($"OnDead -> AddAmount ({EItemType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
                             }
                         });
                         

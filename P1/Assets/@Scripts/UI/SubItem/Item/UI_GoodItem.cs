@@ -16,7 +16,7 @@ public class UI_GoodItem : UI_Base
         GoodIcon
     }
 
-    private EGoodType goodType;
+    private EItemType goodType;
 
     protected override bool Init()
     {
@@ -28,7 +28,7 @@ public class UI_GoodItem : UI_Base
         return true;
     }
 
-    public void SetInfo(EGoodType _goodType)
+    public void SetInfo(EItemType _goodType)
     {
         goodType = _goodType;
     }
@@ -45,9 +45,6 @@ public class UI_GoodItem : UI_Base
 
     public void RefreshGoodDisplayUI()
     {
-        if (goodType == EGoodType.None)
-            return;
-
         if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(goodType.ToString(), out float amount))
             return;
 

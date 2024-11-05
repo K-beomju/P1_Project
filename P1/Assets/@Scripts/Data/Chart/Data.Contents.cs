@@ -187,7 +187,7 @@ namespace Data
         public EHeroUpgradeType HeroUpgradeType;
         public string Remark;
         public List<int> ReferenceLevelList = new List<int>();
-        public List<EGoodType> GoodList = new List<EGoodType>();
+        public List<EItemType> GoodList = new List<EItemType>();
         public List<int> StartCostList = new List<int>();
         public List<int> IncreaseCostList = new List<int>();
     }
@@ -243,7 +243,7 @@ namespace Data
         public EHeroAttrType HeroAttrType;
         public string Remark;
         public List<int> ReferenceLevelList = new List<int>();
-        public List<EGoodType> GoodList = new List<EGoodType>();
+        public List<EItemType> GoodList = new List<EItemType>();
         public List<int> StartCostList = new List<int>();
         public List<int> IncreaseCostList = new List<int>();
     }
@@ -479,6 +479,7 @@ namespace Data
         public int DungeonTimeLimit;
         public List<int> MonsterDataIdList = new List<int>();
         public int MonsterLevel;
+        public EItemType ItemType;
         public int DungeonClearReward;
     }
 

@@ -32,7 +32,7 @@ public class UI_GoldIconBase : UI_Base
     {
         // 적의 월드 좌표에서 골드 아이콘 생성 위치로 설정
         _icon.position = Camera.main.WorldToScreenPoint(enemyPosition);
-        Vector2 targetPosition = (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(EGoodType.Gold).GetGoodIconWorldToCanvasLocalPosition();
+        Vector2 targetPosition = (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(EItemType.Gold).GetGoodIconWorldToCanvasLocalPosition();
         Explosion(_icon.anchoredPosition, targetPosition, 100f, EndCallBack); 
     }
 

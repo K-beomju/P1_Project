@@ -29,6 +29,7 @@ public class DungeonScene : BaseScene
 
     public DungeonInfoData DungeonInfo { get; private set; }
     private BackendData.GameData.CharacterData CharacterData;
+    private Dictionary<EItemType, int> clearRewardDic = new Dictionary<EItemType, int>();
 
     public float DungeonTimer { get; private set; }
     public float DungeonTimeLimit { get; private set; }
@@ -80,15 +81,14 @@ public class DungeonScene : BaseScene
 
     private void InitializeDungeon()
     {
-        switch (DungeonType)
+        DungeonInfo = DungeonType switch
         {
-            case EDungeonType.Gold:
-                DungeonInfo = Managers.Data.GoldDungeonChart[Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()]];
-                break;
-            case EDungeonType.Dia:
-                DungeonInfo = Managers.Data.DiaDungeonChart[Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()]];
-                break;
-        }
+            EDungeonType.Gold => Managers.Data.GoldDungeonChart[Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()]],
+            EDungeonType.Dia => Managers.Data.DiaDungeonChart[Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()]],
+            _ => throw new ArgumentException($"Unknown DungeonType: {DungeonType}")
+        };
+
+        Debug.Log(DungeonInfo.ItemType);
 
         sceneUI.UpdateStageUI(DungeonType, DungeonInfo.DungeonLevel);
         Managers.Game.SetMonsterCount(0, DungeonInfo.KillMonsterCount);
@@ -98,7 +98,7 @@ public class DungeonScene : BaseScene
         UpdateDungeonTimer();
     }
 
-    
+
     private void SwitchCoroutine()
     {
         if (_stateCoroutines == null)
@@ -139,12 +139,12 @@ public class DungeonScene : BaseScene
         // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
         if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
             (Managers.UI.SceneUI as UI_DungeonScene).CheckUseSkillSlot(-1);
-        
+
         while (DungeonTimer > 0)
         {
             UpdateDungeonTimer(); // 보스 타이머 업데이트 메서드 호출
 
-            if(Managers.Game.ClearStage())
+            if (Managers.Game.ClearStage())
             {
                 GameSceneState = EGameSceneState.Clear;
             }
@@ -167,18 +167,13 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoStageClear()
     {
-        Debug.Log("던전 클리어!");
         var popupUI = Managers.UI.ShowPopupUI<UI_ClearPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_TOTALPOWER + 1);
-        
-        Dictionary<EItemType, int> drawRelicDic = new()
-        {
-            { EItemType.Gold, 1000 },
-            { EItemType.Dia, 500 }
+        clearRewardDic.Add(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
+        popupUI.RefreshUI(clearRewardDic);
 
-        };
-
-        popupUI.RefreshUI(drawRelicDic);
+        Debug.Log($"던전 클리어! {DungeonInfo.ItemType} {DungeonInfo.DungeonClearReward} 보상 지급");
+        Managers.Backend.GameData.CharacterData.AddAmount(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
         // 팝업 띄우고 보상 주고 다시 게임씬으로 
         yield return null;
     }

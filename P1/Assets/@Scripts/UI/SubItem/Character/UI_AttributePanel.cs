@@ -121,7 +121,7 @@ public class UI_AttributePanel : UI_Base
                 int price = Util.GetAttributeCost(SelectAttrType, level + 1);
                 if (CanUpgrade(price))
                 {
-                    Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.ExpPoint, -price);
+                    Managers.Backend.GameData.CharacterData.AddAmount(EItemType.ExpPoint, -price);
                     Managers.Backend.GameData.CharacterData.LevelUpHeroAttribute(SelectAttrType);
                     ShowAttributeDetailUI(SelectAttrType);
 
@@ -133,7 +133,7 @@ public class UI_AttributePanel : UI_Base
         }
         catch (Exception e)
         {
-            throw new Exception($"OnPressUpgradeButton({EGoodType.Gold}) 중 에러가 발생하였습니다\n{e}");
+            throw new Exception($"OnPressUpgradeButton({EItemType.Gold}) 중 에러가 발생하였습니다\n{e}");
         }
     }
 
@@ -165,7 +165,7 @@ public class UI_AttributePanel : UI_Base
 
     bool CanUpgrade(float cost)
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EGoodType.ExpPoint.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.ExpPoint.ToString(), out float amount))
             return false;
 
         return amount >= cost;

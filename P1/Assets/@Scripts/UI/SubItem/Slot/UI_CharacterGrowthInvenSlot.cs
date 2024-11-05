@@ -103,7 +103,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
                 int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
                 if (CanUpgrade(price))
                 {
-                    Managers.Backend.GameData.CharacterData.AddAmount(EGoodType.Gold, -price);
+                    Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, -price);
                     Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(_heroUpgradeType);
 
                     if (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp)
@@ -114,7 +114,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         }
         catch (Exception e)
         {
-            throw new Exception($"OnPressUpgradeButton({EGoodType.Gold}) 중 에러가 발생하였습니다\n{e}");
+            throw new Exception($"OnPressUpgradeButton({EItemType.Gold}) 중 에러가 발생하였습니다\n{e}");
         }
 
 
@@ -149,7 +149,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     bool CanUpgrade(float cost)
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EGoodType.Gold.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Gold.ToString(), out float amount))
             return false;
 
         return amount >= cost;

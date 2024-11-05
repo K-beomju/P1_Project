@@ -180,14 +180,6 @@ public static class Define
         Skill
     }
 
-    // 획득할 수 있는 아이템 
-    public enum EItemType
-    {
-        Relic,
-        Gold,
-        Dia
-    }
-
     public enum ESkillSlotType
     {
         Lock,         // 슬롯이 잠겨 있는 상태
@@ -225,12 +217,13 @@ public static class Define
 
     #region Upgrade
 
-    public enum EGoodType
+    // 획득 가능한 재화 아이템 
+    public enum EItemType
     {
-        None,
-        Gold,
+        Gold = 1,
         Dia,
-        ExpPoint
+        ExpPoint,
+        Relic
     }
 
     public enum EHeroUpgradeType

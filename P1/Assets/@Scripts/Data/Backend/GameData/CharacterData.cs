@@ -57,7 +57,7 @@ namespace BackendData.GameData
 
             // 재화 정보 초기화 
             _purseDic.Clear();
-            foreach (EGoodType goodType in Enum.GetValues(typeof(EGoodType)))
+            foreach (EItemType goodType in Enum.GetValues(typeof(EItemType)))
             {
                 _purseDic.Add(goodType.ToString(), 0);
             }
@@ -116,9 +116,9 @@ namespace BackendData.GameData
                 _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
 
-            AddAmount(EGoodType.ExpPoint, 1100);
-            AddAmount(EGoodType.Dia, 1000000000);
-            AddAmount(EGoodType.Gold, 185000);
+            // AddAmount(EItemType.ExpPoint, 1100);
+            // AddAmount(EItemType.Dia, 1000000000);
+            // AddAmount(EItemType.Gold, 185000);
 
         }
 
@@ -151,13 +151,13 @@ namespace BackendData.GameData
         #region Good,Exp 
 
         // 유저의 재화를 변경하는 함수
-        public void AddAmount(EGoodType goodType, int amount)
+        public void AddAmount(EItemType goodType, int amount)
         {
             IsChangedData = true;
             string key = goodType.ToString();
 
             // GoldRateRelic 적용 (만약 재화가 골드인 경우)
-            if (goodType == EGoodType.Gold && Managers.Hero.PlayerHeroInfo != null)
+            if (goodType == EItemType.Gold && Managers.Hero.PlayerHeroInfo != null)
             {
                 amount = (int)(amount * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
             }
@@ -198,7 +198,7 @@ namespace BackendData.GameData
         public void LevelUp()
         {
             // 레벨업 포인트 1씩 늘려줌 
-            AddAmount(EGoodType.ExpPoint, 1);
+            AddAmount(EItemType.ExpPoint, 1);
 
             Exp -= MaxExp;
 

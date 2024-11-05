@@ -97,9 +97,9 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
         GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
 
-        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EGoodType.Gold);
-        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EGoodType.Dia);
-        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint).SetInfo(EGoodType.ExpPoint);
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint).SetInfo(EItemType.ExpPoint);
 
 
         InitializeUIElements();
@@ -128,7 +128,7 @@ public class UI_GameScene : UI_Scene
         GetTMPText((int)Texts.ExpValueText).text = string.Empty;
         GetTMPText((int)Texts.RemainMonsterValueText).text = string.Empty;
 
-        GetGoodItem(EGoodType.ExpPoint).gameObject.SetActive(false);
+        GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
@@ -181,13 +181,13 @@ public class UI_GameScene : UI_Scene
 
     #region Good, Dia,
 
-    public UI_GoodItem GetGoodItem(EGoodType goodType)
+    public UI_GoodItem GetGoodItem(EItemType goodType)
     {
         return goodType switch
         {
-            EGoodType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
-            EGoodType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
-            EGoodType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
+            EItemType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
+            EItemType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
+            EItemType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
             _ => null,
         };
     }
@@ -274,7 +274,7 @@ public class UI_GameScene : UI_Scene
             switch (tab)
             {
                 case PlayTab.Character:
-                    GetGoodItem(EGoodType.ExpPoint).gameObject.SetActive(false);
+                    GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
                     break;
                 case PlayTab.Equipment:
                     break;
