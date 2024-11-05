@@ -1375,7 +1375,7 @@ GameObject:
   - component: {fileID: 189322977858936264}
   - component: {fileID: 4896803147268715418}
   m_Layer: 5
-  m_Name: UI_DungeonInfoItem (2)
+  m_Name: UI_DungeonInfoItem_Promotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3918,7 +3918,7 @@ GameObject:
   - component: {fileID: 8278936914441976593}
   - component: {fileID: 2962665662034059569}
   m_Layer: 5
-  m_Name: UI_DungeonInfoItem (3)
+  m_Name: UI_DungeonInfoItem_WorldBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

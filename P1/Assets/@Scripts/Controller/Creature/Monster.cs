@@ -202,4 +202,9 @@ public class Monster : Creature, IDamageable
             throw new Exception($"Monster OnDead 중 에러가 발생하였습니다\n{e}");
         }
     }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(Sprite);
+    }
 }

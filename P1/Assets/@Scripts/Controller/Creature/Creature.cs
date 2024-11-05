@@ -96,7 +96,7 @@ public class Creature : BaseObject
         while (true)
         {
             if (isStopAI)
-                yield return null;
+                yield break;
 
             switch (CreatureState)
             {

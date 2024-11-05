@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine.SceneManagement;
 using static Define;
@@ -19,6 +20,7 @@ public class SceneManagerEx
     public void LoadScene(EScene type, bool isAsync = true)
     {
         Managers.Clear();
+        DOTween.KillAll();
 
         if (isAsync)
         {

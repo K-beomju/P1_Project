@@ -71,4 +71,9 @@ public class UI_FadeInBase : UI_Base
         if (setInactive)
             gameObject.SetActive(false);
     }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(fadeImage);
+    }
 }

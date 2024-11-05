@@ -313,17 +313,20 @@ public class Hero : Creature
     public override void OnDead()
     {
         //TODO
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, () =>
+        if (Managers.Scene.GetCurrentScene<GameScene>())
         {
-            Skills.Clear();
-            Anim.Rebind();
-            Hp = MaxHp;
-            CreatureState = ECreatureState.Idle;
-            Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.Over;
+            Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, () =>
+            {
+                Skills.Clear();
+                Anim.Rebind();
+                Hp = MaxHp;
+                CreatureState = ECreatureState.Idle;
+                Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.Over;
 
-        }, () =>
-        {
-        });
+            }, () =>
+            {
+            });
+        }
     }
 
     private IEnumerator RecoveryCo()

@@ -3,6 +3,7 @@ using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static Define;
 
@@ -148,6 +149,10 @@ public class DungeonScene : BaseScene
             {
                 GameSceneState = EGameSceneState.Clear;
             }
+            if(Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+            {
+                GameSceneState = EGameSceneState.Over;
+            }
             yield return null;
         }
     }
@@ -159,8 +164,13 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoStageOver()
     {
-        Debug.Log("던전 오버!");
+        // 몬스터 멈추고 UI 팝업 켜주고 
+        Managers.Object.Monsters.ToList().ForEach(x => x.isStopAI = true);
+        var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
 
+        // 스테이지 타이머 끄고 던전 키 다시 주고 
+        Managers.Backend.GameData.DungeonData.AddKey(DungeonType, 1);
         sceneUI.RefreshDungeonTimer(0, 0);
         yield return null;
     }
@@ -193,9 +203,19 @@ public class DungeonScene : BaseScene
         }
     }
 
+    private void KillAllMonsters()
+    {
+        for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
+        {
+            Monster monster = Managers.Object.Monsters.ElementAt(i);
+            monster.isStopAI = true;
+            Managers.Object.Despawn(monster);
+        }
+    }
+
 
     public override void Clear()
     {
-
+        KillAllMonsters();
     }
 }

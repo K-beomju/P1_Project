@@ -241,17 +241,6 @@ public class GameScene : BaseScene
 
     }
 
-
-    #region ContextMenu Methods
-
-    [ContextMenu("Stage/StageClear")]
-    public void StageClearCM()
-    {
-        GameSceneState = EGameSceneState.Clear;
-    }
-
-    #endregion
-
     public string GetCurrentStage()
     {
         return $"{ChapterLevel}-{CharacterData.StageLevel}";

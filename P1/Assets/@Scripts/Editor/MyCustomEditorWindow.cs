@@ -109,6 +109,11 @@ public class MyCustomEditorWindow : EditorWindow
         {
             Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade( Define.EHeroUpgradeType.Growth_Atk);
         }
+        if (GUILayout.Button("플레이어 사망", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            Managers.Object.Hero.OnDead();
+            Managers.Object.Hero.CreatureState = Define.ECreatureState.Dead;
+        }
 
     }
 }
