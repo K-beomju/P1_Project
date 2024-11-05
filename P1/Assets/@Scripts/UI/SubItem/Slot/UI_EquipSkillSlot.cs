@@ -56,7 +56,6 @@ public class UI_EquipSkillSlot : UI_Base
     {
         _index = index;
         _skillSlot = Managers.Backend.GameData.SkillInventory.SkillSlotList[_index];
-
         if(Init() == false)
         {
             RefreshUI();
@@ -83,8 +82,11 @@ public class UI_EquipSkillSlot : UI_Base
         }
 
         if (_skillSlot.SkillInfoData == null)
+        {
+            Debug.Log(_index + "의 스킬 슬롯이 비어있습니다.");
             return;
-            
+        }
+
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{_skillSlot.SkillInfoData.SpriteKey}");
         StopCoolTime(_index);
        
@@ -169,7 +171,7 @@ public class UI_EquipSkillSlot : UI_Base
     public bool IsSkillReady()
     {
         // 스킬이 사용 가능한 상태인지 확인하는 메서드 추가
-        return _skillSlot != null && _skillSlot.SkillInfoData != null && _coolTimeCo == null && _skillSlot.SlotType == ESkillSlotType.Equipped;
+        return Managers.Object.Monsters.Count > 1 && _skillSlot != null && _skillSlot.SkillInfoData != null && _coolTimeCo == null && _skillSlot.SlotType == ESkillSlotType.Equipped;
     }
 
 

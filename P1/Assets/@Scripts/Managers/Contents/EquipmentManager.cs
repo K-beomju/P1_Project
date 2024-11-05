@@ -9,12 +9,17 @@ using static Define;
 public class EquipmentManager
 {
     public Dictionary<int, EquipmentInfoData> AllEquipmentInfos { get; private set; } = new Dictionary<int, EquipmentInfoData>();
+    public static bool Initialized { get; set; } = false;
 
     public void Init()
     {
-        InitializeEquipment(EEquipmentType.Weapon, 100100, 24);
-        InitializeEquipment(EEquipmentType.Armor, 200100, 24);
-        InitializeEquipment(EEquipmentType.Ring, 300100, 24);
+        if (Initialized == false)
+        {
+            Initialized = true;
+            InitializeEquipment(EEquipmentType.Weapon, 100100, 24);
+            InitializeEquipment(EEquipmentType.Armor, 200100, 24);
+            InitializeEquipment(EEquipmentType.Ring, 300100, 24);
+        }
     }
 
     // 무기, 갑옷, 반지의 초기화를 각각 개별 메서드로 분리하여 중복 코드 제거

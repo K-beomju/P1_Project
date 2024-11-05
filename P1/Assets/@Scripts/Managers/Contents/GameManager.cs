@@ -19,7 +19,7 @@ public class GameManager
         Managers.Event.TriggerEvent(EEventType.MonsterCountChanged, _killMonsters, _maxMonsters);
     }
 
-    public void SpawnMonster(StageInfoData stageInfo, bool isBoss = false)
+    public void SpawnStageMonster(StageInfoData stageInfo, bool isBoss = false)
     {
         if (_tileMap == null)
         {
@@ -49,7 +49,7 @@ public class GameManager
         }
     }
 
-    public void SpawnMonster(DungeonInfoData dungeonInfo)
+    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo)
     {
         for (int i = 0; i < dungeonInfo.KillMonsterCount; i++)
         {

@@ -346,14 +346,14 @@ public static class Util
 
     #region Convert Value 
 
-    public static string ConvertToTotalCurrency(float totalPower)
+    public static string ConvertToTotalCurrency(float value)
     {
         string[] suffixes = { "", "A", "B", "C", "D", "E", "F", "G" };
         int suffixIndex = 0;
 
-        while (totalPower >= 1000 && suffixIndex < suffixes.Length - 1)
+        while (value >= 1000 && suffixIndex < suffixes.Length - 1)
         {
-            totalPower /= 1000;
+            value /= 1000;
             suffixIndex++;
         }
 
@@ -361,17 +361,17 @@ public static class Util
         // 1000 이하일 때는 소수점 없이 정수만 표시
         if (suffixIndex == 0)
         {
-            return $"{totalPower:N0}"; // 소수점 없이 출력
+            return $"{value:N0}"; // 소수점 없이 출력
         }
 
 
         // 100,000 이상일 때는 천의 자리까지만 표기하고 소수점 없애기
-        if (totalPower >= 100)
+        if (value >= 100)
         {
-            return $"{totalPower:F0}{suffixes[suffixIndex]}"; // 정수만 표시
+            return $"{value:F0}{suffixes[suffixIndex]}"; // 정수만 표시
         }
 
-        return $"{totalPower:F1}{suffixes[suffixIndex]}";
+        return $"{value:F1}{suffixes[suffixIndex]}";
     }
 
 

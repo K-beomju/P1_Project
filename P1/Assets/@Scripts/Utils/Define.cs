@@ -183,7 +183,9 @@ public static class Define
     // 획득할 수 있는 아이템 
     public enum EItemType
     {
-        Relic
+        Relic,
+        Gold,
+        Dia
     }
 
     public enum ESkillSlotType
@@ -312,7 +314,7 @@ public static class Define
         public const int UI_SCENE = 500;
         public const int UI_RESULTPOPUP = 600;
         public const int UI_TOTALPOWER = 610;
-
+        public const int UI_FADEPOPUP = 620;
     }
 
 

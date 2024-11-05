@@ -362,6 +362,27 @@ namespace Data
     #region ItemData (Equipment, Skill) 
 
     [Serializable]
+    public class ItemData
+    {
+        public EItemType ItemType;
+        public string Remark;
+        public string SpriteKey;
+    }
+
+    [Serializable]
+    public class ItemDataLoader : ILoader<EItemType, ItemData>
+    {
+        public List<ItemData> itemDatas = new List<ItemData>();
+        public Dictionary<EItemType, ItemData> MakeDict()
+        {
+            Dictionary<EItemType, ItemData> dict = new Dictionary<EItemType, ItemData>();
+            foreach (ItemData item in itemDatas)
+                dict.Add(item.ItemType, item);
+            return dict;
+        }
+    }
+
+    [Serializable]
     public class EquipmentData
     {
         public int DataId;

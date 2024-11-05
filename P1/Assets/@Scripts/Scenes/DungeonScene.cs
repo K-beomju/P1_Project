@@ -134,7 +134,11 @@ public class DungeonScene : BaseScene
     {
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, DungeonInfo.DungeonLevel);
         yield return new WaitForSeconds(2f);
-        Managers.Game.SpawnMonster(DungeonInfo);
+        Managers.Game.SpawnDungeonMonster(DungeonInfo);
+
+        // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
+        if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
+            (Managers.UI.SceneUI as UI_DungeonScene).CheckUseSkillSlot(-1);
         
         while (DungeonTimer > 0)
         {
@@ -164,6 +168,17 @@ public class DungeonScene : BaseScene
     private IEnumerator CoStageClear()
     {
         Debug.Log("던전 클리어!");
+        var popupUI = Managers.UI.ShowPopupUI<UI_ClearPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_TOTALPOWER + 1);
+        
+        Dictionary<EItemType, int> drawRelicDic = new()
+        {
+            { EItemType.Gold, 1000 },
+            { EItemType.Dia, 500 }
+
+        };
+
+        popupUI.RefreshUI(drawRelicDic);
         // 팝업 띄우고 보상 주고 다시 게임씬으로 
         yield return null;
     }

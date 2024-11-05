@@ -42,7 +42,7 @@ public class UI_DungeonInfoItem : UI_Base
 
         var fadeUI = Managers.UI.ShowBaseUI<UI_FadeInBase>();
         fadeUI.sceneMove = true;
-        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_TOTALPOWER + 1);
+        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_FADEPOPUP);
         fadeUI.ShowFadeInOut(EFadeType.FadeOut, 1f, 0,
         fadeOutCallBack: () =>
         {

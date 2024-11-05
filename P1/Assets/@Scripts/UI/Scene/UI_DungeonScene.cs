@@ -6,6 +6,11 @@ using static Define;
 
 public class UI_DungeonScene : UI_Scene
 {
+    enum Buttons
+    {
+        Btn_AutoSkill
+    }
+
     enum Texts
     {
         Text_DungeonInfo,
@@ -37,15 +42,18 @@ public class UI_DungeonScene : UI_Scene
         if (base.Init() == false)
             return false;
 
+        BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
 
-        InitializeUIElements();
+        GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
 
+        InitializeUIElements();
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
 
+        RefreshUI();
         return true;
     }
 
@@ -60,6 +68,15 @@ public class UI_DungeonScene : UI_Scene
         }
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
+    }
+
+    
+    private void RefreshUI()
+    {
+        if (_init == false)
+            return;
+
+        UpdatedSkillSlotUI();
     }
 
     public void UpdateStageUI(EDungeonType type, int level)
@@ -80,6 +97,21 @@ public class UI_DungeonScene : UI_Scene
     }
 
     #region Skill Slot
+
+    public void UpdatedSkillSlotUI()
+    {
+        foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
+        {
+            _equipSkillSlotList[slot.Index].RefreshUI();
+        }
+    }
+
+    public void ActiveAutoSkill()
+    {
+        Managers.Backend.GameData.SkillInventory.ActiveAutoSkill();
+        UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
+    }
+
     private void UpdateAutoSkillUI(bool isAutoSkill)
     {
         if (isAutoSkill)
@@ -120,7 +152,10 @@ public class UI_DungeonScene : UI_Scene
     }
     #endregion
 
-     public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
+
+    #region Exp
+
+    public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
     {
         // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
         if (maxExp > 0)
@@ -139,5 +174,6 @@ public class UI_DungeonScene : UI_Scene
             GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
         }
     }
+    #endregion
 
 }

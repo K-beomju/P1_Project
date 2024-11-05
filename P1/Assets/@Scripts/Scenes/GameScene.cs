@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using Data;
+using DG.Tweening;
 using UnityEngine;
 using static Define;
 
@@ -52,9 +53,11 @@ public class GameScene : BaseScene
         InitializeScene();
         InitializeUI();
 
-        ChapterLevel = 1;
-
-        SetupStage();
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
+        fadeInCallBack: () =>
+        {
+            SetupStage();
+        });
         //Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
         return true;
     }
@@ -128,6 +131,7 @@ public class GameScene : BaseScene
 
     private void SetupStage()
     {
+        ChapterLevel = 1;
         StageInfo = Managers.Data.StageChart[CharacterData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
         Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
 
@@ -147,7 +151,12 @@ public class GameScene : BaseScene
 
         yield return StartWait;
         sceneUI.UpdateStageUI(false);
-        Managers.Game.SpawnMonster(StageInfo);
+        Managers.Game.SpawnStageMonster(StageInfo);
+
+                // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
+        if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
+            (Managers.UI.SceneUI as UI_GameScene).CheckUseSkillSlot(-1);
+        
 
         while (!Managers.Game.ClearStage())
         {
@@ -166,7 +175,7 @@ public class GameScene : BaseScene
     {
         sceneUI.UpdateStageUI(true);
 
-        Managers.Game.SpawnMonster(StageInfo, true);
+        Managers.Game.SpawnStageMonster(StageInfo, true);
         sceneUI.RefreshBossMonsterHp(Managers.Object.BossMonster);
         while (Managers.Object.BossMonster != null)
         {
