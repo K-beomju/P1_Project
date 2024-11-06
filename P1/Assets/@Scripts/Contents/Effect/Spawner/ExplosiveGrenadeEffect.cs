@@ -17,6 +17,7 @@ public class ExplosiveGrenadeEffect : EffectBase
     {
         for (int i = 0; i < SkillData.SkillCount; i++)
         {
+            Debug.Log(SkillData.SkillCount);
             GameObject grenade = Managers.Object.SpawnGameObject(Owner.CenterPosition, EffectData.ProjectileKey);
             if (grenade == null)
                 yield break;
@@ -29,7 +30,7 @@ public class ExplosiveGrenadeEffect : EffectBase
                 grenade.transform.DOJump(grenade.transform.position, height / 2, 1, 0.5f).SetEase(Ease.OutQuad);
             });
 
-            EffectBase explosiveGrenade = grenade.GetComponent<EffectBase>();
+            ExplosiveGrenade explosiveGrenade = grenade.GetComponent<ExplosiveGrenade>();
             explosiveGrenade.SetInfo(EffectData.DataId, Owner, SkillData);
             yield return new WaitForSeconds(0.1f); // 각 슈루탄 생성 간 딜레이
         }

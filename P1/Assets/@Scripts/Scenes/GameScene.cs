@@ -69,8 +69,11 @@ public class GameScene : BaseScene
         // 코루틴을 통한 정기 데이터 업데이트 시작
         StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
 
-        // 던전에서 오면 한번 더 실행됌.
-        Managers.Backend.GameData.DungeonData.CheckDungeonKeyRecharge();
+        if(Initialized == false)
+        {
+            Managers.Backend.GameData.DungeonData.CheckDungeonKeyRecharge();
+            Initialized = true;
+        }
     }
 
     private void InitializeGameComponents()
@@ -156,7 +159,7 @@ public class GameScene : BaseScene
         sceneUI.UpdateStageUI(false);
         Managers.Game.SpawnStageMonster(StageInfo);
 
-                // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
+        // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
         if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
             (Managers.UI.SceneUI as UI_GameScene).CheckUseSkillSlot(-1);
         

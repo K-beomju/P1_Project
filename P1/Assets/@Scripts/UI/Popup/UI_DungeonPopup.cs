@@ -31,6 +31,8 @@ public class UI_DungeonPopup : UI_Popup
 
     public void RefreshUI()
     {
+        GetTMPText((int)Texts.Text_Timer).text = $"남은 시간: {Managers.Backend.GameData.DungeonData.RemainChargeHour}시간"; 
+    
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Gold).RefreshUI();
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Dia).RefreshUI();
 

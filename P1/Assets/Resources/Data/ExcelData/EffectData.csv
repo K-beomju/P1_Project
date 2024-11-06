@@ -10,4 +10,4 @@
 60009,천벌,닿을 때 공격력 % 데미지 입히는 스킬,3,1,HasDuration,,
 60010,서리의 폭우,닿을 때 공격력 % 데미지 입히는 스킬,3,0,Instant,Object/Effect/Projectile/FrostRainArrow,Object/Effect/Explosion/FrostRainArrow
 60011,어둠의 전사,플레이어 주변의 적 공격,3,0.1,Instant,,Object/Effect/Explosion/DarkWarrior
-60012,슈루탄,플레이어 주변에 슈루탄 떨굼,3,0,Instant,Object/Effect/Projectile/ExplosiveGrenade,Object/Effect/Explosion/ExplosiveGrenade
+60012,슈루탄,플레이어 주변에 슈루탄 떨굼,3,0,Instant,Object/Effect/Projectile/ExplosiveGrenade,Object/Effect/Explosion/ExplosiveGrenadeEx

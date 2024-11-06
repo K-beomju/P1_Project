@@ -14,6 +14,7 @@ public class ExplosiveGrenade : EffectBase
     private IEnumerator SpawnExplosionCo()
     {
         yield return new WaitForSeconds(1);
+        Debug.Log(EffectData.ExplosionKey);
         GameObject go = Managers.Object.SpawnGameObject(transform.position, EffectData.ExplosionKey);
         go.GetComponent<ExplosiveGrenadeEx>().SetInfo(DataTemplateID, Owner, SkillData);
         ClearEffect();

@@ -22,7 +22,7 @@ namespace BackendData.GameData
         private Dictionary<string, int> _dungeonkeyDic = new();
 
         public string LastLoginTime { get; private set; }
-
+        public int RemainChargeHour { get; private set; }
 
         public IReadOnlyDictionary<string, int> DungeonLevelDic => (IReadOnlyDictionary<string, int>)_dungeonLevelDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> DungeonKeyDic => (IReadOnlyDictionary<string, int>)_dungeonkeyDic.AsReadOnlyCollection();
@@ -31,21 +31,16 @@ namespace BackendData.GameData
         {
             // 던전 정보 초기화 
             _dungeonLevelDic.Clear();
+            _dungeonkeyDic.Clear();
+
             foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
             {
                 if (dungeonType == EDungeonType.Unknown) // Unknown 제외
                     continue;
 
                 _dungeonLevelDic.Add(dungeonType.ToString(), 1);
-            }
-
-            _dungeonkeyDic.Clear();
-            foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
-            {
-                if (dungeonType == EDungeonType.Unknown) // Unknown 제외
-                    continue;
-
                 _dungeonkeyDic.Add(dungeonType.ToString(), Util.DungenEntranceMaxValue(dungeonType));
+
             }
 
             BackendReturnObject servertime = Backend.Utils.GetServerTime();
@@ -106,55 +101,56 @@ namespace BackendData.GameData
             // 서버 시간 문자열을 DateTime 형식으로 변환
             string time = serverTime.GetReturnValuetoJSON()["utcTime"].ToString();
             DateTime servertime = DateTime.Parse(time);
-
             DateTime lastLoginDate = DateTime.Parse(LastLoginTime);
             TimeSpan timeDifference = servertime - lastLoginDate;
-            Debug.Log(timeDifference);
 
-            if (timeDifference.TotalSeconds >= 12)
+            // 차이가 0시간일 경우 12시간으로 표시, 그렇지 않으면 실제 경과 시간 표시
+            RemainChargeHour = timeDifference.TotalHours < 1 ? 12 : (int)Math.Floor(timeDifference.TotalHours);
+            Debug.LogWarning($"지난 로그인 후 경과 시간: {RemainChargeHour}시간");
+
+            if (timeDifference.TotalHours < 12)
             {
-                //하루가 지난 경우 LastLoginTime을 서버 시간으로 업데이트
-                Debug.Log("3초 이상 차이난 마지막 로그인 시간 " + LastLoginTime);
+                Debug.Log("12시간 미만 경과 - 키 충전 미실행");
+                return;
+            }
 
-                IsChangedData = true;
-                // 열쇠 주고 마지막 로그인 시간 업데이트. 
-                LastLoginTime = servertime.ToString();
-                foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
+
+            Debug.Log("12시간 이상 경과: 키 리필 및 마지막 로그인 시간 업데이트.");
+            IsChangedData = true;
+            LastLoginTime = servertime.ToString();
+
+            foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
+            {
+                if (dungeonType == EDungeonType.Unknown) // Unknown 제외
+                    continue;
+
+                // 현재 키 개수가 1개 이하일 때 최대갯수까지 채움
+                if (_dungeonkeyDic[dungeonType.ToString()] <= 1)
                 {
-                    if (dungeonType == EDungeonType.Unknown) // Unknown 제외
-                        continue;
+                    _dungeonkeyDic[dungeonType.ToString()] = Util.DungenEntranceMaxValue(dungeonType);
+                    Debug.Log(dungeonType + "키 최대로 채워졌습니다.");
+                }
+            }
 
-                    // 현재 키 개수가 1개 이하일 때 최대갯수까지 채움
-                    if (_dungeonkeyDic[dungeonType.ToString()] <= 1)
-                    {
-                        _dungeonkeyDic[dungeonType.ToString()] = Util.DungenEntranceMaxValue(dungeonType);
-                        Debug.Log(dungeonType + "키 최대로 채워졌습니다.");
-                    }
+            Managers.Backend.UpdateAllGameData(callback =>
+            {
+                if (callback == null)
+                {
+                    Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
+                    return;
                 }
 
-                Managers.Backend.UpdateAllGameData(callback =>
+                if (callback.IsSuccess())
                 {
-                    if (callback == null)
-                    {
-                        Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
-                        return;
-                    }
+                    Debug.Log("저장 성공, 저장에 성공했습니다.");
+                }
+                else
+                {
+                    Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                }
 
-                    if (callback.IsSuccess())
-                    {
-                        Debug.Log("저장 성공, 저장에 성공했습니다.");
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
-                    }
+            });
 
-                });
-            }
-            else
-            {
-                Debug.Log("3초 미만임 업데이트 안함.");
-            }
         }
 
         public void AddKey(EDungeonType dungeonType, int amount)

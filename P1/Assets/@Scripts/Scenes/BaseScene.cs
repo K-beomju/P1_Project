@@ -8,6 +8,7 @@ using static Define;
 public abstract class BaseScene : InitBase
 {
 	public EScene SceneType { get; protected set; } = EScene.Unknown;
+    public static bool Initialized { get; set; } = false;
 
 	protected override bool Init()
 	{
