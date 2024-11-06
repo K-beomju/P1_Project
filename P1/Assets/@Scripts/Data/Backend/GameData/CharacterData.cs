@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using static Define;
 using System;
 using UnityEngine;
+using System.Globalization;
 
 namespace BackendData.GameData
 {

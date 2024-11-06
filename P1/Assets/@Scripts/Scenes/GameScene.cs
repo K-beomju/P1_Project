@@ -68,6 +68,9 @@ public class GameScene : BaseScene
         CharacterData = Managers.Backend.GameData.CharacterData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
         StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
+
+        // 던전에서 오면 한번 더 실행됌.
+        Managers.Backend.GameData.DungeonData.CheckDungeonKeyRecharge();
     }
 
     private void InitializeGameComponents()
