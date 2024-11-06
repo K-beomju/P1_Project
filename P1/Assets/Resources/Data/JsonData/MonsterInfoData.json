@@ -12,18 +12,18 @@
     {
       "MoveSpeed": 1.0,
       "DataId": 50002000,
-      "Name": "Bat",
+      "Name": "Goblin",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Bat",
+      "PrefabKey": "Enemy_Goblin",
       "Atk": 5.0,
       "MaxHp": 40.0
     },
     {
       "MoveSpeed": 1.0,
       "DataId": 50003000,
-      "Name": "Goblin",
+      "Name": "MushRoom",
       "ObjectType": 2,
-      "PrefabKey": "Enemy_Goblin",
+      "PrefabKey": "Enemy_MushRoom",
       "Atk": 5.0,
       "MaxHp": 40.0
     }

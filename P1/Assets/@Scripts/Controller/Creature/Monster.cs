@@ -49,8 +49,8 @@ public class Monster : Creature, IDamageable
         Sprite.DOFade(0, 0);
         Sprite.DOFade(1, 1f);
 
-        HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(gameObject.transform);
-        HpBar.transform.localPosition = new Vector3(0.0f, -0.2f, 0.0f); // FIXME: Prefab 위치 추가 하시오.
+        HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(Util.FindChild<Transform>(gameObject, "HpBarPos"));
+        HpBar.transform.localPosition = Vector2.zero;
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(false);
     }
@@ -93,6 +93,7 @@ public class Monster : Creature, IDamageable
         if (_isDamaged)  // 공격을 받았다면 이동하지 않음
         {
             CreatureState = ECreatureState.Idle;
+            Anim.SetBool(HeroAnimation.HashMove, false);
             return;
         }
 
@@ -107,6 +108,7 @@ public class Monster : Creature, IDamageable
             {
                 _isMovingToTarget = false;
                 CreatureState = ECreatureState.Idle;
+                Anim.SetBool(HeroAnimation.HashMove, false);
             }
             else
             {
@@ -114,6 +116,8 @@ public class Monster : Creature, IDamageable
                 Vector3 moveDir = direction.normalized;
                 transform.Translate(moveDir * MoveSpeed * Time.deltaTime);
                 Sprite.flipX = moveDir.x < 0;  // 좌우 이동 시 스프라이트 방향 전환
+                Anim.SetBool(HeroAnimation.HashMove, true);
+
             }
         }
     }

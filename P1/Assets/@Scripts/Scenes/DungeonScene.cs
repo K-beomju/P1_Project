@@ -66,7 +66,17 @@ public class DungeonScene : BaseScene
 
     private void InitializeScene()
     {
+        string mapName = DungeonType switch
+        {
+            EDungeonType.Gold => "GoldDungeonMap",
+            EDungeonType.Dia => "DiaDungeonMap",
+            _ => throw new ArgumentException($"Unknown mapName: {DungeonType}")
+        };
+
+        GameObject map = Managers.Resource.Instantiate(mapName);
+        PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
+        cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;
     }
