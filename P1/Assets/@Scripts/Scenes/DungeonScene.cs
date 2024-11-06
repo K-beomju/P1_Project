@@ -164,6 +164,8 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoStageOver()
     {
+        yield return new WaitForSeconds(1f);
+
         // 몬스터 멈추고 UI 팝업 켜주고 
         Managers.Object.Monsters.ToList().ForEach(x => x.isStopAI = true);
         var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
