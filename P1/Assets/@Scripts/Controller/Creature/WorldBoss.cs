@@ -28,6 +28,8 @@ public class WorldBoss : Monster
         MoveRange = 5;
         IdleWaitTime = 3;
 
+        worldBossTotalDamage = 0;
+
     }
 
 
@@ -53,6 +55,8 @@ public class WorldBoss : Monster
     {
         base.OnDamaged(attacker, effect);
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
+
+        (Managers.UI.SceneUI as UI_DungeonScene).RefreshWorldBossDamage(worldBossTotalDamage);
     }
 
     public override void OnDead()

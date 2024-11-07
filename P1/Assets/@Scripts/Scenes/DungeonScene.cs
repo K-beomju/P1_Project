@@ -184,7 +184,7 @@ public class DungeonScene : BaseScene
     {
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, DungeonInfo.DungeonLevel);
         yield return new WaitForSeconds(2f);
-        Managers.Game.SpawnDungeonMonster(DungeonInfo, isBoss : true);
+        Managers.Game.SpawnDungeonMonster(DungeonInfo, isBoss: true);
 
         // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
         if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
@@ -193,6 +193,11 @@ public class DungeonScene : BaseScene
         while (DungeonTimer > 0)
         {
             UpdateDungeonTimer(); // 보스 타이머 업데이트 메서드 호출
+
+            if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+            {
+                GameSceneState = EGameSceneState.Over;
+            }
             yield return null;
         }
     }
@@ -207,14 +212,23 @@ public class DungeonScene : BaseScene
     {
         yield return new WaitForSeconds(1f);
 
-        // 몬스터 멈추고 UI 팝업 켜주고 
-        Managers.Object.Monsters.ToList().ForEach(x => x.isStopAI = true);
-        var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
-        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-
-        // 스테이지 타이머 끄고 던전 키 다시 주고 
-        Managers.Backend.GameData.DungeonData.AddKey(DungeonType, 1);
         sceneUI.RefreshDungeonTimer(0, 0);
+        if (DungeonType != EDungeonType.WorldBoss)
+        {       
+            // 몬스터 멈추고 UI 팝업 켜주고 
+            Managers.Object.Monsters.ToList().ForEach(x => x.isStopAI = true);
+            var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+
+            // 던전 키 다시 줌
+            Managers.Backend.GameData.DungeonData.AddKey(DungeonType, 1);
+        }
+        else
+        {
+            // 월드보스에게 넣은 데미지 팝업 표시 끝 .
+            // 랭킹 저장 
+        }
+
         yield return null;
     }
 

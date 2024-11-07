@@ -48,6 +48,8 @@ public class Creature : BaseObject
             }
         }
     }
+
+    public float worldBossTotalDamage { get; set; } = 0;
     public bool isStopAI { get; set; } = false;
     #endregion
 
@@ -181,6 +183,12 @@ public class Creature : BaseObject
             //Debug.LogWarning("받는 피해 감소가 있습니다." + ReduceDmgBuff.Value);
             float damageReductionMultiplier = 1 - (ReduceDmgBuff.Value - 1);
             finalDamage *= damageReductionMultiplier;
+        }
+
+        if(this is WorldBoss)
+        {
+            Debug.Log("월드 보스 데미지 누적 계산");
+            worldBossTotalDamage += finalDamage;
         }
 
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);

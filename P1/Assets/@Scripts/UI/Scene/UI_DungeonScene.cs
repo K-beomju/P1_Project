@@ -15,13 +15,20 @@ public class UI_DungeonScene : UI_Scene
     {
         Text_DungeonInfo,
         Text_AutoSkill,
+        Text_TotalDamage,
         ExpValueText
     }
+
     enum Sliders
     {
         Slider_DungeonInfo,
         Slider_RemainTimer,
         Slider_Exp
+    }
+
+    public enum GameObjects
+    {
+        UI_WorldBoss
     }
 
     public enum EquipSkillSlots
@@ -45,6 +52,7 @@ public class UI_DungeonScene : UI_Scene
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
+        BindObjects(typeof(GameObjects));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
 
         GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
@@ -86,6 +94,7 @@ public class UI_DungeonScene : UI_Scene
         else
             GetTMPText((int)Texts.Text_DungeonInfo).text = $"{Util.GetDungeonType(type)}";
 
+        GetObject((int)GameObjects.UI_WorldBoss).SetActive(type == EDungeonType.WorldBoss);
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)
@@ -98,6 +107,11 @@ public class UI_DungeonScene : UI_Scene
     {
         float timePercentage = currentTime / maxTime;
         GetSlider((int)Sliders.Slider_RemainTimer).value = timePercentage;
+    }
+
+    public void RefreshWorldBossDamage(float damage)
+    {
+        GetTMPText((int)Texts.Text_TotalDamage).text = $"{Util.ConvertToTotalCurrency((long)damage)}";
     }
 
     #region Skill Slot
