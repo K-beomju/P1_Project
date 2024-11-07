@@ -200,7 +200,7 @@ public class UI_EquipmentPopup : UI_Popup
             ShowEquipmentDetailUI(SelectEquipmentInfo);
         }
 
-        GetTMPText((int)Texts.Text_TotalEquipmentOwnedValue).text = $"보유효과 : <color=#FFF42A>{Util.GetEquipmentStatType(EquipmentType)} +{Util.ConvertToTotalCurrency(Managers.Equipment.OwnedEquipmentValues(EquipmentType))}%</color>";
+        GetTMPText((int)Texts.Text_TotalEquipmentOwnedValue).text = $"보유효과 : <color=#FFF42A>{Util.GetEquipmentStatType(EquipmentType)} +{Util.ConvertToTotalCurrency((long)Managers.Equipment.OwnedEquipmentValues(EquipmentType))}%</color>";
         GetButton((int)Buttons.Btn_BatchEnhance).interactable = IsCheckOnceEnhanceEquipment();
     }
 

@@ -152,7 +152,7 @@ namespace BackendData.GameData
         #region Good,Exp 
 
         // 유저의 재화를 변경하는 함수
-        public void AddAmount(EItemType goodType, int amount)
+        public void AddAmount(EItemType goodType, float amount)
         {
             IsChangedData = true;
             string key = goodType.ToString();

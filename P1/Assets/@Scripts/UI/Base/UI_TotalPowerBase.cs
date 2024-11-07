@@ -86,7 +86,7 @@ public class UI_TotalPowerBase : UI_Base
 
         _adJustTotalPowerText.gameObject.SetActive(true);
         _adJustTotalPowerText.text = Mathf.Abs(roundedAdjustTotalPower).ToString("N0");
-        _currentTotalPowerText.text = Util.ConvertToTotalCurrency(currentTotalPower - adjustTotalPower);
+        _currentTotalPowerText.text = Util.ConvertToTotalCurrency((long)(currentTotalPower - adjustTotalPower));
 
         // 트윈 애니메이션 설정
         _sequence = DOTween.Sequence();
@@ -116,13 +116,13 @@ public class UI_TotalPowerBase : UI_Base
             beforeTotalPower = Mathf.Lerp(beforeTotalPower, currentTotalPower, t);
             adjustTotalPower = Mathf.Lerp(adjustTotalPower, 0, t);
 
-            _currentTotalPowerText.text = Util.ConvertToTotalCurrency(beforeTotalPower);
+            _currentTotalPowerText.text = Util.ConvertToTotalCurrency((long)beforeTotalPower);
             _adJustTotalPowerText.text = Mathf.Abs(adjustTotalPower).ToString("N0");
 
             // 0에 거의 근접했을 때 종료
             if (Mathf.Abs(adjustTotalPower) <= 0.2f)
             {
-                _currentTotalPowerText.text = Util.ConvertToTotalCurrency(currentTotalPower);
+                _currentTotalPowerText.text = Util.ConvertToTotalCurrency((long)currentTotalPower);
                 _adJustTotalPowerText.gameObject.SetActive(false);
                 break;
             }

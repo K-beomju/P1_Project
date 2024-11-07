@@ -109,9 +109,6 @@ public class Creature : BaseObject
                 case ECreatureState.Attack:
                     UpdateAttack();
                     break;
-                case ECreatureState.Dead:
-                    UpdateDead();
-                    break;
             }
             yield return null;
         }
@@ -188,7 +185,7 @@ public class Creature : BaseObject
 
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
         UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, finalDamage, isCriticalHit, effect);
+        damageText.SetInfo(CenterPosition, (long)finalDamage, isCriticalHit, effect);
 
         if (HpBar != null && !HpBar.gameObject.activeSelf)
             HpBar.gameObject.SetActive(true);

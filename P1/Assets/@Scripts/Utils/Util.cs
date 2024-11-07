@@ -346,33 +346,51 @@ public static class Util
 
     #region Convert Value 
 
-    public static string ConvertToTotalCurrency(float value)
+    public static string ConvertToTotalCurrency(long value)
     {
-        string[] suffixes = { "", "A", "B", "C", "D", "E", "F", "G" };
-        int suffixIndex = 0;
-
-        while (value >= 1000 && suffixIndex < suffixes.Length - 1)
+        // 10,000 미만일 경우 그대로 반환
+        if (value < 10000)
         {
-            value /= 1000;
-            suffixIndex++;
+            return value.ToString();
         }
 
+        string[] koreanUnits = { "만", "억", "조", "경" };
+        int unitIndex = -1;
+        long mainPart = value;
 
-        // 1000 이하일 때는 소수점 없이 정수만 표시
-        if (suffixIndex == 0)
+        // 큰 단위로 나누면서 단위를 증가시킴
+        while (mainPart >= 10000 && unitIndex < koreanUnits.Length - 1)
         {
-            return $"{value:N0}"; // 소수점 없이 출력
+            unitIndex++;
+            mainPart /= 10000;
         }
 
+        // `mainPart` 이후의 값을 남은 단위별로 순차적으로 추가
+        string result = $"{mainPart}{koreanUnits[unitIndex]}";
+        long remainder = value - mainPart * (long)Math.Pow(10000, unitIndex + 1);
 
-        // 100,000 이상일 때는 천의 자리까지만 표기하고 소수점 없애기
-        if (value >= 100)
+        // 남은 부분을 단위별로 추가 표시
+        for (int i = unitIndex - 1; i >= 0; i--)
         {
-            return $"{value:F0}{suffixes[suffixIndex]}"; // 정수만 표시
+            long unitValue = (long)Math.Pow(10000, i + 1);
+            long currentPart = remainder / unitValue;
+            remainder %= unitValue;
+
+            if (currentPart > 0)
+            {
+                result += $" {currentPart:D4}{koreanUnits[i]}";
+            }
         }
 
-        return $"{value:F1}{suffixes[suffixIndex]}";
+        // 마지막 10000 미만 값이 남아 있으면 추가
+        if (remainder > 0)
+        {
+            result += $" {remainder:D4}";
+        }
+
+        return result;
     }
+
 
 
     public static string GetHeroUpgradeString(EHeroUpgradeType type)

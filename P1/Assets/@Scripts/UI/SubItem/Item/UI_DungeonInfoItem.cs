@@ -111,8 +111,8 @@ public class UI_DungeonInfoItem : UI_Base
             _ => 0
         };
 
-        GetTMPText((int)Texts.Text_SweepAmount).text = Util.ConvertToTotalCurrency(reward * SWEEP_REWARD_MULTIPLIER);
-        GetTMPText((int)Texts.Text_EntranceAmount).text = Util.ConvertToTotalCurrency(reward);
+        GetTMPText((int)Texts.Text_SweepAmount).text = Util.ConvertToTotalCurrency((long)(reward * SWEEP_REWARD_MULTIPLIER));
+        GetTMPText((int)Texts.Text_EntranceAmount).text = Util.ConvertToTotalCurrency((long)reward);
     }
 
     private bool IsSweepLevel()

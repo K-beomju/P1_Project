@@ -15,8 +15,8 @@
       "Name": "월드보스",
       "ObjectType": 3,
       "PrefabKey": "Enemy_WorldBoss",
-      "Atk": 500.0,
-      "MaxHp": 500.0
+      "Atk": 10.0,
+      "MaxHp": 1000000.0
     }
   ]
 }

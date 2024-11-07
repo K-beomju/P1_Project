@@ -66,7 +66,7 @@ public class MyCustomEditorWindow : EditorWindow
         GUILayout.BeginHorizontal(); // 수평 정렬 시작
         if (GUILayout.Button("골드 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
         {
-            if (int.TryParse(currencyInputValue, out int goldAmount))
+            if (float.TryParse(currencyInputValue, out float goldAmount))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(Define.EItemType.Gold, goldAmount);
                 Debug.Log($"충전된 골드: {goldAmount}"); 

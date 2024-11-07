@@ -109,7 +109,7 @@ public class Hero : Creature
     protected override void UpdateAnimation()
     {
         if (CreatureState == ECreatureState.Dead)
-            Anim.SetTrigger(HeroAnimation.HashDead);
+           return;
 
         Anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
         Anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && Target != null);
@@ -312,6 +312,14 @@ public class Hero : Creature
 
     public override void OnDead()
     {
+        Anim.SetTrigger(HeroAnimation.HashDead);
+
+        if (recoveryCoroutine != null)
+        {
+            StopCoroutine(recoveryCoroutine);
+            recoveryCoroutine = null;
+        }
+
         //TODO
         if (Managers.Scene.GetCurrentScene<GameScene>())
         {
