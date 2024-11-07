@@ -34,6 +34,7 @@ public class LoadingScene : BaseScene
             Debug.LogError("뒤끝 초기화가 안됌");
         }
 
+
         Managers.Data.Init();
 
 

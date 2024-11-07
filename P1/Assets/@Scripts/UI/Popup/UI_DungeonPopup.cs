@@ -14,6 +14,7 @@ public class UI_DungeonPopup : UI_Popup
     {
         UI_DungeonInfoItem_Gold,
         UI_DungeonInfoItem_Dia,
+        UI_DungeonInfoItem_WorldBoss
     }
 
     protected override bool Init()
@@ -25,16 +26,23 @@ public class UI_DungeonPopup : UI_Popup
 
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Gold).SetInfo(EDungeonType.Gold);
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Dia).SetInfo(EDungeonType.Dia);
+        Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_WorldBoss).SetInfo(EDungeonType.WorldBoss);
 
         return true;
     }
 
     public void RefreshUI()
     {
-        GetTMPText((int)Texts.Text_Timer).text = $"남은 시간: {Managers.Backend.GameData.DungeonData.RemainChargeHour}시간"; 
+        var data = Managers.Backend.GameData.DungeonData;
+
+        // 열쇠 지급 가능한 타임인지 체크 
+        data.CheckDungeonKeyRecharge();
+
+        GetTMPText((int)Texts.Text_Timer).text = $"남은 시간: {data.RemainChargeHour}시간"; 
     
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Gold).RefreshUI();
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Dia).RefreshUI();
+        Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_WorldBoss).RefreshUI();
 
     }
 }

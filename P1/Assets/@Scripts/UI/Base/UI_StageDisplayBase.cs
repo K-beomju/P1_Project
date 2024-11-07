@@ -35,7 +35,11 @@ public class UI_StageDisplayBase : UI_Base
     // 던전 표시 UI를 업데이트하는 함수
     public void ShowDisplayDungeon(EDungeonType type, int dungeonLevel)
     {
-        ShowDisplay($"{Util.GetDungeonType(type)} {dungeonLevel} !!");
+        if (type != EDungeonType.WorldBoss)
+            ShowDisplay($"{Util.GetDungeonType(type)} {dungeonLevel} !!");
+        else
+            ShowDisplay($"{Util.GetDungeonType(type)} !!");
+
     }
 
     // 스테이지 표시 UI를 업데이트하는 함수

@@ -31,6 +31,8 @@ public class DataManager
 
     public Dictionary<int, GoldDungeonInfoData> GoldDungeonChart { get; private set; } = new(); // 골드 던전 정보
     public Dictionary<int, DiaDungeonInfoData> DiaDungeonChart { get; private set; } = new(); // 다이아 던전 정보
+    public Dictionary<int, WorldBossDungeonInfoData> WorldBossDungeonChart { get; private set; } = new(); // 월드보스전 정보
+
     public Dictionary<EItemType, ItemData> ItemChart { get; private set; } = new(); // 아이템 정보
 
 
@@ -53,6 +55,8 @@ public class DataManager
         EffectChart = LoadJson<EffectDataLoader, int, EffectData>("EffectData").MakeDict();
         GoldDungeonChart = LoadJson<GoldDungeonInfoDataLoader, int, GoldDungeonInfoData>("GoldDungeonInfoData").MakeDict();
         DiaDungeonChart = LoadJson<DiaDungeonInfoDataLoader, int, DiaDungeonInfoData>("DiaDungeonInfoData").MakeDict();
+        WorldBossDungeonChart = LoadJson<WorldBossDungeonInfoDataLoader, int, WorldBossDungeonInfoData>("WorldBossDungeonInfoData").MakeDict();
+
         ItemChart = LoadJson<ItemDataLoader, EItemType, ItemData>("ItemData").MakeDict();
 
     }

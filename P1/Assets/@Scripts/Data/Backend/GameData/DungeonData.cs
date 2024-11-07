@@ -94,20 +94,20 @@ namespace BackendData.GameData
                 return;
             }
 
-            if (string.IsNullOrEmpty(LastLoginTime))
-                return;
-
-
-            // 서버 시간 문자열을 DateTime 형식으로 변환
+            // 서버 시간과 마지막 로그인 시간을 비교하여 시간 차이를 계산
             string time = serverTime.GetReturnValuetoJSON()["utcTime"].ToString();
             DateTime servertime = DateTime.Parse(time);
             DateTime lastLoginDate = DateTime.Parse(LastLoginTime);
             TimeSpan timeDifference = servertime - lastLoginDate;
 
-            // 차이가 0시간일 경우 12시간으로 표시, 그렇지 않으면 실제 경과 시간 표시
-            RemainChargeHour = timeDifference.TotalHours < 1 ? 12 : (int)Math.Floor(timeDifference.TotalHours);
-            Debug.LogWarning($"지난 로그인 후 경과 시간: {RemainChargeHour}시간");
+            // `RemainChargeHour` 설정: 남은 충전 시간을 계산
+            RemainChargeHour = timeDifference.TotalHours < 1 ? 12 :               // 1시간 미만 경과 시, 기본값 12시간 설정
+                       timeDifference.TotalHours >= 12 ? 12 :             // 12시간 이상 경과 시, 충전 완료로 12시간 설정
+                       12 - (int)Math.Floor(timeDifference.TotalHours);  // 1~12시간 경과 시, 12에서 경과 시간 차감
 
+            Debug.LogWarning($"지난 로그인 후 경과 시간: {timeDifference.TotalHours}시간");
+
+            // 충전까지 12시간 미만 경과했을 경우, 충전 프로세스 종료
             if (timeDifference.TotalHours < 12)
             {
                 Debug.Log("12시간 미만 경과 - 키 충전 미실행");
@@ -115,6 +115,7 @@ namespace BackendData.GameData
             }
 
 
+            // 충전 완료: 키 리필 및 마지막 로그인 시간 갱신
             Debug.Log("12시간 이상 경과: 키 리필 및 마지막 로그인 시간 업데이트.");
             IsChangedData = true;
             LastLoginTime = servertime.ToString();
@@ -132,7 +133,8 @@ namespace BackendData.GameData
                 }
             }
 
-            Managers.Backend.UpdateAllGameData(callback =>
+            // 던전 데이터만 저장 
+            Managers.Backend.UpdateSingleGameData(this, callback =>
             {
                 if (callback == null)
                 {
@@ -148,7 +150,6 @@ namespace BackendData.GameData
                 {
                     Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
                 }
-
             });
 
         }

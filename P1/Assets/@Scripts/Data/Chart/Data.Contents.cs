@@ -496,8 +496,8 @@ namespace Data
         public Dictionary<int, GoldDungeonInfoData> MakeDict()
         {
             Dictionary<int, GoldDungeonInfoData> dict = new Dictionary<int, GoldDungeonInfoData>();
-            foreach (GoldDungeonInfoData effect in goldDungeonInfoDatas)
-                dict.Add(effect.DungeonLevel, effect);
+            foreach (GoldDungeonInfoData dungeon in goldDungeonInfoDatas)
+                dict.Add(dungeon.DungeonLevel, dungeon);
             return dict;
         }
     }
@@ -515,8 +515,27 @@ namespace Data
         public Dictionary<int, DiaDungeonInfoData> MakeDict()
         {
             Dictionary<int, DiaDungeonInfoData> dict = new Dictionary<int, DiaDungeonInfoData>();
-            foreach (DiaDungeonInfoData effect in diaDungeonInfoDatas)
-                dict.Add(effect.DungeonLevel, effect);
+            foreach (DiaDungeonInfoData dungeon in diaDungeonInfoDatas)
+                dict.Add(dungeon.DungeonLevel, dungeon);
+            return dict;
+        }
+    }
+
+    [Serializable]
+    public class WorldBossDungeonInfoData : DungeonInfoData
+    {
+        
+    }
+
+    [Serializable]
+    public class WorldBossDungeonInfoDataLoader : ILoader<int, WorldBossDungeonInfoData>
+    {
+        public List<WorldBossDungeonInfoData> worldBossDungeonInfoDatas = new List<WorldBossDungeonInfoData>();
+        public Dictionary<int, WorldBossDungeonInfoData> MakeDict()
+        {
+            Dictionary<int, WorldBossDungeonInfoData> dict = new Dictionary<int, WorldBossDungeonInfoData>();
+            foreach (WorldBossDungeonInfoData dungeon in worldBossDungeonInfoDatas)
+                dict.Add(dungeon.DungeonLevel, dungeon);
             return dict;
         }
     }

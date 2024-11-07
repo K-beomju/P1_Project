@@ -20,11 +20,11 @@ public class BossMonster : Monster
     public override void SetCreatureInfo(int dataTemplateID)
     {
         BossMonsterInfoData data = Managers.Data.BossMonsterChart[dataTemplateID]; //Managers.Data.BossMonsterDataDic[dataTemplateID];
-        Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
-
+        //Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
         Atk = data.Atk + Managers.Data.CreatureUpgradeStatChart[dataTemplateID].IncreaseAtk; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
         MaxHp = data.MaxHp + Managers.Data.CreatureUpgradeStatChart[dataTemplateID].IncreaseMaxHp * (Level - 1);
         Hp = MaxHp;
+
         MoveSpeed = data.MoveSpeed;
         MoveRange = 5;
         IdleWaitTime = 3;

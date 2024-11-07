@@ -49,12 +49,19 @@ public class GameManager
         }
     }
 
-    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo)
+    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo, bool isBoss = false)
     {
-        for (int i = 0; i < dungeonInfo.KillMonsterCount; i++)
+        if (!isBoss)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
-            Managers.Object.Spawn<Monster>(spawnPosition, dungeonInfo.MonsterDataIdList[Random.Range(0, dungeonInfo.MonsterDataIdList.Count)]);
+            for (int i = 0; i < dungeonInfo.KillMonsterCount; i++)
+            {
+                Vector3 spawnPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
+                Managers.Object.Spawn<Monster>(spawnPosition, dungeonInfo.MonsterDataIdList[Random.Range(0, dungeonInfo.MonsterDataIdList.Count)]);
+            }
+        }
+        else
+        {
+            Managers.Object.Spawn<WorldBoss>(new Vector3(0, 2, 0), dungeonInfo.BossDataId);
         }
     }
 

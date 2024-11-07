@@ -38,6 +38,8 @@ public class DataTransformer : EditorWindow
 
         ParseExcelDataToJson<GoldDungeonInfoDataLoader, GoldDungeonInfoData>("GoldDungeonInfo");
         ParseExcelDataToJson<DiaDungeonInfoDataLoader, DiaDungeonInfoData>("DiaDungeonInfo");
+		ParseExcelDataToJson<WorldBossDungeonInfoDataLoader, WorldBossDungeonInfoData>("WorldBossDungeonInfo");
+
         ParseExcelDataToJson<ItemDataLoader, ItemData>("Item");
 
 	}

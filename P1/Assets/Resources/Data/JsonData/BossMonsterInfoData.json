@@ -8,6 +8,15 @@
       "PrefabKey": "Enemy_Gana",
       "Atk": 10.0,
       "MaxHp": 400.0
+    },
+    {
+      "MoveSpeed": 1.0,
+      "DataId": 60002000,
+      "Name": "월드보스",
+      "ObjectType": 3,
+      "PrefabKey": "Enemy_WorldBoss",
+      "Atk": 500.0,
+      "MaxHp": 500.0
     }
   ]
 }

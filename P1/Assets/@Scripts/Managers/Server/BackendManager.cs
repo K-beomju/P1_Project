@@ -27,7 +27,8 @@ public class BackendManager
     // }
 
     // 게임 정보 관리 데이터만 모아놓은 클래스
-    public class BackendGameData {
+    public class BackendGameData
+    {
         public readonly BackendData.GameData.CharacterData CharacterData = new();
         public readonly BackendData.GameData.EquipmentInventory EquipmentInventory = new();
         public readonly BackendData.GameData.SkillInventory SkillInventory = new();
@@ -37,7 +38,8 @@ public class BackendManager
         public readonly Dictionary<string, BackendData.Base.GameData>
             GameDataList = new Dictionary<string, BackendData.Base.GameData>();
 
-        public BackendGameData() {
+        public BackendGameData()
+        {
             GameDataList.Add("내 던전 정보", DungeonData);
             GameDataList.Add("내 장비 정보", EquipmentInventory);
             GameDataList.Add("내 스킬 정보", SkillInventory);
@@ -53,7 +55,8 @@ public class BackendManager
     private bool _isErrorOccured = false;
 
 
-    public void Init() {
+    public void Init()
+    {
 
         var initalizeBro = Backend.Initialize();
 
@@ -72,29 +75,35 @@ public class BackendManager
     }
 
     // 모든 뒤끝 함수에서 에러 발생 시, 각 에러에 따라 호출해주는 핸들러
-    private void SetErrorHandler() {
+    private void SetErrorHandler()
+    {
         // 서버 점검 에러 발생 시
-        Backend.ErrorHandler.OnMaintenanceError = () => {
+        Backend.ErrorHandler.OnMaintenanceError = () =>
+        {
             Debug.LogError("점검 에러 발생!!!");
         };
         // 403 에러 발생시
-        Backend.ErrorHandler.OnTooManyRequestError = () => {
+        Backend.ErrorHandler.OnTooManyRequestError = () =>
+        {
             Debug.LogError("비정상적인 행동 감지 " + "비정상적인 행동이 감지되었습니다.\n타이틀로 돌아갑니다.");
         };
         // 액세스토큰 만료 후 리프레시 토큰 실패 시
-        Backend.ErrorHandler.OnOtherDeviceLoginDetectedError = () => {
+        Backend.ErrorHandler.OnOtherDeviceLoginDetectedError = () =>
+        {
             Debug.LogError("다른 기기 접속 감지 " + "다른 기기에서 로그인이 감지되었습니다.\n타이틀로 돌아갑니다.");
         };
     }
 
     // 로딩씬에서 할당할 뒤끝 정보 클래스 초기화
-    public void InitInGameData() {
+    public void InitInGameData()
+    {
         //Chart = new();
         GameData = new();
     }
 
     //SendQueue를 관리해주는 SendQueue 매니저 생성
-    private void CreateSendQueueMgr() {
+    private void CreateSendQueueMgr()
+    {
         var obj = new GameObject();
         obj.name = "SendQueueMgr";
         obj.transform.SetParent(GameObject.Find("@Managers").transform);
@@ -102,18 +111,22 @@ public class BackendManager
     }
 
     // 호출 시, 코루틴 내 함수들의 동작을 멈추게 하는 함수
-    public void StopUpdate() {
+    public void StopUpdate()
+    {
         Debug.Log("자동 저장을 중지합니다.");
         _isErrorOccured = true;
     }
 
     // 일정주기마다 데이터를 저장/불러오는 코루틴 시작(인게임 시작 시)
-    public IEnumerator UpdateGameDataTransaction() {
+    public IEnumerator UpdateGameDataTransaction()
+    {
         var seconds = new WaitForSeconds(300);
         yield return seconds;
 
-        while(!_isErrorOccured) {
-            UpdateAllGameData(callback => {
+        while (!_isErrorOccured)
+        {
+            UpdateAllGameData(callback =>
+            {
                 if (callback == null)
                 {
                     Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
@@ -146,74 +159,125 @@ public class BackendManager
         // 바뀐 데이터가 몇개 있는지 체크
         List<GameData> gameDatas = new List<GameData>();
 
-        foreach (var gameData in GameData.GameDataList) {
-            if (gameData.Value.IsChangedData) {
+        foreach (var gameData in GameData.GameDataList)
+        {
+            if (gameData.Value.IsChangedData)
+            {
                 info += gameData.Value.GetTableName() + "\n";
                 gameDatas.Add(gameData.Value);
             }
         }
 
-        if (gameDatas.Count <= 0) {
+        if (gameDatas.Count <= 0)
+        {
             afterUpdateFunc(null); // 지정한 대리자 함수 호출
 
             Debug.Log("업데이트할 목록이 존재하지 않습니다.");
         }
-        else if (gameDatas.Count == 1) {
+        else if (gameDatas.Count == 1)
+        {
 
             //하나라면 찾아서 해당 테이블만 업데이트
-            foreach (var gameData in gameDatas) {
-                if (gameData.IsChangedData) {
-                    gameData.Update(callback => {
+            foreach (var gameData in gameDatas)
+            {
+                if (gameData.IsChangedData)
+                {
+                    gameData.Update(callback =>
+                    {
 
                         //성공할경우 데이터 변경 여부를 false로 변경
-                        if (callback.IsSuccess()) {
+                        if (callback.IsSuccess())
+                        {
                             gameData.IsChangedData = false;
                         }
-                        else {
+                        else
+                        {
                             SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString() + "\n" + info);
                         }
                         Debug.Log($"UpdateV2 : {callback}\n업데이트 테이블 : \n{info}");
-                        if (afterUpdateFunc == null) {
+                        if (afterUpdateFunc == null)
+                        {
 
                         }
-                        else {
+                        else
+                        {
                             afterUpdateFunc(callback); // 지정한 대리자 함수 호출
                         }
                     });
                 }
             }
         }
-        else {
+        else
+        {
             // 2개 이상이라면 트랜잭션에 묶어서 업데이트
             // 단 10개 이상이면 트랜잭션 실패 주의
             List<TransactionValue> transactionList = new List<TransactionValue>();
             // 변경된 데이터만큼 트랜잭션 추가
-            foreach (var gameData in gameDatas) {
+            foreach (var gameData in gameDatas)
+            {
                 transactionList.Add(gameData.GetTransactionUpdateValue());
                 Debug.LogWarning(transactionList);
             }
-            
-            SendQueue.Enqueue(Backend.GameData.TransactionWriteV2, transactionList, callback => {
+
+            SendQueue.Enqueue(Backend.GameData.TransactionWriteV2, transactionList, callback =>
+            {
                 Debug.Log($"Backend.BMember.TransactionWriteV2 : {callback}");
 
-                if (callback.IsSuccess()) {
-                    foreach (var data in gameDatas) {
+                if (callback.IsSuccess())
+                {
+                    foreach (var data in gameDatas)
+                    {
                         data.IsChangedData = false;
                     }
                 }
-                else {
+                else
+                {
                     SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString() + "\n" + info);
                 }
 
                 Debug.LogWarning($"TransactionWriteV2 : {callback}\n업데이트 테이블 : \n{info}");
 
-                if (afterUpdateFunc == null) {
+                if (afterUpdateFunc == null)
+                {
 
                 }
-                else {
+                else
+                {
                     afterUpdateFunc(callback);  // 지정한 대리자 함수 호출
                 }
             });
+        }
+    }
+
+    // 단일 게임 데이터를 저장하는 함수
+    public void UpdateSingleGameData(GameData gameData, AfterUpdateFunc afterUpdateFunc)
+    {
+        // 데이터가 변경되었는지 확인
+        if (gameData.IsChangedData)
+        {
+            gameData.Update(callback =>
+            {
+                // 성공 시, 변경된 데이터 여부를 false로 변경
+                if (callback.IsSuccess())
+                {
+                    gameData.IsChangedData = false;
+                    Debug.Log($"Single Game Data Updated Successfully: {gameData.GetTableName()}");
+                }
+                else
+                {
+                    // 실패 시, 버그 리포트 발송
+                    SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString());
+                    Debug.LogWarning($"Failed to update single game data: {gameData.GetTableName()}");
+                }
+
+                // 지정한 대리자 함수 호출
+                afterUpdateFunc?.Invoke(callback);
+            });
+        }
+        else
+        {
+            Debug.Log("No changes detected in the specified game data. Update skipped.");
+            afterUpdateFunc?.Invoke(null);
         }
     }
 
@@ -238,7 +302,8 @@ public class BackendManager
         param.Add("errorPath", errorInfo);
 
         // [뒤끝] 로그 삽입 함수
-        Backend.GameLog.InsertLog("error", param, 7, callback => {
+        Backend.GameLog.InsertLog("error", param, 7, callback =>
+        {
             // 에러가 발생할 경우 재귀
             if (callback.IsSuccess() == false)
             {

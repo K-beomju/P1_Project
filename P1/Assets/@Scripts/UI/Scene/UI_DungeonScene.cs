@@ -70,7 +70,7 @@ public class UI_DungeonScene : UI_Scene
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
 
-    
+
     private void RefreshUI()
     {
         if (_init == false)
@@ -81,7 +81,11 @@ public class UI_DungeonScene : UI_Scene
 
     public void UpdateStageUI(EDungeonType type, int level)
     {
-        GetTMPText((int)Texts.Text_DungeonInfo).text = $"{Util.GetDungeonType(type)} {level}";
+        if (type != EDungeonType.WorldBoss)
+            GetTMPText((int)Texts.Text_DungeonInfo).text = $"{Util.GetDungeonType(type)} {level}";
+        else
+            GetTMPText((int)Texts.Text_DungeonInfo).text = $"{Util.GetDungeonType(type)}";
+
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)

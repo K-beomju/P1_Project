@@ -97,6 +97,13 @@ public class UI_DungeonInfoItem : UI_Base
         GetTMPText((int)Texts.Text_KeyAmount).text
             = $"{dungeonData.DungeonKeyDic[_dungeonType.ToString()]} / {Util.DungenEntranceMaxValue(_dungeonType)}";
 
+        if(_dungeonType == EDungeonType.WorldBoss)
+        {
+            GetTMPText((int)Texts.Text_SweepAmount).gameObject.SetActive(false);
+            GetTMPText((int)Texts.Text_EntranceAmount).gameObject.SetActive(false);
+            return;
+        }
+
         float reward = _dungeonType switch
         {
             EDungeonType.Gold => Managers.Data.GoldDungeonChart[dungeonData.DungeonLevelDic[_dungeonType.ToString()]].DungeonClearReward,

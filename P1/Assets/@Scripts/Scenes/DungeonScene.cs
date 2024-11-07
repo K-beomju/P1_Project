@@ -53,7 +53,16 @@ public class DungeonScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
         fadeInCallBack: () =>
         {
-            GameSceneState = EGameSceneState.Play;
+            switch (DungeonType)
+            {
+                case EDungeonType.Gold:
+                case EDungeonType.Dia:
+                    GameSceneState = EGameSceneState.Play;
+                    break;
+                case EDungeonType.WorldBoss:
+                    GameSceneState = EGameSceneState.Boss;
+                    break;
+            }
         });
 
         return true;
@@ -70,6 +79,7 @@ public class DungeonScene : BaseScene
         {
             EDungeonType.Gold => "GoldDungeonMap",
             EDungeonType.Dia => "DiaDungeonMap",
+            EDungeonType.WorldBoss => "WorldBossMap",
             _ => throw new ArgumentException($"Unknown mapName: {DungeonType}")
         };
 
@@ -92,14 +102,16 @@ public class DungeonScene : BaseScene
 
     private void InitializeDungeon()
     {
+        int dungeonLevel = Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()];
         DungeonInfo = DungeonType switch
         {
-            EDungeonType.Gold => Managers.Data.GoldDungeonChart[Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()]],
-            EDungeonType.Dia => Managers.Data.DiaDungeonChart[Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()]],
+            EDungeonType.Gold => Managers.Data.GoldDungeonChart[dungeonLevel],
+            EDungeonType.Dia => Managers.Data.DiaDungeonChart[dungeonLevel],
+            EDungeonType.WorldBoss => Managers.Data.WorldBossDungeonChart[dungeonLevel],
+
             _ => throw new ArgumentException($"Unknown DungeonType: {DungeonType}")
         };
 
-        Debug.Log(DungeonInfo.ItemType);
 
         sceneUI.UpdateStageUI(DungeonType, DungeonInfo.DungeonLevel);
         Managers.Game.SetMonsterCount(0, DungeonInfo.KillMonsterCount);
@@ -132,6 +144,7 @@ public class DungeonScene : BaseScene
         _stateCoroutines = new Dictionary<EGameSceneState, Func<IEnumerator>>
         {
             { EGameSceneState.Play, CoPlayStage },
+            { EGameSceneState.Boss, CoBossStage },
             { EGameSceneState.Pause, CoPauseStage },
             { EGameSceneState.Over, CoStageOver },
             { EGameSceneState.Clear, CoStageClear }
@@ -159,13 +172,31 @@ public class DungeonScene : BaseScene
             {
                 GameSceneState = EGameSceneState.Clear;
             }
-            if(Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+            if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
             {
                 GameSceneState = EGameSceneState.Over;
             }
             yield return null;
         }
     }
+
+    private IEnumerator CoBossStage()
+    {
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, DungeonInfo.DungeonLevel);
+        yield return new WaitForSeconds(2f);
+        Managers.Game.SpawnDungeonMonster(DungeonInfo, isBoss : true);
+
+        // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
+        if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
+            (Managers.UI.SceneUI as UI_DungeonScene).CheckUseSkillSlot(-1);
+
+        while (DungeonTimer > 0)
+        {
+            UpdateDungeonTimer(); // 보스 타이머 업데이트 메서드 호출
+            yield return null;
+        }
+    }
+
 
     private IEnumerator CoPauseStage()
     {
