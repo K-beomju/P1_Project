@@ -22,6 +22,10 @@ namespace BackendData.GameData
         // 현재 진행한 스테이지 정보 
         public int StageLevel { get; private set; }
 
+        // 월드 보스 전투력 
+        public float WorldBossCombatPower { get; private set; }
+
+
         // 각 재화 담는 Dic
         private Dictionary<string, float> _purseDic = new();
 
@@ -55,6 +59,7 @@ namespace BackendData.GameData
             Level = 1;
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
+            WorldBossCombatPower = 0;
 
             // 재화 정보 초기화 
             _purseDic.Clear();
@@ -96,6 +101,7 @@ namespace BackendData.GameData
             MaxExp = float.Parse(Data["MaxExp"].ToString());
 
             StageLevel = int.Parse(Data["StageLevel"].ToString());
+            WorldBossCombatPower = float.Parse(Data["WorldBossCombatPower"].ToString());
 
             foreach (var column in Data["Purse"].Keys)
             {
@@ -141,6 +147,7 @@ namespace BackendData.GameData
             param.Add("Exp", Exp);
             param.Add("MaxExp", MaxExp);
             param.Add("StageLevel", StageLevel);
+            param.Add("WorldBossCombatPower", WorldBossCombatPower);
             param.Add("Purse", _purseDic);
             param.Add("UpgradeStat", _upgradeStatDic);
             param.Add("UpgradeAttr", _upgradeAttrDic);
@@ -278,8 +285,13 @@ namespace BackendData.GameData
         }
         #endregion
 
-    }
+        public void UpdateWorldBossCombatPower(float power)
+        {
+            IsChangedData = true;
+            WorldBossCombatPower = power;
+        }
 
+    }
 }
 
 

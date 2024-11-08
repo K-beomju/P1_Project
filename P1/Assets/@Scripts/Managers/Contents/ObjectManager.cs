@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectManager
 {
+    public WorldBoss WorldBoss { get; private set; }
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
     public Hero Hero { get; private set; }
@@ -54,6 +55,10 @@ public class ObjectManager
             bossMonster.transform.parent = BossMonsterRoot;
             BossMonster = bossMonster;
         }
+        if(obj is WorldBoss worldBoss)
+        {
+            WorldBoss = worldBoss;
+        }
         if (obj is Hero hero)
         {
             hero.transform.parent = HeroRoot;
@@ -88,6 +93,7 @@ public class ObjectManager
 
     public void Clear()
     {
+        WorldBoss = null;
         BossMonster = null;
         Monsters.Clear();
         Hero = null;

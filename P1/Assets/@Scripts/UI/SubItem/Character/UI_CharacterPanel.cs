@@ -90,9 +90,8 @@ public class UI_CharacterPanel : UI_Base
     // 장비 슬롯 클릭시 장비 팝업으로 이동하는 함수 
     private void HandleEquipmentPopup(EEquipmentType equipmentType)
     {
-        Managers.UI.ClosePopupUI();
+        (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Equipment);
         Managers.UI.ShowPopupUI<UI_EquipmentPopup>().SetInfo(equipmentType);
-        (Managers.UI.SceneUI as UI_GameScene)._tab = UI_GameScene.PlayTab.Equipment;
     }
 
     // 장비 슬롯 업데이트 함수 

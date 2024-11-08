@@ -62,7 +62,9 @@ public class LoadingScene : BaseScene
 
         // 트랜잭션으로 불러온 후, 안불러질 경우 각자 Get 함수로 불러오는 함수 *중요*
         _initializeStep.Enqueue(() => { ShowDataName("트랜잭션 시도 함수"); TransactionRead(NextStep); });
-
+        // 랭킹 정보 불러오기 함수 Insert
+        _initializeStep.Enqueue(() => { ShowDataName("랭킹 정보 불러오기"); Managers.Backend.Rank.BackendLoad(NextStep); });
+        
         _maxLoadingCount = _initializeStep.Count;
         _currentLoadingCount = 0;
         sceneUI.ShowDataSlider(_currentLoadingCount, _maxLoadingCount);

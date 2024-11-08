@@ -68,6 +68,8 @@ public class GameScene : BaseScene
         CharacterData = Managers.Backend.GameData.CharacterData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
         StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
+        //StartCoroutine(Managers.Backend.UpdateRankScore());
+
     }
 
     private void InitializeGameComponents()

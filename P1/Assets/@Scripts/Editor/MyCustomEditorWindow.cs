@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System.Reflection;
 
 public class MyCustomEditorWindow : EditorWindow
 {
@@ -45,15 +46,9 @@ public class MyCustomEditorWindow : EditorWindow
 
             });
         }
-        if (GUILayout.Button("레벨업 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
+        if (GUILayout.Button("랭킹 데이터 저장", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-                        Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("ASDASDad");
-
-           // Managers.UI.ShowBaseUI<UI_LevelUpBase>().ShowLevelUpUI(3);
-        }
-        if (GUILayout.Button("전투력 팝업 테스트", GUILayout.Width(position.width), GUILayout.Height(50)))
-        {
-            Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            Managers.Backend.UpdateRankScore();
         }
 
         // 재화 충전 입력 필드
@@ -69,11 +64,11 @@ public class MyCustomEditorWindow : EditorWindow
             if (float.TryParse(currencyInputValue, out float goldAmount))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(Define.EItemType.Gold, goldAmount);
-                Debug.Log($"충전된 골드: {goldAmount}"); 
+                Debug.Log($"충전된 골드: {goldAmount}");
             }
             else
             {
-                Debug.LogError("유효하지 않은 골드 입력입니다."); 
+                Debug.LogError("유효하지 않은 골드 입력입니다.");
             }
         }
 
@@ -82,11 +77,11 @@ public class MyCustomEditorWindow : EditorWindow
             if (int.TryParse(currencyInputValue, out int expAmount))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(Define.EItemType.ExpPoint, expAmount);
-                Debug.Log($"충전된 경험치: {expAmount}"); 
+                Debug.Log($"충전된 경험치: {expAmount}");
             }
             else
             {
-                Debug.LogError("유효하지 않은 경험치 입력입니다."); 
+                Debug.LogError("유효하지 않은 경험치 입력입니다.");
             }
         }
 
@@ -95,19 +90,38 @@ public class MyCustomEditorWindow : EditorWindow
             if (int.TryParse(currencyInputValue, out int diaAmount))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(Define.EItemType.Dia, diaAmount);
-                Debug.Log($"충전된 다이아: {diaAmount}"); 
+                Debug.Log($"충전된 다이아: {diaAmount}");
             }
             else
             {
-                Debug.LogError("유효하지 않은 다이아 입력입니다."); 
+                Debug.LogError("유효하지 않은 다이아 입력입니다.");
             }
         }
         GUILayout.EndHorizontal(); // 수평 정렬 종료
-
         GUILayout.EndVertical(); // 세로 정렬 종료
+
+            // 버튼을 수평으로 배치
+        GUILayout.BeginVertical(); // 세로 정렬 시작
+        GUILayout.BeginHorizontal(); // 수평 정렬 시작
+        if (GUILayout.Button("골드 던전 열쇠 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        {
+            Managers.Backend.GameData.DungeonData.AddKey(Define.EDungeonType.Gold, 1);
+        }
+        if (GUILayout.Button("다이아 던전 열쇠 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        {
+            Managers.Backend.GameData.DungeonData.AddKey(Define.EDungeonType.Dia, 1);
+        }
+        if (GUILayout.Button("월드 보스 던전 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        {
+            Managers.Backend.GameData.DungeonData.AddKey(Define.EDungeonType.WorldBoss, 1);
+        }
+        GUILayout.EndHorizontal(); // 수평 정렬 종료
+        GUILayout.EndVertical(); // 세로 정렬 종료
+
+
         if (GUILayout.Button("플레이어 공격력 증가", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade( Define.EHeroUpgradeType.Growth_Atk);
+            Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(Define.EHeroUpgradeType.Growth_Atk);
         }
         if (GUILayout.Button("플레이어 사망", GUILayout.Width(position.width), GUILayout.Height(50)))
         {

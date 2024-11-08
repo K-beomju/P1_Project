@@ -102,7 +102,7 @@ public class UI_EquipmentPopup : UI_Popup
         GetButton((int)Buttons.Btn_BatchEnhance).onClick.AddListener(OnBatchEnhanceEquipment);
         GetObject((int)GameObjects.BG).BindEvent(() =>
         {
-            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
+            (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Equipment);
         }, EUIEvent.Click);
 
         equipmentItem = Util.FindChild<UI_CompanionItem>(gameObject, "UI_CompanionItem", true);

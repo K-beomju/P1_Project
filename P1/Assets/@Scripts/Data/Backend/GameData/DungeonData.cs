@@ -132,7 +132,7 @@ namespace BackendData.GameData
                     Debug.Log(dungeonType + "키 최대로 채워졌습니다.");
                 }
             }
-
+            
             // 던전 데이터만 저장 
             Managers.Backend.UpdateSingleGameData(this, callback =>
             {
@@ -153,7 +153,6 @@ namespace BackendData.GameData
             });
 
         }
-
         public void AddKey(EDungeonType dungeonType, int amount)
         {
             IsChangedData = true;

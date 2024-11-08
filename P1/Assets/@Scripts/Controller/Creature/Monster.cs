@@ -153,8 +153,6 @@ public class Monster : Creature, IDamageable
 
     public override void OnDead()
     {
-        Debug.Log("두번이나 실행됌?");
-
         try
         {
             if (_damageCoroutine != null)

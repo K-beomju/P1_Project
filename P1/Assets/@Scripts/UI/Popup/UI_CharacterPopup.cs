@@ -56,7 +56,7 @@ public class UI_CharacterPopup : UI_Popup
         _attributePanel = GetObject((int)GameObjects.UI_AttributePanel).GetOrAddComponent<UI_AttributePanel>();
         _relicsPanel = GetObject((int)GameObjects.UI_RelicsPanel).GetOrAddComponent<UI_RelicsPanel>();
 
-        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this));
+        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Character));
         GetButton((int)Buttons.Btn_Character).onClick.AddListener(() => OnClickButton(ECharacterSection.Character));
         GetButton((int)Buttons.Btn_Attribute).onClick.AddListener(() => OnClickButton(ECharacterSection.Attribute));
         GetButton((int)Buttons.Btn_Relics).onClick.AddListener(() => OnClickButton(ECharacterSection.Relics));

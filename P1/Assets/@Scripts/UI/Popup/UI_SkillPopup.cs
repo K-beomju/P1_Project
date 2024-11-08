@@ -80,7 +80,7 @@ public class UI_SkillPopup : UI_Popup
 
         GetObject((int)GameObjects.BG).BindEvent(() =>
         {
-            (Managers.UI.SceneUI as UI_GameScene).CloseDrawPopup(this);
+            (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Skill);
 
         }, EUIEvent.Click);
         GetButton((int)Buttons.Btn_Equip).onClick.AddListener(OnEquipSkill);

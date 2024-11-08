@@ -15,7 +15,8 @@ public class UI_GameScene : UI_Scene
         SkillButton,
         DungeonButton,
         DrawButton,
-        Btn_AutoSkill
+        Btn_AutoSkill,
+        Btn_Ranking
     }
 
     enum Sliders
@@ -52,7 +53,8 @@ public class UI_GameScene : UI_Scene
         Skill,
         Dungeon,
         Draw,
-        Shop
+        Shop,
+        Rank
     }
 
     public enum UI_GoodItems
@@ -96,6 +98,15 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
         GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
+        GetButton((int)Buttons.Btn_Ranking).gameObject.BindEvent(() =>
+        {
+            if (Managers.Backend.Rank.List.Count <= 0)
+            {
+                Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("랭킹 미존재 오류 " + "랭킹이 존재하지 않습니다.\n랭킹을 생성해주세요.");
+                return;
+            }
+            ShowTab(PlayTab.Rank);
+        });
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
@@ -262,6 +273,9 @@ public class UI_GameScene : UI_Scene
                 case PlayTab.Shop:
                     Managers.UI.ShowPopupUI<UI_ShopPopup>();
                     break;
+                case PlayTab.Rank:
+                    Managers.UI.ShowPopupUI<UI_RankingPopup>().RefreshUI();
+                    break;
 
             }
             ShowPopupActiveGameUI(false);
@@ -358,12 +372,4 @@ public class UI_GameScene : UI_Scene
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
 
     }
-
-    // 주 Content 팝업들을 닫을 땐 탭도 초기화 시켜주어야 함. 
-    public void CloseDrawPopup(UI_Popup popup)
-    {
-        Managers.UI.ClosePopupUI(popup);
-        _tab = PlayTab.None; // 팝업이 닫힐 때 _tab을 None으로 초기화
-    }
-
 }

@@ -49,7 +49,7 @@ public class Creature : BaseObject
         }
     }
 
-    public float worldBossTotalDamage { get; set; } = 0;
+    public float worldBossTotalDamage { get; protected set; } = 0;
     public bool isStopAI { get; set; } = false;
     #endregion
 

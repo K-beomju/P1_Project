@@ -227,6 +227,20 @@ public class DungeonScene : BaseScene
         {
             // 월드보스에게 넣은 데미지 팝업 표시 끝 .
             // 랭킹 저장 
+            var userData = Managers.Backend.GameData.CharacterData;
+            float endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
+            float currentTotalWorldBossDmg = userData.WorldBossCombatPower;
+
+            if(currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
+            {
+                Managers.Backend.GameData.CharacterData.UpdateWorldBossCombatPower(endTotalWorldBossDmg);
+            }
+            
+        
+
+            var popupUI = Managers.UI.ShowPopupUI<UI_BattleResultPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI(Managers.Object.WorldBoss.worldBossTotalDamage);
         }
 
         yield return null;

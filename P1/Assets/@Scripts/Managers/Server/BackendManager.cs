@@ -50,6 +50,7 @@ public class BackendManager
 
     //public BackendChart Chart = new(); // 차트 모음 클래스 생성
     public BackendGameData GameData = new(); // 게임 데이터 관리 클래스 생성 
+    public BackendData.Rank.Manager Rank = new(); // 랭킹 관리 클래스 생성
 
     // 치명적인 에러 발생 여부
     private bool _isErrorOccured = false;
@@ -63,7 +64,14 @@ public class BackendManager
         if (initalizeBro.IsSuccess())
         {
             Debug.Log("뒤끝 초기화가 완료되었습니다.");
-            Backend.BMember.CustomLogin("user2", "12345");
+            //썩쏘당
+            Backend.BMember.CustomLogin("user1", "1234");
+            //이승핵
+            //Backend.BMember.CustomLogin("5dxwin", "owen2602");
+            //우지호
+            //Backend.BMember.CustomLogin("uziho", "1234");
+            //제주옥탑
+            //Backend.BMember.CustomLogin("jejuRooftop", "1234");
 
             CreateSendQueueMgr();
             SetErrorHandler();
@@ -97,8 +105,8 @@ public class BackendManager
     // 로딩씬에서 할당할 뒤끝 정보 클래스 초기화
     public void InitInGameData()
     {
-        //Chart = new();
         GameData = new();
+        Rank = new();
     }
 
     //SendQueue를 관리해주는 SendQueue 매니저 생성
@@ -279,6 +287,85 @@ public class BackendManager
             Debug.Log("No changes detected in the specified game data. Update skipped.");
             afterUpdateFunc?.Invoke(null);
         }
+    }
+
+    // 일정 주기마다 랭킹 데이터 업데이트 호출 
+    public void UpdateRankScore()
+    {
+        //var seconds = new WaitForSeconds(600);
+
+        //yield return seconds;
+
+
+        // while (!_isErrorOccured)
+        // {
+            foreach (var li in Rank.List)
+            {
+                Debug.Log("랭킹 업데이트 주기");
+                UpdateUserRankScore(li.uuid, callback =>
+                {
+                    if (callback == null)
+                    {
+                        Debug.LogWarning("랭킹 데이터 미존재, 저장할 랭킹 데이터가 존재하지 않습니다.");
+                        return;
+                    }
+
+                    if (callback.IsSuccess())
+                    {
+                        Debug.Log("랭킹 성공, 랭킹에 성공했습니다.");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"랭킹 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                    }
+                });
+            }
+
+           // yield return seconds;
+        //}
+
+    }
+
+    public void UpdateUserRankScore(string uuid, AfterUpdateFunc afterUpdateFunc)
+    {
+        // 쓰기 비용의 부담이 클 경우에는 각 랭킹별로 Param을 업데이트 하도록 설정. (현재는 일괄 처리)
+        // 바뀐 데이터가 몇개 있는지 체크 
+        List<GameData> gameDatas = new List<GameData>();
+
+        foreach (var gameData in GameData.GameDataList)
+        {
+            gameDatas.Add(gameData.Value);
+        }
+
+        foreach (var li in Rank.List)
+        {
+            //업데이트하고자 하는 uuid 존재하는지 확인
+            if (li.uuid.Equals(uuid))
+            {
+                // 랭크 리스트에 있는 테이블 이름과 현재 테이블 이름이 있는지 확인하고 존재한다면 해당 게임 테이블을 전체 업데이트 
+                int index = gameDatas.FindIndex(item => item.GetTableName().Equals(li.table));
+                if (index < 0)
+                {
+                    afterUpdateFunc?.Invoke(null);
+                }
+                SendQueue.Enqueue(Backend.URank.User.UpdateUserScore, li.uuid, li.table,
+                    gameDatas[index].GetInDate(), gameDatas[index].GetParam(),
+                    callback =>
+                    {
+                        Debug.Log($"Backend.URank.User.UpdateUserScore({li.uuid}, {li.table}, {gameDatas[index].GetInDate()}) : {callback}");
+                        if (!callback.IsSuccess())
+                        {
+                            SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), callback.ToString());
+                        }
+
+                        if (afterUpdateFunc != null)
+                        {
+                            afterUpdateFunc.Invoke(callback);
+                        }
+                    });
+            }
+        }
+
     }
 
     // 에러 발생시 게임로그를 삽입하는 함수
