@@ -64,14 +64,14 @@ public class BackendManager
         if (initalizeBro.IsSuccess())
         {
             Debug.Log("뒤끝 초기화가 완료되었습니다.");
-            //썩쏘당
-            Backend.BMember.CustomLogin("user1", "1234");
-            //이승핵
+            //이선영
+            //Backend.BMember.CustomLogin("user1", "1234");
+            //김범주
             //Backend.BMember.CustomLogin("5dxwin", "owen2602");
             //우지호
             //Backend.BMember.CustomLogin("uziho", "1234");
             //제주옥탑
-            //Backend.BMember.CustomLogin("jejuRooftop", "1234");
+            Backend.BMember.CustomLogin("jejuRooftop", "1234");
 
             CreateSendQueueMgr();
             SetErrorHandler();
@@ -292,37 +292,28 @@ public class BackendManager
     // 일정 주기마다 랭킹 데이터 업데이트 호출 
     public void UpdateRankScore()
     {
-        //var seconds = new WaitForSeconds(600);
 
-        //yield return seconds;
-
-
-        // while (!_isErrorOccured)
-        // {
-            foreach (var li in Rank.List)
+        foreach (var li in Rank.List)
+        {
+            Debug.Log("랭킹 업데이트 주기");
+            UpdateUserRankScore(li.uuid, callback =>
             {
-                Debug.Log("랭킹 업데이트 주기");
-                UpdateUserRankScore(li.uuid, callback =>
+                if (callback == null)
                 {
-                    if (callback == null)
-                    {
-                        Debug.LogWarning("랭킹 데이터 미존재, 저장할 랭킹 데이터가 존재하지 않습니다.");
-                        return;
-                    }
+                    Debug.LogWarning("랭킹 데이터 미존재, 저장할 랭킹 데이터가 존재하지 않습니다.");
+                    return;
+                }
 
-                    if (callback.IsSuccess())
-                    {
-                        Debug.Log("랭킹 성공, 랭킹에 성공했습니다.");
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"랭킹 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
-                    }
-                });
-            }
-
-           // yield return seconds;
-        //}
+                if (callback.IsSuccess())
+                {
+                    Debug.Log("랭킹 성공, 랭킹에 성공했습니다.");
+                }
+                else
+                {
+                    Debug.LogWarning($"랭킹 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                }
+            });
+        }
 
     }
 
