@@ -10,13 +10,14 @@ public class UI_GameScene : UI_Scene
 {
     enum Buttons
     {
+        ShopButton,
         CharacterButton,
         EquipmentButton,
         SkillButton,
         DungeonButton,
         DrawButton,
         Btn_AutoSkill,
-        Btn_Ranking
+        Btn_Ranking 
     }
 
     enum Sliders
@@ -91,7 +92,7 @@ public class UI_GameScene : UI_Scene
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
 
-
+        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
         GetButton((int)Buttons.SkillButton).gameObject.BindEvent(() => ShowTab(PlayTab.Skill));
