@@ -76,7 +76,6 @@ public class Hero : Creature
 
         AttackDelay = HeroInfo.AttackDelay;
         AttackRange = HeroInfo.AttackRange;
-        AttackSpeedRate = HeroInfo.AttackSpeedRate;
         MoveSpeed = 3;
 
         // Buff
@@ -204,7 +203,6 @@ public class Hero : Creature
         }
 
         LookAt(dir);
-        Anim.SetFloat(HeroAnimation.HashAttackSpeed, AttackSpeedRate);
     }
     #endregion
 

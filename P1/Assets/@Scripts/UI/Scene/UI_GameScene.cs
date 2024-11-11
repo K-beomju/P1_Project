@@ -17,7 +17,8 @@ public class UI_GameScene : UI_Scene
         DungeonButton,
         DrawButton,
         Btn_AutoSkill,
-        Btn_Ranking 
+        Btn_Ranking,
+        Btn_AdBuff
     }
 
     enum Sliders
@@ -108,6 +109,8 @@ public class UI_GameScene : UI_Scene
             }
             ShowTab(PlayTab.Rank);
         });
+        GetButton((int)Buttons.Btn_AdBuff).gameObject.BindEvent(() => Managers.UI.ShowPopupUI<UI_AdBuffPopup>());
+
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);

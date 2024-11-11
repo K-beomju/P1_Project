@@ -122,7 +122,6 @@ public class HeroInfo
         // 기타 스탯 설정
         AttackRange = Data.AttackRange;
         AttackDelay = Data.AttackDelay;
-        AttackSpeedRate = Data.AttackSpeedRate;
 
         if (Managers.Object.Hero != null)
             Managers.Object.Hero.ReSetStats();

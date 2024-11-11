@@ -291,7 +291,6 @@ public static class Define
         public readonly static int HashCombo = Animator.StringToHash("IsCombo");
         public readonly static int HashAttack = Animator.StringToHash("IsAttack");
         public readonly static int HashMove = Animator.StringToHash("IsMove");
-        public readonly static int HashAttackSpeed = Animator.StringToHash("AttackSpeed");
         public readonly static int HashDead = Animator.StringToHash("Dead");
 
     }
@@ -311,6 +310,37 @@ public static class Define
         public const int UI_TOTALPOWER = 610;
         public const int UI_NOTIFICATION = 610;
         public const int UI_FADEPOPUP = 620;
+    }
+
+    public enum EQuestPeriodType
+    {
+        Once, // 단발성
+        Daily, // 일일
+        Weekly, // 주간 
+        Infinite // 무한으로
+    }
+
+    public enum EQuestCondition
+    {
+        None,
+        
+    }
+
+    public enum EQuestObjectiveType
+    {
+        KillMonster,
+        UpgradeStat,
+        UpgradeAttribute,
+        StageClear,
+        SpawnWeapon,
+        SpawnArmor,
+        SpawnRing,
+        SpawnSkill,
+        SpawnRelic,
+        EquipWeapon,
+        EquipArmor,
+        EquipRing,
+        EquipSkill
     }
 
 
