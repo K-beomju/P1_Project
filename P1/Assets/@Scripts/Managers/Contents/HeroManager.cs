@@ -18,6 +18,8 @@ public class HeroInfo
     public float Recovery { get; private set; }
     public float CriRate { get; private set; }
     public float CriDmg { get; private set; }
+    public float GoldIncreaseRate { get; private set; }
+    public float ExpIncreaseRate { get; private set; }
 
     public float AttackRange { get; private set; }
     public float AttackDelay { get; private set; }
@@ -41,6 +43,12 @@ public class HeroInfo
     public float BossMonsterDmgRelic { get; private set; }
     public float ExpRateRelic { get; private set; }
     public float GoldRateRelic { get; private set; }
+    #endregion
+
+    #region Ad Buff
+    public float AtkBuff { get; private set; }
+    public float GoldRateBuff { get; private set; }
+    public float ExpRateBuff { get; private set; }
     #endregion
 
     public int DataTemplateID { get; private set; }
@@ -96,11 +104,13 @@ public class HeroInfo
         // Debug.LogWarning("장비 최대체력 보너스 퍼센트 : " + MaxHpEquipmentPer);
 
         // 총 보너스 퍼센트 합산 (장비 + 특성)
-        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic;
+        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic + GoldRateBuff;
         float totalMaxHpPer = MaxHpEquipmentPer + MaxHpAttr + MaxHpRelic;
         float totalRecoveryPer = RecoveryRelic;
         float totalCriRatePer = CriRateAttr;
         float totalCriDmgPer = CriDmgAttr;
+        float totalGoldRate = GoldRateRelic + GoldRateBuff;
+        float totalExpRate = ExpRateRelic + ExpRateBuff;
 
         Debug.LogWarning("총 공격력 보너스 퍼센트 (장비 + 특성) : " + totalAtkPer);
         // Debug.LogWarning("총 최대체력 보너스 퍼센트 (장비 + 특성) : " + totalMaxHpPer);
@@ -113,6 +123,8 @@ public class HeroInfo
         Recovery = Recovery * (1 + totalRecoveryPer / 100f);
         CriRate = CriRate * (1 + totalCriRatePer / 100f);
         CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
+        GoldIncreaseRate = (1 + totalGoldRate / 100f);
+        ExpIncreaseRate = (1 + totalExpRate / 100f);
 
         Debug.LogWarning("최종 공격력 : " + Atk);
         // Debug.LogWarning("최종 최대체력 : " + MaxHp);

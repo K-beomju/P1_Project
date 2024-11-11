@@ -345,6 +345,7 @@ public static class Define
 
 
     #region Dungeon
+
     public enum EDungeonType
     {
         Unknown,
@@ -356,8 +357,6 @@ public static class Define
 
     #endregion
 
-
-    #region UI 
     public enum EFadeType
     {
         FadeIn,
@@ -365,7 +364,13 @@ public static class Define
         FadeInOut,
     }
 
+    public enum EAdBuffType
+    {
+        Atk,
+        IncreaseGold,
+        IncreaseExp
+    }
 
-    #endregion
+
 }
 

@@ -38,12 +38,16 @@ namespace BackendData.GameData
         // 각 유물갯수 담는 Dic
         private Dictionary<string, int> _ownedRelicDic = new();
 
+        // 버프 아이템 가능 횟수를 담는 Dic
+        public Dictionary<string, int> _adBuffDic = new();
+
 
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
         public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeStatDic => (IReadOnlyDictionary<string, int>)_upgradeStatDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeAttrDic => (IReadOnlyDictionary<string, int>)_upgradeAttrDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> OwnedRelicDic => (IReadOnlyDictionary<string, int>)_ownedRelicDic.AsReadOnlyCollection();
+        public IReadOnlyDictionary<string, int> AdBuffDic => (IReadOnlyDictionary<string, int>)_adBuffDic.AsReadOnlyCollection();
 
     }
 
@@ -89,6 +93,13 @@ namespace BackendData.GameData
                 _ownedRelicDic.Add(relicType.ToString(), 0);
             }
 
+            // 광고 버프 아이템 초기화
+            _adBuffDic.Clear();
+            foreach (EAdBuffType buffType in Enum.GetValues(typeof(EAdBuffType)))
+            {
+                _adBuffDic.Add(buffType.ToString(), 1);
+            }
+
 
         }
 
@@ -123,6 +134,12 @@ namespace BackendData.GameData
                 _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
 
+            foreach (var column in Data["AdBuff"].Keys)
+            {
+                _adBuffDic.Add(column, int.Parse(Data["AdBuff"][column].ToString()));
+            }
+
+
             // AddAmount(EItemType.ExpPoint, 1100);
             // AddAmount(EItemType.Dia, 1000000000);
             // AddAmount(EItemType.Gold, 185000);
@@ -152,6 +169,7 @@ namespace BackendData.GameData
             param.Add("UpgradeStat", _upgradeStatDic);
             param.Add("UpgradeAttr", _upgradeAttrDic);
             param.Add("OwnedRelic", _ownedRelicDic);
+            param.Add("AdBuff", _adBuffDic);
 
             return param;
         }
@@ -167,7 +185,7 @@ namespace BackendData.GameData
             // GoldRateRelic 적용 (만약 재화가 골드인 경우)
             if (goodType == EItemType.Gold && Managers.Hero.PlayerHeroInfo != null)
             {
-                amount = (int)(amount * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
+                amount = (int)(amount * (1 + Managers.Hero.PlayerHeroInfo.GoldIncreaseRate / 100f));
             }
 
             if (!_purseDic.ContainsKey(key))
@@ -189,7 +207,7 @@ namespace BackendData.GameData
 
             // ExpRateRelic 적용
             if (Managers.Hero.PlayerHeroInfo != null)
-                exp = (int)(exp * (1 + Managers.Hero.PlayerHeroInfo.GoldRateRelic / 100f));
+                exp = (int)(exp * (1 + Managers.Hero.PlayerHeroInfo.ExpIncreaseRate / 100f));
 
             Exp += exp;
 
@@ -284,6 +302,12 @@ namespace BackendData.GameData
 
         }
         #endregion
+
+        public void UsedBuff(EAdBuffType buffType)
+        {
+            IsChangedData = true;
+            _adBuffDic[buffType.ToString()] += 1;
+        }
 
         public void UpdateWorldBossCombatPower(float power)
         {
