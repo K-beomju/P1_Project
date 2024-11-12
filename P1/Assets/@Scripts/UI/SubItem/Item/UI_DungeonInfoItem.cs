@@ -1,6 +1,7 @@
 using Data;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using static Define;
 
 public class UI_DungeonInfoItem : UI_Base
@@ -111,7 +112,7 @@ public class UI_DungeonInfoItem : UI_Base
             _ => 0
         };
 
-        GetTMPText((int)Texts.Text_SweepAmount).text = Util.ConvertToTotalCurrency((long)(reward * SWEEP_REWARD_MULTIPLIER));
+        GetTMPText((int)Texts.Text_SweepAmount).text = Util.ConvertToTotalCurrency((long)Mathf.Round(reward * SWEEP_REWARD_MULTIPLIER));
         GetTMPText((int)Texts.Text_EntranceAmount).text = Util.ConvertToTotalCurrency((long)reward);
     }
 

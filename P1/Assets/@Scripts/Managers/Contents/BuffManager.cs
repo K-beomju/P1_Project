@@ -12,6 +12,21 @@ public class BuffManager
     public event Action<EAdBuffType> OnBuffTimeUpdated;
     public event Action<EAdBuffType> OnBuffExpired;
 
+    public void Init()
+    {
+        foreach (EAdBuffType buffType in Enum.GetValues(typeof(EAdBuffType)))
+        {
+            // `PlayerPrefs`에서 저장된 남은 시간을 불러옵니다.
+            int savedTime = PlayerPrefs.GetInt($"Buff_{buffType}", 0);
+
+            if (savedTime > 0)
+            {
+                // `savedTime`을 `Dictionary`에 설정
+                _buffRemainingTime[buffType] = savedTime;
+            }
+        }
+    }
+
     public void StartBuff(EAdBuffType buffType, int durationMinutes)
     {
         // 이미 남은 시간이 설정된 경우 초기화하지 않고 남은 시간을 유지
@@ -24,7 +39,7 @@ public class BuffManager
         if (_buffCoroutines.ContainsKey(buffType))
             return;
 
-       // 새로운 코루틴 시작 및 Dictionary에 추가
+        // 새로운 코루틴 시작 및 Dictionary에 추가
         Coroutine buffCoroutine = Managers.Instance.StartCoroutine(UpdateBuffTime(buffType));
         _buffCoroutines[buffType] = buffCoroutine;
 
@@ -48,13 +63,20 @@ public class BuffManager
             Managers.Instance.StopCoroutine(_buffCoroutines[buffType]);
             _buffCoroutines.Remove(buffType);
         }
+
+        Managers.Hero.PlayerHeroInfo.RemoveAdBuff(buffType);
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
+
+        PlayerPrefs.SetInt($"Buff_{buffType}", 0);
+        PlayerPrefs.Save();
     }
 
     private IEnumerator UpdateBuffTime(EAdBuffType buffType)
     {
+        WaitForSeconds delay = new WaitForSeconds(60);
         while (_buffRemainingTime.ContainsKey(buffType) && _buffRemainingTime[buffType] > 0)
         {
-            yield return new WaitForSeconds(60); // 1분마다 감소
+            yield return delay; // 1분마다 감소
             _buffRemainingTime[buffType]--;
 
             // UI 업데이트를 위한 이벤트 호출
@@ -65,10 +87,20 @@ public class BuffManager
             {
                 OnBuffExpired?.Invoke(buffType);
                 RemoveBuff(buffType);
-
-                Managers.Hero.PlayerHeroInfo.RemoveAdBuff(buffType);
-                Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             }
+
+            PlayerPrefs.SetInt($"Buff_{buffType}", 0);
+            PlayerPrefs.Save();
         }
+    }
+
+    // 앱 종료 시 남은 버프 시간을 저장
+    public void SaveBuffData()
+    {
+        foreach (var buff in _buffRemainingTime)
+        {
+            PlayerPrefs.SetInt($"Buff_{buff.Key}", buff.Value);
+        }
+        PlayerPrefs.Save();
     }
 }

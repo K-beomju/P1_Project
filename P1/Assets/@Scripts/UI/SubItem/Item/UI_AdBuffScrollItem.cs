@@ -17,7 +17,7 @@ public class UI_AdBuffScrollItem : UI_Base
 
     private EAdBuffType BuffType;
     private const int MaxCount = 2;
-    private const int DurationTimeMinutes = 1; 
+    private const int DurationTimeMinutes = 30; 
 
     protected override bool Init()
     {

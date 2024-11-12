@@ -67,6 +67,7 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
 
             s_instacne = go.GetComponent<Managers>();
+            Buff.Init();
         }
     }
 
@@ -78,5 +79,10 @@ public class Managers : MonoBehaviour
         UI.Clear();
         Object.Clear();
         Pool.Clear();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Buff.SaveBuffData();
     }
 }
