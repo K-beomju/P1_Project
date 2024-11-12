@@ -14,11 +14,11 @@ public class UI_AdBuffPopup : UI_Popup
         Btn_Exit
     }
 
-    public enum AdBuffItems
+    public enum AdBuffScrollItems
     {
-        AdBuffItem_Gold,
-        AdBuffItem_Exp,
-        AdBuffItem_Atk
+        UI_AdBuffScrollItem_Gold,
+        UI_AdBuffScrollItem_Exp,
+        UI_AdBuffScrollItem_Atk
     }
 
     protected override bool Init()
@@ -27,13 +27,13 @@ public class UI_AdBuffPopup : UI_Popup
         return false;
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
-        Bind<UI_AdBuffItem>(typeof(AdBuffItems));
+        Bind<UI_AdBuffScrollItem>(typeof(AdBuffScrollItems));
 
         GetObject((int)GameObjects.BG).gameObject.BindEvent(() => ClosePopupUI());
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() => ClosePopupUI());
-        Get<UI_AdBuffItem>((int)AdBuffItems.AdBuffItem_Gold).SetInfo(Define.EAdBuffType.IncreaseGold);
-        Get<UI_AdBuffItem>((int)AdBuffItems.AdBuffItem_Exp).SetInfo(Define.EAdBuffType.IncreaseExp);
-        Get<UI_AdBuffItem>((int)AdBuffItems.AdBuffItem_Atk).SetInfo(Define.EAdBuffType.Atk);
+        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Gold).SetInfo(EAdBuffType.IncreaseGold);
+        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Exp).SetInfo(EAdBuffType.IncreaseExp);
+        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Atk).SetInfo(EAdBuffType.Atk);
 
         return true;
     }

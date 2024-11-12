@@ -66,6 +66,13 @@ public class UI_GameScene : UI_Scene
         UI_GoodItem_ExpPoint
     }
 
+    public enum DisplayAdBuffItems
+    {
+        UI_DisplayAdBuffItem_1,
+        UI_DisplayAdBuffItem_2,
+        UI_DisplayAdBuffItem_3
+    }
+
     public enum EquipSkillSlots
     {
         UI_EquipSkillSlot_1,
@@ -79,6 +86,7 @@ public class UI_GameScene : UI_Scene
     public PlayTab _tab { get; set; } = PlayTab.None;
 
     public List<UI_EquipSkillSlot> _equipSkillSlotList { get; set; } = new List<UI_EquipSkillSlot>();
+    public List<UI_DisplayAdBuffItem> _displayAdBuffList { get; set; } = new List<UI_DisplayAdBuffItem>();
 
     protected override bool Init()
     {
@@ -92,6 +100,7 @@ public class UI_GameScene : UI_Scene
         Bind<CanvasGroup>(typeof(CanvasGroups));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
+        Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
 
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
@@ -116,14 +125,22 @@ public class UI_GameScene : UI_Scene
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint).SetInfo(EItemType.ExpPoint);
 
-
         InitializeUIElements();
 
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
+        
+        // BuffManager 이벤트 구독
+        Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
+        Managers.Buff.OnBuffExpired += RemoveBuffUI;
 
         RefreshUI();
         return true;
+    }
+
+    private void OnDestroy() {
+        Managers.Buff.OnBuffTimeUpdated -= UpdateBuffUI;
+        Managers.Buff.OnBuffExpired -= RemoveBuffUI;
     }
 
     private void InitializeUIElements()
@@ -135,6 +152,13 @@ public class UI_GameScene : UI_Scene
             _equipSkillSlotList.Add(Get<UI_EquipSkillSlot>(i));
             _equipSkillSlotList[i].SetInfo(index);
         }
+
+        for (int i = 0; i < 3; i++)
+        {
+            _displayAdBuffList.Add(Get<UI_DisplayAdBuffItem>(i));
+            _displayAdBuffList[i].gameObject.SetActive(false);
+        }
+        LoadExistingBuffs();
 
         GetSlider((int)Sliders.Slider_Exp).value = 0;
         GetSlider((int)Sliders.Slider_BossTimer).value = 0;
@@ -343,6 +367,59 @@ public class UI_GameScene : UI_Scene
             Managers.Event.RemoveEvent(EEventType.CompleteSkillCool, new Action<int>(CheckUseSkillSlot));
         }
     }
+
+    #region AdBuff
+
+    private void LoadExistingBuffs()
+    {
+        foreach (EAdBuffType buffType in Enum.GetValues(typeof(EAdBuffType)))
+        {
+            int remainingTime = Managers.Buff.GetRemainingTime(buffType);
+            if (remainingTime > 0)
+            {
+                UpdateAdBuffItem(buffType, remainingTime);
+            }
+        }
+    }
+
+    public void UpdateAdBuffItem(EAdBuffType buffType, int durationMinutes)
+    {
+        foreach (var buffUI in _displayAdBuffList)
+        {
+            if (!buffUI.gameObject.activeSelf)
+            {
+                buffUI.gameObject.SetActive(true);
+                buffUI.SetInfo(buffType, durationMinutes);
+                break;
+            }
+        }
+    }
+
+    private void UpdateBuffUI(EAdBuffType buffType)
+    {
+        foreach (var buffUI in _displayAdBuffList)
+        {
+            if (buffUI.BuffType == buffType)
+            {
+                buffUI.UpdateRemainingTimeText();
+                break;
+            }
+        }
+    }
+
+    private void RemoveBuffUI(EAdBuffType buffType)
+    {
+        foreach (var buffUI in _displayAdBuffList)
+        {
+            if (buffUI.gameObject.activeSelf && buffUI.BuffType == buffType)
+            {
+                buffUI.gameObject.SetActive(false);
+                break;
+            }
+        }
+    }
+  
+    #endregion
 
     public void CheckUseSkillSlot(int slotIndex = -1)
     {

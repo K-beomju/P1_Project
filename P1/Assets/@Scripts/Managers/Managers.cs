@@ -9,7 +9,7 @@ public class Managers : MonoBehaviour
     public static bool Initialized { get; set; } = false;
 
     private static Managers s_instacne;
-    private static Managers Instance { get { Init(); return s_instacne; } }
+    public static Managers Instance { get { Init(); return s_instacne; } }
 
     #region Contents 
     private ObjectManager _object = new ObjectManager();
@@ -18,6 +18,7 @@ public class Managers : MonoBehaviour
     private HeroManager _hero = new HeroManager();
     private EquipmentManager _equipment = new EquipmentManager();
     private SkillManager _skill = new SkillManager();
+    private BuffManager _buff = new BuffManager();
 
     public static ObjectManager Object { get { return Instance?._object; } }
     public static GameManager Game { get { return Instance?._game; } }
@@ -25,6 +26,7 @@ public class Managers : MonoBehaviour
     public static HeroManager Hero { get { return Instance?._hero; } }
     public static EquipmentManager Equipment { get { return Instance?._equipment; } }
     public static SkillManager Skill { get { return Instance?._skill; } }
+    public static BuffManager Buff { get { return Instance?._buff; } }
     #endregion
 
     #region Core

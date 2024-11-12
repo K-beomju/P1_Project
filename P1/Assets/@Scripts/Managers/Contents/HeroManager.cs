@@ -100,11 +100,8 @@ public class HeroInfo
         float AtkEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Weapon);
         float MaxHpEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Armor);
 
-        Debug.LogWarning("장비 공격력 보너스 퍼센트 : " + AtkEquipmentPer);
-        // Debug.LogWarning("장비 최대체력 보너스 퍼센트 : " + MaxHpEquipmentPer);
-
         // 총 보너스 퍼센트 합산 (장비 + 특성)
-        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic + GoldRateBuff;
+        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic + AtkBuff;
         float totalMaxHpPer = MaxHpEquipmentPer + MaxHpAttr + MaxHpRelic;
         float totalRecoveryPer = RecoveryRelic;
         float totalCriRatePer = CriRateAttr;
@@ -112,24 +109,14 @@ public class HeroInfo
         float totalGoldRate = GoldRateRelic + GoldRateBuff;
         float totalExpRate = ExpRateRelic + ExpRateBuff;
 
-        Debug.LogWarning("총 공격력 보너스 퍼센트 (장비 + 특성) : " + totalAtkPer);
-        // Debug.LogWarning("총 최대체력 보너스 퍼센트 (장비 + 특성) : " + totalMaxHpPer);
-        // Debug.LogWarning("총 치명타 확률 보너스 퍼센트 (특성) : " + totalCriRatePer);
-        // Debug.LogWarning("총 치명타 데미지 보너스 퍼센트 (특성) : " + totalCriDmgPer);
-
         // 최종 스탯 계산
         Atk = Atk * (1 + totalAtkPer / 100f);
         MaxHp = MaxHp * (1 + totalMaxHpPer / 100f);
         Recovery = Recovery * (1 + totalRecoveryPer / 100f);
         CriRate = CriRate * (1 + totalCriRatePer / 100f);
         CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
-        GoldIncreaseRate = (1 + totalGoldRate / 100f);
-        ExpIncreaseRate = (1 + totalExpRate / 100f);
-
-        Debug.LogWarning("최종 공격력 : " + Atk);
-        // Debug.LogWarning("최종 최대체력 : " + MaxHp);
-        // Debug.LogWarning("최종 치명타 확률 : " + CriRate);
-        // Debug.LogWarning("최종 치명타 데미지 : " + CriDmg);
+        GoldIncreaseRate = 1 + totalGoldRate / 100f;
+        ExpIncreaseRate = 1 + totalExpRate / 100f;
 
         // 기타 스탯 설정
         AttackRange = Data.AttackRange;
@@ -155,8 +142,6 @@ public class HeroInfo
         // 전투력 변화가 있는지 확인 후 콜백 실행
         bool isPowerChanged = AdjustTotalPower != 0;
         totalPowerChanged?.Invoke(isPowerChanged);
-
-        Debug.Log(MonsterDmgRelic);
     }
 
     // 스탯 계산
@@ -190,6 +175,38 @@ public class HeroInfo
         int currentLevel = Managers.Backend.GameData.CharacterData.OwnedRelicDic[relicType.ToString()];
 
         return increaseValue * currentLevel;
+    }
+
+    public void ApplyAdBuff(EAdBuffType buffType)
+    {
+        switch (buffType)
+        {
+            case EAdBuffType.Atk:
+                AtkBuff += 100;
+                break;
+            case EAdBuffType.IncreaseGold:
+                GoldRateBuff += 100;
+                break;
+            case EAdBuffType.IncreaseExp:
+                ExpRateBuff += 100;
+                break;
+        }
+    }
+
+    public void RemoveAdBuff(EAdBuffType buffType)
+    {
+        switch (buffType)
+        {
+            case EAdBuffType.Atk:
+                AtkBuff = 0;
+                break;
+            case EAdBuffType.IncreaseGold:
+                GoldRateBuff = 0;
+                break;
+            case EAdBuffType.IncreaseExp:
+                ExpRateBuff = 0;
+                break;
+        }
     }
 
 

@@ -1274,7 +1274,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7916364341518977570, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
       propertyPath: m_Name
-      value: AdBuffItem_Exp
+      value: UI_AdBuffScrollItem_Exp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279810196575360367, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279810196575360367, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1404,7 +1412,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7916364341518977570, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
       propertyPath: m_Name
-      value: AdBuffItem_Atk
+      value: UI_AdBuffScrollItem_Atk
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279810196575360367, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279810196575360367, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1506,7 +1522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7916364341518977570, guid: 9e0d60f2b6fa60d4c89a262d356cd905, type: 3}
       propertyPath: m_Name
-      value: AdBuffItem_Gold
+      value: UI_AdBuffScrollItem_Gold
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

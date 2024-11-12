@@ -182,11 +182,9 @@ namespace BackendData.GameData
             IsChangedData = true;
             string key = goodType.ToString();
 
-            // GoldRateRelic 적용 (만약 재화가 골드인 경우)
-            if (goodType == EItemType.Gold && Managers.Hero.PlayerHeroInfo != null)
-            {
-                amount = (int)(amount * (1 + Managers.Hero.PlayerHeroInfo.GoldIncreaseRate / 100f));
-            }
+            // 골드 증가율 적용 (만약 재화가 골드인 경우)
+            if (goodType == EItemType.Gold)
+                amount = (int)(amount * Managers.Hero.PlayerHeroInfo.GoldIncreaseRate);
 
             if (!_purseDic.ContainsKey(key))
             {
@@ -205,9 +203,7 @@ namespace BackendData.GameData
         {
             IsChangedData = true;
 
-            // ExpRateRelic 적용
-            if (Managers.Hero.PlayerHeroInfo != null)
-                exp = (int)(exp * (1 + Managers.Hero.PlayerHeroInfo.ExpIncreaseRate / 100f));
+            exp = (int)(exp * Managers.Hero.PlayerHeroInfo.ExpIncreaseRate);
 
             Exp += exp;
 
@@ -303,16 +299,16 @@ namespace BackendData.GameData
         }
         #endregion
 
-        public void UsedBuff(EAdBuffType buffType)
-        {
-            IsChangedData = true;
-            _adBuffDic[buffType.ToString()] += 1;
-        }
-
         public void UpdateWorldBossCombatPower(float power)
         {
             IsChangedData = true;
             WorldBossCombatPower = power;
+        }
+
+        public void UsedBuff(EAdBuffType buffType)
+        {
+            IsChangedData = true;
+            _adBuffDic[buffType.ToString()] += 1;
         }
 
     }
