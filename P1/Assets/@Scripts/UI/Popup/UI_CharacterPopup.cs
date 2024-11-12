@@ -11,14 +11,16 @@ public class UI_CharacterPopup : UI_Popup
         BG,
         UI_ChracterPanel,
         UI_AttributePanel,
-        UI_RelicsPanel
+        UI_RelicsPanel,
+        UI_RankUpPanel
     }
 
     public enum Buttons
     {
         Btn_Character,
         Btn_Attribute,
-        Btn_Relics
+        Btn_Relics,
+        Btn_RankUp
     }
 
     public enum ECharacterSection
@@ -26,7 +28,8 @@ public class UI_CharacterPopup : UI_Popup
         None = -1,
         Character,
         Attribute,
-        Relics
+        Relics,
+        RankUp
     }
 
     public enum Texts
@@ -41,7 +44,7 @@ public class UI_CharacterPopup : UI_Popup
     UI_CharacterPanel _characterPanel;
     UI_AttributePanel _attributePanel;
     UI_RelicsPanel _relicsPanel;
-
+    UI_RankUpPanel _rankUpPanel;
 
     protected override bool Init()
     {
@@ -55,11 +58,13 @@ public class UI_CharacterPopup : UI_Popup
         _characterPanel = GetObject((int)GameObjects.UI_ChracterPanel).GetOrAddComponent<UI_CharacterPanel>();
         _attributePanel = GetObject((int)GameObjects.UI_AttributePanel).GetOrAddComponent<UI_AttributePanel>();
         _relicsPanel = GetObject((int)GameObjects.UI_RelicsPanel).GetOrAddComponent<UI_RelicsPanel>();
+        _rankUpPanel = GetObject((int)GameObjects.UI_RankUpPanel).GetOrAddComponent<UI_RankUpPanel>();
 
         GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Character));
         GetButton((int)Buttons.Btn_Character).onClick.AddListener(() => OnClickButton(ECharacterSection.Character));
         GetButton((int)Buttons.Btn_Attribute).onClick.AddListener(() => OnClickButton(ECharacterSection.Attribute));
         GetButton((int)Buttons.Btn_Relics).onClick.AddListener(() => OnClickButton(ECharacterSection.Relics));
+        GetButton((int)Buttons.Btn_RankUp).onClick.AddListener(() => OnClickButton(ECharacterSection.RankUp));
 
         _characterSection = ECharacterSection.Character;
         return true;
@@ -80,10 +85,13 @@ public class UI_CharacterPopup : UI_Popup
         _characterPanel.gameObject.SetActive(false);
         _attributePanel.gameObject.SetActive(false);
         _relicsPanel.gameObject.SetActive(false);
+        _rankUpPanel.gameObject.SetActive(false);
 
         GetButton((int)Buttons.Btn_Character).interactable = _characterSection != ECharacterSection.Character;
         GetButton((int)Buttons.Btn_Attribute).interactable = _characterSection != ECharacterSection.Attribute;
         GetButton((int)Buttons.Btn_Relics).interactable =  _characterSection != ECharacterSection.Relics;
+        GetButton((int)Buttons.Btn_RankUp).interactable =  _characterSection != ECharacterSection.RankUp;
+
         (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(Define.EItemType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
 
@@ -99,6 +107,9 @@ public class UI_CharacterPopup : UI_Popup
             case ECharacterSection.Relics:
                 _relicsPanel.gameObject.SetActive(true);
                 break;
+            case ECharacterSection.RankUp:
+                _rankUpPanel.gameObject.SetActive(true);
+                break;
         }
 
         GetTMPText((int)Texts.Text_CharacterTitle).text = GetCharacterPanelString(_characterSection);
@@ -111,6 +122,8 @@ public class UI_CharacterPopup : UI_Popup
             ECharacterSection.Character => "캐릭터",
             ECharacterSection.Attribute => "특성",
             ECharacterSection.Relics => "유물",
+            ECharacterSection.RankUp => "승급",
+
             _ => throw new ArgumentException($"Unknown rare type String: {section}")
         };
     }

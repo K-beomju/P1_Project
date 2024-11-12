@@ -39,12 +39,14 @@ public class UI_GameScene : UI_Scene
     enum GameObjects
     {
         TopStage,
-        RemainMonster
+        RemainMonster,
+        
     }
 
     enum CanvasGroups
     {
-        SkillSlotGroup
+        SkillSlotGroup,
+        BuffGroup
     }
 
     public enum PlayTab
@@ -451,6 +453,8 @@ public class UI_GameScene : UI_Scene
         GetObject((int)GameObjects.TopStage).SetActive(active);
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0;
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
+        Get<CanvasGroup>((int)CanvasGroups.BuffGroup).alpha = active ? 1 : 0;
+        Get<CanvasGroup>((int)CanvasGroups.BuffGroup).blocksRaycasts = active;
 
     }
 }
