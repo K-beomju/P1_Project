@@ -34,6 +34,7 @@ public class DataManager
     public Dictionary<int, WorldBossDungeonInfoData> WorldBossDungeonChart { get; private set; } = new(); // 월드보스전 정보
 
     public Dictionary<EItemType, ItemData> ItemChart { get; private set; } = new(); // 아이템 정보
+    public Dictionary<ERankType, RankUpInfoData> RankUpChart { get; private set; } = new(); // 승급 차트
 
 
     public void Init()
@@ -58,7 +59,7 @@ public class DataManager
         WorldBossDungeonChart = LoadJson<WorldBossDungeonInfoDataLoader, int, WorldBossDungeonInfoData>("WorldBossDungeonInfoData").MakeDict();
 
         ItemChart = LoadJson<ItemDataLoader, EItemType, ItemData>("ItemData").MakeDict();
-
+        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("RankUpInfoData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

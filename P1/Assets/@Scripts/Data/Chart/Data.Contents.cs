@@ -543,51 +543,25 @@ namespace Data
     #endregion
 
 
-    #region QuestData
-
     [Serializable]
-    public class QuestData 
+    public class RankUpInfoData
     {
-        public int TemplateId;
-        public string DescriptionTextId;
-        public EQuestPeriodType QuestPeriodType; // 퀘스트 타입 (일일, 주간)
-        //public EQuestCondition Condition;
-        public List<QuestTaskData> QuestTask = new List<QuestTaskData>();
-        public List<QuestRewardData> Rewards = new List<QuestRewardData>();
-        
-    }
-
-    // 퀘스트 달성 조건 
-    [Serializable]
-    public class QuestTaskData 
-    {
-        public EQuestObjectiveType ObjectiveType;
-        public string DescriptionTextId;
-        public int ObjectiveDataId;
-        public int ObjectiveCount;
-    }
-    
-    // 퀘스트 달성 보상 
-    [Serializable]
-    public class QuestRewardData 
-    {
-        public EItemType ItemType;
-        public int RewardCount;
+        public ERankType RankType;
+        public string Name;
+        public string PassiveName;
+        public int RdLevel;
     }
 
     [Serializable]
-    public class QuestDataLoader : ILoader<int, QuestData>
+    public class RankUpInfoDataLoader : ILoader<ERankType, RankUpInfoData>
     {
-        public List<QuestData> quests = new List<QuestData>();
-        public Dictionary<int, QuestData> MakeDict()
+        public List<RankUpInfoData> rankUpInfoDatas = new List<RankUpInfoData>();
+        public Dictionary<ERankType, RankUpInfoData> MakeDict()
         {
-            Dictionary<int, QuestData> dict = new Dictionary<int, QuestData>();
-            foreach (QuestData quest in quests)
-                dict.Add(quest.TemplateId, quest);
+            Dictionary<ERankType, RankUpInfoData> dict = new Dictionary<ERankType, RankUpInfoData>();
+            foreach (RankUpInfoData rank in rankUpInfoDatas)
+                dict.Add(rank.RankType, rank);
             return dict;
         }
     }
-
-
-    #endregion
 }

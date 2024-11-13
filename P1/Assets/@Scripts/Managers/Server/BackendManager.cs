@@ -34,12 +34,14 @@ public class BackendManager
         public readonly BackendData.GameData.SkillInventory SkillInventory = new();
         public readonly BackendData.GameData.DrawLevelData DrawLevelData = new();
         public readonly BackendData.GameData.DungeonData DungeonData = new();
+        public readonly BackendData.GameData.RankUpData RankUpData = new();
 
         public readonly Dictionary<string, BackendData.Base.GameData>
             GameDataList = new Dictionary<string, BackendData.Base.GameData>();
 
         public BackendGameData()
         {
+            GameDataList.Add("내 랭크 정보", RankUpData);
             GameDataList.Add("내 던전 정보", DungeonData);
             GameDataList.Add("내 장비 정보", EquipmentInventory);
             GameDataList.Add("내 스킬 정보", SkillInventory);

@@ -92,7 +92,9 @@ public class UI_CharacterPopup : UI_Popup
         GetButton((int)Buttons.Btn_Relics).interactable =  _characterSection != ECharacterSection.Relics;
         GetButton((int)Buttons.Btn_RankUp).interactable =  _characterSection != ECharacterSection.RankUp;
 
-        (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(Define.EItemType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
+        (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(_characterSection == ECharacterSection.Attribute);
+        (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(_characterSection == ECharacterSection.RankUp);
+
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
 
         switch (_characterSection)
@@ -109,6 +111,7 @@ public class UI_CharacterPopup : UI_Popup
                 break;
             case ECharacterSection.RankUp:
                 _rankUpPanel.gameObject.SetActive(true);
+                _rankUpPanel.RefreshUI();
                 break;
         }
 

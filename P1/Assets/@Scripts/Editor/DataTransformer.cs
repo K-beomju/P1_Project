@@ -41,6 +41,7 @@ public class DataTransformer : EditorWindow
 		ParseExcelDataToJson<WorldBossDungeonInfoDataLoader, WorldBossDungeonInfoData>("WorldBossDungeonInfo");
 
         ParseExcelDataToJson<ItemDataLoader, ItemData>("Item");
+        ParseExcelDataToJson<RankUpInfoDataLoader, RankUpInfoData>("RankUpInfo");
 
 	}
 

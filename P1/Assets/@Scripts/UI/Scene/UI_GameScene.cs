@@ -65,7 +65,8 @@ public class UI_GameScene : UI_Scene
     {
         UI_GoodItem_Gold,
         UI_GoodItem_Dia,
-        UI_GoodItem_ExpPoint
+        UI_GoodItem_ExpPoint,
+        UI_GoodItem_AbilityPoint
     }
 
     public enum DisplayAdBuffItems
@@ -126,6 +127,7 @@ public class UI_GameScene : UI_Scene
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint).SetInfo(EItemType.ExpPoint);
+        Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_AbilityPoint).SetInfo(EItemType.AbilityPoint);
 
         InitializeUIElements();
 
@@ -170,6 +172,7 @@ public class UI_GameScene : UI_Scene
         GetTMPText((int)Texts.RemainMonsterValueText).text = string.Empty;
 
         GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
+        GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
@@ -229,6 +232,7 @@ public class UI_GameScene : UI_Scene
             EItemType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
             EItemType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
             EItemType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
+            EItemType.AbilityPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_AbilityPoint),
             _ => null,
         };
     }
@@ -319,6 +323,7 @@ public class UI_GameScene : UI_Scene
             {
                 case PlayTab.Character:
                     GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
+                    GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
                     break;
                 case PlayTab.Equipment:
                     break;

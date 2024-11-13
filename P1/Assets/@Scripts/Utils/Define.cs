@@ -97,7 +97,7 @@ public static class Define
 
         /// <summary>플레이어 레벨업 시 호출</summary>
         PlayerLevelUp,
-        
+
         /// <summary>장비 뽑기 관련 UI가 갱신될 때 호출</summary>
         DrawEquipmentUIUpdated,
 
@@ -127,6 +127,9 @@ public static class Define
 
         /// <summary>영웅 전투력 갱신</summary>
         HeroTotalPowerUpdated,
+
+        /// <summary>영웅 승급전 랭크 갱신</summary>
+        HeroRankUpdated,
     }
 
     public enum EItemDisplayType
@@ -225,7 +228,8 @@ public static class Define
         ExpPoint,
         Relic,
         GoldDungeonKey,
-        DiaDungeonKey
+        DiaDungeonKey,
+        AbilityPoint
     }
 
     public enum EHeroUpgradeType
@@ -323,7 +327,7 @@ public static class Define
     public enum EQuestCondition
     {
         None,
-        
+
     }
 
     public enum EQuestObjectiveType
@@ -364,6 +368,8 @@ public static class Define
         FadeInOut,
     }
 
+    #region  AdBuff
+
     public enum EAdBuffType
     {
         Atk,
@@ -371,6 +377,33 @@ public static class Define
         IncreaseExp
     }
 
+    #endregion
+
+    public enum ERankType
+    {
+        Unknown,
+        Iron,
+        Bronze,
+        Gold,
+        Dia,
+        Master,
+        GrandMaster,
+    }
+
+    public enum ERankState
+    {
+        Locked,           // 잠겨있는 상태
+        Completed,        // 이미 깬 상태
+        Current,          // 현재 상태
+        Pending           // 진행해야 할 상태
+    }
+
+    public enum ERankAbilityState
+    {
+        Locked,        // 잠긴 상태, 능력을 획득할 수 없음
+        Unlocked,      // 해제된 상태, 능력을 획득할 수 있음
+        Restricted     // 임의로 잠긴 상태, 능력을 변경할 수 없음
+    }
 
 }
 
