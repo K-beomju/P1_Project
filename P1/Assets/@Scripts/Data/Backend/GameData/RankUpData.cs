@@ -7,6 +7,7 @@ using System;
 using Unity.VisualScripting;
 using Data;
 using System.Linq;
+using static UI_FadeInBase;
 
 namespace BackendData.GameData
 {
@@ -16,13 +17,15 @@ namespace BackendData.GameData
         public ERankAbilityState RankAbilityState { get; set; }    // 어빌리티 슬롯 상태 (잠김, 해제, 임의 잠금 등)\
 
         public EHeroRankUpStatType RankStatType { get; set; }
+        public ERareType RareType { get; set; }
         public int Value { get; set; }
 
-        public AbilityData(ERankState rankState, ERankAbilityState abilityState, EHeroRankUpStatType rankStatType, int value)
+        public AbilityData(ERankState rankState, ERankAbilityState abilityState, EHeroRankUpStatType rankStatType, ERareType rareType, int value)
         {
             RankState = rankState;
             RankAbilityState = abilityState;
             RankStatType = rankStatType;
+            RareType = rareType;
             Value = value;
         }
     }
@@ -43,9 +46,9 @@ namespace BackendData.GameData
                     continue;
 
                 if (rankType == ERankType.Iron)
-                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Pending, ERankAbilityState.Locked, EHeroRankUpStatType.None, 0));
+                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Pending, ERankAbilityState.Locked, EHeroRankUpStatType.None, ERareType.None, 0));
                 else
-                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Locked, ERankAbilityState.Locked, EHeroRankUpStatType.None, 0));
+                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Locked, ERankAbilityState.Locked, EHeroRankUpStatType.None, ERareType.None, 0));
             }
         }
 
@@ -56,8 +59,10 @@ namespace BackendData.GameData
                 ERankState rankState = (ERankState)int.Parse(Data["Rank"][column]["RankState"].ToString());
                 ERankAbilityState rankAbilityState = (ERankAbilityState)int.Parse(Data["Rank"][column]["RankAbilityState"].ToString());
                 EHeroRankUpStatType rankStatType = (EHeroRankUpStatType)int.Parse(Data["Rank"][column]["RankStatType"].ToString());
+                ERareType rareType = (ERareType)int.Parse(Data["Rank"][column]["RareType"].ToString());
+
                 int value = int.Parse(Data["Rank"][column]["Value"].ToString());
-                _rankUpDic.Add(column, new AbilityData(rankState, rankAbilityState, rankStatType, value));
+                _rankUpDic.Add(column, new AbilityData(rankState, rankAbilityState, rankStatType, rareType, value));
             }
         }
 
@@ -120,7 +125,8 @@ namespace BackendData.GameData
         }
 
         // AbilityData 업데이트 함수
-        public void UpdateAbilityData(string rankKey, ERankAbilityState abilityState, EHeroRankUpStatType statType, int value)
+        public void UpdateAbilityData(string rankKey, ERankAbilityState abilityState, 
+            EHeroRankUpStatType statType, ERareType rareType, int value)
         {
             if (_rankUpDic.ContainsKey(rankKey))
             {
@@ -128,6 +134,7 @@ namespace BackendData.GameData
 
                 _rankUpDic[rankKey].RankAbilityState = abilityState;
                 _rankUpDic[rankKey].RankStatType = statType;
+                _rankUpDic[rankKey].RareType = rareType;
                 _rankUpDic[rankKey].Value = value;
 
                 Debug.Log($"{rankKey}의 능력치가 업데이트되었습니다: {statType} {value}");

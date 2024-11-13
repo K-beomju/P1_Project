@@ -67,6 +67,7 @@ public class UI_RankAbilityItem : UI_Base
             case ERankAbilityState.Locked:  // 잠긴 상태, 능력을 획득할 수 없음
                 GetTMPText((int)Texts.Text_Ability).text = $"{Managers.Data.HeroRankUpChart[_rankType].Name} 승급시 오픈";
                 GetImage((int)Images.Image_LockAbility).gameObject.SetActive(false);
+                GetTMPText((int)Texts.Text_Ability).color = Color.white;
                 GetImage((int)Images.Image_ClassIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Lock");
                 _lockAbilityBtn.interactable = false;
                 break;
@@ -81,6 +82,7 @@ public class UI_RankAbilityItem : UI_Base
                 string statName = Managers.Data.DrawRankUpChart[Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].RankStatType].Name;
                 int increaseValue = Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].Value;
                 GetTMPText((int)Texts.Text_Ability).text = $"{statName} {increaseValue}";
+                GetTMPText((int)Texts.Text_Ability).color = Util.GetRareTypeColor(Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].RareType);
                 break;
         }
     }

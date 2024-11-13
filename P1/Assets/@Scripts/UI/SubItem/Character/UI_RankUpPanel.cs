@@ -122,6 +122,11 @@ public class UI_RankUpPanel : UI_Base
             .Where(statType => statType != EHeroRankUpStatType.None)
             .ToArray();
 
+        ERareType[] validRareTypes = Enum.GetValues(typeof(ERareType))
+            .Cast<ERareType>()
+            .Where(statType => statType != ERareType.None)
+            .ToArray();
+
         // 랜덤 스탯 타입 추출
         EHeroRankUpStatType randStatType = validStatTypes[UnityEngine.Random.Range(0, validStatTypes.Length)];
 
@@ -139,8 +144,9 @@ public class UI_RankUpPanel : UI_Base
                 _ => throw new ArgumentException($"Unknown rare type value: {drawProbabilityIndex}")
             };
 
+            ERareType randRareType = validRareTypes[drawProbabilityIndex];
             int selectedValue = valueList[Util.GetDrawProbabilityType(valueList)];
-            Managers.Backend.GameData.RankUpData.UpdateAbilityData(rankKey, ERankAbilityState.Acquired, randStatType, selectedValue);
+            Managers.Backend.GameData.RankUpData.UpdateAbilityData(rankKey, ERankAbilityState.Acquired, randStatType, randRareType, selectedValue);
             Debug.Log($"{rankKey}에 {rankUpData.Name} {selectedValue} 능력치가 부여되었습니다.");
         }
         else
