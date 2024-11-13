@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
@@ -47,7 +48,7 @@ public class UI_RankUpPanel : UI_Base
         UI_RankChallengeItem_GrandMaster
     }
 
-    public ERankType RankType { get; private set; } = ERankType.Unknown;
+    private Coroutine _coolTime;
 
     protected override bool Init()
     {
@@ -75,7 +76,9 @@ public class UI_RankUpPanel : UI_Base
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_GrandMaster).SetInfo(ERankType.GrandMaster);
 
 
-        GetButton((int)Buttons.Btn_ChangeAbility).onClick.AddListener(OnClickButton);
+        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnClickButton, EUIEvent.Pressed);
+        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
+
         return true;
     }
 
@@ -91,6 +94,9 @@ public class UI_RankUpPanel : UI_Base
 
     private void OnClickButton()
     {
+        if (_coolTime != null)
+            return;
+
         List<string> updatedRankKeys = new List<string>(); // 변경된 RankKey 목록
 
         // 무작위로 랜덤 스탯 추출
@@ -105,12 +111,23 @@ public class UI_RankUpPanel : UI_Base
             {
                 AssignRandomAbility(rankEntry.Key, abilityData);
                 updatedRankKeys.Add(rankEntry.Key); // 변경된 RankKey 추가
+                _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
+
             }
         }
 
         if (updatedRankKeys.Count > 0)
         {
             RefreshUpdatedUIItems(updatedRankKeys);
+        }
+    }
+
+    private void OnPointerUp()
+    {
+        if (_coolTime != null)
+        {
+            StopCoroutine(_coolTime);
+            _coolTime = null;
         }
     }
 
@@ -207,5 +224,11 @@ public class UI_RankUpPanel : UI_Base
             GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
             GetTMPText((int)Texts.Text_MyRankName).text = Managers.Data.HeroRankUpChart[rankType].Name;
         }
+    }
+
+    private IEnumerator CoStartUpgradeCoolTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        _coolTime = null;
     }
 }
