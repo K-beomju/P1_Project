@@ -26,7 +26,7 @@ public class UI_RankChallengeItem : UI_Base
 
     private ERankType _rankType;
     private ERankState _rankState;
-    private RankUpInfoData _rankData;
+    private HeroRankUpInfoData _rankData;
 
     protected override bool Init()
     {
@@ -53,7 +53,7 @@ public class UI_RankChallengeItem : UI_Base
     public void SetInfo(ERankType rankType)
     {
         _rankType = rankType;
-        _rankData = Managers.Data.RankUpChart[rankType];
+        _rankData = Managers.Data.HeroRankUpChart[rankType];
     }
 
     public void RefreshUI()

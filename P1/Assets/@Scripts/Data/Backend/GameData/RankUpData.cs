@@ -5,18 +5,25 @@ using UnityEngine;
 using static Define;
 using System;
 using Unity.VisualScripting;
+using Data;
+using System.Linq;
 
 namespace BackendData.GameData
 {
     public class AbilityData
     {
         public ERankState RankState { get; set; }                  // 랭크 상태 (잠김, 진행 중, 완료 등)
-        public ERankAbilityState RankAbilityState { get; set; }    // 어빌리티 슬롯 상태 (잠김, 해제, 임의 잠금 등)
+        public ERankAbilityState RankAbilityState { get; set; }    // 어빌리티 슬롯 상태 (잠김, 해제, 임의 잠금 등)\
 
-        public AbilityData(ERankState rankState, ERankAbilityState abilityState)
+        public EHeroRankUpStatType RankStatType { get; set; }
+        public int Value { get; set; }
+
+        public AbilityData(ERankState rankState, ERankAbilityState abilityState, EHeroRankUpStatType rankStatType, int value)
         {
             RankState = rankState;
             RankAbilityState = abilityState;
+            RankStatType = rankStatType;
+            Value = value;
         }
     }
 
@@ -32,10 +39,13 @@ namespace BackendData.GameData
             _rankUpDic.Clear();
             foreach (ERankType rankType in Enum.GetValues(typeof(ERankType)))
             {
+                if (rankType == ERankType.Unknown)
+                    continue;
+
                 if (rankType == ERankType.Iron)
-                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Pending, ERankAbilityState.Locked));
+                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Pending, ERankAbilityState.Locked, EHeroRankUpStatType.None, 0));
                 else
-                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Locked, ERankAbilityState.Locked));
+                    _rankUpDic.Add(rankType.ToString(), new AbilityData(ERankState.Locked, ERankAbilityState.Locked, EHeroRankUpStatType.None, 0));
             }
         }
 
@@ -45,8 +55,9 @@ namespace BackendData.GameData
             {
                 ERankState rankState = (ERankState)int.Parse(Data["Rank"][column]["RankState"].ToString());
                 ERankAbilityState rankAbilityState = (ERankAbilityState)int.Parse(Data["Rank"][column]["RankAbilityState"].ToString());
-
-                _rankUpDic.Add(column, new AbilityData(rankState, rankAbilityState));
+                EHeroRankUpStatType rankStatType = (EHeroRankUpStatType)int.Parse(Data["Rank"][column]["RankStatType"].ToString());
+                int value = int.Parse(Data["Rank"][column]["Value"].ToString());
+                _rankUpDic.Add(column, new AbilityData(rankState, rankAbilityState, rankStatType, value));
             }
         }
 
@@ -68,6 +79,7 @@ namespace BackendData.GameData
 
             return param;
         }
+
         public void UpdateRankUp(ERankType rankType)
         {
             IsChangedData = true;
@@ -78,7 +90,10 @@ namespace BackendData.GameData
             _rankUpDic[rankType.ToString()].RankAbilityState = ERankAbilityState.Unlocked;
 
             // 이전 랭크를 'Completed' 상태로 설정
-            ERankType[] rankTypes = (ERankType[])Enum.GetValues(typeof(ERankType));
+            // Enum 배열에서 Unknown을 제외하고 리스트로 만듦
+            ERankType[] rankTypes = ((ERankType[])Enum.GetValues(typeof(ERankType)))
+                .Where(rank => rank != ERankType.Unknown)
+                .ToArray();
             int currentIndex = Array.IndexOf(rankTypes, rankType);
 
             if (currentIndex > 0)
@@ -102,6 +117,25 @@ namespace BackendData.GameData
             }
 
             Managers.Event.TriggerEvent(EEventType.HeroRankUpdated);
+        }
+
+        // AbilityData 업데이트 함수
+        public void UpdateAbilityData(string rankKey, ERankAbilityState abilityState, EHeroRankUpStatType statType, int value)
+        {
+            if (_rankUpDic.ContainsKey(rankKey))
+            {
+                IsChangedData = true;
+
+                _rankUpDic[rankKey].RankAbilityState = abilityState;
+                _rankUpDic[rankKey].RankStatType = statType;
+                _rankUpDic[rankKey].Value = value;
+
+                Debug.Log($"{rankKey}의 능력치가 업데이트되었습니다: {statType} {value}");
+            }
+            else
+            {
+                Debug.LogWarning($"Rank key '{rankKey}' not found in RankUpDic.");
+            }
         }
 
         // 현재 'Current' 상태인 랭크 타입 반환

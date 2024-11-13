@@ -262,6 +262,17 @@ public static class Define
         Relic_GoldRate
     }
 
+    public enum EHeroRankUpStatType
+    {
+        None,
+        RankUp_Atk,
+        RankUp_MaxHp,
+        RankUp_Recovery,
+        RankUp_CriDmg,
+        RankUp_GoldRate,
+        RankUp_ExpRate
+    }
+
     public enum EStatModType
     {
         Add,
@@ -402,7 +413,9 @@ public static class Define
     {
         Locked,        // 잠긴 상태, 능력을 획득할 수 없음
         Unlocked,      // 해제된 상태, 능력을 획득할 수 있음
-        Restricted     // 임의로 잠긴 상태, 능력을 변경할 수 없음
+        Restricted,    // 임의로 잠긴 상태, 능력을 변경할 수 없음,
+        Acquired       // 능력이 존재하며 활성화된 상태
+
     }
 
 }

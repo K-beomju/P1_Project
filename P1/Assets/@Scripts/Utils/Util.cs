@@ -341,6 +341,23 @@ public static class Util
         return drawList.Count - 1;
     }
 
+    // 랜덤 
+    public static int GetDrawProbabilityType(List<int> drawList)
+    {
+        float total = drawList.Sum();
+        float randomPoint = UnityEngine.Random.value * total;
+
+        for (int i = 0; i < drawList.Count; i++)
+        {
+            if (randomPoint < drawList[i])
+            {
+                return i;
+            }
+            randomPoint -= drawList[i];
+        }
+        return drawList.Count - 1;
+    }
+
 
     #endregion
 

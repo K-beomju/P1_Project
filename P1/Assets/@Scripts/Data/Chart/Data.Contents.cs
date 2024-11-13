@@ -544,7 +544,7 @@ namespace Data
 
 
     [Serializable]
-    public class RankUpInfoData
+    public class HeroRankUpInfoData
     {
         public ERankType RankType;
         public string Name;
@@ -553,14 +553,41 @@ namespace Data
     }
 
     [Serializable]
-    public class RankUpInfoDataLoader : ILoader<ERankType, RankUpInfoData>
+    public class RankUpInfoDataLoader : ILoader<ERankType, HeroRankUpInfoData>
     {
-        public List<RankUpInfoData> rankUpInfoDatas = new List<RankUpInfoData>();
-        public Dictionary<ERankType, RankUpInfoData> MakeDict()
+        public List<HeroRankUpInfoData> rankUpInfoDatas = new List<HeroRankUpInfoData>();
+        public Dictionary<ERankType, HeroRankUpInfoData> MakeDict()
         {
-            Dictionary<ERankType, RankUpInfoData> dict = new Dictionary<ERankType, RankUpInfoData>();
-            foreach (RankUpInfoData rank in rankUpInfoDatas)
+            Dictionary<ERankType, HeroRankUpInfoData> dict = new Dictionary<ERankType, HeroRankUpInfoData>();
+            foreach (HeroRankUpInfoData rank in rankUpInfoDatas)
                 dict.Add(rank.RankType, rank);
+            return dict;
+        }
+    }
+
+    [Serializable]
+    public class DrawRankUpGachaInfoData
+    {
+        public EHeroRankUpStatType StatType;
+        public string Name;
+        
+        public List<int> ProbabilityList = new List<int>();
+        public List<int> NormalValueList = new List<int>();
+        public List<int> AdvanceValueList = new List<int>();
+        public List<int> RareValueList = new List<int>();
+        public List<int> LegendaryValueList = new List<int>();
+        public List<int> MythicalValueList = new List<int>();
+    }
+
+    [Serializable]
+    public class DrawRankUpGachaInfoDataLoader : ILoader<EHeroRankUpStatType, DrawRankUpGachaInfoData>
+    {
+        public List<DrawRankUpGachaInfoData> rankUpInfoDatas = new List<DrawRankUpGachaInfoData>();
+        public Dictionary<EHeroRankUpStatType, DrawRankUpGachaInfoData> MakeDict()
+        {
+            Dictionary<EHeroRankUpStatType, DrawRankUpGachaInfoData> dict = new Dictionary<EHeroRankUpStatType, DrawRankUpGachaInfoData>();
+            foreach (DrawRankUpGachaInfoData rank in rankUpInfoDatas)
+                dict.Add(rank.StatType, rank);
             return dict;
         }
     }
