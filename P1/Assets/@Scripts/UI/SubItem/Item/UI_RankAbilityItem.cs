@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,30 +33,27 @@ public class UI_RankAbilityItem : UI_Base
     private ERankType _rankType;
     private ERankAbilityState _rankAbilityState;
     private Button _lockAbilityBtn;
-
-
+    
     public void SetInfo(ERankType rankType)
     {
         _rankType = rankType;
-
     }
 
     private void OnButtonClick()
     {
         switch (Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].RankAbilityState)
         {
-            case ERankAbilityState.Locked:
-                return;
             case ERankAbilityState.Restricted:
-                Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].RankAbilityState = ERankAbilityState.Unlocked;
+                Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].RankAbilityState = ERankAbilityState.Acquired;
                 break;
-            case ERankAbilityState.Unlocked:
             case ERankAbilityState.Acquired:
                 Managers.Backend.GameData.RankUpData.RankUpDic[_rankType.ToString()].RankAbilityState = ERankAbilityState.Restricted;
                 break;
         }
 
         RefreshUI();
+        Managers.Event.TriggerEvent(EEventType.HeroRankUpdated);
+
     }
 
     public void RefreshUI()
@@ -72,6 +70,7 @@ public class UI_RankAbilityItem : UI_Base
                 _lockAbilityBtn.interactable = false;
                 break;
             case ERankAbilityState.Unlocked:  // 해제된 상태, 능력을 획득할 수 있음
+                GetTMPText((int)Texts.Text_Ability).text = string.Empty;   
                 GetImage((int)Images.Image_LockAbility).gameObject.SetActive(false);
                 GetImage((int)Images.Image_ClassIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{_rankType}");
                 break;

@@ -137,6 +137,8 @@ public class UI_CompanionItem : UI_Base
                 GetTMPText((int)Texts.Text_Level).gameObject.SetActive(false);
                 GetSlider((int)Sliders.Slider_Count).gameObject.SetActive(false);
                 GetTMPText((int)Texts.Text_EnhanceLevel).gameObject.SetActive(false);
+
+                _iconImage.rectTransform.anchoredPosition = new Vector2(0, 0);
                 break;
         }
     }

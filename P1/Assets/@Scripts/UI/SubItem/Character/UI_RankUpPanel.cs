@@ -1,10 +1,12 @@
 using BackendData.GameData;
+using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Define;
+using Random = UnityEngine.Random;
 
 public class UI_RankUpPanel : UI_Base
 {
@@ -57,12 +59,14 @@ public class UI_RankUpPanel : UI_Base
     }
 
     private Coroutine _coolTime;
-    private bool _bestOption = false;
+    private bool _bestOption;
 
     protected override bool Init()
     {
         if (base.Init() == false)
+        {
             return false;
+        }
 
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
@@ -98,25 +102,23 @@ public class UI_RankUpPanel : UI_Base
 
             // 능력 변경 함수 호출
             ResetAbility();
-
-        }, EUIEvent.Click);
+        });
         GetButton((int)Buttons.Btn_ExitBestRankOption).gameObject.BindEvent(() =>
         {
             GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
             _bestOption = false;
-
-        }, EUIEvent.Click);
+        });
         GetObject((int)GameObjects.BestOptionBG).gameObject.BindEvent(() =>
         {
             GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
             _bestOption = false;
-        }, EUIEvent.Click);
+        });
 
 
         // Desc
         GetButton((int)Buttons.Btn_RankUpDesc).onClick.AddListener(() =>
         {
-            var popupUI = Managers.UI.ShowPopupUI<UI_RankUpProbabilityPopup>();
+            UI_RankUpProbabilityPopup popupUI = Managers.UI.ShowPopupUI<UI_RankUpProbabilityPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         });
@@ -137,70 +139,68 @@ public class UI_RankUpPanel : UI_Base
     private void OnClickButton()
     {
         if (_coolTime != null)
-            return;
-
-        if (_bestOption == true)
-            return;
-
-        List<string> updatedRankKeys = new List<string>(); // 변경된 RankKey 목록
-
-        // 무작위로 랜덤 스탯 추출
-        foreach (var rankEntry in Managers.Backend.GameData.RankUpData.RankUpDic)
         {
-            AbilityData abilityData = rankEntry.Value;
-
-            // 조건 확인: RankState가 Completed 또는 Current 상태이며, RankAbilityState가 Locked나 Restricted가 아닐 때만 진행
-            if ((abilityData.RankState == ERankState.Completed || abilityData.RankState == ERankState.Current) &&
-                abilityData.RankAbilityState != ERankAbilityState.Locked &&
-                abilityData.RankAbilityState != ERankAbilityState.Restricted)
-            {
-                // 추가 조건: 최종 등급을 바꿀려고 한다면 안내를 떠야함
-                if(abilityData.RareType == ERareType.Mythical)
-                {
-                    // 최종등급 안내 오브젝트 추가 
-                    _bestOption = true;
-                    GetObject((int)GameObjects.BestOptionAlert).gameObject.SetActive(true);
-                    return;
-                }
-                AssignRandomAbility(rankEntry.Key, abilityData);
-                updatedRankKeys.Add(rankEntry.Key); // 변경된 RankKey 추가
-                _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.2f));
-
-            }
+            return;
+        }
+        
+        bool containHighest = ContainsHighestRankAbility();
+        if (containHighest)
+        {
+            _bestOption = true;
+            GetObject((int)GameObjects.BestOptionAlert).SetActive(true);
+            return;
         }
 
-        if (updatedRankKeys.Count > 0)
+        ProcessAbilityChange((abilityData, rankKey) =>
         {
-            RefreshUpdatedUIItems(updatedRankKeys);
-        }
+            AssignRandomAbility(rankKey, abilityData);
+            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.2f));
+        });
     }
 
     private void ResetAbility()
     {
-        // BestOptionAlert가 활성화된 상태라면 실행하지 않음
-        if (_bestOption)
-            return;
-
-        List<string> updatedRankKeys = new List<string>();
-
-        foreach (var rankEntry in Managers.Backend.GameData.RankUpData.RankUpDic)
+        ProcessAbilityChange((abilityData, rankKey) =>
         {
-            AbilityData abilityData = rankEntry.Value;
+            _bestOption = false;
+            AssignRandomAbility(rankKey, abilityData);
+        });
+    }
 
-            if ((abilityData.RankState == ERankState.Completed || abilityData.RankState == ERankState.Current) &&
-                abilityData.RankAbilityState != ERankAbilityState.Locked &&
-                abilityData.RankAbilityState != ERankAbilityState.Restricted)
+    private void ProcessAbilityChange(Action<AbilityData, string> actionOnAbility)
+    {
+        int price = GetCheckCountAbilityInventory() * 5;
+        if (Managers.Backend.GameData.CharacterData.PurseDic[EItemType.AbilityPoint.ToString()] >= price)
+        {
+            List<string> updatedRankKeys = new();
+
+            foreach (KeyValuePair<string, AbilityData> rankEntry in Managers.Backend.GameData.RankUpData.RankUpDic)
             {
-                AssignRandomAbility(rankEntry.Key, abilityData);
-                updatedRankKeys.Add(rankEntry.Key);
+                AbilityData abilityData = rankEntry.Value;
+
+                if (CanChangeAbility(abilityData))
+                {
+                    actionOnAbility.Invoke(abilityData, rankEntry.Key);
+                    updatedRankKeys.Add(rankEntry.Key);
+                }
+            }
+
+            if (updatedRankKeys.Count > 0 && !_bestOption)
+            {
+                RefreshUpdatedUIItems(updatedRankKeys);
+            }
+
+            if (!_bestOption)
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.AbilityPoint, -price);
             }
         }
-
-        if (updatedRankKeys.Count > 0)
+        else
         {
-            RefreshUpdatedUIItems(updatedRankKeys);
+            Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("어빌리티 포인트가 부족합니다.");
         }
     }
+
 
     private void OnPointerUp()
     {
@@ -225,10 +225,10 @@ public class UI_RankUpPanel : UI_Base
             .ToArray();
 
         // 랜덤 스탯 타입 추출
-        EHeroRankUpStatType randStatType = validStatTypes[UnityEngine.Random.Range(0, validStatTypes.Length)];
+        EHeroRankUpStatType randStatType = validStatTypes[Random.Range(0, validStatTypes.Length)];
 
         // 딕셔너리에서 rankUpData 찾기
-        if (Managers.Data.DrawRankUpChart.TryGetValue(randStatType, out var rankUpData))
+        if (Managers.Data.DrawRankUpChart.TryGetValue(randStatType, out DrawRankUpGachaInfoData rankUpData))
         {
             int drawProbabilityIndex = Util.GetDrawProbabilityType(rankUpData.ProbabilityList);
             List<int> valueList = drawProbabilityIndex switch
@@ -243,7 +243,8 @@ public class UI_RankUpPanel : UI_Base
 
             ERareType randRareType = validRareTypes[drawProbabilityIndex];
             int selectedValue = valueList[Util.GetDrawProbabilityType(valueList)];
-            Managers.Backend.GameData.RankUpData.UpdateAbilityData(rankKey, ERankAbilityState.Acquired, randStatType, randRareType, selectedValue);
+            Managers.Backend.GameData.RankUpData.UpdateAbilityData(rankKey, ERankAbilityState.Acquired, randStatType,
+                randRareType, selectedValue);
             //Debug.Log($"{rankKey}에 {rankUpData.Name} {selectedValue} 능력치가 부여되었습니다.");
         }
         else
@@ -254,7 +255,7 @@ public class UI_RankUpPanel : UI_Base
 
     private void RefreshUpdatedUIItems(List<string> updatedRankKeys)
     {
-        foreach (var rankKey in updatedRankKeys)
+        foreach (string rankKey in updatedRankKeys)
         {
             // RankKey에 따라 해당하는 RankAbility를 찾아 RefreshUI 호출
             if (Enum.TryParse(rankKey, out ERankType rankType))
@@ -277,6 +278,7 @@ public class UI_RankUpPanel : UI_Base
 
     public void RefreshUI()
     {
+        CheckCountAbilityInventory();
         Get<UI_RankAbilityItem>((int)RankAbility.UI_RankAbilityItem_Iron).RefreshUI();
         Get<UI_RankAbilityItem>((int)RankAbility.UI_RankAbilityItem_Bronze).RefreshUI();
         Get<UI_RankAbilityItem>((int)RankAbility.UI_RankAbilityItem_Gold).RefreshUI();
@@ -297,13 +299,62 @@ public class UI_RankUpPanel : UI_Base
         {
             GetTMPText((int)Texts.Text_MyRankName).text = "랭크 없음";
             GetImage((int)Images.Image_MyRankIcon).gameObject.SetActive(false);
-
         }
         else
         {
             GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
             GetTMPText((int)Texts.Text_MyRankName).text = Managers.Data.HeroRankUpChart[rankType].Name;
         }
+    }
+
+    private void CheckCountAbilityInventory()
+    {
+        int changeCount = GetCheckCountAbilityInventory();
+        // 아무 것도 변경할 게 없을 때 
+        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.SetActive(changeCount != 0);
+        GetTMPText((int)Texts.Text_ChangeAbilityCount).text = $"변경 x {changeCount}";
+        GetTMPText((int)Texts.Text_FeeAmount).text = (changeCount * 5).ToString();
+    }
+
+    private int GetCheckCountAbilityInventory()
+    {
+        int changeCount = 0;
+        foreach (KeyValuePair<string, AbilityData> rankEntry in Managers.Backend.GameData.RankUpData.RankUpDic)
+        {
+            AbilityData abilityData = rankEntry.Value;
+
+            if (CanChangeAbility(abilityData))
+            {
+                changeCount++;
+            }
+        }
+
+        return changeCount;
+    }
+    
+    private bool ContainsHighestRankAbility()
+    {
+        foreach (KeyValuePair<string, AbilityData> rankEntry in Managers.Backend.GameData.RankUpData.RankUpDic)
+        {
+            AbilityData abilityData = rankEntry.Value;
+
+            if (CanChangeAbility(abilityData))
+            {
+                // 최상위 등급인지 확인
+                if (abilityData.RareType == ERareType.Mythical)
+                {
+                    return true; // 최상위 등급 발견
+                }
+            }
+        }
+        return false; // 최상위 등급이 없음
+    }
+    
+    private bool CanChangeAbility(AbilityData abilityData)
+    {
+        return (abilityData.RankState == ERankState.Completed || abilityData.RankState == ERankState.Current) &&
+               abilityData.RankAbilityState != ERankAbilityState.Locked &&
+               abilityData.RankAbilityState != ERankAbilityState.Restricted;
     }
 
     private IEnumerator CoStartUpgradeCoolTime(float seconds)

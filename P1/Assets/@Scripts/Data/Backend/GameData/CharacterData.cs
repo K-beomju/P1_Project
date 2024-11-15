@@ -143,6 +143,7 @@ namespace BackendData.GameData
             // AddAmount(EItemType.ExpPoint, 1100);
             // AddAmount(EItemType.Dia, 1000000000);
             // AddAmount(EItemType.Gold, 185000);
+            AddAmount(EItemType.AbilityPoint, 185000);
 
         }
 
