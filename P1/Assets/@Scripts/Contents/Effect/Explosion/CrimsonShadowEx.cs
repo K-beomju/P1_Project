@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrimsonShadowExplosionEx : ExplosionBase
@@ -15,5 +13,4 @@ public class CrimsonShadowExplosionEx : ExplosionBase
             }
         }
     }
-
 }

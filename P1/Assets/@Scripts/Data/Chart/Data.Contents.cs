@@ -570,9 +570,13 @@ namespace Data
     {
         public EHeroRankUpStatType StatType;
         public string Name;
-       
-        public int MinValue;
-        public int MaxValue;
+
+        public List<int> ProbabilityList = new List<int>();
+        public List<int> NormalValueList = new List<int>();
+        public List<int> AdvanceValueList = new List<int>();
+        public List<int> RareValueList = new List<int>();
+        public List<int> LegendaryValueList = new List<int>();
+        public List<int> MythicalValueList = new List<int>();
     }
 
     [Serializable]

@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Cinemachine.DocumentationSortingAttribute;
 using static Define;
 
 public class UI_DrawEquipmentPanel : UI_Base
@@ -169,7 +168,10 @@ public class UI_DrawEquipmentPanel : UI_Base
 
     private void ShowProbabilityPopup()
     {
-        Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_drawType);
+        var popupUI = Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        popupUI.RefreshUI(_drawType);
+
     }
 
     #endregion

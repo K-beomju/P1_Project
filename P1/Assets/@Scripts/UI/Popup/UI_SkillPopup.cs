@@ -78,11 +78,8 @@ public class UI_SkillPopup : UI_Popup
         BindSliders(typeof(Sliders));
         Bind<UI_SkillSlot>(typeof(SkillSlots));
 
-        GetObject((int)GameObjects.BG).BindEvent(() =>
-        {
-            (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Skill);
+        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Skill));
 
-        }, EUIEvent.Click);
         GetButton((int)Buttons.Btn_Equip).onClick.AddListener(OnEquipSkill);
         GetButton((int)Buttons.Btn_UnEquip).onClick.AddListener(OnUnEquipSkill);
         GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(OnEnhanceSkill);

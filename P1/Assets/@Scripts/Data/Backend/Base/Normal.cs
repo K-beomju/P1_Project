@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using BackEnd;
 using System.Reflection;
 
 namespace BackendData.Base
 {
     public class Normal
     {
-        public delegate void AfterBackendLoadFunc(bool isSuccess, string className, string functionName, string errorInfo);
+        public delegate void AfterBackendLoadFunc(bool isSuccess, string className, string functionName,
+            string errorInfo);
 
         public virtual void BackendLoad(AfterBackendLoadFunc afterBackendLoadFuc)
         {

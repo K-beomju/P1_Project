@@ -1,9 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using BackendData.Rank;
 using UnityEngine;
 
 public class UI_RankingItem : UI_Base
 {
+    public enum Images
+    {
+        Image_Medal,
+        Image_RankOutLine
+    }
+
     public enum Texts
     {
         Text_Rank,
@@ -11,22 +16,19 @@ public class UI_RankingItem : UI_Base
         Text_TotalDamage
     }
 
-    public enum Images
-    {
-        Image_Medal,
-        Image_RankOutLine
-    }
-
     protected override bool Init()
     {
         if (base.Init() == false)
+        {
             return false;
+        }
+
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
         return true;
     }
 
-    public void RefreshUI(BackendData.Rank.RankUserItem rankUserItem)
+    public void RefreshUI(RankUserItem rankUserItem)
     {
         GetTMPText((int)Texts.Text_Rank).text = rankUserItem.rank;
         GetTMPText((int)Texts.Text_NickName).text = rankUserItem.nickname;
@@ -37,7 +39,8 @@ public class UI_RankingItem : UI_Base
         {
             case 1:
                 GetImage((int)Images.Image_RankOutLine).gameObject.SetActive(true);
-                GetImage((int)Images.Image_RankOutLine).sprite = Managers.Resource.Load<Sprite>("Sprites/Rank/FirstTap");
+                GetImage((int)Images.Image_RankOutLine).sprite =
+                    Managers.Resource.Load<Sprite>("Sprites/Rank/FirstTap");
 
                 GetImage((int)Images.Image_Medal).sprite = Managers.Resource.Load<Sprite>("Sprites/Rank/medal1");
                 GetImage((int)Images.Image_Medal).rectTransform.sizeDelta = new Vector2(36, 50);
@@ -45,7 +48,8 @@ public class UI_RankingItem : UI_Base
                 break;
             case 2:
                 GetImage((int)Images.Image_RankOutLine).gameObject.SetActive(true);
-                GetImage((int)Images.Image_RankOutLine).sprite = Managers.Resource.Load<Sprite>("Sprites/Rank/SecondTap");
+                GetImage((int)Images.Image_RankOutLine).sprite =
+                    Managers.Resource.Load<Sprite>("Sprites/Rank/SecondTap");
 
                 GetImage((int)Images.Image_Medal).sprite = Managers.Resource.Load<Sprite>("Sprites/Rank/medal2");
                 GetImage((int)Images.Image_Medal).rectTransform.sizeDelta = new Vector2(36, 50);
@@ -53,7 +57,8 @@ public class UI_RankingItem : UI_Base
                 break;
             case 3:
                 GetImage((int)Images.Image_RankOutLine).gameObject.SetActive(true);
-                GetImage((int)Images.Image_RankOutLine).sprite = Managers.Resource.Load<Sprite>("Sprites/Rank/ThirdTap");
+                GetImage((int)Images.Image_RankOutLine).sprite =
+                    Managers.Resource.Load<Sprite>("Sprites/Rank/ThirdTap");
 
                 GetImage((int)Images.Image_Medal).sprite = Managers.Resource.Load<Sprite>("Sprites/Rank/medal3");
                 GetImage((int)Images.Image_Medal).rectTransform.sizeDelta = new Vector2(36, 50);

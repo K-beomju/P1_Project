@@ -1,10 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
 using BackendData.GameData;
 using DG.Tweening;
-using static Define;
 using System.Collections;
-using System;
+using UnityEngine;
+using UnityEngine.UI;
+using static Define;
 
 public class UI_EquipSkillSlot : UI_Base
 {
@@ -23,19 +22,21 @@ public class UI_EquipSkillSlot : UI_Base
     }
 
     private Button _button;
-    private Image _lockImage;
-    private Image _iconImage;
+    private Coroutine _coolTimeCo;
     private Image _coolTimeImage;
     private Image _durationImage;
+    private Image _iconImage;
 
-    private int _index; 
+    private int _index;
+    private Image _lockImage;
     private SkillSlot _skillSlot;
-    private Coroutine _coolTimeCo;
 
     protected override bool Init()
     {
         if (base.Init() == false)
+        {
             return false;
+        }
 
         BindImages(typeof(Images));
         _button = GetComponent<Button>();
@@ -56,7 +57,7 @@ public class UI_EquipSkillSlot : UI_Base
     {
         _index = index;
         _skillSlot = Managers.Backend.GameData.SkillInventory.SkillSlotList[_index];
-        if(Init() == false)
+        if (Init() == false)
         {
             RefreshUI();
         }
@@ -89,26 +90,28 @@ public class UI_EquipSkillSlot : UI_Base
 
         _iconImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{_skillSlot.SkillInfoData.SpriteKey}");
         StopCoolTime(_index);
-       
+
         // 스킬 쿨타임 계산
         float baseCoolTime = _skillSlot.SkillInfoData.Data.CoolTime;
         float skillTimeAttr = Managers.Hero.PlayerHeroInfo.SkillTimeAttr; // 특성으로 인한 쿨타임 감소 퍼센트
 
         // 특성 적용된 쿨타임 계산
-        float adjustedCoolTime = baseCoolTime * (1 - skillTimeAttr / 100f);
+        float adjustedCoolTime = baseCoolTime * (1 - (skillTimeAttr / 100f));
         adjustedCoolTime = Mathf.Max(0f, adjustedCoolTime); // 쿨타임이 음수가 되지 않도록 보정
 
         Debug.Log($"스킬 기본 쿨타임: {baseCoolTime}, 특성 쿨타임 감소: {skillTimeAttr}%, 적용된 쿨타임: {adjustedCoolTime}");
 
-        _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));    
+        _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));
     }
-    
+
     public void OnUseSkill()
     {
-        if(IsSkillReady())
+        if (IsSkillReady())
         {
             Managers.Object.Hero.Skills.UseSkill(_index);
-            _coolTimeCo = StartCoroutine(CoolTimeCo(Managers.Data.EffectChart[_skillSlot.SkillInfoData.Data.EffectId].Duration, DelayType.DurationTime));
+            _coolTimeCo =
+                StartCoroutine(CoolTimeCo(Managers.Data.EffectChart[_skillSlot.SkillInfoData.Data.EffectId].Duration,
+                    DelayType.DurationTime));
             Debug.LogWarning($"{_index + 1}번째 슬롯의 <color=#FF0000>{_skillSlot.SkillInfoData.Name}</color> 스킬이 실행됩니다.");
         }
     }
@@ -135,17 +138,17 @@ public class UI_EquipSkillSlot : UI_Base
         delayImage.fillAmount = 0f;
         delayImage.gameObject.SetActive(false);
 
-        switch(delayType)
+        switch (delayType)
         {
             // 쿨타임이 지나면 스킬 실행 가능한 상태 
             case DelayType.CoolTime:
-            Managers.Event.TriggerEvent(EEventType.CompleteSkillCool, _index);
-            break;
+                Managers.Event.TriggerEvent(EEventType.CompleteSkillCool, _index);
+                break;
 
             // 스킬 실행 시간이 지나면 쿨타임으로 바꿔줘야함 
             case DelayType.DurationTime:
-            _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));  
-            break;
+                _coolTimeCo = StartCoroutine(CoolTimeCo(_skillSlot.SkillInfoData.Data.CoolTime, DelayType.CoolTime));
+                break;
         }
     }
 
@@ -153,14 +156,16 @@ public class UI_EquipSkillSlot : UI_Base
     {
         // 전달받은 슬롯 인덱스가 현재 슬롯 인덱스와 일치하지 않으면 리턴 (옵션)
         if (slotIndex != -1 && slotIndex != _index)
+        {
             return;
+        }
 
-        if(_coolTimeCo != null)
+        if (_coolTimeCo != null)
         {
             StopCoroutine(_coolTimeCo);
             _coolTimeCo = null;
         }
-        
+
         _iconImage.color = Color.white;
         _coolTimeImage.fillAmount = 0;
         _coolTimeImage.gameObject.SetActive(false);
@@ -171,8 +176,7 @@ public class UI_EquipSkillSlot : UI_Base
     public bool IsSkillReady()
     {
         // 스킬이 사용 가능한 상태인지 확인하는 메서드 추가
-        return Managers.Object.Monsters.Count > 1 && _skillSlot != null && _skillSlot.SkillInfoData != null && _coolTimeCo == null && _skillSlot.SlotType == ESkillSlotType.Equipped;
+        return Managers.Object.Monsters.Count > 1 && _skillSlot != null && _skillSlot.SkillInfoData != null &&
+               _coolTimeCo == null && _skillSlot.SlotType == ESkillSlotType.Equipped;
     }
-
-
 }

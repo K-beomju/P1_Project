@@ -5,6 +5,11 @@ using static Define;
 
 public class UI_DungeonPopup : UI_Popup
 {
+    public enum GameObjects
+    {
+        BG
+    }
+
     public enum Texts 
     {
         Text_Timer
@@ -21,8 +26,11 @@ public class UI_DungeonPopup : UI_Popup
     {
         if (base.Init() == false)
             return false;
+        BindObjects(typeof(GameObjects));
         BindTMPTexts(typeof(Texts));
         Bind<UI_DungeonInfoItem>(typeof(UI_DungeonInfoItems));
+
+        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Dungeon));
 
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Gold).SetInfo(EDungeonType.Gold);
         Get<UI_DungeonInfoItem>((int)UI_DungeonInfoItems.UI_DungeonInfoItem_Dia).SetInfo(EDungeonType.Dia);

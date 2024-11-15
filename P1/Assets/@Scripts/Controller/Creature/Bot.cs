@@ -1,15 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
 public class Bot : Creature, IDamageable
 {
-     protected override bool Init()
+    public override void OnDamaged(Creature attacker, EffectBase effect = null)
+    {
+        base.OnDamaged(attacker, effect);
+        Sprite.flipX = transform.position.x > attacker.transform.position.x;
+    }
+
+    public override void OnDead()
+    {
+    }
+
+    protected override bool Init()
     {
         if (base.Init() == false)
+        {
             return false;
+        }
 
         ObjectType = EObjectType.Monster;
         gameObject.layer = (int)ELayer.Monster;
@@ -31,17 +40,5 @@ public class Bot : Creature, IDamageable
     protected override void UpdateDead()
     {
         OnDead();
-    }
-
-    public override void OnDamaged(Creature attacker, EffectBase effect = null)
-    {
-        base.OnDamaged(attacker, effect);
-        Sprite.flipX = transform.position.x > attacker.transform.position.x;
-
-    }
-
-    public override void OnDead()
-    {
-
     }
 }

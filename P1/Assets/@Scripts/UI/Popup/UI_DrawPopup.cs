@@ -46,7 +46,7 @@ public class UI_DrawPopup : UI_Popup
 
         _drawEquipmentPanel = GetObject((int)GameObjects.UI_DrawEquipmentPanel).GetOrAddComponent<UI_DrawEquipmentPanel>();
         _drawSkillPanel = GetObject((int)GameObjects.UI_DrawSkillPanel).GetOrAddComponent<UI_DrawSkillPanel>();
-
+        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Draw));
         GetButton((int)Buttons.Btn_Equipment).onClick.AddListener(() => OnClickButton(EDrawSection.Equipment));
         GetButton((int)Buttons.Btn_Skill).onClick.AddListener(() => OnClickButton(EDrawSection.Skill));
 

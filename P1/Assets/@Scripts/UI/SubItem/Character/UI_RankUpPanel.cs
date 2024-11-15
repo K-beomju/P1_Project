@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
@@ -31,7 +30,8 @@ public class UI_RankUpPanel : UI_Base
     {
         Btn_ChangeAbility,
         Btn_RestAbility,
-        Btn_ExitBestRankOption
+        Btn_ExitBestRankOption,
+        Btn_RankUpDesc
     }
 
     // 추가 능력 슬롯 
@@ -86,8 +86,10 @@ public class UI_RankUpPanel : UI_Base
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_GrandMaster).SetInfo(ERankType.GrandMaster);
 
         GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnClickButton, EUIEvent.Pressed);
-        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnClickButton, EUIEvent.Pressed);
+        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
 
+        // Rest Option
+        GetObject((int)GameObjects.BestOptionAlert).gameObject.SetActive(false);
         GetButton((int)Buttons.Btn_RestAbility).gameObject.BindEvent(() =>
         {
             // BestOptionAlert 창 닫기
@@ -98,9 +100,6 @@ public class UI_RankUpPanel : UI_Base
             ResetAbility();
 
         }, EUIEvent.Click);
-
-
-        GetObject((int)GameObjects.BestOptionAlert).gameObject.SetActive(false);
         GetButton((int)Buttons.Btn_ExitBestRankOption).gameObject.BindEvent(() =>
         {
             GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
@@ -113,6 +112,14 @@ public class UI_RankUpPanel : UI_Base
             _bestOption = false;
         }, EUIEvent.Click);
 
+
+        // Desc
+        GetButton((int)Buttons.Btn_RankUpDesc).onClick.AddListener(() =>
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_RankUpProbabilityPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
+        });
         return true;
     }
 
@@ -223,9 +230,19 @@ public class UI_RankUpPanel : UI_Base
         // 딕셔너리에서 rankUpData 찾기
         if (Managers.Data.DrawRankUpChart.TryGetValue(randStatType, out var rankUpData))
         {
-            int selectedValue = UnityEngine.Random.Range(rankUpData.MinValue, rankUpData.MaxValue + 1);   
-            ERareType randRareType = validRareTypes[Util.GetRankUpGrade(selectedValue, rankUpData)];
-            Debug.Log(randRareType);
+            int drawProbabilityIndex = Util.GetDrawProbabilityType(rankUpData.ProbabilityList);
+            List<int> valueList = drawProbabilityIndex switch
+            {
+                0 => rankUpData.NormalValueList,
+                1 => rankUpData.AdvanceValueList,
+                2 => rankUpData.RareValueList,
+                3 => rankUpData.LegendaryValueList,
+                4 => rankUpData.MythicalValueList,
+                _ => throw new ArgumentException($"Unknown rare type value: {drawProbabilityIndex}")
+            };
+
+            ERareType randRareType = validRareTypes[drawProbabilityIndex];
+            int selectedValue = valueList[Util.GetDrawProbabilityType(valueList)];
             Managers.Backend.GameData.RankUpData.UpdateAbilityData(rankKey, ERankAbilityState.Acquired, randStatType, randRareType, selectedValue);
             //Debug.Log($"{rankKey}에 {rankUpData.Name} {selectedValue} 능력치가 부여되었습니다.");
         }
