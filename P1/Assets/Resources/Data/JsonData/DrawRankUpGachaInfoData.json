@@ -3,296 +3,38 @@
     {
       "StatType": 1,
       "Name": "추가 공격력",
-      "ProbabilityList": [
-        35,
-        25,
-        20,
-        15,
-        5
-      ],
-      "NormalValueList": [
-        3,
-        4,
-        5
-      ],
-      "AdvanceValueList": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "RareValueList": [
-        13,
-        14,
-        15,
-        16,
-        17
-      ],
-      "LegendaryValueList": [
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25
-      ],
-      "MythicalValueList": [
-        26,
-        27,
-        28,
-        29,
-        30
-      ]
+      "MinValue": 6,
+      "MaxValue": 30
     },
     {
       "StatType": 2,
       "Name": "추가 최대체력",
-      "ProbabilityList": [
-        35,
-        25,
-        20,
-        15,
-        5
-      ],
-      "NormalValueList": [
-        3,
-        4,
-        5
-      ],
-      "AdvanceValueList": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "RareValueList": [
-        13,
-        14,
-        15,
-        16,
-        17
-      ],
-      "LegendaryValueList": [
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25
-      ],
-      "MythicalValueList": [
-        26,
-        27,
-        28,
-        29,
-        30
-      ]
+      "MinValue": 6,
+      "MaxValue": 30
     },
     {
       "StatType": 3,
       "Name": "추가 체력회복",
-      "ProbabilityList": [
-        35,
-        25,
-        20,
-        15,
-        5
-      ],
-      "NormalValueList": [
-        3,
-        4,
-        5
-      ],
-      "AdvanceValueList": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "RareValueList": [
-        13,
-        14,
-        15,
-        16,
-        17
-      ],
-      "LegendaryValueList": [
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25
-      ],
-      "MythicalValueList": [
-        26,
-        27,
-        28,
-        29,
-        30
-      ]
+      "MinValue": 6,
+      "MaxValue": 30
     },
     {
       "StatType": 4,
       "Name": "추가 치명타 데미지",
-      "ProbabilityList": [
-        35,
-        25,
-        20,
-        15,
-        5
-      ],
-      "NormalValueList": [
-        3,
-        4,
-        5
-      ],
-      "AdvanceValueList": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "RareValueList": [
-        13,
-        14,
-        15,
-        16,
-        17
-      ],
-      "LegendaryValueList": [
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25
-      ],
-      "MythicalValueList": [
-        26,
-        27,
-        28,
-        29,
-        30
-      ]
+      "MinValue": 6,
+      "MaxValue": 30
     },
     {
       "StatType": 6,
       "Name": "추가 경험치 획득량",
-      "ProbabilityList": [
-        35,
-        25,
-        20,
-        15,
-        5
-      ],
-      "NormalValueList": [
-        3,
-        4,
-        5
-      ],
-      "AdvanceValueList": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "RareValueList": [
-        13,
-        14,
-        15,
-        16,
-        17
-      ],
-      "LegendaryValueList": [
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25
-      ],
-      "MythicalValueList": [
-        26,
-        27,
-        28,
-        29,
-        30
-      ]
+      "MinValue": 6,
+      "MaxValue": 30
     },
     {
       "StatType": 5,
       "Name": "추가 골드 획득량",
-      "ProbabilityList": [
-        35,
-        25,
-        20,
-        15,
-        5
-      ],
-      "NormalValueList": [
-        3,
-        4,
-        5
-      ],
-      "AdvanceValueList": [
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "RareValueList": [
-        13,
-        14,
-        15,
-        16,
-        17
-      ],
-      "LegendaryValueList": [
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25
-      ],
-      "MythicalValueList": [
-        26,
-        27,
-        28,
-        29,
-        30
-      ]
+      "MinValue": 6,
+      "MaxValue": 30
     }
   ]
 }

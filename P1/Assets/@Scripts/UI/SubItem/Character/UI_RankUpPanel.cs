@@ -9,6 +9,12 @@ using static Define;
 
 public class UI_RankUpPanel : UI_Base
 {
+    public enum GameObjects
+    {
+        BestOptionAlert,
+        BestOptionBG
+    }
+
     public enum Texts
     {
         Text_MyRankName,
@@ -23,7 +29,9 @@ public class UI_RankUpPanel : UI_Base
 
     public enum Buttons
     {
-        Btn_ChangeAbility
+        Btn_ChangeAbility,
+        Btn_RestAbility,
+        Btn_ExitBestRankOption
     }
 
     // 추가 능력 슬롯 
@@ -49,6 +57,7 @@ public class UI_RankUpPanel : UI_Base
     }
 
     private Coroutine _coolTime;
+    private bool _bestOption = false;
 
     protected override bool Init()
     {
@@ -58,6 +67,7 @@ public class UI_RankUpPanel : UI_Base
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
         BindButtons(typeof(Buttons));
+        BindObjects(typeof(GameObjects));
         Bind<UI_RankAbilityItem>(typeof(RankAbility));
         Bind<UI_RankChallengeItem>(typeof(RankChallenge));
 
@@ -75,9 +85,33 @@ public class UI_RankUpPanel : UI_Base
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_Master).SetInfo(ERankType.Master);
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_GrandMaster).SetInfo(ERankType.GrandMaster);
 
-
         GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnClickButton, EUIEvent.Pressed);
-        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
+        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnClickButton, EUIEvent.Pressed);
+
+        GetButton((int)Buttons.Btn_RestAbility).gameObject.BindEvent(() =>
+        {
+            // BestOptionAlert 창 닫기
+            GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
+            _bestOption = false;
+
+            // 능력 변경 함수 호출
+            ResetAbility();
+
+        }, EUIEvent.Click);
+
+
+        GetObject((int)GameObjects.BestOptionAlert).gameObject.SetActive(false);
+        GetButton((int)Buttons.Btn_ExitBestRankOption).gameObject.BindEvent(() =>
+        {
+            GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
+            _bestOption = false;
+
+        }, EUIEvent.Click);
+        GetObject((int)GameObjects.BestOptionBG).gameObject.BindEvent(() =>
+        {
+            GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
+            _bestOption = false;
+        }, EUIEvent.Click);
 
         return true;
     }
@@ -92,9 +126,13 @@ public class UI_RankUpPanel : UI_Base
         Managers.Event.RemoveEvent(EEventType.HeroRankUpdated, new Action(RefreshUI));
     }
 
+
     private void OnClickButton()
     {
         if (_coolTime != null)
+            return;
+
+        if (_bestOption == true)
             return;
 
         List<string> updatedRankKeys = new List<string>(); // 변경된 RankKey 목록
@@ -109,10 +147,45 @@ public class UI_RankUpPanel : UI_Base
                 abilityData.RankAbilityState != ERankAbilityState.Locked &&
                 abilityData.RankAbilityState != ERankAbilityState.Restricted)
             {
+                // 추가 조건: 최종 등급을 바꿀려고 한다면 안내를 떠야함
+                if(abilityData.RareType == ERareType.Mythical)
+                {
+                    // 최종등급 안내 오브젝트 추가 
+                    _bestOption = true;
+                    GetObject((int)GameObjects.BestOptionAlert).gameObject.SetActive(true);
+                    return;
+                }
                 AssignRandomAbility(rankEntry.Key, abilityData);
                 updatedRankKeys.Add(rankEntry.Key); // 변경된 RankKey 추가
-                _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
+                _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.2f));
 
+            }
+        }
+
+        if (updatedRankKeys.Count > 0)
+        {
+            RefreshUpdatedUIItems(updatedRankKeys);
+        }
+    }
+
+    private void ResetAbility()
+    {
+        // BestOptionAlert가 활성화된 상태라면 실행하지 않음
+        if (_bestOption)
+            return;
+
+        List<string> updatedRankKeys = new List<string>();
+
+        foreach (var rankEntry in Managers.Backend.GameData.RankUpData.RankUpDic)
+        {
+            AbilityData abilityData = rankEntry.Value;
+
+            if ((abilityData.RankState == ERankState.Completed || abilityData.RankState == ERankState.Current) &&
+                abilityData.RankAbilityState != ERankAbilityState.Locked &&
+                abilityData.RankAbilityState != ERankAbilityState.Restricted)
+            {
+                AssignRandomAbility(rankEntry.Key, abilityData);
+                updatedRankKeys.Add(rankEntry.Key);
             }
         }
 
@@ -150,21 +223,11 @@ public class UI_RankUpPanel : UI_Base
         // 딕셔너리에서 rankUpData 찾기
         if (Managers.Data.DrawRankUpChart.TryGetValue(randStatType, out var rankUpData))
         {
-            int drawProbabilityIndex = Util.GetDrawProbabilityType(rankUpData.ProbabilityList);
-            List<int> valueList = drawProbabilityIndex switch
-            {
-                0 => rankUpData.NormalValueList,
-                1 => rankUpData.AdvanceValueList,
-                2 => rankUpData.RareValueList,
-                3 => rankUpData.LegendaryValueList,
-                4 => rankUpData.MythicalValueList,
-                _ => throw new ArgumentException($"Unknown rare type value: {drawProbabilityIndex}")
-            };
-
-            ERareType randRareType = validRareTypes[drawProbabilityIndex];
-            int selectedValue = valueList[Util.GetDrawProbabilityType(valueList)];
+            int selectedValue = UnityEngine.Random.Range(rankUpData.MinValue, rankUpData.MaxValue + 1);   
+            ERareType randRareType = validRareTypes[Util.GetRankUpGrade(selectedValue, rankUpData)];
+            Debug.Log(randRareType);
             Managers.Backend.GameData.RankUpData.UpdateAbilityData(rankKey, ERankAbilityState.Acquired, randStatType, randRareType, selectedValue);
-            Debug.Log($"{rankKey}에 {rankUpData.Name} {selectedValue} 능력치가 부여되었습니다.");
+            //Debug.Log($"{rankKey}에 {rankUpData.Name} {selectedValue} 능력치가 부여되었습니다.");
         }
         else
         {

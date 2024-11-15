@@ -324,6 +324,21 @@ public static class Util
         return dataID + weightValue;  // weightValue를 더해서 반환
     }
 
+    public static int GetRankUpGrade(int selectedValue, DrawRankUpGachaInfoData rankUpData)
+    {
+        int range = rankUpData.MaxValue - rankUpData.MinValue + 1;
+        int gradeRange = range / 5;  // 각 등급의 값 범위
+
+        // selectedValue가 MinValue에서 얼마나 떨어져 있는지를 기준으로 등급 계산
+        int grade = (selectedValue - rankUpData.MinValue) / gradeRange + 1;
+
+        // 최대 등급을 넘지 않도록 처리
+        if (grade > 5)
+            grade = 5;
+
+        return grade - 1;
+    }
+
     // 랜덤 
     public static int GetDrawProbabilityType(List<float> drawList)
     {
