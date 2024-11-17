@@ -49,12 +49,12 @@ namespace BackendData.Rank {
 
         // 랭킹 리스트를 전달하는 함수
         public void GetRankList(GetListFunc getListFunc) {
-            // 갱신한지 5분이 지나지 않았으면 캐싱된 값을 리턴
-            // if ((DateTime.UtcNow - UpdateTime).Minutes < 1) {
-            //     Debug.Log("갱신한지 5분이 지나지 않았으면 캐싱된 값을 리턴합니다.");
-            //     getListFunc(true, UserList);
-            //     return;
-            // }
+            // 갱신한지 10분이 지나지 않았으면 캐싱된 값을 리턴
+            if ((DateTime.UtcNow - UpdateTime).Minutes < 10) {
+                Debug.Log("갱신한지 5분이 지나지 않았으면 캐싱된 값을 리턴합니다.");
+                getListFunc(true, UserList);
+                return;
+            }
             string className = GetType().Name;
             string funcName = MethodBase.GetCurrentMethod()?.Name;
             // 5분이 지났을 경우에는 랭킹 함수 호출
@@ -95,10 +95,10 @@ namespace BackendData.Rank {
         // 내 랭킹이 갱신되지 않았을 경우에는 Update를 한번 호출
         public void GetMyRank(GetMyRankFunc getMyRankFunc) {
             // 5분이 지나지 않았을 경우에는 캐싱된 값 리턴
-            // if ((DateTime.UtcNow - MyRankUpdateTime).Minutes < 1) {
-            //     getMyRankFunc(true, MyRankItem);
-            //     return;
-            // }
+            if ((DateTime.UtcNow - MyRankUpdateTime).Minutes < 10) {
+                getMyRankFunc(true, MyRankItem);
+                return;
+            }
 
             string className = GetType().Name;
             string funcName = MethodBase.GetCurrentMethod()?.Name;

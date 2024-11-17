@@ -23,7 +23,8 @@ namespace BackendData.GameData
 
         public string LastLoginTime { get; private set; }
         public int RemainChargeHour { get; private set; }
-
+        
+        public DateTime UpdateTime { get; private set; }
         public IReadOnlyDictionary<string, int> DungeonLevelDic => (IReadOnlyDictionary<string, int>)_dungeonLevelDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> DungeonKeyDic => (IReadOnlyDictionary<string, int>)_dungeonkeyDic.AsReadOnlyCollection();
 
@@ -87,6 +88,15 @@ namespace BackendData.GameData
 
         public void CheckDungeonKeyRecharge()
         {
+            // 10분이 지나지 않았을 경우에는 캐싱된 값 리턴
+            if ((DateTime.UtcNow - UpdateTime).Hours < 1) {
+                Debug.Log("아직 1시간이 지나지 않았습니다.");
+                return;
+            }
+
+            // 갱신 주기 갱신
+            UpdateTime = DateTime.UtcNow;
+            
             BackendReturnObject serverTime = Backend.Utils.GetServerTime();
             if (!serverTime.IsSuccess())
             {
@@ -101,9 +111,9 @@ namespace BackendData.GameData
             TimeSpan timeDifference = servertime - lastLoginDate;
 
             // `RemainChargeHour` 설정: 남은 충전 시간을 계산
-            RemainChargeHour = timeDifference.TotalHours < 1 ? 12 :               // 1시간 미만 경과 시, 기본값 12시간 설정
-                       timeDifference.TotalHours >= 12 ? 12 :             // 12시간 이상 경과 시, 충전 완료로 12시간 설정
-                       12 - (int)Math.Floor(timeDifference.TotalHours);  // 1~12시간 경과 시, 12에서 경과 시간 차감
+            RemainChargeHour = timeDifference.TotalHours >= 12 ? 12 : // 12시간 이상 경과 시, 충전 완료로 12시간 설정
+                Math.Max(12 - (int)Math.Floor(timeDifference.TotalHours), 1); // 최소 1시간 보장
+
 
             Debug.LogWarning($"지난 로그인 후 경과 시간: {timeDifference.TotalHours}시간");
 
@@ -119,7 +129,7 @@ namespace BackendData.GameData
             Debug.Log("12시간 이상 경과: 키 리필 및 마지막 로그인 시간 업데이트.");
             IsChangedData = true;
             LastLoginTime = servertime.ToString();
-
+            
             foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
             {
                 if (dungeonType == EDungeonType.Unknown) // Unknown 제외
