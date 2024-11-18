@@ -24,12 +24,7 @@ public class WorldBoss : Monster
         MaxHp = data.BossMaxHp;
         Hp = MaxHp;
 
-        MoveSpeed = 1;
-        MoveRange = 5;
-        IdleWaitTime = 3;
-
         worldBossTotalDamage = 0;
-
     }
 
 

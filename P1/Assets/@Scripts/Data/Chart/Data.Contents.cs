@@ -91,23 +91,26 @@ namespace Data
 
     #region RankUpMonsterData
     [Serializable]
-    public class RankUpMonsterInfoData : CreatureInfoData
+    public class RankUpMonsterInfoData
     {
+        public ERankType rankType;
+        public string Name;
+        public string PrefabKey;
         public float Atk;
         public float MaxHp;
     }
 
     [Serializable]
-    public class RankUpMonsterInfoDataLoader : ILoader<int, RankUpMonsterInfoData>
+    public class RankUpMonsterInfoDataLoader : ILoader<ERankType, RankUpMonsterInfoData>
     {
         public List<RankUpMonsterInfoData> rankUpMonsterDataInfoDatas = new List<RankUpMonsterInfoData>();
 
-        public Dictionary<int, RankUpMonsterInfoData> MakeDict()
+        public Dictionary<ERankType, RankUpMonsterInfoData> MakeDict()
         {
-            Dictionary<int, RankUpMonsterInfoData> dict = new Dictionary<int, RankUpMonsterInfoData>();
+            Dictionary<ERankType, RankUpMonsterInfoData> dict = new Dictionary<ERankType, RankUpMonsterInfoData>();
             foreach (RankUpMonsterInfoData infoData in rankUpMonsterDataInfoDatas)
             {
-                dict.Add(infoData.DataId, infoData);
+                dict.Add(infoData.rankType, infoData);
             }
 
             return dict;

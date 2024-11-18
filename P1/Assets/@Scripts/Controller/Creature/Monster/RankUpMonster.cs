@@ -18,12 +18,13 @@ public class RankUpMonster : Monster
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        // RankUpMonsterDataInfoData data = Managers.Data.RankUpMonsterChart[dataTemplateID];
-        // Atk = data.Atk;
-        // MaxHp = data.MaxHp;
-        // Hp = MaxHp;
-        // MoveSpeed = data.MoveSpeed;
+        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
+        RankUpMonsterInfoData data = Managers.Data.RankUpMonsterChart[rankType];
+        Atk = data.Atk;
+        MaxHp = data.MaxHp;
+        Hp = MaxHp;
 
+        MoveSpeed = 1;
         MoveRange = 5;
         IdleWaitTime = 3;
     }

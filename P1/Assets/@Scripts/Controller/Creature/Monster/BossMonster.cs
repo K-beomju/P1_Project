@@ -28,10 +28,6 @@ public class BossMonster : Monster
             MaxHp = stageInfo.BossMonsterMaxHp;
             Hp = MaxHp;
         }
-
-        MoveSpeed = 1;
-        MoveRange = 5;
-        IdleWaitTime = 3;
     }
 
 

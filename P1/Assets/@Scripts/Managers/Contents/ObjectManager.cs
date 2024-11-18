@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class ObjectManager
 {
@@ -30,6 +31,20 @@ public class ObjectManager
         GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
         go.transform.position = position;
         return go;
+    }
+
+    public void SpawnRankUpMonster(Vector3 position)
+    {
+        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
+
+        string prefabName = Managers.Data.RankUpMonsterChart[rankType].PrefabKey;
+        GameObject go = Managers.Resource.Instantiate("Object/RankUpMonster/" + prefabName);
+        go.name = prefabName;
+        go.transform.position = position;
+
+        BaseObject obj = go.GetComponent<BaseObject>();
+
+        obj.SetInfo(0);
     }
 
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject

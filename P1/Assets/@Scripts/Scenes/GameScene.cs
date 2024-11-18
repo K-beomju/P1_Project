@@ -197,6 +197,8 @@ public class GameScene : BaseScene
         hero.Rebirth();
         hero.transform.position = Vector3.zero;
         yield return new WaitForSeconds(1);
+        
+        Managers.Object.SpawnRankUpMonster(Vector2.zero);
     }
 
     private IEnumerator CoStageOver()
