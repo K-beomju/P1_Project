@@ -2,361 +2,361 @@
   "goldDungeonInfoDatas": [
     {
       "DungeonLevel": 1,
-      "KillMonsterCount": 10,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 10,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 1,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 1000
     },
     {
       "DungeonLevel": 2,
-      "KillMonsterCount": 10,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 10,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 2,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 2000
     },
     {
       "DungeonLevel": 3,
-      "KillMonsterCount": 10,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 10,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 3,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 3000
     },
     {
       "DungeonLevel": 4,
-      "KillMonsterCount": 10,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 10,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 4,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 4000
     },
     {
       "DungeonLevel": 5,
-      "KillMonsterCount": 10,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 10,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 5,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 5000
     },
     {
       "DungeonLevel": 6,
-      "KillMonsterCount": 15,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 15,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 6,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 6000
     },
     {
       "DungeonLevel": 7,
-      "KillMonsterCount": 15,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 15,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 7,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 7000
     },
     {
       "DungeonLevel": 8,
-      "KillMonsterCount": 15,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 15,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 8,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 8000
     },
     {
       "DungeonLevel": 9,
-      "KillMonsterCount": 15,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 15,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 9,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 9000
     },
     {
       "DungeonLevel": 10,
-      "KillMonsterCount": 15,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 15,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 10,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 10000
     },
     {
       "DungeonLevel": 11,
-      "KillMonsterCount": 20,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 20,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 11,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 11000
     },
     {
       "DungeonLevel": 12,
-      "KillMonsterCount": 20,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 20,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 12,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 12000
     },
     {
       "DungeonLevel": 13,
-      "KillMonsterCount": 20,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 20,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 13,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 13000
     },
     {
       "DungeonLevel": 14,
-      "KillMonsterCount": 20,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 20,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 14,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 14000
     },
     {
       "DungeonLevel": 15,
-      "KillMonsterCount": 20,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 20,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 15,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 15000
     },
     {
       "DungeonLevel": 16,
-      "KillMonsterCount": 25,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 25,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 16,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 16000
     },
     {
       "DungeonLevel": 17,
-      "KillMonsterCount": 25,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 25,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 17,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 17000
     },
     {
       "DungeonLevel": 18,
-      "KillMonsterCount": 25,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 25,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 18,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 18000
     },
     {
       "DungeonLevel": 19,
-      "KillMonsterCount": 25,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 25,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 19,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 19000
     },
     {
       "DungeonLevel": 20,
-      "KillMonsterCount": 25,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 25,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 20,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 20000
     },
     {
       "DungeonLevel": 21,
-      "KillMonsterCount": 30,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 30,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 21,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 21000
     },
     {
       "DungeonLevel": 22,
-      "KillMonsterCount": 30,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 30,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 22,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 22000
     },
     {
       "DungeonLevel": 23,
-      "KillMonsterCount": 30,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 30,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 23000
     },
     {
       "DungeonLevel": 24,
-      "KillMonsterCount": 30,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 30,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 24000
     },
     {
       "DungeonLevel": 25,
-      "KillMonsterCount": 30,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 30,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 25000
     },
     {
       "DungeonLevel": 26,
-      "KillMonsterCount": 35,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 35,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 26000
     },
     {
       "DungeonLevel": 27,
-      "KillMonsterCount": 35,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 35,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 27000
     },
     {
       "DungeonLevel": 28,
-      "KillMonsterCount": 35,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 35,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 28000
     },
     {
       "DungeonLevel": 29,
-      "KillMonsterCount": 35,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 35,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 29000
     },
     {
       "DungeonLevel": 30,
-      "KillMonsterCount": 35,
-      "BossDataId": 0,
       "DungeonTimeLimit": 30,
+      "KillMonsterCount": 35,
       "MonsterDataIdList": [
         50002000
       ],
-      "MonsterLevel": 30,
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 10.0,
       "ItemType": 1,
       "DungeonClearReward": 30000
     }

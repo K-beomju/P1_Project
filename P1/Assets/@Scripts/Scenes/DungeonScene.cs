@@ -29,7 +29,7 @@ public class DungeonScene : BaseScene
     private UI_DungeonScene sceneUI;
 
     public DungeonInfoData DungeonInfo { get; private set; }
-    private BackendData.GameData.CharacterData CharacterData;
+    public WorldBossDungeonInfoData WorldDungeonInfo { get; private set; }
     private Dictionary<EItemType, int> clearRewardDic = new Dictionary<EItemType, int>();
 
     public float DungeonTimer { get; private set; }
@@ -44,34 +44,21 @@ public class DungeonScene : BaseScene
         DungeonType = Managers.Game.GetCurrentDungeon();
         Managers.Scene.SetCurrentScene(this);
 
-        InitailizeBackend();
 
         InitializeScene();
-        InitializeUI();
         InitializeDungeon();
 
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
         fadeInCallBack: () =>
         {
-            switch (DungeonType)
-            {
-                case EDungeonType.Gold:
-                case EDungeonType.Dia:
-                    GameSceneState = EGameSceneState.Play;
-                    break;
-                case EDungeonType.WorldBoss:
-                    GameSceneState = EGameSceneState.Boss;
-                    break;
-            }
+            int dungeonLevel = DungeonType == EDungeonType.WorldBoss ? 0 : DungeonInfo.DungeonLevel;
+            Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, dungeonLevel);
+            GameSceneState = EGameSceneState.Play;
         });
 
         return true;
     }
 
-    private void InitailizeBackend()
-    {
-        CharacterData = Managers.Backend.GameData.CharacterData;
-    }
 
     private void InitializeScene()
     {
@@ -89,36 +76,42 @@ public class DungeonScene : BaseScene
         cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero;
-    }
 
-    private void InitializeUI()
-    {
+        // UI 초기화
         sceneUI = Managers.UI.ShowSceneUI<UI_DungeonScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
-
-        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
-
     }
 
     private void InitializeDungeon()
     {
         int dungeonLevel = Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()];
-        DungeonInfo = DungeonType switch
+
+        if (DungeonType != EDungeonType.WorldBoss)
         {
-            EDungeonType.Gold => Managers.Data.GoldDungeonChart[dungeonLevel],
-            EDungeonType.Dia => Managers.Data.DiaDungeonChart[dungeonLevel],
-            EDungeonType.WorldBoss => Managers.Data.WorldBossDungeonChart[dungeonLevel],
+            DungeonInfo = DungeonType switch
+            {
+                EDungeonType.Gold => Managers.Data.GoldDungeonChart[dungeonLevel],
+                EDungeonType.Dia => Managers.Data.DiaDungeonChart[dungeonLevel],
+                _ => throw new ArgumentException($"Unknown DungeonType: {DungeonType}")
+            };
 
-            _ => throw new ArgumentException($"Unknown DungeonType: {DungeonType}")
-        };
+            sceneUI.UpdateStageUI(DungeonType, DungeonInfo.DungeonLevel);
+            Managers.Game.SetMonsterCount(0, DungeonInfo.KillMonsterCount);
 
+            DungeonTimeLimit = DungeonInfo.DungeonTimeLimit;
+            DungeonTimer = DungeonTimeLimit;
+            UpdateDungeonTimer();
+        }
+        else
+        {
+            WorldDungeonInfo = Managers.Data.WorldBossDungeonChart[1];
+            sceneUI.UpdateStageUI(DungeonType, 0);
+            Managers.Game.SetMonsterCount(0, 0);
 
-        sceneUI.UpdateStageUI(DungeonType, DungeonInfo.DungeonLevel);
-        Managers.Game.SetMonsterCount(0, DungeonInfo.KillMonsterCount);
-
-        DungeonTimeLimit = DungeonInfo.DungeonTimeLimit;
-        DungeonTimer = DungeonTimeLimit;
-        UpdateDungeonTimer();
+            DungeonTimeLimit = WorldDungeonInfo.DungeonTimeLimit;
+            DungeonTimer = WorldDungeonInfo.DungeonTimeLimit;
+            UpdateDungeonTimer();
+        }
     }
 
 
@@ -144,7 +137,6 @@ public class DungeonScene : BaseScene
         _stateCoroutines = new Dictionary<EGameSceneState, Func<IEnumerator>>
         {
             { EGameSceneState.Play, CoPlayStage },
-            { EGameSceneState.Boss, CoBossStage },
             { EGameSceneState.Pause, CoPauseStage },
             { EGameSceneState.Over, CoStageOver },
             { EGameSceneState.Clear, CoStageClear }
@@ -156,35 +148,16 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoPlayStage()
     {
-        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, DungeonInfo.DungeonLevel);
         yield return new WaitForSeconds(2f);
-        Managers.Game.SpawnDungeonMonster(DungeonInfo);
-
-        // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
-        if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
-            (Managers.UI.SceneUI as UI_DungeonScene).CheckUseSkillSlot(-1);
-
-        while (DungeonTimer > 0)
+        if (DungeonType == EDungeonType.WorldBoss)
         {
-            UpdateDungeonTimer(); // 보스 타이머 업데이트 메서드 호출
-
-            if (Managers.Game.ClearStage())
-            {
-                GameSceneState = EGameSceneState.Clear;
-            }
-            if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
-            {
-                GameSceneState = EGameSceneState.Over;
-            }
-            yield return null;
+            Managers.Game.SpawnDungeonMonster(worldBossInfo: WorldDungeonInfo, isBoss: true);
         }
-    }
+        else
+        {
+            Managers.Game.SpawnDungeonMonster(dungeonInfo: DungeonInfo);
+        }
 
-    private IEnumerator CoBossStage()
-    {
-        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, DungeonInfo.DungeonLevel);
-        yield return new WaitForSeconds(2f);
-        Managers.Game.SpawnDungeonMonster(DungeonInfo, isBoss: true);
 
         // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
         if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
@@ -194,10 +167,26 @@ public class DungeonScene : BaseScene
         {
             UpdateDungeonTimer(); // 보스 타이머 업데이트 메서드 호출
 
-            if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+            if (DungeonType != EDungeonType.WorldBoss)
             {
-                GameSceneState = EGameSceneState.Over;
+                if (Managers.Game.ClearStage())
+                {
+                    GameSceneState = EGameSceneState.Clear;
+                }
+                if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+                {
+                    GameSceneState = EGameSceneState.Over;
+                }
             }
+            else
+            {
+
+                if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+                {
+                    GameSceneState = EGameSceneState.Over;
+                }
+            }
+
             yield return null;
         }
     }
@@ -214,7 +203,7 @@ public class DungeonScene : BaseScene
 
         sceneUI.RefreshDungeonTimer(0, 0);
         if (DungeonType != EDungeonType.WorldBoss)
-        {       
+        {
             // 몬스터 멈추고 UI 팝업 켜주고 
             Managers.Object.Monsters.ToList().ForEach(x => x.isStopAI = true);
             var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
@@ -231,13 +220,13 @@ public class DungeonScene : BaseScene
             float endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
             float currentTotalWorldBossDmg = userData.WorldBossCombatPower;
 
-            if(currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
+            if (currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
             {
                 Managers.Backend.GameData.CharacterData.UpdateWorldBossCombatPower(endTotalWorldBossDmg);
                 Managers.Backend.UpdateRankScore();
             }
-            
-        
+
+
 
             var popupUI = Managers.UI.ShowPopupUI<UI_BattleResultPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
@@ -251,6 +240,8 @@ public class DungeonScene : BaseScene
     {
         var popupUI = Managers.UI.ShowPopupUI<UI_DungeonClearPopup>();
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+
+        clearRewardDic.Clear();
         clearRewardDic.Add(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
         popupUI.RefreshUI(DungeonType, clearRewardDic);
 

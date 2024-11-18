@@ -18,11 +18,11 @@ public class RankUpMonster : Monster
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        RankUpMonsterDataInfoData data = Managers.Data.RankUpMonsterChart[dataTemplateID];
-        Atk = data.Atk;
-        MaxHp = data.MaxHp;
-        Hp = MaxHp;
-        MoveSpeed = data.MoveSpeed;
+        // RankUpMonsterDataInfoData data = Managers.Data.RankUpMonsterChart[dataTemplateID];
+        // Atk = data.Atk;
+        // MaxHp = data.MaxHp;
+        // Hp = MaxHp;
+        // MoveSpeed = data.MoveSpeed;
 
         MoveRange = 5;
         IdleWaitTime = 3;

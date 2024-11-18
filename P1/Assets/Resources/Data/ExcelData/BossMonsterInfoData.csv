@@ -1,3 +1,2 @@
-﻿DataId,Name,ObjectType,PrefabKey,Atk,MaxHp,MoveSpeed
-60001000,보스1,BossMonster,Enemy_Gana,10,400,1
-60002000,월드보스,BossMonster,Enemy_WorldBoss,10,1000000,1
+﻿DataId,Name,PrefabKey
+60001000,스테이지보스1,Enemy_Gana

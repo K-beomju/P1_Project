@@ -43,6 +43,8 @@ public class Hero : Creature
 
         ObjectType = EObjectType.Hero;
         gameObject.layer = (int)ELayer.Hero;
+        Sprite.sortingOrder = SortingLayers.HERO;
+
         handController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Hand");
         weaponController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Weapon");
         Anim.SetBool(HeroAnimation.HashCombo, true);

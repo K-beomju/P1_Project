@@ -209,7 +209,7 @@ public class UI_GameScene : UI_Scene
 
     public void UpdateStageUI(EGameSceneState sceneState)
     {
-        GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play);
+        GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss);
         GetTMPText((int)Texts.Text_StageInfo).gameObject.SetActive(sceneState == EGameSceneState.Play);
         GetObject((int)GameObjects.RankUpStage).SetActive(sceneState == EGameSceneState.RankUp);
 
@@ -328,7 +328,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_SkillPopup>().RefreshUI();
                     break;
                 case PlayTab.Dungeon:
-                    Managers.UI.ShowPopupUI<UI_DungeonPopup>();
+                    Managers.UI.ShowPopupUI<UI_DungeonPopup>().RefreshUI();
                     break;
                 case PlayTab.Draw:
                     Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();

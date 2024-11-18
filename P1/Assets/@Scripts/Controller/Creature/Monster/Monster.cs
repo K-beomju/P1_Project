@@ -43,17 +43,38 @@ public class Monster : Creature, IDamageable
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        MonsterInfoData data = Managers.Data.MonsterChart[dataTemplateID];
-        //Level = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.MonsterLevel;
-        Atk = data.Atk +
-              Managers.Data.CreatureUpgradeStatChart[dataTemplateID]
-                  .IncreaseAtk; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseAtk * (Level - 1);
-        MaxHp = data.MaxHp +
-                Managers.Data.CreatureUpgradeStatChart[dataTemplateID]
-                    .IncreaseMaxHp; //Managers.Data.CreatureUpgradeStatInfoDataDic[dataTemplateID].IncreaseMaxHp * (Level - 1);
-        Hp = MaxHp;
+        BaseScene currnetScene = Managers.Scene.GetCurrentScene<BaseScene>();
 
-        MoveSpeed = data.MoveSpeed;
+        if (currnetScene is GameScene gameScene)
+        {
+            StageInfoData stageInfo = Managers.Data.StageChart[gameScene.StageInfo.StageNumber];
+            Atk = stageInfo.MonsterAtk;
+            MaxHp = stageInfo.MonsterMaxHp;
+            Hp = MaxHp;
+        }
+        else if (currnetScene is DungeonScene dungeonScene)
+        {
+            var dungeonType = Managers.Game.GetCurrentDungeon();
+            switch (dungeonType)
+            {
+                case EDungeonType.Gold:
+                    GoldDungeonInfoData goldDungeonInfo = Managers.Data.GoldDungeonChart[dungeonScene.DungeonInfo.DungeonLevel];
+                    Atk = goldDungeonInfo.MonsterAtk;
+                    MaxHp = goldDungeonInfo.MonsterMaxHp;
+                    Hp = MaxHp;
+                    break;
+                case EDungeonType.Dia:
+                    DiaDungeonInfoData diaDungeonInfoData = Managers.Data.DiaDungeonChart[dungeonScene.DungeonInfo.DungeonLevel];
+                    Atk = diaDungeonInfoData.MonsterAtk;
+                    MaxHp = diaDungeonInfoData.MonsterMaxHp;
+                    Hp = MaxHp;
+                    break;
+
+            }
+        }
+
+
+        MoveSpeed = 1;
         MoveRange = 5;
         IdleWaitTime = 1;
 

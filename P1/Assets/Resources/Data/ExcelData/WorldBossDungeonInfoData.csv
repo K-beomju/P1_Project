@@ -1,2 +1,2 @@
-﻿DungeonLevel,KillMonsterCount,BossDataID,DungeonTimeLimit,MonsterDataIdList,MonsterLevel,ItemType,DungeonClearReward
-1,,60002000,30,,,,
+﻿DungeonLevel,DungeonTimeLimit,PrefabKey,BossAtk,BossMaxHp
+1,30,Enemy_WorldBoss,100,10000

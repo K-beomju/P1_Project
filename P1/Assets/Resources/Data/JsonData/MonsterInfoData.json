@@ -1,31 +1,19 @@
 {
   "monsters": [
     {
-      "MoveSpeed": 1.0,
       "DataId": 50001000,
       "Name": "Slime",
-      "ObjectType": 2,
-      "PrefabKey": "Enemy_Slime",
-      "Atk": 5.0,
-      "MaxHp": 40.0
+      "PrefabKey": "Enemy_Slime"
     },
     {
-      "MoveSpeed": 1.0,
       "DataId": 50002000,
       "Name": "Goblin",
-      "ObjectType": 2,
-      "PrefabKey": "Enemy_Goblin",
-      "Atk": 5.0,
-      "MaxHp": 40.0
+      "PrefabKey": "Enemy_Goblin"
     },
     {
-      "MoveSpeed": 1.0,
       "DataId": 50003000,
       "Name": "MushRoom",
-      "ObjectType": 2,
-      "PrefabKey": "Enemy_MushRoom",
-      "Atk": 5.0,
-      "MaxHp": 40.0
+      "PrefabKey": "Enemy_MushRoom"
     }
   ]
 }

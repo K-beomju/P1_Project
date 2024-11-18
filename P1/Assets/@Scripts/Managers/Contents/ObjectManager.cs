@@ -26,19 +26,21 @@ public class ObjectManager
     #endregion
 
     public GameObject SpawnGameObject(Vector3 position, string prefabName)
-	{
-		GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
-		go.transform.position = position;
-		return go;
-	}
+    {
+        GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+        go.transform.position = position;
+        return go;
+    }
 
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
         string prefabName = typeof(T).Name;
         if (prefabName == "Monster")
-            prefabName += "/" + Managers.Data.MonsterChart[dataTemplateID].PrefabKey;//Managers.Data.MonsterDataDic[dataTemplateID].PrefabKey;
-        else if (prefabName == "BossMonster" || prefabName == "WorldBoss")
-            prefabName += "/" + Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey; //Managers.Data.BossMonsterDataDic[dataTemplateID].PrefabKey;
+            prefabName += "/" + Managers.Data.MonsterChart[dataTemplateID].PrefabKey;
+        else if (prefabName == "BossMonster")
+            prefabName += "/" + Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey;
+        else if(prefabName == "WorldBoss")
+            prefabName += "/" + Managers.Data.WorldBossDungeonChart[1].PrefabKey;
 
         GameObject go = Managers.Resource.Instantiate("Object/" + prefabName);
         go.name = prefabName;
@@ -48,14 +50,14 @@ public class ObjectManager
         if (obj is Monster monster)
         {
             monster.transform.parent = MonsterRoot;
-            Monsters.Add(monster); 
+            Monsters.Add(monster);
         }
         if (obj is BossMonster bossMonster)
         {
             bossMonster.transform.parent = BossMonsterRoot;
             BossMonster = bossMonster;
         }
-        if(obj is WorldBoss worldBoss)
+        if (obj is WorldBoss worldBoss)
         {
             WorldBoss = worldBoss;
         }
@@ -63,14 +65,26 @@ public class ObjectManager
         {
             hero.transform.parent = HeroRoot;
             Hero = hero;
-        }   
-        if(obj is Bot bot)
+        }
+        if (obj is Bot bot)
         {
             Bot = bot;
-        }     
+        }
         obj.SetInfo(dataTemplateID);
 
         return obj as T;
+    }
+
+    private string GetPrefabName<T>(int dataTemplateID) where T : BaseObject
+    {
+        string prefabName = typeof(T).Name;
+
+        if (typeof(T) == typeof(Monster))
+            return $"{prefabName}/{Managers.Data.MonsterChart[dataTemplateID].PrefabKey}";
+        if (typeof(T) == typeof(BossMonster) || typeof(T) == typeof(WorldBoss))
+            return $"{prefabName}/{Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey}";
+
+        return prefabName; // 기본 Prefab 이름 반환
     }
 
     public void Despawn<T>(T obj) where T : MonoBehaviour

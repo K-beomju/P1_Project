@@ -317,7 +317,7 @@ public static class Define
         public const int AURA = 299;
         public const int UI_HPBAR = 299;
         public const int CREATURE = 300;
-        public const int ENV = 300;
+        public const int HERO = 310;
         public const int PROJECTILE = 310;
         public const int SKILL_EFFECT = 310;
         public const int DAMAGE_FONT = 410;

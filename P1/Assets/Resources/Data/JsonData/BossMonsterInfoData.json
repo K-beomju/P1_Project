@@ -1,22 +1,9 @@
 {
   "BossMonsterInfoDataList": [
     {
-      "MoveSpeed": 1.0,
       "DataId": 60001000,
-      "Name": "보스1",
-      "ObjectType": 3,
-      "PrefabKey": "Enemy_Gana",
-      "Atk": 10.0,
-      "MaxHp": 400.0
-    },
-    {
-      "MoveSpeed": 1.0,
-      "DataId": 60002000,
-      "Name": "월드보스",
-      "ObjectType": 3,
-      "PrefabKey": "Enemy_WorldBoss",
-      "Atk": 10.0,
-      "MaxHp": 1000000.0
+      "Name": "스테이지보스1",
+      "PrefabKey": "Enemy_Gana"
     }
   ]
 }

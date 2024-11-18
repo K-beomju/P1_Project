@@ -19,12 +19,12 @@ public class WorldBoss : Monster
 
     public override void SetCreatureInfo(int dataTemplateID)
     {
-        BossMonsterInfoData data = Managers.Data.BossMonsterChart[dataTemplateID];
-        Atk = data.Atk;
-        MaxHp = data.MaxHp;
+        WorldBossDungeonInfoData data = Managers.Data.WorldBossDungeonChart[1];
+        Atk = data.BossAtk;
+        MaxHp = data.BossMaxHp;
         Hp = MaxHp;
 
-        MoveSpeed = data.MoveSpeed;
+        MoveSpeed = 1;
         MoveRange = 5;
         IdleWaitTime = 3;
 
@@ -36,17 +36,17 @@ public class WorldBoss : Monster
     #region AI
     protected override void UpdateIdle()
     {
-        base.UpdateIdle();
+        //base.UpdateIdle();
     }
 
     protected override void UpdateMove()
     {
-        base.UpdateMove();
+        //base.UpdateMove();
 
     }
     protected override void UpdateDead()
     {
-        base.UpdateDead();
+        //base.UpdateDead();
     }
     #endregion
 

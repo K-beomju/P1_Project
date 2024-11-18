@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4084428183751249037}
   - component: {fileID: 798468023794846309}
   - component: {fileID: 4874155705833946018}
+  - component: {fileID: 1511001526700032487}
   m_Layer: 0
   m_Name: Enemy_WorldBoss
   m_TagString: Untagged
@@ -146,3 +147,24 @@ MonoBehaviour:
   Level: 0
   ReduceDmgBuff:
     _value: 0
+--- !u!95 &1511001526700032487
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768862299863549359}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

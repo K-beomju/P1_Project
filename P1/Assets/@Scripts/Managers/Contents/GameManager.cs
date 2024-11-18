@@ -49,7 +49,7 @@ public class GameManager
         }
     }
 
-    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo, bool isBoss = false)
+    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo = null, WorldBossDungeonInfoData worldBossInfo = null,  bool isBoss = false)
     {
         if (!isBoss)
         {
@@ -61,7 +61,7 @@ public class GameManager
         }
         else
         {
-            Managers.Object.Spawn<WorldBoss>(new Vector3(0, 2, 0), dungeonInfo.BossDataId);
+            Managers.Object.Spawn<WorldBoss>(new Vector3(0, 2, 0), 0);
         }
     }
 

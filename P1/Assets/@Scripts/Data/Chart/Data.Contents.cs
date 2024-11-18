@@ -12,44 +12,15 @@ namespace Data
     {
         public int DataId;
         public string Name;
-        public EObjectType ObjectType;
         public string PrefabKey;
-        public float Atk;
-        public float MaxHp;
     }
-
-    [Serializable]
-    public class CreatureUpgradeStatInfoData
-    {
-        public int DataID;
-        public string Name;
-        // public float IncreaseDef;
-        public float IncreaseAtk;
-        public float IncreaseMaxHp;
-    }
-    
-    [Serializable]
-    public class CreatureUpgradeStatInfoDataLoader : ILoader<int, CreatureUpgradeStatInfoData>
-    {
-        public List<CreatureUpgradeStatInfoData> CreatureUpgradeStatInfoDataList = new List<CreatureUpgradeStatInfoData>();
-
-        public Dictionary<int, CreatureUpgradeStatInfoData> MakeDict()
-        {
-            Dictionary<int, CreatureUpgradeStatInfoData> dict = new Dictionary<int, CreatureUpgradeStatInfoData>();
-            foreach (CreatureUpgradeStatInfoData infoData in CreatureUpgradeStatInfoDataList)
-            {
-                dict.Add(infoData.DataID, infoData);
-            }
-
-            return dict;
-        }
-    }
-
 
     #region HeroData
     [Serializable]
     public class HeroInfoData : CreatureInfoData
     {
+        public float Atk;
+        public float MaxHp;
         public float Recovery;
         public float CriRate;
         public float CriDmg;
@@ -79,7 +50,6 @@ namespace Data
     [Serializable]
     public class MonsterInfoData : CreatureInfoData
     {
-        public float MoveSpeed;
     }
 
     [Serializable]
@@ -121,19 +91,21 @@ namespace Data
 
     #region RankUpMonsterData
     [Serializable]
-    public class RankUpMonsterDataInfoData : MonsterInfoData
+    public class RankUpMonsterInfoData : CreatureInfoData
     {
+        public float Atk;
+        public float MaxHp;
     }
 
     [Serializable]
-    public class RankUpMonsterDataInfoDataLoader : ILoader<int, RankUpMonsterDataInfoData>
+    public class RankUpMonsterInfoDataLoader : ILoader<int, RankUpMonsterInfoData>
     {
-        public List<RankUpMonsterDataInfoData> rankUpMonsterDataInfoDatas = new List<RankUpMonsterDataInfoData>();
+        public List<RankUpMonsterInfoData> rankUpMonsterDataInfoDatas = new List<RankUpMonsterInfoData>();
 
-        public Dictionary<int, RankUpMonsterDataInfoData> MakeDict()
+        public Dictionary<int, RankUpMonsterInfoData> MakeDict()
         {
-            Dictionary<int, RankUpMonsterDataInfoData> dict = new Dictionary<int, RankUpMonsterDataInfoData>();
-            foreach (RankUpMonsterDataInfoData infoData in rankUpMonsterDataInfoDatas)
+            Dictionary<int, RankUpMonsterInfoData> dict = new Dictionary<int, RankUpMonsterInfoData>();
+            foreach (RankUpMonsterInfoData infoData in rankUpMonsterDataInfoDatas)
             {
                 dict.Add(infoData.DataId, infoData);
             }
@@ -153,14 +125,15 @@ namespace Data
     {
         public int StageNumber;
         public int KillMonsterCount;
-
         public int BossDataId;
         public int BossBattleTimeLimit;
-
         public List<int> MonsterDataIdList = new List<int>();
-        public int MonsterLevel;
+        public float MonsterAtk;
+        public float MonsterMaxHp;
         public int MonsterGoldReward;
         public int MonsterExpReward;
+        public float BossMonsterAtk;
+        public float BossMonsterMaxHp;
     }
 
     [Serializable]
@@ -497,11 +470,11 @@ namespace Data
     public class DungeonInfoData
     {
         public int DungeonLevel;
-        public int KillMonsterCount;
-        public int BossDataId;
         public int DungeonTimeLimit;
+        public int KillMonsterCount;
         public List<int> MonsterDataIdList = new List<int>();
-        public int MonsterLevel;
+        public float MonsterAtk;
+        public float MonsterMaxHp;
         public EItemType ItemType;
         public int DungeonClearReward;
     }
@@ -528,7 +501,6 @@ namespace Data
     [Serializable]
     public class DiaDungeonInfoData : DungeonInfoData
     {
-        
     }
 
     [Serializable]
@@ -545,9 +517,13 @@ namespace Data
     }
 
     [Serializable]
-    public class WorldBossDungeonInfoData : DungeonInfoData
+    public class WorldBossDungeonInfoData
     {
-        
+        public int DungeonLevel;
+        public int DungeonTimeLimit;
+        public string PrefabKey;
+        public float BossAtk;
+        public float BossMaxHp;
     }
 
     [Serializable]
@@ -574,7 +550,6 @@ namespace Data
         public string Name;
         public string PassiveName;
         public int RdLevel;
-        public int RankUpMonsterId;
     }
 
     [Serializable]
