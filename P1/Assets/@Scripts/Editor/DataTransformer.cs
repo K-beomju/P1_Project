@@ -20,6 +20,8 @@ public class DataTransformer : EditorWindow
 		ParseExcelDataToJson<StageInfoDataLoader, StageInfoData>("StageInfo");
 		ParseExcelDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
 		ParseExcelDataToJson<BossMonsterInfoDataLoader, BossMonsterInfoData>("BossMonsterInfo");
+		ParseExcelDataToJson<RankUpMonsterDataInfoDataLoader, RankUpMonsterDataInfoData>("RankUpMonsterInfo");
+
 		ParseExcelDataToJson<CreatureUpgradeStatInfoDataLoader, CreatureUpgradeStatInfoData>("CreatureUpgradeStatInfo");
 
 		ParseExcelDataToJson<HeroInfoDataLoader, HeroInfoData>("HeroInfo");
@@ -41,7 +43,7 @@ public class DataTransformer : EditorWindow
 		ParseExcelDataToJson<WorldBossDungeonInfoDataLoader, WorldBossDungeonInfoData>("WorldBossDungeonInfo");
 
         ParseExcelDataToJson<ItemDataLoader, ItemData>("Item");
-        ParseExcelDataToJson<RankUpInfoDataLoader, HeroRankUpInfoData>("HeroRankUpInfo");
+        ParseExcelDataToJson<RankUpInfoDataLoader, RankUpInfoData>("RankUpInfo");
         ParseExcelDataToJson<DrawRankUpGachaInfoDataLoader, DrawRankUpGachaInfoData>("DrawRankUpGachaInfo");
 
 	}

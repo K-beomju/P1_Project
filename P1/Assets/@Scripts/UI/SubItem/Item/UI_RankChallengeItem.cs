@@ -26,7 +26,7 @@ public class UI_RankChallengeItem : UI_Base
 
     private ERankType _rankType;
     private ERankState _rankState;
-    private HeroRankUpInfoData _rankData;
+    private RankUpInfoData _rankData;
 
     protected override bool Init()
     {
@@ -46,14 +46,30 @@ public class UI_RankChallengeItem : UI_Base
         if (_rankState == ERankState.Pending)
         {
             Debug.LogWarning($"{_rankType} 승급전 도전합니다.");
-            Managers.Backend.GameData.RankUpData.UpdateRankUp(_rankType);
+            var fadeUI =  Managers.UI.ShowBaseUI<UI_FadeInBase>();
+            Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_FADEPOPUP);
+            fadeUI.ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1f,
+            fadeOutCallBack: () =>
+            {
+                // UI 내려주고 스테이지 로드 
+                (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Character);
+                Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.RankUp;
+
+            }, 
+            fadeInCallBack: () => 
+            {
+                Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayRankUp();
+
+            });
+
+            //Managers.Backend.GameData.RankUpData.UpdateRankUp(_rankType);
         }
     }
 
     public void SetInfo(ERankType rankType)
     {
         _rankType = rankType;
-        _rankData = Managers.Data.HeroRankUpChart[rankType];
+        _rankData = Managers.Data.RankUpChart[rankType];
     }
 
     public void RefreshUI()

@@ -8,7 +8,8 @@ public class UI_RankingPopup : UI_Popup
 {
     public enum GameObjects
     {
-        RankContent
+        RankContent,
+        BG
     }
 
     public enum Buttons 
@@ -34,6 +35,7 @@ public class UI_RankingPopup : UI_Popup
 
         _myRankItem = Util.FindChild<UI_RankingItem>(gameObject, "UI_MyRankingItem", true);
         GetButton((int)Buttons.Btn_Exit).gameObject.BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Rank));
+        GetObject((int)GameObjects.BG).BindEvent(() => (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Rank));
 
         for (int i = 0; i < 10; i++)
         {

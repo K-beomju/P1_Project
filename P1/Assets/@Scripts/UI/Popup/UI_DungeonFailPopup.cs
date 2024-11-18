@@ -35,7 +35,7 @@ public class UI_DungeonFailPopup : UI_Popup
         fadeUI.sceneMove = true;
         Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_FADEPOPUP);
 
-        fadeUI.ShowFadeInOut(EFadeType.FadeInOut, 1, 1, 
+        fadeUI.ShowFadeInOut(EFadeType.FadeOut, 1, 1, 
         fadeOutCallBack: () => 
         {
             Managers.Scene.LoadScene(EScene.GameScene);

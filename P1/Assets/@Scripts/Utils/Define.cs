@@ -21,6 +21,7 @@ public static class Define
         Play,
         Pause,
         Boss,
+        RankUp,
         Over,
         Clear,
     }
@@ -48,7 +49,8 @@ public static class Define
         None,
         Hero,
         Monster,
-        BossMonster
+        BossMonster,
+        RankUpMonster
     }
 
     public enum ECreatureState

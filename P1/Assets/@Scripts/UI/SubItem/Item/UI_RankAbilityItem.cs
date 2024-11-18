@@ -63,7 +63,7 @@ public class UI_RankAbilityItem : UI_Base
         switch (_rankAbilityState)
         {
             case ERankAbilityState.Locked:  // 잠긴 상태, 능력을 획득할 수 없음
-                GetTMPText((int)Texts.Text_Ability).text = $"{Managers.Data.HeroRankUpChart[_rankType].Name} 승급시 오픈";
+                GetTMPText((int)Texts.Text_Ability).text = $"{Managers.Data.RankUpChart[_rankType].Name} 승급시 오픈";
                 GetImage((int)Images.Image_LockAbility).gameObject.SetActive(false);
                 GetTMPText((int)Texts.Text_Ability).color = Color.white;
                 GetImage((int)Images.Image_ClassIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Lock");

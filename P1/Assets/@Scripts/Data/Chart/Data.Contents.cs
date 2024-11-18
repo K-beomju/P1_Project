@@ -119,6 +119,30 @@ namespace Data
     }
     #endregion
 
+    #region RankUpMonsterData
+    [Serializable]
+    public class RankUpMonsterDataInfoData : MonsterInfoData
+    {
+    }
+
+    [Serializable]
+    public class RankUpMonsterDataInfoDataLoader : ILoader<int, RankUpMonsterDataInfoData>
+    {
+        public List<RankUpMonsterDataInfoData> rankUpMonsterDataInfoDatas = new List<RankUpMonsterDataInfoData>();
+
+        public Dictionary<int, RankUpMonsterDataInfoData> MakeDict()
+        {
+            Dictionary<int, RankUpMonsterDataInfoData> dict = new Dictionary<int, RankUpMonsterDataInfoData>();
+            foreach (RankUpMonsterDataInfoData infoData in rankUpMonsterDataInfoDatas)
+            {
+                dict.Add(infoData.DataId, infoData);
+            }
+
+            return dict;
+        }
+    }
+    #endregion
+
     #endregion
     #endregion
 
@@ -544,22 +568,23 @@ namespace Data
 
 
     [Serializable]
-    public class HeroRankUpInfoData
+    public class RankUpInfoData
     {
         public ERankType RankType;
         public string Name;
         public string PassiveName;
         public int RdLevel;
+        public int RankUpMonsterId;
     }
 
     [Serializable]
-    public class RankUpInfoDataLoader : ILoader<ERankType, HeroRankUpInfoData>
+    public class RankUpInfoDataLoader : ILoader<ERankType, RankUpInfoData>
     {
-        public List<HeroRankUpInfoData> rankUpInfoDatas = new List<HeroRankUpInfoData>();
-        public Dictionary<ERankType, HeroRankUpInfoData> MakeDict()
+        public List<RankUpInfoData> rankUpInfoDatas = new List<RankUpInfoData>();
+        public Dictionary<ERankType, RankUpInfoData> MakeDict()
         {
-            Dictionary<ERankType, HeroRankUpInfoData> dict = new Dictionary<ERankType, HeroRankUpInfoData>();
-            foreach (HeroRankUpInfoData rank in rankUpInfoDatas)
+            Dictionary<ERankType, RankUpInfoData> dict = new Dictionary<ERankType, RankUpInfoData>();
+            foreach (RankUpInfoData rank in rankUpInfoDatas)
                 dict.Add(rank.RankType, rank);
             return dict;
         }

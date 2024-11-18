@@ -4,37 +4,43 @@
       "RankType": 1,
       "Name": "수습 병사",
       "PassiveName": "공격력 x1 체력 x1",
-      "RdLevel": 30
+      "RdLevel": 30,
+      "RankUpMonsterId": 70001000
     },
     {
       "RankType": 2,
       "Name": "정예 전사",
       "PassiveName": "공격력 x2 체력 x2",
-      "RdLevel": 50
+      "RdLevel": 50,
+      "RankUpMonsterId": 70001000
     },
     {
       "RankType": 3,
       "Name": "수호자",
       "PassiveName": "공격력 x3 체력 x3",
-      "RdLevel": 100
+      "RdLevel": 100,
+      "RankUpMonsterId": 70001000
     },
     {
       "RankType": 4,
       "Name": "정령 사냥꾼",
       "PassiveName": "공격력 x4 체력 x4",
-      "RdLevel": 120
+      "RdLevel": 120,
+      "RankUpMonsterId": 70001000
     },
     {
       "RankType": 5,
       "Name": "신성 장군",
       "PassiveName": "공격력 x5 체력 x5",
-      "RdLevel": 150
+      "RdLevel": 150,
+      "RankUpMonsterId": 70001000
     },
     {
       "RankType": 6,
       "Name": "황제",
       "PassiveName": "공격력 x6 체력 x6",
-      "RdLevel": 200
+      "RdLevel": 200,
+      "RankUpMonsterId": 70001000
     }
   ]
 }

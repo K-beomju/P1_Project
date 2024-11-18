@@ -114,6 +114,10 @@ public class GameScene : BaseScene
                 StopCoroutine(CurrentCoroutine);
             }
             CurrentCoroutine = coroutineFunc();
+
+            // State 변경시 변경되는 UI 로직 
+            sceneUI.UpdateStageUI(GameSceneState);
+
             StartCoroutine(CurrentCoroutine);
         }
     }
@@ -125,6 +129,7 @@ public class GameScene : BaseScene
             { EGameSceneState.Play, CoPlayStage },
             { EGameSceneState.Pause, CoPauseStage },
             { EGameSceneState.Boss, CoBossStage },
+            { EGameSceneState.RankUp, CoRankUpStage },
             { EGameSceneState.Over, CoStageOver },
             { EGameSceneState.Clear, CoStageClear }
         };
@@ -151,7 +156,6 @@ public class GameScene : BaseScene
         Managers.Game.SetMonsterCount(0, StageInfo.KillMonsterCount);
 
         yield return StartWait;
-        sceneUI.UpdateStageUI(false);
         Managers.Game.SpawnStageMonster(StageInfo);
 
         // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
@@ -174,8 +178,6 @@ public class GameScene : BaseScene
 
     private IEnumerator CoBossStage()
     {
-        sceneUI.UpdateStageUI(true);
-
         Managers.Game.SpawnStageMonster(StageInfo, true);
         sceneUI.RefreshBossMonsterHp(Managers.Object.BossMonster);
         while (Managers.Object.BossMonster != null)
@@ -185,6 +187,16 @@ public class GameScene : BaseScene
         }
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
         GameSceneState = EGameSceneState.Clear;
+    }
+
+    private IEnumerator CoRankUpStage()
+    {
+        // 몬스터 다 없애고, 히어로 스탯 초기화 
+        KillAllMonsters();
+        Hero hero = Managers.Object.Hero;
+        hero.Rebirth();
+        hero.transform.position = Vector3.zero;
+        yield return new WaitForSeconds(1);
     }
 
     private IEnumerator CoStageOver()

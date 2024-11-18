@@ -1,3 +1,4 @@
+using BackEnd.Quobject.SocketIoClientDotNet.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,14 +34,20 @@ public class UI_GameScene : UI_Scene
         RemainMonsterValueText,
         ExpValueText,
         Text_StageInfo,
-        Text_AutoSkill
+        Text_AutoSkill,
+        RankUpDescText
+    }
+
+    enum Images 
+    {
+        Image_RankUpIcon
     }
 
     enum GameObjects
     {
         TopStage,
         RemainMonster,
-        
+        RankUpStage
     }
 
     enum CanvasGroups
@@ -98,6 +105,7 @@ public class UI_GameScene : UI_Scene
 
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(Texts));
+        BindImages(typeof(Images));
         BindSliders(typeof(Sliders));
         BindObjects(typeof(GameObjects));
         Bind<CanvasGroup>(typeof(CanvasGroups));
@@ -105,12 +113,15 @@ public class UI_GameScene : UI_Scene
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
         Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
 
+        // Main_Content
         GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
         GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
         GetButton((int)Buttons.SkillButton).gameObject.BindEvent(() => ShowTab(PlayTab.Skill));
         GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
+
+        // Sub_Content
         GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
         GetButton((int)Buttons.Btn_Ranking).gameObject.BindEvent(() =>
         {
@@ -121,7 +132,11 @@ public class UI_GameScene : UI_Scene
             }
             ShowTab(PlayTab.Rank);
         });
-        GetButton((int)Buttons.Btn_AdBuff).gameObject.BindEvent(() => Managers.UI.ShowPopupUI<UI_AdBuffPopup>());
+        GetButton((int)Buttons.Btn_AdBuff).gameObject.BindEvent(() => 
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_AdBuffPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        });
 
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
@@ -173,6 +188,7 @@ public class UI_GameScene : UI_Scene
 
         GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
         GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
+        GetObject((int)GameObjects.RankUpStage).SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
@@ -191,12 +207,25 @@ public class UI_GameScene : UI_Scene
 
     #region Stage UI
 
-    public void UpdateStageUI(bool isBoss = false)
+    public void UpdateStageUI(EGameSceneState sceneState)
     {
-        if (!isBoss)
-            GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
+        GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play);
+        GetTMPText((int)Texts.Text_StageInfo).gameObject.SetActive(sceneState == EGameSceneState.Play);
+        GetObject((int)GameObjects.RankUpStage).SetActive(sceneState == EGameSceneState.RankUp);
 
-        GetObject((int)GameObjects.RemainMonster).SetActive(!isBoss);
+        switch(sceneState)
+        {
+            case EGameSceneState.Play:
+            GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
+            break;
+            case EGameSceneState.RankUp:
+            ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
+            string rankName = Managers.Data.RankUpChart[rankType].Name;
+            GetTMPText((int)Texts.RankUpDescText).text = $"{rankName} 승급 도전 중";
+            GetImage((int)Images.Image_RankUpIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
+
+            break;
+        }
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)
@@ -207,7 +236,7 @@ public class UI_GameScene : UI_Scene
         GetSlider((int)Sliders.Slider_StageInfo).value = killMonster;
     }
 
-    public void RefreshBossMonsterHp(BossMonster boss)
+    public void RefreshBossMonsterHp(Monster boss)
     {
         float hpAmount = boss.Hp / boss.MaxHp;
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = 1;
@@ -299,7 +328,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_SkillPopup>().RefreshUI();
                     break;
                 case PlayTab.Dungeon:
-                    Managers.UI.ShowPopupUI<UI_DungeonPopup>().RefreshUI();
+                    Managers.UI.ShowPopupUI<UI_DungeonPopup>();
                     break;
                 case PlayTab.Draw:
                     Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();
@@ -308,7 +337,9 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_ShopPopup>();
                     break;
                 case PlayTab.Rank:
-                    Managers.UI.ShowPopupUI<UI_RankingPopup>().RefreshUI();
+                    var popupUI = Managers.UI.ShowPopupUI<UI_RankingPopup>();
+                    Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+                    popupUI.RefreshUI();
                     break;
 
             }

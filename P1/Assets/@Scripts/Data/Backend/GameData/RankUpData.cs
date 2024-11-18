@@ -145,12 +145,11 @@ namespace BackendData.GameData
             }
         }
 
-        // 현재 'Current' 상태인 랭크 타입 반환
-        public ERankType GetCurrentRankType()
+        public ERankType GetRankType(ERankState rankState)
         {
             foreach (var kvp in _rankUpDic)
             {
-                if (kvp.Value.RankState == ERankState.Current)
+                if (kvp.Value.RankState == rankState)
                 {
                     if (Enum.TryParse(kvp.Key, out ERankType rankType))
                         return rankType;

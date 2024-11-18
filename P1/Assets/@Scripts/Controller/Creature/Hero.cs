@@ -321,18 +321,23 @@ public class Hero : Creature
         //TODO
         if (Managers.Scene.GetCurrentScene<GameScene>())
         {
-            Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, () =>
+            Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1,() =>
             {
-                Skills.Clear();
-                Anim.Rebind();
-                Hp = MaxHp;
-                CreatureState = ECreatureState.Idle;
+                Rebirth();
                 Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.Over;
 
             }, () =>
             {
             });
         }
+    }
+
+    public void Rebirth()
+    {
+        Skills.Clear();
+        Anim.Rebind();
+        Hp = MaxHp;
+        CreatureState = ECreatureState.Idle;
     }
 
     private IEnumerator RecoveryCo()

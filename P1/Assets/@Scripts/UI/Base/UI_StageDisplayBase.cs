@@ -42,6 +42,11 @@ public class UI_StageDisplayBase : UI_Base
 
     }
 
+    public void ShowDisplayRankUp()
+    {
+        ShowDisplay($"보스 무찌르세요.!");
+    }
+
     // 스테이지 표시 UI를 업데이트하는 함수
     private void ShowDisplay(string textContent)
     {

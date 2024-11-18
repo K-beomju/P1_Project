@@ -293,7 +293,7 @@ public class UI_RankUpPanel : UI_Base
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_Master).RefreshUI();
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_GrandMaster).RefreshUI();
 
-        ERankType rankType = Managers.Backend.GameData.RankUpData.GetCurrentRankType();
+        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Current);
         GetImage((int)Images.Image_MyRankIcon).gameObject.SetActive(true);
         if (rankType == ERankType.Unknown)
         {
@@ -303,7 +303,7 @@ public class UI_RankUpPanel : UI_Base
         else
         {
             GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
-            GetTMPText((int)Texts.Text_MyRankName).text = Managers.Data.HeroRankUpChart[rankType].Name;
+            GetTMPText((int)Texts.Text_MyRankName).text = Managers.Data.RankUpChart[rankType].Name;
         }
     }
 
