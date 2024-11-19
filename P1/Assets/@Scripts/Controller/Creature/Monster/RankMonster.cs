@@ -139,15 +139,13 @@ public class RankMonster : Monster
 
     public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
-        return;
-        // base.OnDamaged(attacker, effect);
-        // Sprite.flipX = transform.position.x > attacker.transform.position.x;
-        // (Managers.UI.SceneUI as UI_GameScene).RefreshBossMonsterHp(this);
+        base.OnDamaged(attacker, effect);
+        (Managers.UI.SceneUI as UI_GameScene).RefreshBossMonsterHp(this);
     }
 
     public override void OnDead()
     {
-        base.OnDead();
+        Anim.SetTrigger(AnimName.HashDead);
     }
 
     #endregion

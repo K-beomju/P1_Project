@@ -108,7 +108,7 @@ public class Hero : Creature
         if (CreatureState == ECreatureState.Dead)
             return;
 
-        Anim.SetBool(AnimName.HashAttack, CreatureState == ECreatureState.Attack);
+        Anim.SetBool(AnimName.HashAttack, CreatureState == ECreatureState.Attack && Target.CreatureState != ECreatureState.Dead);
         Anim.SetBool(AnimName.HashMove, CreatureState == ECreatureState.Move && Target != null);
     }
 
@@ -171,7 +171,7 @@ public class Hero : Creature
 
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
-            BaseObject target = FindClosestTarget(Managers.Object.Monsters);
+            Creature target = FindClosestTarget(Managers.Object.Monsters);
             if (target == null)
             {
                 CreatureState = ECreatureState.Idle;
@@ -192,7 +192,7 @@ public class Hero : Creature
         if (!isActionEnabled)
             return;
 
-        if (Target == null)
+        if (Target == null || !Target.IsValid())
         {
             CreatureState = ECreatureState.Idle;
             return;
@@ -214,7 +214,7 @@ public class Hero : Creature
     #endregion
 
     #region Target Search & Movement
-    private BaseObject FindClosestTarget(IEnumerable<BaseObject> objs)
+    private Creature FindClosestTarget(IEnumerable<Creature> objs)
     {
         if (Managers.Object.BossMonster != null)
             return Managers.Object.BossMonster;
@@ -226,10 +226,10 @@ public class Hero : Creature
             return Managers.Object.RankMonster;
 
 
-        BaseObject target = null;
+        Creature target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
 
-        foreach (BaseObject obj in objs)
+        foreach (Creature obj in objs)
         {
             Vector3 dir = obj.transform.position - CenterPosition;
             float distToTargetSqr = dir.sqrMagnitude; // 제곱된 거리 계산

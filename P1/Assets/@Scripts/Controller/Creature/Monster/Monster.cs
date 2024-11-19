@@ -180,6 +180,10 @@ public class Monster : Creature, IDamageable
     public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
         base.OnDamaged(attacker, effect);
+
+        if (this is RankMonster)
+            return;
+
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
 
         _isDamaged = true;

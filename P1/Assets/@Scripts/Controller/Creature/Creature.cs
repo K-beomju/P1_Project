@@ -24,7 +24,7 @@ public class Creature : BaseObject, IDamageable
     #region Config
     public Animator Anim { get; protected set; }
     public Rigidbody2D Rigid { get; protected set; }
-    public BaseObject Target { get; protected set; }
+    public Creature Target { get; protected set; }
     public UI_HpBarWorldSpace HpBar { get; protected set; }
     private Color originalColor = Color.white;
     #endregion
