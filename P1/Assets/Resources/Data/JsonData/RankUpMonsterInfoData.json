@@ -6,7 +6,8 @@
       "Name": "스켈레톤",
       "PrefabKey": "Enemy_Skeleton",
       "Atk": 100.0,
-      "MaxHp": 100.0
+      "MaxHp": 100.0,
+      "AttackRange": 1.3
     }
   ]
 }

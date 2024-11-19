@@ -13,8 +13,9 @@ public class Monster : Creature, IDamageable
 
     private Vector3 _initialPosition; // 패트롤 시작 위치
     private bool _isDamaged; // 공격을 받은 상태인지 여부
-    private bool _isMovingToTarget; // 목표 지점으로 이동 중인지 여부
-    private Vector3 _targetPosition; // 패트롤 목표 위치
+
+    protected Vector3 _targetPosition; // 패트롤 목표 위치
+    protected bool _isPatrol; // 목표 지점으로 이동 중인지 여부
     protected float IdleWaitTime; // Idle 상태에서 대기하는 시간
     protected float MoveRange; // 패트롤 범위
 
@@ -92,13 +93,13 @@ public class Monster : Creature, IDamageable
         // 패트롤 범위 내에서 새로운 목표 위치 설정
         _targetPosition = _initialPosition +
                           new Vector3(Random.Range(-MoveRange, MoveRange), Random.Range(-MoveRange, MoveRange), 0);
-        _isMovingToTarget = true;
+        _isPatrol = true;
     }
 
     #region AI
     protected override void UpdateIdle()
     {
-        if(!isActionEnabled)
+        if (!isActionEnabled)
             return;
 
         if (_idleCoroutine == null && !_isDamaged) // 공격을 받지 않았을 때만 대기
@@ -125,17 +126,17 @@ public class Monster : Creature, IDamageable
 
     protected override void UpdateMove()
     {
-        if(!isActionEnabled)
+        if (!isActionEnabled)
             return;
 
         if (_isDamaged) // 공격을 받았다면 이동하지 않음
         {
             CreatureState = ECreatureState.Idle;
-            Anim.SetBool(HeroAnimation.HashMove, false);
+            Anim.SetBool(AnimName.HashMove, false);
             return;
         }
 
-        if (_isMovingToTarget)
+        if (_isPatrol)
         {
             // 목표 지점까지의 방향 계산
             Vector3 direction = _targetPosition - transform.position;
@@ -145,17 +146,17 @@ public class Monster : Creature, IDamageable
             if (distanceToTarget < 0.1f ||
                 Vector2.Distance(transform.position, Managers.Object.Hero.transform.position) < 2)
             {
-                _isMovingToTarget = false;
+                _isPatrol = false;
                 CreatureState = ECreatureState.Idle;
-                Anim.SetBool(HeroAnimation.HashMove, false);
+                Anim.SetBool(AnimName.HashMove, false);
             }
             else
             {
                 // 목표 지점을 향해 이동
                 Vector3 moveDir = direction.normalized;
                 transform.Translate(moveDir * MoveSpeed * Time.deltaTime);
-                Sprite.flipX = moveDir.x < 0; // 좌우 이동 시 스프라이트 방향 전환
-                Anim.SetBool(HeroAnimation.HashMove, true);
+                LookAt(moveDir);
+                Anim.SetBool(AnimName.HashMove, true);
             }
         }
     }

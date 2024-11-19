@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEngine;
 using static Define;
 
-public class Creature : BaseObject
+public class Creature : BaseObject, IDamageable
 {
     #region Stat
     public int Level;
@@ -235,5 +235,30 @@ public class Creature : BaseObject
     {
         isActionEnabled = false;
     }
+
+    #region Wait
+
+    protected Coroutine _coWait;
+
+    protected void StartWait(float seconds)
+    {
+        CancelWait();
+        _coWait = StartCoroutine(CoWait(seconds));
+    }
+
+    IEnumerator CoWait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        _coWait = null;
+    }
+
+    protected void CancelWait()
+    {
+        if (_coWait != null)
+            StopCoroutine(_coWait);
+        _coWait = null;
+    }
+
+    #endregion
 
 }

@@ -48,7 +48,7 @@ public class Hero : Creature
 
         handController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Hand");
         weaponController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Weapon");
-        Anim.SetBool(HeroAnimation.HashCombo, true);
+        Anim.SetBool(AnimName.HashCombo, true);
 
         HeroMoveState = EHeroMoveState.None;
         return true;
@@ -108,8 +108,8 @@ public class Hero : Creature
         if (CreatureState == ECreatureState.Dead)
             return;
 
-        Anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
-        Anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && Target != null);
+        Anim.SetBool(AnimName.HashAttack, CreatureState == ECreatureState.Attack);
+        Anim.SetBool(AnimName.HashMove, CreatureState == ECreatureState.Move && Target != null);
     }
 
     public void ComboAttackDelay()
@@ -121,9 +121,9 @@ public class Hero : Creature
 
     private IEnumerator ComboDelayCo()
     {
-        Anim.SetBool(HeroAnimation.HashCombo, false);
+        Anim.SetBool(AnimName.HashCombo, false);
         yield return new WaitForSeconds(AttackDelay);
-        Anim.SetBool(HeroAnimation.HashCombo, true);
+        Anim.SetBool(AnimName.HashCombo, true);
         comboDelayCoroutine = null;
     }
 
@@ -321,7 +321,7 @@ public class Hero : Creature
 
     public override void OnDead()
     {
-        Anim.SetTrigger(HeroAnimation.HashDead);
+        Anim.SetTrigger(AnimName.HashDead);
 
         if (recoveryCoroutine != null)
         {

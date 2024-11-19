@@ -47,8 +47,8 @@ namespace BackendData.GameData
             BackendReturnObject servertime = Backend.Utils.GetServerTime();
 
             string time = servertime.GetReturnValuetoJSON()["utcTime"].ToString();
-            DateTime parsedDate = DateTime.Parse(time);
-            LastLoginTime = parsedDate.ToString();
+            DateTime serverTimeParsed = DateTime.Parse(time, null, DateTimeStyles.RoundtripKind);
+            LastLoginTime = serverTimeParsed.ToString();
         }
 
         protected override void SetServerDataToLocal(JsonData Data)
@@ -88,7 +88,6 @@ namespace BackendData.GameData
 
         public void CheckDungeonKeyRecharge()
         {
-            // 10분이 지나지 않았을 경우에는 캐싱된 값 리턴
             if ((DateTime.UtcNow - UpdateTime).Hours < 1) {
                 Debug.Log("아직 1시간이 지나지 않았습니다.");
                 return;
@@ -106,16 +105,17 @@ namespace BackendData.GameData
 
             // 서버 시간과 마지막 로그인 시간을 비교하여 시간 차이를 계산
             string time = serverTime.GetReturnValuetoJSON()["utcTime"].ToString();
-            DateTime servertime = DateTime.Parse(time);
+
+            DateTime serverTimeParsed = DateTime.Parse(time, null, DateTimeStyles.RoundtripKind);
             DateTime lastLoginDate = DateTime.Parse(LastLoginTime);
-            TimeSpan timeDifference = servertime - lastLoginDate;
+            TimeSpan timeDifference = serverTimeParsed - lastLoginDate;
 
             // `RemainChargeHour` 설정: 남은 충전 시간을 계산
-            RemainChargeHour = timeDifference.TotalHours >= 12 ? 12 : // 12시간 이상 경과 시, 충전 완료로 12시간 설정
-                Math.Max(12 - (int)Math.Floor(timeDifference.TotalHours), 1); // 최소 1시간 보장
+            RemainChargeHour = Mathf.Clamp(12 - (int)timeDifference.TotalHours, 1, 12);
 
 
-            Debug.LogWarning($"지난 로그인 후 경과 시간: {timeDifference.TotalHours}시간");
+            Debug.LogWarning($"지난 로그인 후 경과 시간: {timeDifference.Days}일 {timeDifference.Hours}시간"
+            + $"{timeDifference.Minutes}분 {timeDifference.Seconds}초");
 
             // 충전까지 12시간 미만 경과했을 경우, 충전 프로세스 종료
             if (timeDifference.TotalHours < 12)
@@ -128,7 +128,7 @@ namespace BackendData.GameData
             // 충전 완료: 키 리필 및 마지막 로그인 시간 갱신
             Debug.Log("12시간 이상 경과: 키 리필 및 마지막 로그인 시간 업데이트.");
             IsChangedData = true;
-            LastLoginTime = servertime.ToString();
+            LastLoginTime = serverTimeParsed.ToString();
             
             foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
             {

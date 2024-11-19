@@ -303,7 +303,7 @@ public static class Define
     public const float LERP_SPEED = 0.1f;
     public const float CREATRE_DRAWITEM_DELAY = 0.03f;
 
-    public static class HeroAnimation
+    public static class AnimName
     {
         public readonly static int HashCombo = Animator.StringToHash("IsCombo");
         public readonly static int HashAttack = Animator.StringToHash("IsAttack");

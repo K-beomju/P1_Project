@@ -1,2 +1,2 @@
-﻿DataId,RankType,Name,PrefabKey,Atk,MaxHp
-80001000,Iron,스켈레톤,Enemy_Skeleton,100,100
+DataId,RankType,Name,PrefabKey,Atk,MaxHp,AttackRange
+80001000,Iron,스켈레톤,Enemy_Skeleton,100,100,1.3

@@ -215,7 +215,7 @@ public class GameScene : BaseScene
 
         // Battle Start
         Managers.Object.Hero.DisableDash();
-        //Managers.Object.Hero.EnableAction();
+        Managers.Object.Hero.EnableAction();
         yield return MonitorRankUpMonsterBattle();
     }
 

@@ -99,6 +99,7 @@ namespace Data
         public string PrefabKey;
         public float Atk;
         public float MaxHp;
+        public float AttackRange;
     }
 
     [Serializable]
