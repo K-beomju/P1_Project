@@ -330,21 +330,25 @@ public class Hero : Creature
         }
 
         //TODO
-        if (Managers.Scene.GetCurrentScene<GameScene>())
+        BaseScene currnetScene = Managers.Scene.GetCurrentScene<BaseScene>();
+
+        if (currnetScene is GameScene gameScene)
         {
             Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
             {
                 Rebirth();
-                Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.Over;
+                gameScene.GameSceneState = EGameSceneState.Over;
 
             }, () =>
             {
+                Managers.UI.ShowPopupUI<UI_StageFailPopup>();
             });
         }
     }
 
     public void Rebirth()
     {
+        transform.position = Vector2.zero;
         Skills.Clear();
         Anim.Rebind();
         Hp = MaxHp;
