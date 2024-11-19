@@ -39,7 +39,7 @@ public class BaseObject : InitBase
         DataTemplateID = dataTemplateID;
     }
 
-    protected void LookAt(Vector2 dir)
+    public void LookAt(Vector2 dir)
     {
         Vector3 scale = transform.localScale;
         scale.x = dir.x < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);

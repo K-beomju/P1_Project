@@ -209,8 +209,9 @@ public class UI_GameScene : UI_Scene
 
     public void UpdateStageUI(EGameSceneState sceneState)
     {
-        GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss);
-        GetTMPText((int)Texts.Text_StageInfo).gameObject.SetActive(sceneState == EGameSceneState.Play);
+        GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play);
+        GetTMPText((int)Texts.Text_StageInfo).gameObject.
+        SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss || sceneState == EGameSceneState.RankUp);
         GetObject((int)GameObjects.RankUpStage).SetActive(sceneState == EGameSceneState.RankUp);
 
         switch(sceneState)
@@ -236,12 +237,12 @@ public class UI_GameScene : UI_Scene
         GetSlider((int)Sliders.Slider_StageInfo).value = killMonster;
     }
 
-    public void RefreshBossMonsterHp(Monster boss)
+    public void RefreshBossMonsterHp(Creature monster)
     {
-        float hpAmount = boss.Hp / boss.MaxHp;
+        float hpAmount = monster.Hp / monster.MaxHp;
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = 1;
         GetSlider((int)Sliders.Slider_StageInfo).value = hpAmount;
-        GetTMPText((int)Texts.Text_StageInfo).text = $"{boss.Hp} / {boss.MaxHp}";
+        GetTMPText((int)Texts.Text_StageInfo).text = $"{monster.Hp} / {monster.MaxHp}";
     }
 
     public void RefreshBossStageTimer(float currentTime, float maxTime)

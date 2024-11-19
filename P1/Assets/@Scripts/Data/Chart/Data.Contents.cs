@@ -93,6 +93,7 @@ namespace Data
     [Serializable]
     public class RankUpMonsterInfoData
     {
+        public int DataId;
         public ERankType rankType;
         public string Name;
         public string PrefabKey;
@@ -101,16 +102,16 @@ namespace Data
     }
 
     [Serializable]
-    public class RankUpMonsterInfoDataLoader : ILoader<ERankType, RankUpMonsterInfoData>
+    public class RankUpMonsterInfoDataLoader : ILoader<int, RankUpMonsterInfoData>
     {
         public List<RankUpMonsterInfoData> rankUpMonsterDataInfoDatas = new List<RankUpMonsterInfoData>();
 
-        public Dictionary<ERankType, RankUpMonsterInfoData> MakeDict()
+        public Dictionary<int, RankUpMonsterInfoData> MakeDict()
         {
-            Dictionary<ERankType, RankUpMonsterInfoData> dict = new Dictionary<ERankType, RankUpMonsterInfoData>();
+            Dictionary<int, RankUpMonsterInfoData> dict = new Dictionary<int, RankUpMonsterInfoData>();
             foreach (RankUpMonsterInfoData infoData in rankUpMonsterDataInfoDatas)
             {
-                dict.Add(infoData.rankType, infoData);
+                dict.Add(infoData.DataId, infoData);
             }
 
             return dict;
@@ -553,6 +554,8 @@ namespace Data
         public string Name;
         public string PassiveName;
         public int RdLevel;
+        public int MonsterDataId;
+        public int BossBattleTimeLimit;
     }
 
     [Serializable]

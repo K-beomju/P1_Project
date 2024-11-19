@@ -33,6 +33,7 @@ public class Hero : Creature
 
     private bool isDash = false;
     private bool isMove = false;
+    private bool isDashEnabled = true;
 
     protected override bool Init()
     {
@@ -99,18 +100,13 @@ public class Hero : Creature
         Atk = HeroInfo.Atk;
         MaxHp = HeroInfo.MaxHp;
         Hp = MaxHp;
-
-        // Debug.Log($"공격력 {Atk}");
-        // Debug.Log($"체력 {Hp}");
-
-        Debug.Log($"{Level} 레벨에서 공식계산 다시합니다.");
     }
 
     #region Anim
     protected override void UpdateAnimation()
     {
         if (CreatureState == ECreatureState.Dead)
-           return;
+            return;
 
         Anim.SetBool(HeroAnimation.HashAttack, CreatureState == ECreatureState.Attack);
         Anim.SetBool(HeroAnimation.HashMove, CreatureState == ECreatureState.Move && Target != null);
@@ -153,6 +149,9 @@ public class Hero : Creature
     #region AI Update
     protected override void UpdateIdle()
     {
+        if (!isActionEnabled)
+            return;
+
         if (!isMove)
             return;
 
@@ -167,6 +166,9 @@ public class Hero : Creature
 
     protected override void UpdateMove()
     {
+        if (!isActionEnabled)
+            return;
+
         if (HeroMoveState == EHeroMoveState.TargetMonster)
         {
             BaseObject target = FindClosestTarget(Managers.Object.Monsters);
@@ -187,6 +189,9 @@ public class Hero : Creature
 
     protected override void UpdateAttack()
     {
+        if (!isActionEnabled)
+            return;
+
         if (Target == null)
         {
             CreatureState = ECreatureState.Idle;
@@ -217,6 +222,10 @@ public class Hero : Creature
         if (Managers.Object.Bot != null)
             return Managers.Object.Bot;
 
+        if (Managers.Object.RankMonster != null)
+            return Managers.Object.RankMonster;
+
+
         BaseObject target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
 
@@ -238,7 +247,7 @@ public class Hero : Creature
 
     private void ChaseOrAttackTarget(float attackRange)
     {
-        if (isStopAI)
+        if (!isActionEnabled)
             return;
 
         Vector3 dir = (Target.transform.position - CenterPosition);
@@ -257,7 +266,7 @@ public class Hero : Creature
         else
         {
             // 대쉬 상태가 아닌 경우에만 조건을 검사
-            if (!isDash && distToTargetSqr > DASH_DISTANCE_THRESHOLD)
+            if (!isDash && isDashEnabled && distToTargetSqr > DASH_DISTANCE_THRESHOLD)
             {
                 isDash = true;
                 ghost.makeGhost = true;
@@ -323,7 +332,7 @@ public class Hero : Creature
         //TODO
         if (Managers.Scene.GetCurrentScene<GameScene>())
         {
-            Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1,() =>
+            Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
             {
                 Rebirth();
                 Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.Over;
@@ -359,6 +368,18 @@ public class Hero : Creature
     public void GetUp()
     {
         isMove = true;
+    }
+
+    // 대쉬 가능 여부 활성화
+    public void EnableDash()
+    {
+        isDashEnabled = true;
+    }
+
+    // 대쉬 가능 여부 비활성화
+    public void DisableDash()
+    {
+        isDashEnabled = false;
     }
 
     void OnDrawGizmos()

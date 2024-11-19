@@ -87,7 +87,7 @@ public class Monster : Creature, IDamageable
         HpBar.gameObject.SetActive(false);
     }
 
-    private void SetNewPatrolTarget()
+    protected void SetNewPatrolTarget()
     {
         // 패트롤 범위 내에서 새로운 목표 위치 설정
         _targetPosition = _initialPosition +
@@ -98,6 +98,9 @@ public class Monster : Creature, IDamageable
     #region AI
     protected override void UpdateIdle()
     {
+        if(!isActionEnabled)
+            return;
+
         if (_idleCoroutine == null && !_isDamaged) // 공격을 받지 않았을 때만 대기
         {
             // Idle 상태에서 3초 대기 후 다음 패트롤 지점으로 이동
@@ -122,6 +125,9 @@ public class Monster : Creature, IDamageable
 
     protected override void UpdateMove()
     {
+        if(!isActionEnabled)
+            return;
+
         if (_isDamaged) // 공격을 받았다면 이동하지 않음
         {
             CreatureState = ECreatureState.Idle;
@@ -154,12 +160,6 @@ public class Monster : Creature, IDamageable
         }
     }
 
-    protected override void UpdateDead()
-    {
-        OnDead();
-    }
-
-
     #endregion
 
     #region  Battle
@@ -180,6 +180,7 @@ public class Monster : Creature, IDamageable
     {
         base.OnDamaged(attacker, effect);
         Sprite.flipX = transform.position.x > attacker.transform.position.x;
+
         _isDamaged = true;
         // 플레이어에게 데미지를 입히는 코루틴 시작
         if (_damageCoroutine == null)

@@ -31,7 +31,6 @@ public class Creature : BaseObject
 
     #region Buff
     public CreatureStat ReduceDmgBuff;
-
     #endregion
 
     #region State
@@ -50,7 +49,8 @@ public class Creature : BaseObject
     }
 
     public float worldBossTotalDamage { get; protected set; } = 0;
-    public bool isStopAI { get; set; } = false;
+    protected bool isActionEnabled = true;
+
     #endregion
 
     protected override bool Init()
@@ -97,8 +97,6 @@ public class Creature : BaseObject
     {
         while (true)
         {
-            if (isStopAI)
-                yield break;
 
             switch (CreatureState)
             {
@@ -117,15 +115,24 @@ public class Creature : BaseObject
     }
 
 
-    protected virtual void UpdateIdle() { }
-    protected virtual void UpdateMove() { }
-    protected virtual void UpdateAttack() { }
-    protected virtual void UpdateDead() { }
+    protected virtual void UpdateIdle()
+    {
 
+    }
+
+    protected virtual void UpdateMove()
+    {
+
+    }
+
+    protected virtual void UpdateAttack()
+    {
+
+    }
 
     public virtual void OnDamaged(Creature attacker, EffectBase effect = null)
     {
-        if (CreatureState == ECreatureState.Dead)
+        if (!isActionEnabled || CreatureState == ECreatureState.Dead)
             return;
 
         float finalDamage = 0;
@@ -185,7 +192,7 @@ public class Creature : BaseObject
             finalDamage *= damageReductionMultiplier;
         }
 
-        if(this is WorldBoss)
+        if (this is WorldBoss)
         {
             Debug.Log("월드 보스 데미지 누적 계산");
             worldBossTotalDamage += finalDamage;
@@ -213,8 +220,20 @@ public class Creature : BaseObject
 
     public virtual void OnDead()
     {
+        if (!isActionEnabled)
+            return;
 
     }
 
+    
+    public void EnableAction()
+    {
+        isActionEnabled = true;
+    }
+
+    public void DisableAction()
+    {
+        isActionEnabled = false;
+    }
 
 }

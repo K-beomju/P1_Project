@@ -19,11 +19,11 @@ public class MyCustomEditorWindow : EditorWindow
     {
         if (GUILayout.Button("플레이어 이동 제어", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.Object.Hero.isStopAI = true;
+            Managers.Object.Hero.DisableAction();
         }
         if (GUILayout.Button("플레이어 이동 활성화", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.Object.Hero.isStopAI = false;
+            Managers.Object.Hero.EnableAction();
         }
         if (GUILayout.Button("게임 데이터 저장", GUILayout.Width(position.width), GUILayout.Height(50)))
         {

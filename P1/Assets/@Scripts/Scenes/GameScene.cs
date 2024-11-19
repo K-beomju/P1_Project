@@ -37,6 +37,8 @@ public class GameScene : BaseScene
     public StageInfoData StageInfo { get; private set; }
     private BackendData.GameData.CharacterData CharacterData;
 
+    private CameraController cameraController;
+
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -83,10 +85,10 @@ public class GameScene : BaseScene
     {
         GameObject map = Managers.Resource.Instantiate("BaseMap");
         PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
-        CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
-        cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
+        cameraController = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
+        cameraController.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
-        cc.Target = hero;
+        cameraController.Target = hero.transform;
     }
 
     private void InitializeUI()
@@ -161,7 +163,7 @@ public class GameScene : BaseScene
         // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
         if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
             (Managers.UI.SceneUI as UI_GameScene).CheckUseSkillSlot(-1);
-        
+
 
         while (!Managers.Game.ClearStage())
         {
@@ -189,17 +191,64 @@ public class GameScene : BaseScene
         GameSceneState = EGameSceneState.Clear;
     }
 
+    #region RankUp
+
     private IEnumerator CoRankUpStage()
     {
-        // 몬스터 다 없애고, 히어로 스탯 초기화 
+        ResetStageAndHero();
+
+        // Rank Up 데이터 설정 및 몬스터 스폰
+        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
+        var rankUpInfo = Managers.Data.RankUpChart[rankType];
+
+        // 보스 몬스터 생성 및 UI 초기화
+        SetupRankUpStage(rankUpInfo);
+        yield return new WaitForSeconds(2);
+
+        // 연출 제작 
+        cameraController.Target = Managers.Object.RankMonster.transform;
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayRankUp(Managers.Data.RankUpMonsterChart[rankUpInfo.MonsterDataId].Name);
+
+
+        yield return new WaitForSeconds(3);
+        cameraController.Target = Managers.Object.Hero.transform;
+
+        // Battle Start
+        Managers.Object.Hero.DisableDash();
+        //Managers.Object.Hero.EnableAction();
+        yield return MonitorRankUpMonsterBattle();
+    }
+
+    private IEnumerator MonitorRankUpMonsterBattle()
+    {
+        while (Managers.Object.RankMonster != null)
+        {
+            UpdateBossBattleTimer();
+            yield return null;
+        }
+        sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
+    }
+
+    private void ResetStageAndHero()
+    {
         KillAllMonsters();
         Hero hero = Managers.Object.Hero;
         hero.Rebirth();
-        hero.transform.position = Vector3.zero;
-        yield return new WaitForSeconds(1);
-        
-        Managers.Object.SpawnRankUpMonster(Vector2.zero);
+        hero.transform.position = new Vector3(-3, 0, 0);
+        hero.DisableAction();
     }
+
+    private void SetupRankUpStage(RankUpInfoData rankUpInfo)
+    {
+        BossBattleTimeLimit = rankUpInfo.BossBattleTimeLimit;
+        BossBattleTimer = BossBattleTimeLimit;
+
+        var monster = Managers.Object.Spawn<RankMonster>(new Vector3(3,0,0), rankUpInfo.MonsterDataId);
+        Managers.Object.Hero.LookAt(monster.transform.position);
+        sceneUI.RefreshBossMonsterHp(Managers.Object.RankMonster);
+    }
+
+    #endregion
 
     private IEnumerator CoStageOver()
     {
@@ -247,7 +296,6 @@ public class GameScene : BaseScene
         for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
         {
             Monster monster = Managers.Object.Monsters.ElementAt(i);
-            monster.isStopAI = true;
             Managers.Object.Despawn(monster);
         }
 

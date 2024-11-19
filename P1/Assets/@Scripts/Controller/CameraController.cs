@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class CameraController : InitBase
 {
-	private Hero _target;
-	public Hero Target
+	private Transform _target;
+	public Transform Target
 	{
 		get { return _target; }
 		set 

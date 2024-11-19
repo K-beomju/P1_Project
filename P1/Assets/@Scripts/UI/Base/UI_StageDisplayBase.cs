@@ -42,9 +42,9 @@ public class UI_StageDisplayBase : UI_Base
 
     }
 
-    public void ShowDisplayRankUp()
+    public void ShowDisplayRankUp(string monsterName)
     {
-        ShowDisplay($"보스 무찌르세요.!");
+        ShowDisplay($"승급 도전\n {monsterName} 처치");
     }
 
     // 스테이지 표시 UI를 업데이트하는 함수

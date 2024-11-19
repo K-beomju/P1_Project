@@ -39,10 +39,7 @@ public class WorldBoss : Monster
         //base.UpdateMove();
 
     }
-    protected override void UpdateDead()
-    {
-        //base.UpdateDead();
-    }
+
     #endregion
 
     #region Battle

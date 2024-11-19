@@ -6,6 +6,7 @@ using static Define;
 public class ObjectManager
 {
     public WorldBoss WorldBoss { get; private set; }
+    public RankMonster RankMonster { get; private set; }
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
     public Hero Hero { get; private set; }
@@ -33,19 +34,6 @@ public class ObjectManager
         return go;
     }
 
-    public void SpawnRankUpMonster(Vector3 position)
-    {
-        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
-
-        string prefabName = Managers.Data.RankUpMonsterChart[rankType].PrefabKey;
-        GameObject go = Managers.Resource.Instantiate("Object/RankUpMonster/" + prefabName);
-        go.name = prefabName;
-        go.transform.position = position;
-
-        BaseObject obj = go.GetComponent<BaseObject>();
-
-        obj.SetInfo(0);
-    }
 
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
@@ -54,8 +42,11 @@ public class ObjectManager
             prefabName += "/" + Managers.Data.MonsterChart[dataTemplateID].PrefabKey;
         else if (prefabName == "BossMonster")
             prefabName += "/" + Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey;
-        else if(prefabName == "WorldBoss")
+        else if (prefabName == "WorldBoss")
             prefabName += "/" + Managers.Data.WorldBossDungeonChart[1].PrefabKey;
+        else if (prefabName == "RankMonster")
+            prefabName += "/" + Managers.Data.RankUpMonsterChart[dataTemplateID].PrefabKey;
+
 
         GameObject go = Managers.Resource.Instantiate("Object/" + prefabName);
         go.name = prefabName;
@@ -76,6 +67,10 @@ public class ObjectManager
         {
             WorldBoss = worldBoss;
         }
+        if(obj is RankMonster rankUpMonster)
+        {
+            RankMonster = rankUpMonster;
+        }
         if (obj is Hero hero)
         {
             hero.transform.parent = HeroRoot;
@@ -90,17 +85,6 @@ public class ObjectManager
         return obj as T;
     }
 
-    private string GetPrefabName<T>(int dataTemplateID) where T : BaseObject
-    {
-        string prefabName = typeof(T).Name;
-
-        if (typeof(T) == typeof(Monster))
-            return $"{prefabName}/{Managers.Data.MonsterChart[dataTemplateID].PrefabKey}";
-        if (typeof(T) == typeof(BossMonster) || typeof(T) == typeof(WorldBoss))
-            return $"{prefabName}/{Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey}";
-
-        return prefabName; // 기본 Prefab 이름 반환
-    }
 
     public void Despawn<T>(T obj) where T : MonoBehaviour
     {

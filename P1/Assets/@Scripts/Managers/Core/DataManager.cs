@@ -22,7 +22,7 @@ public class DataManager
 
     public Dictionary<int, MonsterInfoData> MonsterChart { get; private set; } = new();  // 일반 몬스터 정보
     public Dictionary<int, BossMonsterInfoData> BossMonsterChart { get; private set; } = new(); // 보스 몬스터 정보 
-    public Dictionary<ERankType, RankUpMonsterInfoData> RankUpMonsterChart { get; private set; } = new(); // 승급전 몬스터 정보 
+    public Dictionary<int, RankUpMonsterInfoData> RankUpMonsterChart { get; private set; } = new(); // 승급전 몬스터 정보 
 
     public Dictionary<int, DrawEquipmentGachaData> DrawEquipmentChart { get; private set; } = new();// 장비 뽑기 확률 정보
     public Dictionary<int, DrawSkillGachaData> DrawSkillChart { get; private set; } = new(); // 스킬 뽑기 확률 정보
@@ -44,7 +44,7 @@ public class DataManager
         StageChart = LoadJson<StageInfoDataLoader, int, StageInfoData>("StageInfoData").MakeDict();
         MonsterChart = LoadJson<MonsterInfoDataLoader, int, MonsterInfoData>("MonsterInfoData").MakeDict();
         BossMonsterChart = LoadJson<BossMonsterInfoDataLoader, int, BossMonsterInfoData>("BossMonsterInfoData").MakeDict();
-        RankUpMonsterChart =  LoadJson<RankUpMonsterInfoDataLoader, ERankType, RankUpMonsterInfoData>("RankUpMonsterInfoData").MakeDict();
+        RankUpMonsterChart =  LoadJson<RankUpMonsterInfoDataLoader, int, RankUpMonsterInfoData>("RankUpMonsterInfoData").MakeDict();
         HeroChart = LoadJson<HeroInfoDataLoader, int, HeroInfoData>("HeroInfoData").MakeDict();
         HeroUpgradeChart = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
         HeroUpgradeCostChart = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();

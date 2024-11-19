@@ -54,12 +54,6 @@ public class UI_RankChallengeItem : UI_Base
                 // UI 내려주고 스테이지 로드 
                 (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Character);
                 Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.RankUp;
-
-            }, 
-            fadeInCallBack: () => 
-            {
-                Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayRankUp();
-
             });
 
             //Managers.Backend.GameData.RankUpData.UpdateRankUp(_rankType);

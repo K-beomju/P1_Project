@@ -75,7 +75,7 @@ public class DungeonScene : BaseScene
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
-        cc.Target = hero;
+        cc.Target = hero.transform;
 
         // UI 초기화
         sceneUI = Managers.UI.ShowSceneUI<UI_DungeonScene>();
@@ -151,7 +151,7 @@ public class DungeonScene : BaseScene
         yield return new WaitForSeconds(2f);
         if (DungeonType == EDungeonType.WorldBoss)
         {
-            Managers.Game.SpawnDungeonMonster(worldBossInfo: WorldDungeonInfo, isBoss: true);
+            Managers.Game.SpawnDungeonMonster(isBoss: true);
         }
         else
         {
@@ -205,7 +205,7 @@ public class DungeonScene : BaseScene
         if (DungeonType != EDungeonType.WorldBoss)
         {
             // 몬스터 멈추고 UI 팝업 켜주고 
-            Managers.Object.Monsters.ToList().ForEach(x => x.isStopAI = true);
+            Managers.Object.Monsters.ToList().ForEach(x => x.DisableAction());
             var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
 
@@ -271,7 +271,7 @@ public class DungeonScene : BaseScene
         for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
         {
             Monster monster = Managers.Object.Monsters.ElementAt(i);
-            monster.isStopAI = true;
+            monster.DisableAction();
             Managers.Object.Despawn(monster);
         }
     }

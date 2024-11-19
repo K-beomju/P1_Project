@@ -37,8 +37,4 @@ public class Bot : Creature, IDamageable
     }
 
 
-    protected override void UpdateDead()
-    {
-        OnDead();
-    }
 }

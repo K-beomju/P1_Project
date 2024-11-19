@@ -50,7 +50,7 @@ public class GameManager
     }
 
 
-    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo = null, WorldBossDungeonInfoData worldBossInfo = null,  bool isBoss = false)
+    public void SpawnDungeonMonster(DungeonInfoData dungeonInfo = null, bool isBoss = false)
     {
         if (!isBoss)
         {
