@@ -52,6 +52,7 @@ public class UI_RankChallengeItem : UI_Base
             fadeOutCallBack: () =>
             {
                 // UI 내려주고 스테이지 로드 
+                Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, true);
                 (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Character);
                 Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.RankUp;
             });

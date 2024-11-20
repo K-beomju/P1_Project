@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,10 +69,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -134,7 +134,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: moose1-run-347x192_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3613d2af2761834e8728d58a6624fbb
+      internalID: -101032225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_1
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 572caf663961be647bdbe11ddf3da2fe
+      internalID: 39915540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_2
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba847b87384d7ad4eb44e6e6199dbd93
+      internalID: -1250525301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_3
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7efe260a007dd0d458159a6d824c2ca0
+      internalID: -894339174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_4
+      rect:
+        serializedVersion: 2
+        x: 1388
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc30478aba01bb24684d45f0549920d1
+      internalID: -1956822423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_5
+      rect:
+        serializedVersion: 2
+        x: 1735
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67a49769d5be62a4c911ad2cf2a0d75a
+      internalID: -1080947408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_6
+      rect:
+        serializedVersion: 2
+        x: 2082
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53f4fa4ff6f17c4478c0984ee78ed0b1
+      internalID: 1333387187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: moose1-run-347x192_7
+      rect:
+        serializedVersion: 2
+        x: 2429
+        y: 0
+        width: 347
+        height: 192
+      alignment: 9
+      pivot: {x: 0.46, y: 0.37}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7e144b19362f5e42b7a943d20449ab6
+      internalID: -402654107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -145,7 +313,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      moose1-run-347x192_0: -101032225
+      moose1-run-347x192_1: 39915540
+      moose1-run-347x192_2: -1250525301
+      moose1-run-347x192_3: -894339174
+      moose1-run-347x192_4: -1956822423
+      moose1-run-347x192_5: -1080947408
+      moose1-run-347x192_6: 1333387187
+      moose1-run-347x192_7: -402654107
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

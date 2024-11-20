@@ -76,7 +76,7 @@ public class Monster : Creature, IDamageable
 
 
         MoveSpeed = 1;
-        MoveRange = 5;
+        MoveRange = 5f;
         IdleWaitTime = 1;
 
         Sprite.DOFade(0, 0);

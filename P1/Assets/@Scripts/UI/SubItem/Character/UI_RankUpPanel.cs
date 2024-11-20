@@ -25,7 +25,8 @@ public class UI_RankUpPanel : UI_Base
 
     public enum Images
     {
-        Image_MyRankIcon
+        Image_MyRankIcon,
+        Image_ChallengingRank
     }
 
     public enum Buttons
@@ -113,6 +114,7 @@ public class UI_RankUpPanel : UI_Base
             GetObject((int)GameObjects.BestOptionAlert).SetActive(false);
             _bestOption = false;
         });
+        GetImage((int)Images.Image_ChallengingRank).gameObject.SetActive(false);
 
 
         // Desc
@@ -128,11 +130,15 @@ public class UI_RankUpPanel : UI_Base
     private void OnEnable()
     {
         Managers.Event.AddEvent(EEventType.HeroRankUpdated, new Action(RefreshUI));
+        Managers.Event.AddEvent(EEventType.HeroRankChallenging, new Action<bool>(IsChallengingRank));
+
     }
 
     private void OnDisable()
     {
         Managers.Event.RemoveEvent(EEventType.HeroRankUpdated, new Action(RefreshUI));
+        Managers.Event.RemoveEvent(EEventType.HeroRankChallenging, new Action<bool>(IsChallengingRank));
+
     }
 
 
@@ -278,6 +284,7 @@ public class UI_RankUpPanel : UI_Base
 
     public void RefreshUI()
     {
+        IsChallengingRank(Managers.Scene.GetCurrentScene<GameScene>().GameSceneState == EGameSceneState.RankUp);
         CheckCountAbilityInventory();
         Get<UI_RankAbilityItem>((int)RankAbility.UI_RankAbilityItem_Iron).RefreshUI();
         Get<UI_RankAbilityItem>((int)RankAbility.UI_RankAbilityItem_Bronze).RefreshUI();
@@ -305,6 +312,11 @@ public class UI_RankUpPanel : UI_Base
             GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
             GetTMPText((int)Texts.Text_MyRankName).text = Managers.Data.RankUpChart[rankType].Name;
         }
+    }
+
+    private void IsChallengingRank(bool flag)
+    {
+        GetImage((int)Images.Image_ChallengingRank).gameObject.SetActive(flag);
     }
 
     private void CheckCountAbilityInventory()

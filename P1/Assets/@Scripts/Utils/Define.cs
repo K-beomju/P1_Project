@@ -131,7 +131,10 @@ public static class Define
         HeroTotalPowerUpdated,
 
         /// <summary>영웅 승급전 랭크 갱신</summary>
-        HeroRankUpdated
+        HeroRankUpdated,
+
+        /// <summary>영웅 승급전 진행중</summary>
+        HeroRankChallenging
     }
 
     public enum EItemDisplayType

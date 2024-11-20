@@ -242,12 +242,12 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
         {
-            KillAllMonsters();
+            GameSceneState = EGameSceneState.Over;
             Managers.Object.Hero.Rebirth();
         }, () =>
         {
             Managers.UI.ShowPopupUI<UI_RankUpClearPopup>().RefreshUI();
-            GameSceneState = EGameSceneState.Over;
+            Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
         });
     }
 
@@ -333,6 +333,7 @@ public class GameScene : BaseScene
         }, () =>
         {
             Managers.UI.ShowPopupUI<UI_StageFailPopup>();
+            Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
         });
     }
 

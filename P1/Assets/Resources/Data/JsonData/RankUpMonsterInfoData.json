@@ -8,6 +8,51 @@
       "Atk": 100.0,
       "MaxHp": 100.0,
       "AttackRange": 1.3
+    },
+    {
+      "DataId": 80002000,
+      "rankType": 2,
+      "Name": "어쌔신",
+      "PrefabKey": "Enemy_Assassin",
+      "Atk": 100.0,
+      "MaxHp": 300.0,
+      "AttackRange": 1.3
+    },
+    {
+      "DataId": 80003000,
+      "rankType": 3,
+      "Name": "괴물쥐",
+      "PrefabKey": "Enemy_MutantRat",
+      "Atk": 100.0,
+      "MaxHp": 500.0,
+      "AttackRange": 1.3
+    },
+    {
+      "DataId": 80004000,
+      "rankType": 4,
+      "Name": "마법 스켈레톤",
+      "PrefabKey": "Enemy_MageSkeleton",
+      "Atk": 100.0,
+      "MaxHp": 700.0,
+      "AttackRange": 1.3
+    },
+    {
+      "DataId": 80005000,
+      "rankType": 5,
+      "Name": "골렘",
+      "PrefabKey": "Enemy_Golem",
+      "Atk": 100.0,
+      "MaxHp": 900.0,
+      "AttackRange": 1.3
+    },
+    {
+      "DataId": 80006000,
+      "rankType": 6,
+      "Name": "타우르무스",
+      "PrefabKey": "Enemy_Moose",
+      "Atk": 100.0,
+      "MaxHp": 1100.0,
+      "AttackRange": 1.3
     }
   ]
 }

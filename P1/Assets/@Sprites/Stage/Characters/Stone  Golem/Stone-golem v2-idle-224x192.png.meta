@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -139,12 +139,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_0
       rect:
         serializedVersion: 2
-        x: 78
-        y: 67
-        width: 68
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,12 +160,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_1
       rect:
         serializedVersion: 2
-        x: 302
-        y: 67
-        width: 68
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 224
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,12 +181,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_2
       rect:
         serializedVersion: 2
-        x: 526
-        y: 67
-        width: 68
-        height: 66
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 448
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,12 +202,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_3
       rect:
         serializedVersion: 2
-        x: 750
-        y: 66
-        width: 68
-        height: 67
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 672
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,12 +223,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_4
       rect:
         serializedVersion: 2
-        x: 974
-        y: 65
-        width: 68
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 896
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -244,12 +244,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_5
       rect:
         serializedVersion: 2
-        x: 1199
-        y: 65
-        width: 66
-        height: 69
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1120
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -265,12 +265,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_6
       rect:
         serializedVersion: 2
-        x: 1423
-        y: 67
-        width: 66
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1344
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -286,12 +286,12 @@ TextureImporter:
       name: Stone-golem v2-idle-224x192_7
       rect:
         serializedVersion: 2
-        x: 1646
-        y: 67
-        width: 68
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1568
+        y: 0
+        width: 224
+        height: 192
+      alignment: 9
+      pivot: {x: 0.49, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
