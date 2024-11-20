@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 using static Define;
 
@@ -25,8 +23,8 @@ public class Hero : Creature
     private Coroutine recoveryCoroutine = null;
     private HeroGhost ghost;
 
-    private AnimatorController handController;
-    private AnimatorController weaponController;
+    private RuntimeAnimatorController  handController;
+    private RuntimeAnimatorController  weaponController;
     private WaitForSeconds recoveryTime = new WaitForSeconds(1);
 
     public Action OnAttackAction { get; set; } = null;
@@ -46,8 +44,8 @@ public class Hero : Creature
         gameObject.layer = (int)ELayer.Hero;
         Sprite.sortingOrder = SortingLayers.HERO;
 
-        handController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Hand");
-        weaponController = Managers.Resource.Load<AnimatorController>("Animations/Hero_Weapon");
+        handController = Managers.Resource.Load<RuntimeAnimatorController>("Animations/Hero_Hand");
+        weaponController = Managers.Resource.Load<RuntimeAnimatorController>("Animations/Hero_Weapon");
         Anim.SetBool(AnimName.HashCombo, true);
 
         HeroMoveState = EHeroMoveState.None;

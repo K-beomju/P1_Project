@@ -73,7 +73,7 @@ public class BackendManager
             //우지호
             //Backend.BMember.CustomLogin("uziho", "1234");
             //제주옥탑
-            Backend.BMember.CustomLogin("jejuRooftop", "1234");
+            //Backend.BMember.CustomLogin("jejuRooftop", "1234");
 
             CreateSendQueueMgr();
             SetErrorHandler();

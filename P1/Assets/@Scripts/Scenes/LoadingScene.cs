@@ -27,16 +27,7 @@ public class LoadingScene : BaseScene
 
         SceneType = EScene.LoadingScene;
         Managers.Scene.SetCurrentScene(this);
-
-        Managers.Backend.Init();
-
-        if (Backend.IsInitialized == false) {
-            Debug.LogError("뒤끝 초기화가 안됌");
-        }
-
-
         Managers.Data.Init();
-
 
         sceneUI = Managers.UI.ShowSceneUI<UI_LoadingScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
