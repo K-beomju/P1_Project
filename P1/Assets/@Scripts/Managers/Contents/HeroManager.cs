@@ -51,6 +51,15 @@ public class HeroInfo
     public float ExpRateBuff { get; private set; }
     #endregion
 
+    #region RankUp
+    public float AtkRankUp { get; private set; }
+    public float MaxHpRankUp { get; private set; }
+    public float RecoveryRankUp { get; private set; }
+    public float CriDmgRankUp { get; private set; }
+    public float GoldRateRankUp { get; private set; }
+    public float ExpRateRankUp { get; private set; }
+    #endregion
+
     public int DataTemplateID { get; private set; }
     public HeroInfoData Data { get; private set; }
 
@@ -74,11 +83,6 @@ public class HeroInfo
         CriRate = CalculateStat(EHeroUpgradeType.Growth_CriRate);
         CriDmg = CalculateStat(EHeroUpgradeType.Growth_CriDmg);
 
-        Debug.LogWarning("기존 공격력 : " + Atk);
-        Debug.LogWarning("기존 최대체력 : " + MaxHp);
-        Debug.LogWarning("기존 치명타 확률 : " + CriRate);
-        Debug.LogWarning("기존 치명타 데미지 : " + CriDmg);
-
         // 특성 레벨 계산 
         AtkAttr = CaculateAttribute(EHeroAttrType.Attribute_Atk);
         MaxHpAttr = CaculateAttribute(EHeroAttrType.Attribute_MaxHp);
@@ -95,6 +99,14 @@ public class HeroInfo
         BossMonsterDmgRelic = CaculateRelic(EHeroRelicType.Relic_BossMonsterDmg);
         ExpRateRelic = CaculateRelic(EHeroRelicType.Relic_ExpRate);
         GoldRateRelic = CaculateRelic(EHeroRelicType.Relic_GoldRate);
+
+        // 승급 계산 
+        AtkRankUp = CaculateRankUp(EHeroRankUpStatType.RankUp_Atk);
+        MaxHpRankUp = CaculateRankUp(EHeroRankUpStatType.RankUp_MaxHp);
+        RecoveryRankUp = CaculateRankUp(EHeroRankUpStatType.RankUp_Recovery);
+        CriDmgRankUp = CaculateRankUp(EHeroRankUpStatType.RankUp_CriDmg);
+        GoldRateRankUp = CaculateRankUp(EHeroRankUpStatType.RankUp_GoldRate);
+        ExpRateRankUp = CaculateRankUp(EHeroRankUpStatType.RankUp_ExpRate);
 
         // 장비 보너스 퍼센트 합산
         float AtkEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Weapon);
@@ -117,6 +129,18 @@ public class HeroInfo
         CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
         GoldIncreaseRate = 1 + totalGoldRate / 100f;
         ExpIncreaseRate = 1 + totalExpRate / 100f;
+        
+        // 디버그 정보 요약
+        string debugMessage =
+        $"<color=yellow>[Hero Stats Summary]</color>\n" +
+        $"<color=cyan>Base Stats:</color> Atk: {Atk}, MaxHp: {MaxHp}, Recovery: {Recovery}, CriRate: {CriRate}, CriDmg: {CriDmg}\n" +
+        $"<color=green>Attribute Stats:</color> AtkAttr: {AtkAttr}, MaxHpAttr: {MaxHpAttr}, CriRateAttr: {CriRateAttr}, CriDmgAttr: {CriDmgAttr}, SkillTimeAttr: {SkillTimeAttr}, SkillDmgAttr: {SkillDmgAttr}\n" +
+        $"<color=blue>Relic Stats:</color> AtkRelic: {AtkRelic}, MaxHpRelic: {MaxHpRelic}, RecoveryRelic: {RecoveryRelic}, MonsterDmgRelic: {MonsterDmgRelic}, BossMonsterDmgRelic: {BossMonsterDmgRelic}, ExpRateRelic: {ExpRateRelic}, GoldRateRelic: {GoldRateRelic}\n" +
+        $"<color=magenta>RankUp Stats:</color> Atk: {AtkRankUp}, MaxHp: {MaxHpRankUp}, Recovery: {RecoveryRankUp}, CriDmg: {CriDmgRankUp}, GoldRate: {GoldRateRankUp}, ExpRate: {ExpRateRankUp}\n" +
+        $"<color=orange>Equipment Bonus:</color> AtkEquipmentPer: {AtkEquipmentPer}, MaxHpEquipmentPer: {MaxHpEquipmentPer}\n" +
+        $"<color=red>Final Stats:</color> Atk: {Atk}, MaxHp: {MaxHp}, Recovery: {Recovery}, CriRate: {CriRate}, CriDmg: {CriDmg}, GoldIncreaseRate: {GoldIncreaseRate}, ExpIncreaseRate: {ExpIncreaseRate}";
+
+        Debug.Log(debugMessage);
 
         // 기타 스탯 설정
         AttackRange = Data.AttackRange;
@@ -131,13 +155,13 @@ public class HeroInfo
         if (CurrentTotalPower == 0)
         {
             CurrentTotalPower = CalculateTotalCombatPower(this);
-            Debug.Log($"초기 전투력 설정: {CurrentTotalPower}");
+            //Debug.Log($"[Initial Combat Power] Total: {CurrentTotalPower}");
             return;
         }
 
         CurrentTotalPower = CalculateTotalCombatPower(this);
         AdjustTotalPower = CurrentTotalPower - previousTotalPower;
-        Debug.Log($"총 전투력: {CurrentTotalPower}");
+        //Debug.Log($"[Total Combat Power] Total: {CurrentTotalPower}, Change: {AdjustTotalPower}");
 
         // 전투력 변화가 있는지 확인 후 콜백 실행
         bool isPowerChanged = AdjustTotalPower != 0;
@@ -177,6 +201,7 @@ public class HeroInfo
         return increaseValue * currentLevel;
     }
 
+    // 광고 버프 아이템 
     public void ApplyAdBuff(EAdBuffType buffType)
     {
         switch (buffType)
@@ -209,8 +234,6 @@ public class HeroInfo
         }
     }
 
-
-
     // 장비 보너스 퍼센트 합산 함수
     private float GetTotalEquipmentBonusPercentage(EEquipmentType equipmentType)
     {
@@ -221,6 +244,23 @@ public class HeroInfo
         // 보유 효과와 장착 효과의 퍼센트를 합산
         return ownedValue + equipValue;
     }
+
+    // RankUp 스탯별 계산 함수
+    private float CaculateRankUp(EHeroRankUpStatType statType)
+    {
+        float totalValue = 0;
+
+        foreach (var item in Managers.Backend.GameData.RankUpData.RankUpDic)
+        {
+            if (item.Value.RankStatType == statType)
+            {
+                totalValue += item.Value.Value; // 누적 계산
+            }
+        }
+
+        return totalValue;
+    }
+
 
     // 총전투력 계산 함수
     private float CalculateTotalCombatPower(HeroInfo hero)

@@ -19,7 +19,6 @@ public class GameScene : BaseScene
             if (_gameSceneState != value)
             {
                 _gameSceneState = value;
-                Debug.LogWarning(value);
                 SwitchCoroutine();
             }
         }
@@ -257,13 +256,12 @@ public class GameScene : BaseScene
         KillAllMonsters();
         Hero hero = Managers.Object.Hero;
         hero.Rebirth();
-        hero.transform.position = new Vector3(-3, 0, 0);
+        hero.ForceMove(new Vector3(-3, 0, 0));
         hero.DisableAction();
     }
 
     private void SetupRankUpStage(RankUpInfoData rankUpInfo)
     {
-        Debug.LogWarning($"랭크전 시간 {rankUpInfo.BossBattleTimeLimit}");
         BossBattleTimeLimit = rankUpInfo.BossBattleTimeLimit;
         BossBattleTimer = BossBattleTimeLimit;
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);

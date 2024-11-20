@@ -51,7 +51,7 @@ namespace BackendData.Rank {
         public void GetRankList(GetListFunc getListFunc) {
             // 갱신한지 10분이 지나지 않았으면 캐싱된 값을 리턴
             if ((DateTime.UtcNow - UpdateTime).Minutes < 10) {
-                Debug.Log("갱신한지 5분이 지나지 않았으면 캐싱된 값을 리턴합니다.");
+                Debug.Log("갱신한지 10분이 지나지 않았으면 캐싱된 값을 리턴합니다.");
                 getListFunc(true, UserList);
                 return;
             }
@@ -64,7 +64,7 @@ namespace BackendData.Rank {
                     Debug.Log($"Backend.URank.User.GetRankList({uuid}) : {callback}");
                     if (callback.IsSuccess()) {
                         UpdateTime = DateTime.UtcNow;
-                        Debug.Log("갱신한지 5분이 지나서 랭킹을 업데이트합니다.");
+                        Debug.Log("갱신한지 10분이 지나지 않았으면 캐싱된 값을 리턴합니다.");
 
                         JsonData rankJson = callback.GetFlattenJSON();
 

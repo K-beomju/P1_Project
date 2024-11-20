@@ -136,7 +136,7 @@ namespace BackendData.GameData
                 _rankUpDic[rankKey].RankStatType = statType;
                 _rankUpDic[rankKey].RareType = rareType;
                 _rankUpDic[rankKey].Value = value;
-
+                Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
                 //Debug.Log($"{rankKey}의 능력치가 업데이트되었습니다: {statType} {value}");
             }
             else

@@ -41,6 +41,7 @@ public class UI_RankingPopup : UI_Popup
         {
             var item = Managers.UI.MakeSubItem<UI_RankingItem>(GetObject((int)GameObjects.RankContent).transform);
             _userRankingItemList.Add(item.GetOrAddComponent<UI_RankingItem>());
+            item.gameObject.SetActive(false);
         }
         return true;
     }

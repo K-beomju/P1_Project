@@ -130,7 +130,7 @@ public class Hero : Creature
     public void OnAnimEventHandler()
     {
         if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
-            return; 
+            return;
 
         if (OnAttackAction != null)
         {
@@ -247,7 +247,7 @@ public class Hero : Creature
 
     private void ChaseOrAttackTarget(float attackRange)
     {
-        if (!isActionEnabled)
+        if (!isActionEnabled || !isMove)
             return;
 
         Vector3 dir = (Target.transform.position - CenterPosition);
@@ -286,14 +286,9 @@ public class Hero : Creature
                 }
 
                 float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
-                TranslateEx(dir.normalized * moveDist);
+                transform.Translate(dir.normalized * moveDist);
             }
         }
-    }
-
-    private void TranslateEx(Vector3 dir)
-    {
-        transform.Translate(dir);
     }
 
     public void ChangeAnimController(bool weapon = false)
@@ -377,6 +372,22 @@ public class Hero : Creature
     public void DisableDash()
     {
         isDashEnabled = false;
+    }
+
+    // 포지션 이동때 그림자 생성 방지
+    public void ForceMove(Vector3 newPosition)
+    {
+        // 기존 Ghost 생성 상태를 저장
+        bool previousMakeGhostState = ghost.makeGhost;
+
+        // Ghost 생성 비활성화
+        ghost.makeGhost = false;
+
+        // 위치 강제 이동
+        transform.position = newPosition;
+
+        // Ghost 생성 상태 복원
+        ghost.makeGhost = previousMakeGhostState;
     }
 
     void OnDrawGizmos()

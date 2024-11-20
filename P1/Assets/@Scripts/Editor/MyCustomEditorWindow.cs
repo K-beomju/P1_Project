@@ -138,6 +138,16 @@ public class MyCustomEditorWindow : EditorWindow
             Managers.Object.Hero.OnDead();
             Managers.Object.Hero.CreatureState = Define.ECreatureState.Dead;
         }
+        if (GUILayout.Button("승급 아이템 계산", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            foreach (var item in Managers.Backend.GameData.RankUpData.RankUpDic)
+            {
+                if(item.Value.RankStatType != EHeroRankUpStatType.None)
+                {
+                    Debug.Log(item.Value.RankStatType + " -> " + item.Value.Value);
+                }
+            }
+        }
 
     }
 }
