@@ -41,7 +41,7 @@ public class RankMonster : Monster
 
     public void OnAnimEventHandler()
     {
-        if (Target.IsValid() == false)
+        if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
             return;
         
         Target.GetComponent<IDamageable>().OnDamaged(this);
@@ -77,7 +77,6 @@ public class RankMonster : Monster
                 LookAt(dir);
                 float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
                 transform.Translate(dir.normalized * moveDist);
-                Debug.LogWarning("추적 범위 안에 들어옴");
             }
             else
             {

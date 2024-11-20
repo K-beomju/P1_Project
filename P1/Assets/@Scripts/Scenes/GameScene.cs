@@ -19,6 +19,7 @@ public class GameScene : BaseScene
             if (_gameSceneState != value)
             {
                 _gameSceneState = value;
+                Debug.LogWarning(value);
                 SwitchCoroutine();
             }
         }
@@ -184,7 +185,9 @@ public class GameScene : BaseScene
         sceneUI.RefreshBossMonsterHp(Managers.Object.BossMonster);
         while (Managers.Object.BossMonster != null)
         {
-            UpdateBossBattleTimer(); // 보스 타이머 업데이트 메서드 호출
+            if (UpdateBossBattleTimer()) // 타이머 상태를 확인
+                yield break; // 타이머가 종료되면 코루틴 중단
+
             yield return null;
         }
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
@@ -221,12 +224,32 @@ public class GameScene : BaseScene
 
     private IEnumerator MonitorRankUpMonsterBattle()
     {
-        while (Managers.Object.RankMonster != null)
+        // 몬스터 살아있는지 검사
+        while (Managers.Object.RankMonster.CreatureState != ECreatureState.Dead)
         {
-            UpdateBossBattleTimer();
-            yield return null;
+            if (UpdateBossBattleTimer()) // 타이머 상태를 확인
+            {
+                // 못움직이게 함.
+                Managers.Object.RankMonster.DisableAction();
+                Managers.Object.Hero.DisableAction();
+                yield break; // 타이머가 종료되면 코루틴 중단
+            }
+
+            yield return null; // 다음 프레임 대기
         }
-        sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
+
+        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
+        Managers.Backend.GameData.RankUpData.UpdateRankUp(rankType);
+
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
+        {
+            KillAllMonsters();
+            Managers.Object.Hero.Rebirth();
+        }, () =>
+        {
+            Managers.UI.ShowPopupUI<UI_RankUpClearPopup>().RefreshUI();
+            GameSceneState = EGameSceneState.Over;
+        });
     }
 
     private void ResetStageAndHero()
@@ -240,10 +263,12 @@ public class GameScene : BaseScene
 
     private void SetupRankUpStage(RankUpInfoData rankUpInfo)
     {
+        Debug.LogWarning($"랭크전 시간 {rankUpInfo.BossBattleTimeLimit}");
         BossBattleTimeLimit = rankUpInfo.BossBattleTimeLimit;
         BossBattleTimer = BossBattleTimeLimit;
+        sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
-        var monster = Managers.Object.Spawn<RankMonster>(new Vector3(3,0,0), rankUpInfo.MonsterDataId);
+        var monster = Managers.Object.Spawn<RankMonster>(new Vector3(3, 0, 0), rankUpInfo.MonsterDataId);
         Managers.Object.Hero.LookAt(monster.transform.position);
         sceneUI.RefreshBossMonsterHp(Managers.Object.RankMonster);
     }
@@ -252,7 +277,7 @@ public class GameScene : BaseScene
 
     private IEnumerator CoStageOver()
     {
-        sceneUI.RefreshBossStageTimer(0, 0);
+        sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
         MoveToNextStage(false);
         yield return null;
     }
@@ -280,15 +305,37 @@ public class GameScene : BaseScene
 
     #endregion
 
-    private void UpdateBossBattleTimer()
+    private bool UpdateBossBattleTimer()
     {
+        if (GameSceneState == EGameSceneState.Pause || GameSceneState == EGameSceneState.Over)
+            return true; // 이미 종료 상태
+
         BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
-        if (BossBattleTimer <= 0 && Managers.Object.BossMonster != null)
+        if (BossBattleTimer <= 0)
         {
-            GameSceneState = EGameSceneState.Over;
+            HandleBattleFailure();
+            return true; // 타이머 종료
         }
+
+        return false; // 타이머 진행 중
+    }
+
+    // 전투 실패 시 실행하는 함수 : 히어로가 죽었을 때, 타이머가 끝났을 때 
+    public void HandleBattleFailure()
+    {
+        GameSceneState = EGameSceneState.Pause;
+
+        // 먼저 딜레이
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
+        {
+            Managers.Object.Hero.Rebirth();
+            GameSceneState = EGameSceneState.Over;
+        }, () =>
+        {
+            Managers.UI.ShowPopupUI<UI_StageFailPopup>();
+        });
     }
 
     private void KillAllMonsters()

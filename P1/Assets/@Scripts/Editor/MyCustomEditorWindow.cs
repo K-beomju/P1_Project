@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Reflection;
+using static Define;
 
 public class MyCustomEditorWindow : EditorWindow
 {
@@ -118,11 +119,20 @@ public class MyCustomEditorWindow : EditorWindow
         GUILayout.EndHorizontal(); // 수평 정렬 종료
         GUILayout.EndVertical(); // 세로 정렬 종료
 
+        // 버튼을 수평으로 배치
+        GUILayout.BeginVertical(); // 세로 정렬 시작
 
-        if (GUILayout.Button("플레이어 공격력 증가", GUILayout.Width(position.width), GUILayout.Height(50)))
+        GUILayout.BeginHorizontal(); // 수평 정렬 시작
+        if (GUILayout.Button("플레이어 공격력 증가", GUILayout.Width(position.width / 2), GUILayout.Height(50)))
         {
-            Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(Define.EHeroUpgradeType.Growth_Atk);
+            Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(EHeroUpgradeType.Growth_Atk);
         }
+        if (GUILayout.Button("플레이어 체력 증가", GUILayout.Width(position.width / 2), GUILayout.Height(50)))
+        {
+            Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(EHeroUpgradeType.Growth_Hp);
+        }
+        GUILayout.EndHorizontal(); // 수평 정렬 종료
+        GUILayout.EndVertical(); // 세로 정렬 종료
         if (GUILayout.Button("플레이어 사망", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
             Managers.Object.Hero.OnDead();

@@ -55,8 +55,6 @@ public class UI_RankChallengeItem : UI_Base
                 (Managers.UI.SceneUI as UI_GameScene).ShowTab(UI_GameScene.PlayTab.Character);
                 Managers.Scene.GetCurrentScene<GameScene>().GameSceneState = EGameSceneState.RankUp;
             });
-
-            //Managers.Backend.GameData.RankUpData.UpdateRankUp(_rankType);
         }
     }
 

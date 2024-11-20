@@ -129,8 +129,8 @@ public class Hero : Creature
 
     public void OnAnimEventHandler()
     {
-        if (Target.IsValid() == false)
-            return;
+        if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
+            return; 
 
         if (OnAttackAction != null)
         {
@@ -334,20 +334,13 @@ public class Hero : Creature
 
         if (currnetScene is GameScene gameScene)
         {
-            Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
-            {
-                Rebirth();
-                gameScene.GameSceneState = EGameSceneState.Over;
-
-            }, () =>
-            {
-                Managers.UI.ShowPopupUI<UI_StageFailPopup>();
-            });
+            gameScene.HandleBattleFailure();
         }
     }
 
     public void Rebirth()
     {
+        EnableAction();
         transform.position = Vector2.zero;
         Skills.Clear();
         Anim.Rebind();

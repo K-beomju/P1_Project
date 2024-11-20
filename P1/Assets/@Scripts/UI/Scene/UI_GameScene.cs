@@ -38,7 +38,7 @@ public class UI_GameScene : UI_Scene
         RankUpDescText
     }
 
-    enum Images 
+    enum Images
     {
         Image_RankUpIcon
     }
@@ -132,7 +132,7 @@ public class UI_GameScene : UI_Scene
             }
             ShowTab(PlayTab.Rank);
         });
-        GetButton((int)Buttons.Btn_AdBuff).gameObject.BindEvent(() => 
+        GetButton((int)Buttons.Btn_AdBuff).gameObject.BindEvent(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_AdBuffPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
@@ -148,7 +148,7 @@ public class UI_GameScene : UI_Scene
 
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
-        
+
         // BuffManager 이벤트 구독
         Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
         Managers.Buff.OnBuffExpired += RemoveBuffUI;
@@ -157,7 +157,8 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         Managers.Buff.OnBuffTimeUpdated -= UpdateBuffUI;
         Managers.Buff.OnBuffExpired -= RemoveBuffUI;
     }
@@ -214,18 +215,18 @@ public class UI_GameScene : UI_Scene
         SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss || sceneState == EGameSceneState.RankUp);
         GetObject((int)GameObjects.RankUpStage).SetActive(sceneState == EGameSceneState.RankUp);
 
-        switch(sceneState)
+        switch (sceneState)
         {
             case EGameSceneState.Play:
-            GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
-            break;
+                GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
+                break;
             case EGameSceneState.RankUp:
-            ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
-            string rankName = Managers.Data.RankUpChart[rankType].Name;
-            GetTMPText((int)Texts.RankUpDescText).text = $"{rankName} 승급 도전 중";
-            GetImage((int)Images.Image_RankUpIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
+                ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
+                string rankName = Managers.Data.RankUpChart[rankType].Name;
+                GetTMPText((int)Texts.RankUpDescText).text = $"{rankName} 승급 도전 중";
+                GetImage((int)Images.Image_RankUpIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
 
-            break;
+                break;
         }
     }
 
@@ -247,8 +248,8 @@ public class UI_GameScene : UI_Scene
 
     public void RefreshBossStageTimer(float currentTime, float maxTime)
     {
-        float timePercentage = currentTime / maxTime;
-        GetSlider((int)Sliders.Slider_BossTimer).value = timePercentage;
+        float timePercentage = Mathf.Clamp01(currentTime / maxTime); // 0~1 범위로 제한
+        GetSlider((int)Sliders.Slider_BossTimer).value = timePercentage; // 슬라이더 값 설정
     }
 
     #endregion
@@ -457,7 +458,7 @@ public class UI_GameScene : UI_Scene
             }
         }
     }
-  
+
     #endregion
 
     public void CheckUseSkillSlot(int slotIndex = -1)
