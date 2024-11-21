@@ -53,6 +53,7 @@ public class BackendManager
     //public BackendChart Chart = new(); // 차트 모음 클래스 생성
     public BackendGameData GameData = new(); // 게임 데이터 관리 클래스 생성 
     public BackendData.Rank.Manager Rank = new(); // 랭킹 관리 클래스 생성
+    public BackendData.Post.Manager Post = new(); // 우편 클래스 생성 
 
     // 치명적인 에러 발생 여부
     private bool _isErrorOccured = false;
@@ -67,7 +68,7 @@ public class BackendManager
         {
             Debug.Log("뒤끝 초기화가 완료되었습니다.");
             //이선영
-            //Backend.BMember.CustomLogin("user1", "1234");
+            Backend.BMember.CustomLogin("user1", "1234");
             //김범주
             //Backend.BMember.CustomLogin("5dxwin", "owen2602");
             //우지호
@@ -109,6 +110,7 @@ public class BackendManager
     {
         GameData = new();
         Rank = new();
+        Post = new();
     }
 
     //SendQueue를 관리해주는 SendQueue 매니저 생성
@@ -359,6 +361,44 @@ public class BackendManager
             }
         }
 
+    }
+
+    // 일정 주기마다 우편을 불러오는 코루틴 함수 
+    public IEnumerator GetAdminPostList()
+    {
+        var seconds = new WaitForSeconds(600);
+        yield return seconds;
+
+        while(_isErrorOccured)
+        {
+            // 현재 post 함수 체크 
+            int postCount = Post.Dictionary.Count;
+
+            //랭크보상은 수동으로 체크하도록 구성
+            // 관리자 우편은 자동으로 일정 주기마다 호출하도록 구성
+
+            Post.GetPostList(PostType.Admin, (success, info) => 
+            {
+                if(success)
+                {
+                    //호출하기 전 우편의 갯수와 동일하지 않다면 우편 아이콘 오른쪽에 표시 
+                    if(postCount != Post.Dictionary.Count)
+                    {
+                        if(Post.Dictionary.Count > 0)
+                        {
+                            //FindObjectOfType<InGameScene.RightButtonGroupManager>().SetPostIconAlert(true);
+                        }
+                    }
+                }
+                else
+                {
+                    //에러가 발생할 경우 버그 리포트 발송
+                    SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), info);
+                }
+            });
+            yield return seconds;
+
+        }
     }
 
     // 에러 발생시 게임로그를 삽입하는 함수

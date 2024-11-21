@@ -70,6 +70,7 @@ public class GameScene : BaseScene
         CharacterData = Managers.Backend.GameData.CharacterData;
         // 코루틴을 통한 정기 데이터 업데이트 시작
         StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
+        StartCoroutine(Managers.Backend.GetAdminPostList());
         //StartCoroutine(Managers.Backend.UpdateRankScore());
 
     }
@@ -182,6 +183,8 @@ public class GameScene : BaseScene
     {
         Managers.Game.SpawnStageMonster(StageInfo, true);
         sceneUI.RefreshBossMonsterHp(Managers.Object.BossMonster);
+
+        
         while (Managers.Object.BossMonster != null)
         {
             if (UpdateBossBattleTimer()) // 타이머 상태를 확인

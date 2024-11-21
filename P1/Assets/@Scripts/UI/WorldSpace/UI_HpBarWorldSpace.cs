@@ -32,7 +32,7 @@ public class UI_HpBarWorldSpace : UI_Base
             return false;
         BindSliders(typeof(Sliders));
         BindImages(typeof(Images));
-        _canvasGroup = GetComponent<CanvasGroup>(); 
+        _canvasGroup = GetComponent<CanvasGroup>();
 
         _hpBarSlider = GetSlider((int)Sliders.HpSlider);
         _damageSlider = GetSlider((int)Sliders.DamageSlider);
@@ -63,6 +63,12 @@ public class UI_HpBarWorldSpace : UI_Base
             Vector3 worldPosition = _owner.transform.position + _offset;
             transform.position = worldPosition;  // 월드 좌표로 HP바 위치 설정
         }
+        if (_owner.ObjectType == EObjectType.Monster)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Sign(_owner.transform.localScale.x) * Mathf.Abs(scale.x);
+            transform.localScale = scale;
+        }
 
         float hpAmount = _owner.Hp / _owner.MaxHp;
         _hpBarSlider.value = hpAmount;
@@ -70,7 +76,7 @@ public class UI_HpBarWorldSpace : UI_Base
         // DamageSlider는 천천히 HpSlider를 따라가며 감소
         if (_damageSlider.value > _hpBarSlider.value)
         {
-            _damageSlider.DOValue(_hpBarSlider.value, _smoothSpeed);      
+            _damageSlider.DOValue(_hpBarSlider.value, _smoothSpeed);
         }
     }
 

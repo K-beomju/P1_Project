@@ -136,6 +136,8 @@ public class Hero : Creature
         }
         else
         {
+            Managers.Object.SpawnGameObject(Target.CenterPosition, "Object/Effect/Explosion/HeroAttackEffect");
+
             Target.GetComponent<IDamageable>().OnDamaged(this);
         }
         CreatureState = ECreatureState.Move;

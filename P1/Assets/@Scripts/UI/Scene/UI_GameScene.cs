@@ -463,8 +463,6 @@ public class UI_GameScene : UI_Scene
 
     public void CheckUseSkillSlot(int slotIndex = -1)
     {
-        if (!Managers.Backend.GameData.SkillInventory.IsAutoSkill) return;
-
 
         // slotIndex가 -1인 경우 모든 슬롯을 검사하여 사용할 수 있는 스킬이 있는지 확인
         if (slotIndex == -1)

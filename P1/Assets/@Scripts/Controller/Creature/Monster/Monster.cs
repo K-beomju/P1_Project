@@ -184,7 +184,8 @@ public class Monster : Creature, IDamageable
         if (this is RankMonster)
             return;
 
-        Sprite.flipX = transform.position.x > attacker.transform.position.x;
+        Vector2 direction = attacker.transform.position - transform.position;
+        LookAt(direction);
 
         _isDamaged = true;
         // 플레이어에게 데미지를 입히는 코루틴 시작
@@ -229,6 +230,9 @@ public class Monster : Creature, IDamageable
                                     $"OnDead -> AddAmount ({EItemType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
                             }
                         });
+
+                        Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
+
                     }
                     else if (ObjectType == EObjectType.BossMonster)
                     {
