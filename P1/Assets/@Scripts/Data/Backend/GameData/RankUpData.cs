@@ -7,7 +7,6 @@ using System;
 using Unity.VisualScripting;
 using Data;
 using System.Linq;
-using static UI_FadeInBase;
 
 namespace BackendData.GameData
 {
