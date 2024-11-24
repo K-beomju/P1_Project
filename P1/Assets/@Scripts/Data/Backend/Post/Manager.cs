@@ -21,12 +21,15 @@ namespace BackendData.Post
         private DateTime _rankPostUpdateTime;
 
         // 로딩씬에서 호출되는 함수
-        public override void BackendLoad(AfterBackendLoadFunc afterBackendLoadFuc)
+        public override void BackendLoad(AfterBackendLoadFunc afterBackendLoadFunc)
         {
             string className = GetType().Name;
             string funcName = MethodBase.GetCurrentMethod()?.Name;
 
             // 관리자 우편 불러오기
+            GetPostList(PostType.Admin, (isSuccess, errorInfo) => {
+                afterBackendLoadFunc.Invoke(isSuccess, className, funcName, errorInfo);
+            });
         }
 
         public void BackendLoadForRank(AfterBackendLoadFunc afterBackendLoadFunc)
@@ -37,7 +40,9 @@ namespace BackendData.Post
             string funcName = MethodBase.GetCurrentMethod()?.Name;
 
             // 관리자 우편 불러오기
-
+            GetPostList(PostType.Rank, (isSuccess, errorInfo) => {
+                afterBackendLoadFunc.Invoke(isSuccess, className, funcName, errorInfo);
+            });
         }
 
         public delegate void AfterGetPostFunc(bool isSuccess, string errorInfo);

@@ -33,6 +33,7 @@ namespace BackendData.Post
         public PostChartItem(JsonData json)
         {
             itemCount = float.Parse(json["itemCount"].ToString());
+            Debug.Log(itemCount);
             string chartName = json["chartName"].ToString();
 
             if (!Enum.TryParse<ChartType>(chartName, out var tempChartType))
@@ -50,9 +51,15 @@ namespace BackendData.Post
                         itemID = int.Parse(json["item"]["ItemID"].ToString());
                         if (itemID == 1)
                         {
-                            itemName = "gold";
+                            itemName = "Gold";
                             //Receive 함수 호출 시 해당 델리게이트 호출
                             _receiveFunc = () => { Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, itemCount); };
+                        }
+                        if (itemID == 2)
+                        {
+                            itemName = "Dia";
+                            //Receive 함수 호출 시 해당 델리게이트 호출
+                            _receiveFunc = () => { Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, itemCount); };
                         }
                         break;
                 }
@@ -127,7 +134,13 @@ namespace BackendData.Post
                         foreach (var item in items)
                         {
                             item.Receive();
-                            postItemString += $"{item.itemName} x {item.itemCount}\n";
+                            string itemName = string.Empty;
+                            if (item.itemName == "Gold")
+                                itemName = "골드";
+                            if (item.itemName == "Dia")
+                                itemName = "다이아";
+
+                            postItemString += $"{itemName} {item.itemCount}개 획득";
                         }
 
                         // 보상을 다 얻고 난 다음에는 저장
@@ -142,7 +155,7 @@ namespace BackendData.Post
 
                             if (callback.IsSuccess())
                             {
-                                Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("우편 수령 완료" + "다음 아이템을 수령하였습니다\n" + postItemString);
+                                Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification(postItemString);
                                 Debug.Log("저장 성공, 저장에 성공했습니다.");
                             }
                             else
@@ -151,7 +164,7 @@ namespace BackendData.Post
                             }
                         });
                     }
-                    else 
+                    else
                     {
                         Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("우편 수령 실패 에러" + "우편 수령에 실패했습니다.\n" + callback.ToString());
                     }
@@ -162,7 +175,7 @@ namespace BackendData.Post
                 }
                 finally
                 {
-                    if(isSuccess)
+                    if (isSuccess)
                     {
                         // 수령이 완료될 경우 우편 목록에서 제거
                         Managers.Backend.Post.RemovePost(inDate);

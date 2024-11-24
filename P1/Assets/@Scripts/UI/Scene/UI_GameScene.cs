@@ -19,7 +19,8 @@ public class UI_GameScene : UI_Scene
         DrawButton,
         Btn_AutoSkill,
         Btn_Ranking,
-        Btn_AdBuff
+        Btn_AdBuff,
+        Btn_Post
     }
 
     enum Sliders
@@ -114,16 +115,16 @@ public class UI_GameScene : UI_Scene
         Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
 
         // Main_Content
-        GetButton((int)Buttons.ShopButton).gameObject.BindEvent(() => ShowTab(PlayTab.Shop));
-        GetButton((int)Buttons.CharacterButton).gameObject.BindEvent(() => ShowTab(PlayTab.Character));
-        GetButton((int)Buttons.EquipmentButton).gameObject.BindEvent(() => ShowTab(PlayTab.Equipment));
-        GetButton((int)Buttons.SkillButton).gameObject.BindEvent(() => ShowTab(PlayTab.Skill));
-        GetButton((int)Buttons.DungeonButton).gameObject.BindEvent(() => ShowTab(PlayTab.Dungeon));
-        GetButton((int)Buttons.DrawButton).gameObject.BindEvent(() => ShowTab(PlayTab.Draw));
+        GetButton((int)Buttons.ShopButton).onClick.AddListener(() => ShowTab(PlayTab.Shop));
+        GetButton((int)Buttons.CharacterButton).onClick.AddListener(() => ShowTab(PlayTab.Character));
+        GetButton((int)Buttons.EquipmentButton).onClick.AddListener(() => ShowTab(PlayTab.Equipment));
+        GetButton((int)Buttons.SkillButton).onClick.AddListener(() => ShowTab(PlayTab.Skill));
+        GetButton((int)Buttons.DungeonButton).onClick.AddListener(() => ShowTab(PlayTab.Dungeon));
+        GetButton((int)Buttons.DrawButton).onClick.AddListener(() => ShowTab(PlayTab.Draw));
 
         // Sub_Content
-        GetButton((int)Buttons.Btn_AutoSkill).gameObject.BindEvent(ActiveAutoSkill);
-        GetButton((int)Buttons.Btn_Ranking).gameObject.BindEvent(() =>
+        GetButton((int)Buttons.Btn_AutoSkill).onClick.AddListener(ActiveAutoSkill);
+        GetButton((int)Buttons.Btn_Ranking).onClick.AddListener(() =>
         {
             if (Managers.Backend.Rank.List.Count <= 0)
             {
@@ -132,10 +133,16 @@ public class UI_GameScene : UI_Scene
             }
             ShowTab(PlayTab.Rank);
         });
-        GetButton((int)Buttons.Btn_AdBuff).gameObject.BindEvent(() =>
+        GetButton((int)Buttons.Btn_AdBuff).onClick.AddListener(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_AdBuffPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        });
+        GetButton((int)Buttons.Btn_Post).onClick.AddListener(() =>
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_PostPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
         });
 
 
