@@ -330,6 +330,7 @@ public static class Define
         public const int UI_TOTALPOWER = 610;
         public const int UI_NOTIFICATION = 610;
         public const int UI_FADEPOPUP = 620;
+        public const int UI_SLEEPMODEPOPUP = 1000;
     }
 
     public enum EQuestPeriodType
