@@ -52,7 +52,7 @@ public class UI_PostItem : UI_Base
             GetTMPText((int)Texts.Text_PostTitleText).text = _postItem.title;
             GetTMPText((int)Texts.Text_PostAmount).text = "x" + Util.ConvertToTotalCurrency(int.Parse(_postItem.content));
             GetImage((int)Images.Image_PostIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Item/{_postItem.items[0].itemName}");
-            GetTMPText((int)Texts.Text_ExpirationDateText).text = _postItem.expirationDate.ToString() + "까지";
+            GetTMPText((int)Texts.Text_ExpirationDateText).text = "만료까지 " + _postItem.expirationDate.ToString();
 
             // if ((_postItem.expirationDate - DateTime.UtcNow).Days > 0)
             // {

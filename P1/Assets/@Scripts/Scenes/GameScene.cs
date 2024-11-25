@@ -73,6 +73,8 @@ public class GameScene : BaseScene
         StartCoroutine(Managers.Backend.GetAdminPostList());
         //StartCoroutine(Managers.Backend.UpdateRankScore());
 
+        // 출석체크 로직
+        CharacterData.AttendanceCheck();
     }
 
     private void InitializeGameComponents()

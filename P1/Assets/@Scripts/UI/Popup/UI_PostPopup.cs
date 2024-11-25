@@ -33,7 +33,7 @@ public class UI_PostPopup : UI_Popup
 
 
     public void RefreshUI()
-    {
+    {        
         // 우편함에 우편이 없을 경우 텍스트 출력
         GetObject((int)GameObjects.Text_NoPostAlert).SetActive(Managers.Backend.Post.Dictionary.Count <= 0);
 

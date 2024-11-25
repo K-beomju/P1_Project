@@ -19,6 +19,11 @@ namespace BackendData.GameData
         public float Exp { get; private set; }
         public float MaxExp { get; private set; }
 
+        // 출석체크 
+        public int AttendanceIndex { get; private set; }
+        public string AttendanceLastLoginTime { get; private set; }
+        public DateTime AttendanceUpdateTime { get; private set; }
+
         // 현재 진행한 스테이지 정보 
         public int StageLevel { get; private set; }
 
@@ -63,6 +68,9 @@ namespace BackendData.GameData
             Level = 1;
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
+            AttendanceIndex = 1;
+            AttendanceLastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            AttendanceUpdateTime = DateTime.MinValue;
             WorldBossCombatPower = 0;
 
             // 재화 정보 초기화 
@@ -110,7 +118,8 @@ namespace BackendData.GameData
             Level = int.Parse(Data["Level"].ToString());
             Exp = float.Parse(Data["Exp"].ToString());
             MaxExp = float.Parse(Data["MaxExp"].ToString());
-
+            AttendanceIndex = int.Parse(Data["AttendanceIndex"].ToString());
+            AttendanceLastLoginTime = Data["AttendanceLastLoginTime"].ToString();
             StageLevel = int.Parse(Data["StageLevel"].ToString());
             WorldBossCombatPower = float.Parse(Data["WorldBossCombatPower"].ToString());
 
@@ -144,7 +153,6 @@ namespace BackendData.GameData
             // AddAmount(EItemType.Dia, 1000000000);
             // AddAmount(EItemType.Gold, 185000);
             //AddAmount(EItemType.AbilityPoint, 185000);
-
         }
 
         public override string GetTableName()
@@ -165,6 +173,9 @@ namespace BackendData.GameData
             param.Add("Exp", Exp);
             param.Add("MaxExp", MaxExp);
             param.Add("StageLevel", StageLevel);
+            param.Add("AttendanceIndex", AttendanceIndex);
+            param.Add("AttendanceLastLoginTime", AttendanceLastLoginTime);
+
             param.Add("WorldBossCombatPower", WorldBossCombatPower);
             param.Add("Purse", _purseDic);
             param.Add("UpgradeStat", _upgradeStatDic);
@@ -300,18 +311,63 @@ namespace BackendData.GameData
         }
         #endregion
 
+        // 월드보스전 갱신 
         public void UpdateWorldBossCombatPower(float power)
         {
             IsChangedData = true;
             WorldBossCombatPower = power;
+            Managers.Backend.UpdateRankScore();
         }
 
+        // 스크롤 광고 버프
         public void UsedBuff(EAdBuffType buffType)
         {
             IsChangedData = true;
             _adBuffDic[buffType.ToString()] += 1;
         }
 
+        #region Attendance 
+        public bool AttendanceCheck()
+        {
+            TimeSpan timeSinceLastLogin = DateTime.UtcNow - DateTime.Parse(AttendanceLastLoginTime);
+            Debug.Log($"경과 시간: {timeSinceLastLogin.TotalHours:F2}시간");
+            if (timeSinceLastLogin.TotalDays > 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        // 출석체크 받음
+        public void AttendanceReceive()
+        {
+            IsChangedData = true;
+
+            // 실제 보상일차 계산 (초기화 또는 증가 이전 값 사용)
+            int rewardDay = AttendanceIndex > 20 ? 1 : AttendanceIndex;
+
+            // 출석 인덱스를 증가시키고, 20일 초과 시 다시 1로 초기화
+            if (AttendanceIndex > 20)
+            {
+                AttendanceIndex = 2;
+                Debug.Log("20일치를 모두 받았으므로 출석 인덱스를 초기화합니다.");
+            }
+            else
+            {
+                AttendanceIndex += 1;
+            }
+
+
+            // 출석체크 보상 로직
+            Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification($"다이아 {rewardDay * 100}개 획득");
+            AddAmount(EItemType.Dia, rewardDay * 100);
+            Debug.Log($"{rewardDay}일차 보상을 받았습니다.");
+
+            // 현재 시간을 출석 마지막 로그인 시간으로 기록
+            AttendanceLastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+        }
+        #endregion
     }
 }
 

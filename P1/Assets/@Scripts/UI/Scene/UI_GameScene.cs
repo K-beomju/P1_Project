@@ -20,7 +20,8 @@ public class UI_GameScene : UI_Scene
         Btn_AutoSkill,
         Btn_Ranking,
         Btn_AdBuff,
-        Btn_Post
+        Btn_Post,
+        Btn_Attendance
     }
 
     enum Sliders
@@ -141,6 +142,12 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.Btn_Post).onClick.AddListener(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_PostPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
+        });
+        GetButton((int)Buttons.Btn_Attendance).onClick.AddListener(() =>
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         });

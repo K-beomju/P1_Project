@@ -36,8 +36,8 @@ public class BackendManager
         public readonly BackendData.GameData.DungeonData DungeonData = new();
         public readonly BackendData.GameData.RankUpData RankUpData = new();
 
-        public readonly Dictionary<string, BackendData.Base.GameData>
-            GameDataList = new Dictionary<string, BackendData.Base.GameData>();
+        public readonly Dictionary<string, GameData>
+            GameDataList = new Dictionary<string, GameData>();
 
         public BackendGameData()
         {
@@ -362,7 +362,7 @@ public class BackendManager
         }
 
     }
-
+    
     // 일정 주기마다 우편을 불러오는 코루틴 함수 
     public IEnumerator GetAdminPostList()
     {

@@ -223,7 +223,6 @@ public class DungeonScene : BaseScene
             if (currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
             {
                 Managers.Backend.GameData.CharacterData.UpdateWorldBossCombatPower(endTotalWorldBossDmg);
-                Managers.Backend.UpdateRankScore();
             }
 
 
