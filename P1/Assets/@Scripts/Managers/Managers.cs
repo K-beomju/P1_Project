@@ -48,8 +48,10 @@ public class Managers : MonoBehaviour
 
     #region Server
     private BackendManager _backend = new BackendManager();
+    private AdManager _ad = new AdManager();
 
     public static BackendManager Backend { get { return Instance?._backend; } }
+    public static AdManager Ad { get { return Instance?._ad; } }
     #endregion
 
     public static void Init()

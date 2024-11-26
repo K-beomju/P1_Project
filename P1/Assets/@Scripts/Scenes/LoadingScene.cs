@@ -7,7 +7,7 @@ using LitJson;
 using static Define;
 using System;
 
-public class LoadingScene : BaseScene       
+public class LoadingScene : BaseScene
 {
     private UI_LoadingScene sceneUI;
 
@@ -26,17 +26,14 @@ public class LoadingScene : BaseScene
 
         SceneType = EScene.LoadingScene;
         Managers.Scene.SetCurrentScene(this);
-        
-        Managers.Backend.Init();
-
-        if (Backend.IsInitialized == false) {
-            Debug.LogError("뒤끝 초기화가 안됌");
-        }
 
         Managers.Data.Init();
 
         sceneUI = Managers.UI.ShowSceneUI<UI_LoadingScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
+
+        // Managers.Ad.LoadAppOpenAd();
+        // Managers.Ad.ShowAppOpenAd();
         return true;
     }
 
@@ -62,9 +59,8 @@ public class LoadingScene : BaseScene
         // 랭킹 정보 불러오기 함수 Insert
         _initializeStep.Enqueue(() => { ShowDataName("랭킹 정보 불러오기"); Managers.Backend.Rank.BackendLoad(NextStep); });
         // 우편 정보 불러오기 함수 Insert
-        _initializeStep.Enqueue(() => { ShowDataName("관리자 우편 정보 불러오기");  Managers.Backend.Post.BackendLoad(NextStep); });
+        _initializeStep.Enqueue(() => { ShowDataName("관리자 우편 정보 불러오기"); Managers.Backend.Post.BackendLoad(NextStep); });
         _initializeStep.Enqueue(() => { ShowDataName("랭킹 우편 정보 불러오기"); Managers.Backend.Post.BackendLoadForRank(NextStep); });
-
         _maxLoadingCount = _initializeStep.Count;
         _currentLoadingCount = 0;
         sceneUI.ShowDataSlider(_currentLoadingCount, _maxLoadingCount);
@@ -84,24 +80,29 @@ public class LoadingScene : BaseScene
 
     private void NextStep(bool isSuccess, string className, string funcName, string errorInfo)
     {
-        if(isSuccess) {
+        if (isSuccess)
+        {
             _currentLoadingCount++;
             sceneUI.ShowDataSlider(_currentLoadingCount, _maxLoadingCount);
 
-            if(_initializeStep.Count > 0) {
+            if (_initializeStep.Count > 0)
+            {
                 _initializeStep.Dequeue().Invoke();
             }
-            else {
+            else
+            {
                 InGameStart();
             }
         }
-        else {
+        else
+        {
             Debug.LogError($"{className} + {funcName} + {errorInfo}");
         }
     }
 
     // 트랜잭션 읽기 호출 함수
-    private void TransactionRead(BackendData.Base.Normal.AfterBackendLoadFunc func) {
+    private void TransactionRead(BackendData.Base.Normal.AfterBackendLoadFunc func)
+    {
         bool isSuccess = false;
         string className = GetType().Name;
         string functionName = MethodBase.GetCurrentMethod()?.Name;
@@ -111,23 +112,29 @@ public class LoadingScene : BaseScene
         List<TransactionValue> transactionList = new List<TransactionValue>();
 
         // 게임 테이블 데이터만큼 트랜잭션 불러오기
-        foreach (var gameData in Managers.Backend.GameData.GameDataList) {
+        foreach (var gameData in Managers.Backend.GameData.GameDataList)
+        {
             transactionList.Add(gameData.Value.GetTransactionGetValue());
         }
 
         // [뒤끝] 트랜잭션 읽기 함수
-        SendQueue.Enqueue(Backend.GameData.TransactionReadV2, transactionList, callback => { 
-            try { 
+        SendQueue.Enqueue(Backend.GameData.TransactionReadV2, transactionList, callback =>
+        {
+            try
+            {
                 Debug.Log($"Backend.GameData.TransactionReadV2 : {callback}");
 
                 // 데이터를 모두 불러왔을 경우
-                if (callback.IsSuccess()) {
+                if (callback.IsSuccess())
+                {
                     JsonData gameDataJson = callback.GetFlattenJSON()["Responses"];
 
                     int index = 0;
 
-                    foreach (var gameData in Managers.Backend.GameData.GameDataList) {
-                        _initializeStep.Enqueue(() => {
+                    foreach (var gameData in Managers.Backend.GameData.GameDataList)
+                    {
+                        _initializeStep.Enqueue(() =>
+                        {
                             ShowDataName(gameData.Key);
                             // 불러온 데이터를 로컬에서 파싱
                             gameData.Value.BackendGameDataLoadByTransaction(gameDataJson[index++], NextStep);
@@ -139,10 +146,13 @@ public class LoadingScene : BaseScene
                     isSuccess = true;
 
                 }
-                else {
+                else
+                {
                     // 트랜잭션으로 데이터를 찾지 못하여 에러가 발생한다면 개별로 GetMyData로 호출
-                    foreach (var gameData in Managers.Backend.GameData.GameDataList) { 
-                        _initializeStep.Enqueue(() => {
+                    foreach (var gameData in Managers.Backend.GameData.GameDataList)
+                    {
+                        _initializeStep.Enqueue(() =>
+                        {
                             ShowDataName(gameData.Key);
                             // GetMyData 호출
                             gameData.Value.BackendGameDataLoad(NextStep);
@@ -153,10 +163,12 @@ public class LoadingScene : BaseScene
                     isSuccess = true;
                 }
             }
-            catch(Exception e) {
+            catch (Exception e)
+            {
                 errorInfo = e.ToString();
             }
-            finally { 
+            finally
+            {
                 func.Invoke(isSuccess, className, functionName, errorInfo);
             }
         });
@@ -168,6 +180,7 @@ public class LoadingScene : BaseScene
     {
         sceneUI.ShowDataName("게임 시작하는 중");
         _initializeStep.Clear();
+        //Managers.Ad.DestroyAd();
         Managers.Scene.LoadScene(EScene.GameScene);
 
     }

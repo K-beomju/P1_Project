@@ -16,6 +16,11 @@ public class TitleScene : BaseScene
         Managers.Scene.SetCurrentScene(this);
 
         Managers.Backend.Init();
+        if (Backend.IsInitialized == false) {
+            Debug.LogError("뒤끝 초기화가 안됌");
+        }
+
+        Managers.Ad.Init();
         return true;
     }
 

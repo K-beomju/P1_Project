@@ -68,7 +68,7 @@ public class BackendManager
         {
             Debug.Log("뒤끝 초기화가 완료되었습니다.");
             //이선영
-            Backend.BMember.CustomLogin("user1", "1234");
+            //Backend.BMember.CustomLogin("user1", "1234");
             //김범주
             //Backend.BMember.CustomLogin("5dxwin", "owen2602");
             //우지호
@@ -422,7 +422,7 @@ public class BackendManager
         param.Add("errorPath", errorInfo);
 
         // [뒤끝] 로그 삽입 함수
-        Backend.GameLog.InsertLog("error", param, 7, callback =>
+        Backend.GameLog.InsertLogV2("error", param, 7, callback =>
         {
             // 에러가 발생할 경우 재귀
             if (callback.IsSuccess() == false)
