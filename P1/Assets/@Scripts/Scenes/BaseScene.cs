@@ -22,6 +22,7 @@ public abstract class BaseScene : InitBase
 			go.AddComponent<StandaloneInputModule>();
 		}
 
+		Debug.unityLogger.logEnabled = Debug.isDebugBuild;
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;

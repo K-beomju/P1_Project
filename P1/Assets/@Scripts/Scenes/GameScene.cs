@@ -58,7 +58,7 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
         fadeInCallBack: () =>
         {
-            SetupStage();
+            //SetupStage();
         });
         //Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
         return true;

@@ -32,8 +32,8 @@ public class LoadingScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_LoadingScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
-        // Managers.Ad.LoadAppOpenAd();
-        // Managers.Ad.ShowAppOpenAd();
+        // Managers.Ad.LoadRewardedInterstitialAd();
+        // Managers.Ad.ShowRewardedInterstitialAd();
         return true;
     }
 
