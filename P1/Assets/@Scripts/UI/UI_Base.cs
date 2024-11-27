@@ -1,3 +1,4 @@
+using BackEnd;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,4 +83,24 @@ public class UI_Base : InitBase
 				break;
 		}
 	}
+
+		
+    // ======================================================
+    // 공통 에러처리 & 에러처리용 UI 
+    // ======================================================
+    protected void ShowAlertUI(string callback) {
+        Debug.LogWarning(callback);
+        Managers.UI.ShowBaseUI<UI_NotificationBase>("에러 발생" + callback);
+    }
+
+    protected bool IsBackendError(BackendReturnObject bro) {
+        if (bro.IsSuccess()) {
+            Debug.Log(bro);
+            return false;
+        }
+        else {
+            Debug.LogWarning(bro);
+            return true;
+        }
+    }
 }

@@ -1,4 +1,5 @@
 using BackEnd;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -63,21 +64,61 @@ public class UI_TitleScene : UI_Scene
             return;
         }
 
-        Debug.Log("구글 토큰 : " + token);
-        var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
-        Debug.Log("페데레이션 로그인 결과 : " + bro);
-        if (bro.IsSuccess())
+        try
         {
+            Debug.Log("구글 토큰 : " + token);
+            var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
+            Debug.Log("페데레이션 로그인 결과 : " + bro);
 
-            Debug.Log("로그인에 성공했습니다 : " + bro);
-            Debug.Log($"유저 닉네임 : " + Backend.UserNickName);
-            Debug.Log($"유저 인데이트 : " + Backend.UserInDate);
-            Debug.Log($"유저 UID(쿠폰용) : " + Backend.UID);
-            Managers.Scene.LoadScene(EScene.LoadingScene);
+            if (IsBackendError(bro))
+            {
+                if (bro.GetStatusCode() == "401")
+                {
+                    if (bro.GetMessage().Contains("maintenance"))
+                    {
+                        ShowAlertUI("서버 점검중입니다.");
+                    }
+                }
+                else if (bro.GetStatusCode() == "403")
+                {
+                    if (bro.GetMessage().Contains("forbidden block user"))
+                    {
+                        ShowAlertUI($"해당 계정이 차단당했습니다\n차단사유 : {bro.GetErrorCode()}");
+                    }
+                }
+                else
+                {
+                    ShowAlertUI($"로그인에 실패하였습니다\n{bro.ToString()}");
+                    return;
+                }
+            }
+            else
+            {
+                if (bro.IsSuccess() == false)
+                {
+                    ShowAlertUI($"로그인에 실패하였습니다\n{bro.ToString()}");
+                    return;
+                }
+
+                // 닉네임이 없을 경우, 닉네임 생성 UI 생성 
+                if (string.IsNullOrEmpty(Backend.UserNickName))
+                {
+                    Managers.UI.ShowPopupUI<UI_NicknamePopup>();
+                }
+                else
+                {
+                    Debug.Log("로그인에 성공했습니다 : " + bro);
+                    Debug.Log($"유저 닉네임 : " + Backend.UserNickName);
+                    Debug.Log($"유저 인데이트 : " + Backend.UserInDate);
+                    Debug.Log($"유저 UID(쿠폰용) : " + Backend.UID);
+                    Managers.Scene.LoadScene(EScene.LoadingScene);
+                }
+            }
+
         }
-        else
+        catch (Exception e)
         {
-            // Backend.UserNickname, Backend.UserInDate, Backend.UID에 값이 할당되지 않습니다.  
+            ShowAlertUI(e.ToString());
         }
     }
 
