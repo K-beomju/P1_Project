@@ -10,7 +10,6 @@ public static class Define
     {
         Unknown,
         TitleScene,
-        LoadingScene,
         GameScene,
         DungeonScene
     }

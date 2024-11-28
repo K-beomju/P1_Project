@@ -73,7 +73,9 @@ public class UI_AttendancePopup : UI_Popup
 
     public void RefreshUI()
     {
-        bool receive = Managers.Backend.GameData.CharacterData.AttendanceCheck();
+        bool receive = Managers.Backend.GameData.CharacterData.AttendanceCheck();  
+        Debug.Log(receive);      
+
         GetButton((int)Buttons.Button_Receive).interactable = receive;
     }
 }

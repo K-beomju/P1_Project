@@ -8,10 +8,26 @@ using static Define;
 
 public class UI_TitleScene : UI_Scene
 {
+    public enum GameObjects 
+    {
+        Group_Buttons,
+        Group_Loading
+    }
+
     public enum Buttons
     {
         Btn_LoginWithGoogle,
         Btn_CustomLogin
+    }
+
+    public enum Sliders
+    {
+        Slider_Loading
+    }
+
+    public enum Texts
+    {
+        Text_Loading
     }
 
     protected override bool Init()
@@ -19,7 +35,15 @@ public class UI_TitleScene : UI_Scene
         if (base.Init() == false)
             return false;
 
-        BindButtons(typeof(Buttons));
+        BindObjects(typeof(GameObjects));        
+        BindButtons(typeof(Buttons));        
+        BindSliders(typeof(Sliders));
+        BindTMPTexts(typeof(Texts));
+
+        // 로그인 버튼 그룹은 활성화, 데이터 로딩은 비활성화 
+        GetObject((int)GameObjects.Group_Buttons).SetActive(true);
+        GetObject((int)GameObjects.Group_Loading).SetActive(false);
+
         GetButton((int)Buttons.Btn_LoginWithGoogle).onClick.AddListener(() =>
         {
             if (Backend.IsInitialized == false)
@@ -32,15 +56,18 @@ public class UI_TitleScene : UI_Scene
             if (Backend.IsInitialized == false)
                 return;
 
-            var bro = Backend.BMember.CustomLogin("user1", "1234");
+            var bro = Backend.BMember.CustomLogin("asd", "1234");
             if (bro.IsSuccess())
             {
-
                 Debug.Log("로그인에 성공했습니다 : " + bro);
                 Debug.Log($"유저 닉네임 : " + Backend.UserNickName);
                 Debug.Log($"유저 인데이트 : " + Backend.UserInDate);
                 Debug.Log($"유저 UID(쿠폰용) : " + Backend.UID);
-                Managers.Scene.LoadScene(EScene.LoadingScene);
+
+                GetObject((int)GameObjects.Group_Buttons).SetActive(false);
+                GetObject((int)GameObjects.Group_Loading).SetActive(true);
+
+                Managers.Scene.GetCurrentScene<TitleScene>().InitBackendDataLoad();
             }
             else
             {
@@ -50,7 +77,7 @@ public class UI_TitleScene : UI_Scene
         return true;
     }
 
-
+    #region Login
     public void StartGoogleLogin()
     {
         TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, GoogleLoginCallback);
@@ -64,64 +91,25 @@ public class UI_TitleScene : UI_Scene
             return;
         }
 
-        try
-        {
-            Debug.Log("구글 토큰 : " + token);
-            var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
-            Debug.Log("페데레이션 로그인 결과 : " + bro);
+        Debug.Log("구글 토큰 : " + token);
+        var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
+        Debug.Log("페데레이션 로그인 결과 : " + bro);
+    }
+    #endregion
 
-            if (IsBackendError(bro))
-            {
-                if (bro.GetStatusCode() == "401")
-                {
-                    if (bro.GetMessage().Contains("maintenance"))
-                    {
-                        ShowAlertUI("서버 점검중입니다.");
-                    }
-                }
-                else if (bro.GetStatusCode() == "403")
-                {
-                    if (bro.GetMessage().Contains("forbidden block user"))
-                    {
-                        ShowAlertUI($"해당 계정이 차단당했습니다\n차단사유 : {bro.GetErrorCode()}");
-                    }
-                }
-                else
-                {
-                    ShowAlertUI($"로그인에 실패하였습니다\n{bro.ToString()}");
-                    return;
-                }
-            }
-            else
-            {
-                if (bro.IsSuccess() == false)
-                {
-                    ShowAlertUI($"로그인에 실패하였습니다\n{bro.ToString()}");
-                    return;
-                }
-
-                // 닉네임이 없을 경우, 닉네임 생성 UI 생성 
-                if (string.IsNullOrEmpty(Backend.UserNickName))
-                {
-                    Managers.UI.ShowPopupUI<UI_NicknamePopup>();
-                }
-                else
-                {
-                    Debug.Log("로그인에 성공했습니다 : " + bro);
-                    Debug.Log($"유저 닉네임 : " + Backend.UserNickName);
-                    Debug.Log($"유저 인데이트 : " + Backend.UserInDate);
-                    Debug.Log($"유저 UID(쿠폰용) : " + Backend.UID);
-                    Managers.Scene.LoadScene(EScene.LoadingScene);
-                }
-            }
-
-        }
-        catch (Exception e)
-        {
-            ShowAlertUI(e.ToString());
-        }
+    #region Data Loading
+    public void ShowDataName(string info)
+    {
+        GetTMPText((int)Texts.Text_Loading).text = info;
+        Debug.Log(info);
     }
 
+    public void ShowDataSlider(int currentCount, int maxCount)
+    {
+        GetSlider((int)Sliders.Slider_Loading).maxValue = maxCount;
+        GetSlider((int)Sliders.Slider_Loading).value = currentCount;
+    }
+    #endregion
 
 
 }

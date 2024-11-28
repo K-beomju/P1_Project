@@ -17,9 +17,9 @@ public class UI_NicknamePopup : UI_Popup
         if (base.Init() == false)
             return false;
 
-        _nickNameInputField = Util.FindChild(gameObject, "InputField_Nickname", false)
+        _nickNameInputField = Util.FindChild(gameObject, "InputField_Nickname", true)
         .GetComponent<TMP_InputField>();
-        _nickNameCreateButton = Util.FindChild(gameObject, "Btn_CreateNickName", false)
+        _nickNameCreateButton = Util.FindChild(gameObject, "Btn_CreateNickName", true)
         .GetComponent<Button>();
 
         if (_nickNameCreateButton != null)
@@ -62,7 +62,7 @@ public class UI_NicknamePopup : UI_Popup
                     }
                 }
                 else {
-                    Managers.Scene.LoadScene(EScene.LoadingScene);
+                    //Managers.Scene.LoadScene(EScene.LoadingScene);
                 }
             }
             catch (Exception e)
