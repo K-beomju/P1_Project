@@ -90,7 +90,7 @@ public class UI_Base : InitBase
     // ======================================================
     protected void ShowAlertUI(string callback) {
         Debug.LogWarning(callback);
-        Managers.UI.ShowBaseUI<UI_NotificationBase>("에러 발생" + callback);
+        Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification(callback);
     }
 
     protected bool IsBackendError(BackendReturnObject bro) {

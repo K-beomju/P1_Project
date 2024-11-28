@@ -8,7 +8,7 @@ using static Define;
 
 public class UI_TitleScene : UI_Scene
 {
-    public enum GameObjects 
+    public enum GameObjects
     {
         Group_Buttons,
         Group_Loading
@@ -32,68 +32,135 @@ public class UI_TitleScene : UI_Scene
 
     protected override bool Init()
     {
-        if (base.Init() == false)
+        if (!base.Init())
             return false;
 
-        BindObjects(typeof(GameObjects));        
-        BindButtons(typeof(Buttons));        
+        BindObjects(typeof(GameObjects));
+        BindButtons(typeof(Buttons));
         BindSliders(typeof(Sliders));
         BindTMPTexts(typeof(Texts));
 
-        // 로그인 버튼 그룹은 활성화, 데이터 로딩은 비활성화 
-        GetObject((int)GameObjects.Group_Buttons).SetActive(true);
-        GetObject((int)GameObjects.Group_Loading).SetActive(false);
+        // 초기 UI 상태 설정
+        ToggleUIGroup(GameObjects.Group_Buttons, true);
+        ToggleUIGroup(GameObjects.Group_Loading, false);
 
-        GetButton((int)Buttons.Btn_LoginWithGoogle).onClick.AddListener(() =>
-        {
-            if (Backend.IsInitialized == false)
-                return;
-            StartGoogleLogin();
-        });
+        // 버튼 이벤트 바인딩
+        GetButton((int)Buttons.Btn_LoginWithGoogle).onClick.AddListener(StartGoogleLogin);
+        GetButton((int)Buttons.Btn_CustomLogin).onClick.AddListener(StartCustomLogin);
 
-        GetButton((int)Buttons.Btn_CustomLogin).onClick.AddListener(() =>
-        {
-            if (Backend.IsInitialized == false)
-                return;
-
-            var bro = Backend.BMember.CustomLogin("asd", "1234");
-            if (bro.IsSuccess())
-            {
-                Debug.Log("로그인에 성공했습니다 : " + bro);
-                Debug.Log($"유저 닉네임 : " + Backend.UserNickName);
-                Debug.Log($"유저 인데이트 : " + Backend.UserInDate);
-                Debug.Log($"유저 UID(쿠폰용) : " + Backend.UID);
-
-                GetObject((int)GameObjects.Group_Buttons).SetActive(false);
-                GetObject((int)GameObjects.Group_Loading).SetActive(true);
-
-                Managers.Scene.GetCurrentScene<TitleScene>().InitBackendDataLoad();
-            }
-            else
-            {
-                // Backend.UserNickname, Backend.UserInDate, Backend.UID에 값이 할당되지 않습니다.  
-            }
-        });
         return true;
     }
 
-    #region Login
-    public void StartGoogleLogin()
+
+    private void Start()
     {
-        TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, GoogleLoginCallback);
+        LoginWithBackendToken();
     }
 
-    private void GoogleLoginCallback(bool isSuccess, string errorMessage, string token)
+    #region Login
+    private void LoginWithBackendToken()
     {
-        if (isSuccess == false)
+        SendQueue.Enqueue(Backend.BMember.LoginWithTheBackendToken, callback =>
         {
-            Debug.LogError(errorMessage);
+            Debug.Log($"Backend.BMember.LoginWithTheBackendToken : {callback}");
+
+            if (callback.IsSuccess())
+            {
+                ToggleUIGroup(GameObjects.Group_Loading, true);
+                HandlePostLogin();
+            }
+            else
+            {
+                ToggleUIGroup(GameObjects.Group_Buttons, true);
+            }
+        });
+    }
+
+    public void StartGoogleLogin()
+    {
+        TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (isSuccess, errorMessage, token) =>
+        {
+            if (!isSuccess)
+            {
+                Debug.LogError(errorMessage);
+                return;
+            }
+
+            var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
+            Debug.Log("페데레이션 로그인 결과 : " + bro);
+
+            if (HandleBackendError(bro))
+                return;
+
+            ToggleUIGroup(GameObjects.Group_Buttons, false);
+            ToggleUIGroup(GameObjects.Group_Loading, true);
+            HandlePostLogin();
+        });
+    }
+
+    private void StartCustomLogin()
+    {
+        if (!Backend.IsInitialized)
             return;
+
+        var bro = Backend.BMember.CustomLogin("asd", "1234");
+        if (HandleBackendError(bro))
+            return;
+
+        ToggleUIGroup(GameObjects.Group_Buttons, false);
+        ToggleUIGroup(GameObjects.Group_Loading, true);
+        HandlePostLogin();
+    }
+    #endregion
+
+    #region Helper Methods
+    private void HandlePostLogin()
+    {
+        TitleScene titleScene = Managers.Scene.GetCurrentScene<TitleScene>();
+
+        if (string.IsNullOrEmpty(Backend.UserNickName))
+        {
+            Managers.UI.ShowPopupUI<UI_NicknamePopup>();
+            titleScene.SceneMove = false;
+            titleScene.InitBackendDataLoad();
+        }
+        else
+        {
+            Debug.Log("로그인 성공");
+            Debug.Log($"유저 닉네임 : {Backend.UserNickName}");
+            Debug.Log($"유저 인데이트 : {Backend.UserInDate}");
+            Debug.Log($"유저 UID(쿠폰용) : {Backend.UID}");
+            titleScene.InitBackendDataLoad();
+        }
+    }
+
+    private bool HandleBackendError(BackendReturnObject bro)
+    {
+        if (!IsBackendError(bro))
+            return false;
+
+        string statusCode = bro.GetStatusCode();
+        string message = bro.GetMessage();
+
+        if (statusCode == "401" && message.Contains("maintenance"))
+        {
+            ShowAlertUI("서버 점검중입니다");
+        }
+        else if (statusCode == "403" && message.Contains("Forbidden blocked user"))
+        {
+            ShowAlertUI($"해당 계정이 차단당했습니다\n차단사유 : {bro.GetErrorCode()}");
+        }
+        else
+        {
+            ShowAlertUI($"로그인에 실패하였습니다");
         }
 
-        Debug.Log("구글 토큰 : " + token);
-        var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
-        Debug.Log("페데레이션 로그인 결과 : " + bro);
+        return true;
+    }
+
+    private void ToggleUIGroup(GameObjects group, bool isActive)
+    {
+        GetObject((int)group).SetActive(isActive);
     }
     #endregion
 
