@@ -66,8 +66,13 @@ public class UI_TitleScene : UI_Scene
 
             if (callback.IsSuccess())
             {
+#if UNITY_EDITOR
+                ToggleUIGroup(GameObjects.Group_Buttons, false);
                 ToggleUIGroup(GameObjects.Group_Loading, true);
                 HandlePostLogin();
+#else
+                StartGoogleLogin();
+#endif
             }
             else
             {
@@ -120,6 +125,7 @@ public class UI_TitleScene : UI_Scene
 
         if (string.IsNullOrEmpty(Backend.UserNickName))
         {
+            ShowAlertUI($"닉네임이 없습니다.");
             Managers.UI.ShowPopupUI<UI_NicknamePopup>();
             titleScene.SceneMove = false;
             titleScene.InitBackendDataLoad();
@@ -130,6 +136,7 @@ public class UI_TitleScene : UI_Scene
             Debug.Log($"유저 닉네임 : {Backend.UserNickName}");
             Debug.Log($"유저 인데이트 : {Backend.UserInDate}");
             Debug.Log($"유저 UID(쿠폰용) : {Backend.UID}");
+            ShowAlertUI($"로그인에 성공하였습니다.");
             titleScene.InitBackendDataLoad();
         }
     }

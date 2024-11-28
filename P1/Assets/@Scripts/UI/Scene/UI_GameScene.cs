@@ -22,7 +22,8 @@ public class UI_GameScene : UI_Scene
         Btn_AdBuff,
         Btn_Post,
         Btn_Attendance,
-        Btn_SleepMode
+        Btn_SleepMode,
+        Btn_Logout
     }
 
     enum Sliders
@@ -158,7 +159,10 @@ public class UI_GameScene : UI_Scene
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SLEEPMODEPOPUP);
             popupUI.RefreshUI();
         });
-
+        GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
+        {
+            TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
+        });
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
@@ -225,7 +229,21 @@ public class UI_GameScene : UI_Scene
         ShowTab(_tab);
     }
 
+    #region Sub-Content
 
+    private void GoogleSignOutCallback(bool isSuccess, string error)
+    {
+        if (isSuccess == false)
+        {
+            Debug.Log("구글 로그아웃 에러 응답 발생 : " + error);
+        }
+        else
+        {
+            Debug.Log("로그아웃 성공");
+            Managers.Scene.LoadScene(EScene.TitleScene);
+        }
+    }
+    #endregion
 
     #region Stage UI
 
