@@ -31,7 +31,7 @@ public class Hero : Creature
 
     private bool isDash = false;
     private bool isMove = false;
-    private bool isDashEnabled = true;
+    public bool isDashEnabled = true;
 
     protected override bool Init()
     {
@@ -362,17 +362,6 @@ public class Hero : Creature
         isMove = true;
     }
 
-    // 대쉬 가능 여부 활성화
-    public void EnableDash()
-    {
-        isDashEnabled = true;
-    }
-
-    // 대쉬 가능 여부 비활성화
-    public void DisableDash()
-    {
-        isDashEnabled = false;
-    }
 
     // 포지션 이동때 그림자 생성 방지
     public void ForceMove(Vector3 newPosition)

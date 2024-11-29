@@ -221,7 +221,6 @@ public class GameScene : BaseScene
         cameraController.Target = Managers.Object.Hero.transform;
 
         // Battle Start
-        Managers.Object.Hero.DisableDash();
         Managers.Object.Hero.EnableAction();
         yield return MonitorRankUpMonsterBattle();
     }

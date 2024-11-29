@@ -34,7 +34,7 @@ public class UI_TitleScene : UI_Scene
     {
         if (!base.Init())
             return false;
-
+        
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
         BindSliders(typeof(Sliders));

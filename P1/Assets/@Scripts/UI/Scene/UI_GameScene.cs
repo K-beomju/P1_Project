@@ -1,3 +1,4 @@
+using BackEnd;
 using BackEnd.Quobject.SocketIoClientDotNet.Client;
 using System;
 using System.Collections;
@@ -21,9 +22,9 @@ public class UI_GameScene : UI_Scene
         Btn_Ranking,
         Btn_AdBuff,
         Btn_Post,
-        Btn_Attendance,
-        Btn_SleepMode,
-        Btn_Logout
+        Btn_Logout,
+        Btn_Setting,
+        Btn_Menu
     }
 
     enum Sliders
@@ -51,7 +52,8 @@ public class UI_GameScene : UI_Scene
     {
         TopStage,
         RemainMonster,
-        RankUpStage
+        RankUpStage,
+        MenuGroup
     }
 
     enum CanvasGroups
@@ -125,8 +127,34 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.DungeonButton).onClick.AddListener(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).onClick.AddListener(() => ShowTab(PlayTab.Draw));
 
+        GetButton((int)Buttons.Btn_Setting).onClick.AddListener(() =>
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_SettingPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        });
         // Sub_Content
         GetButton((int)Buttons.Btn_AutoSkill).onClick.AddListener(ActiveAutoSkill);
+        GetButton((int)Buttons.Btn_AdBuff).onClick.AddListener(() =>
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_AdBuffPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        });
+
+
+        GetButton((int)Buttons.Btn_Menu).onClick.AddListener(() =>
+        {
+            GameObject menuGroup = GetObject((int)GameObjects.MenuGroup);
+            bool isActive = !menuGroup.activeSelf;
+
+            // 메뉴 그룹 활성/비활성 토글
+            menuGroup.SetActive(isActive);
+
+            // 버튼 이미지 스프라이트 변경
+            Image buttonImage = GetButton((int)Buttons.Btn_Menu).GetComponent<Image>();
+            string spritePath = isActive ? "Sprites/Icon_Close02" : "Sprites/Icon_Menu_Hamburger";
+            buttonImage.sprite = Managers.Resource.Load<Sprite>(spritePath);
+        });
+        
         GetButton((int)Buttons.Btn_Ranking).onClick.AddListener(() =>
         {
             if (Managers.Backend.Rank.List.Count <= 0)
@@ -136,32 +164,28 @@ public class UI_GameScene : UI_Scene
             }
             ShowTab(PlayTab.Rank);
         });
-        GetButton((int)Buttons.Btn_AdBuff).onClick.AddListener(() =>
-        {
-            var popupUI = Managers.UI.ShowPopupUI<UI_AdBuffPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-        });
         GetButton((int)Buttons.Btn_Post).onClick.AddListener(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_PostPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         });
-        GetButton((int)Buttons.Btn_Attendance).onClick.AddListener(() =>
-        {
-            var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-            popupUI.RefreshUI();
-        });
-        GetButton((int)Buttons.Btn_SleepMode).onClick.AddListener(() =>
-        {
-            var popupUI = Managers.UI.ShowPopupUI<UI_SleepModePopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SLEEPMODEPOPUP);
-            popupUI.RefreshUI();
-        });
         GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
         {
+#if UNITY_EDITOR
+            SendQueue.Enqueue(Backend.BMember.Logout, callback =>
+            {
+                Debug.Log($"Backend.BMember.Logout : {callback}");
+
+                if (callback.IsSuccess())
+                {
+                    Debug.Log("로그아웃 성공");
+                    Managers.Scene.LoadScene(EScene.TitleScene);
+                }
+            });
+#else
             TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
+#endif
         });
 
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
@@ -215,6 +239,7 @@ public class UI_GameScene : UI_Scene
         GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
         GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
         GetObject((int)GameObjects.RankUpStage).SetActive(false);
+        GetObject((int)GameObjects.MenuGroup).SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
@@ -279,10 +304,13 @@ public class UI_GameScene : UI_Scene
 
     public void RefreshBossMonsterHp(Creature monster)
     {
-        float hpAmount = monster.Hp / monster.MaxHp;
+        int currentHp = Mathf.FloorToInt(monster.Hp); // 소수점 버림
+        int maxHp = Mathf.FloorToInt(monster.MaxHp); // 소수점 버림
+
+        float hpAmount = (float)currentHp / maxHp;
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = 1;
         GetSlider((int)Sliders.Slider_StageInfo).value = hpAmount;
-        GetTMPText((int)Texts.Text_StageInfo).text = $"{monster.Hp} / {monster.MaxHp}";
+        GetTMPText((int)Texts.Text_StageInfo).text = $"{currentHp} / {maxHp}";
     }
 
     public void RefreshBossStageTimer(float currentTime, float maxTime)
@@ -525,6 +553,9 @@ public class UI_GameScene : UI_Scene
 
     public void ShowPopupActiveGameUI(bool active)
     {
+        if(!active)
+        GetObject((int)GameObjects.MenuGroup).SetActive(false);
+        
         GetObject((int)GameObjects.TopStage).SetActive(active);
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0;
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
