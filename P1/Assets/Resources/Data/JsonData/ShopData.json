@@ -1,7 +1,7 @@
 {
   "shopDatas": [
     {
-      "ShopItemName": "DiaAd",
+      "ShopItemName": "diaAd",
       "Remark": "다이아 상자",
       "ShopItemType": 1,
       "ItemType": 2,
@@ -9,7 +9,7 @@
       "Price": 0
     },
     {
-      "ShopItemName": "Dia40",
+      "ShopItemName": "dia40",
       "Remark": "다이아 한 줌",
       "ShopItemType": 0,
       "ItemType": 2,
@@ -17,7 +17,7 @@
       "Price": 1100
     },
     {
-      "ShopItemName": "Dia220",
+      "ShopItemName": "dia220",
       "Remark": "다이아 더미",
       "ShopItemType": 0,
       "ItemType": 2,
@@ -25,7 +25,7 @@
       "Price": 6600
     },
     {
-      "ShopItemName": "Dia480",
+      "ShopItemName": "dia480",
       "Remark": "다이아 무더기",
       "ShopItemType": 0,
       "ItemType": 2,
@@ -33,7 +33,7 @@
       "Price": 14000
     },
     {
-      "ShopItemName": "Dia1040",
+      "ShopItemName": "dia1040",
       "Remark": "다이아 한 주머니",
       "ShopItemType": 0,
       "ItemType": 2,
@@ -41,7 +41,7 @@
       "Price": 29000
     },
     {
-      "ShopItemName": "Dia2800",
+      "ShopItemName": "dia2800",
       "Remark": "다이아 한 통",
       "ShopItemType": 0,
       "ItemType": 2,
@@ -49,7 +49,7 @@
       "Price": 66000
     },
     {
-      "ShopItemName": "Dia6400",
+      "ShopItemName": "dia6400",
       "Remark": "다이아 한 상자",
       "ShopItemType": 0,
       "ItemType": 2,
@@ -57,7 +57,7 @@
       "Price": 149000
     },
     {
-      "ShopItemName": "GoldAd",
+      "ShopItemName": "goldAd",
       "Remark": "골드 한 줌",
       "ShopItemType": 1,
       "ItemType": 1,
@@ -65,20 +65,12 @@
       "Price": 0
     },
     {
-      "ShopItemName": "Gold10000",
+      "ShopItemName": "gold100000",
       "Remark": "골드 무더기",
       "ShopItemType": 0,
       "ItemType": 1,
       "Amount": 10000,
       "Price": 5000
-    },
-    {
-      "ShopItemName": "Gold100000",
-      "Remark": "골드 상자",
-      "ShopItemType": 0,
-      "ItemType": 1,
-      "Amount": 100000,
-      "Price": 25000
     }
   ]
 }

@@ -24,13 +24,12 @@ public class UI_ShopPaidItem : UI_Base
         BindTMPTexts(typeof(Texts));
         buyButton = GetComponent<Button>();
         buyButton.onClick.AddListener(OnClickButtonBuyItem);
-        RefreshUI();
         return true;
     }
 
-    public void SetInfo(Data.ShopData shopData)
+    public void SetInfo(string ShopItemName)
     {
-        ShopData = shopData;
+        ShopData = Managers.Data.ShopChart[ShopItemName];
 
         if(Init() == false)
         {
@@ -40,16 +39,14 @@ public class UI_ShopPaidItem : UI_Base
 
     private void OnClickButtonBuyItem()
     {
-        Debug.Log($"{ShopData.ItemType} : {ShopData.Amount}");
+        Managers.IAP.Purchase(ShopData.ShopItemName);
     }
 
     public void RefreshUI()
     {
         if(ShopData == null)
-        {
-            Debug.LogWarning("ShopData가 없습니다.");
             return;
-        }
+        
         GetTMPText((int)Texts.Text_ItemName).text = ShopData.Remark;
         GetTMPText((int)Texts.Text_Amount).text = ShopData.Amount.ToString();
         GetTMPText((int)Texts.Text_PreAmount).text = (ShopData.Amount * 0.5f).ToString();

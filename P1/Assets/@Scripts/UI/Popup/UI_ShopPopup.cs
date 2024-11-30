@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class UI_ShopPopup : UI_Popup
 {
@@ -29,14 +30,12 @@ public class UI_ShopPopup : UI_Popup
 
         Bind<UI_ShopPaidItem>(typeof(ShopPaidItems));
 
-        var shopChart = Managers.Data.ShopChart;
-
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_40).SetInfo(shopChart["Dia40"]);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_220).SetInfo(shopChart["Dia220"]);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_480).SetInfo(shopChart["Dia480"]);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_1040).SetInfo(shopChart["Dia1040"]);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_2800).SetInfo(shopChart["Dia2800"]);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_6400).SetInfo(shopChart["Dia6400"]);
+        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_40).SetInfo(ProductIDs.Dia40);
+        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_220).SetInfo(ProductIDs.Dia220);
+        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_480).SetInfo(ProductIDs.Dia480);
+        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_1040).SetInfo(ProductIDs.Dia1040);
+        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_2800).SetInfo(ProductIDs.Dia2800);
+        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_6400).SetInfo(ProductIDs.Dia6400);
         return true;
 
     }

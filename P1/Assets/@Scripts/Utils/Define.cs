@@ -332,6 +332,16 @@ public static class Define
         public const int UI_SLEEPMODEPOPUP = 1000;
     }
 
+    public static class ProductIDs
+    {
+        public const string Dia40 = "dia40";
+        public const string Dia220 = "dia220";
+        public const string Dia480 = "dia480";
+        public const string Dia1040 = "dia1040";
+        public const string Dia2800 = "dia2800";
+        public const string Dia6400 = "dia6400";
+    }
+
     public enum EQuestPeriodType
     {
         Once, // 단발성
@@ -426,7 +436,7 @@ public static class Define
     #endregion
 
     #region Shop
-    public enum EShopItemType 
+    public enum EShopItemType
     {
         Paid,
         AdWatched
