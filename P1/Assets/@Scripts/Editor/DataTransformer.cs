@@ -43,6 +43,7 @@ public class DataTransformer : EditorWindow
         ParseExcelDataToJson<ItemDataLoader, ItemData>("Item");
         ParseExcelDataToJson<RankUpInfoDataLoader, RankUpInfoData>("RankUpInfo");
         ParseExcelDataToJson<DrawRankUpGachaInfoDataLoader, DrawRankUpGachaInfoData>("DrawRankUpGachaInfo");
+        ParseExcelDataToJson<ShopDataLoader, ShopData>("Shop");
 
 	}
 

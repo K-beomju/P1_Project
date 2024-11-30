@@ -309,7 +309,6 @@ namespace BackendData.GameData
             {
                 Debug.LogWarning(relicType);
             }
-            Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
             Managers.Event.TriggerEvent(EEventType.HeroRelicUpdated);
 
         }

@@ -442,7 +442,7 @@ namespace Data
             return dict;
         }
     }
-    
+
     [Serializable]
     public class EffectData
     {
@@ -547,6 +547,7 @@ namespace Data
 
     #endregion
 
+    #region RankUp
 
     [Serializable]
     public class RankUpInfoData
@@ -598,4 +599,37 @@ namespace Data
             return dict;
         }
     }
+
+    #endregion
+
+
+    #region Shop
+
+    [Serializable]
+    public class ShopData
+    {
+        public string ShopItemName;
+        public string Remark;
+        public EShopItemType ShopItemType;
+        public EItemType ItemType;
+        public int Amount;
+        public int Price;
+    }
+
+    [Serializable]
+    public class ShopDataLoader : ILoader<string, ShopData>
+    {
+        public List<ShopData> shopDatas = new List<ShopData>();
+        public Dictionary<string, ShopData> MakeDict()
+        {
+            Dictionary<string, ShopData> dict = new Dictionary<string, ShopData>();
+            foreach (ShopData rank in shopDatas)
+                dict.Add(rank.ShopItemName, rank);
+            return dict;
+        }
+    }
+    #endregion
+
+
+
 }

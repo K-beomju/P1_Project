@@ -395,6 +395,7 @@ public static class Define
 
     #endregion
 
+    #region RankUp
     public enum ERankType
     {
         Unknown,
@@ -422,6 +423,15 @@ public static class Define
         Acquired       // 능력이 존재하며 활성화된 상태
 
     }
+    #endregion
+
+    #region Shop
+    public enum EShopItemType 
+    {
+        Paid,
+        AdWatched
+    }
+    #endregion
 
 }
 

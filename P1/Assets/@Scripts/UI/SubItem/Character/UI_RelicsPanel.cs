@@ -120,6 +120,8 @@ public class UI_RelicsPanel : UI_Base
             i++; // 뽑기 횟수 증가
         }
 
+
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
         popupUI.RefreshUI(EItemType.Relic, drawRelicDic);
     }
 
