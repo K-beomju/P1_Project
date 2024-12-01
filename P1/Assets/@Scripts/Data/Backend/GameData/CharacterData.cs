@@ -22,7 +22,6 @@ namespace BackendData.GameData
         // 출석체크 
         public int AttendanceIndex { get; private set; }
         public string AttendanceLastLoginTime { get; private set; }
-        public DateTime AttendanceUpdateTime { get; private set; }
 
         // 현재 진행한 스테이지 정보 
         public int StageLevel { get; private set; }
@@ -69,12 +68,8 @@ namespace BackendData.GameData
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
             AttendanceIndex = 1;
-            //AttendanceLastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-            // 수정: 24시간 이전의 시간으로 설정
             DateTime initialLoginTime = DateTime.UtcNow.AddDays(-1); // 24시간 이전으로 설정
             AttendanceLastLoginTime = initialLoginTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-
-            AttendanceUpdateTime = DateTime.MinValue;
             WorldBossCombatPower = 0;
 
             // 재화 정보 초기화 
@@ -336,13 +331,7 @@ namespace BackendData.GameData
             Debug.Log($"경과 시간: {timeSinceLastLogin.TotalHours:F2}시간");
             Debug.Log($"현재 AttendanceIndex: {AttendanceIndex}");
 
-            // 처음받는 다면 강제로 값을 올림
-            // if(AttendanceIndex == 0)
-            // {
-            //     AttendanceIndex += 1;
-            //     return true;
-            // }
-            if (timeSinceLastLogin.TotalDays > 1)
+            if (timeSinceLastLogin.TotalDays >= 1)
             {
                 return true;
             }

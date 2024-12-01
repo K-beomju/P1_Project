@@ -24,6 +24,8 @@ public class UI_ShopPaidItem : UI_Base
         BindTMPTexts(typeof(Texts));
         buyButton = GetComponent<Button>();
         buyButton.onClick.AddListener(OnClickButtonBuyItem);
+
+        RefreshUI();
         return true;
     }
 

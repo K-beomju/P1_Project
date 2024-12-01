@@ -23,7 +23,9 @@ public class IAPManager : IDetailedStoreListener
         { ProductIDs.Dia480, () => Debug.Log("다이아 480개 구매 성공") },
         { ProductIDs.Dia1040, () => Debug.Log("다이아 1040개 구매 성공") },
         { ProductIDs.Dia2800, () => Debug.Log("다이아 2800개 구매 성공") },
-        { ProductIDs.Dia6400, () => Debug.Log("다이아 6400개 구매 성공") }
+        { ProductIDs.Dia6400, () => Debug.Log("다이아 6400개 구매 성공") },
+        { ProductIDs.Gold10000, () => Debug.Log("골드 10000개 구매 성공") },
+        { ProductIDs.Gold100000, () => Debug.Log("골드 100000개 구매 성공") }
     };
 
 

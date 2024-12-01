@@ -35,12 +35,14 @@ public class BackendManager
         public readonly BackendData.GameData.DrawLevelData DrawLevelData = new();
         public readonly BackendData.GameData.DungeonData DungeonData = new();
         public readonly BackendData.GameData.RankUpData RankUpData = new();
+        public readonly BackendData.GameData.ShopData ShopData = new();
 
         public readonly Dictionary<string, GameData>
             GameDataList = new Dictionary<string, GameData>();
 
         public BackendGameData()
         {
+            GameDataList.Add("내 상점 정보", ShopData);
             GameDataList.Add("내 랭크 정보", RankUpData);
             GameDataList.Add("내 던전 정보", DungeonData);
             GameDataList.Add("내 장비 정보", EquipmentInventory);

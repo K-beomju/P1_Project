@@ -108,7 +108,8 @@ public class AdManager
         _appOpenAd.Show();
     }
     #endregion
-  #region Rewarded Interstitial Ad
+
+    #region Rewarded Interstitial Ad
     public void LoadRewardedInterstitialAd(Action<bool> onAdLoaded = null)
     {
         // 이전 광고 제거
@@ -151,7 +152,14 @@ public class AdManager
     {
         if (BLOCK_ADS || _rewardedInterstitialAd == null || !_rewardedInterstitialAd.CanShowAd())
         {
-            Debug.LogWarning("보상형 전면 광고를 사용할 수 없습니다.");
+            LoadRewardedInterstitialAd((loaded) =>
+            {
+                if(loaded)
+                {
+                    Debug.Log("보상형 전면 광고 재로드");
+                    ShowRewardedInterstitialAd(onRewardEarned);
+                }
+            });
             onRewardEarned?.Invoke(false);
             return;
         }

@@ -65,11 +65,19 @@
       "Price": 0
     },
     {
-      "ShopItemName": "gold100000",
+      "ShopItemName": "gold10000",
       "Remark": "골드 무더기",
-      "ShopItemType": 0,
+      "ShopItemType": 1,
       "ItemType": 1,
       "Amount": 10000,
+      "Price": 3000
+    },
+    {
+      "ShopItemName": "gold100000",
+      "Remark": "골드 상자",
+      "ShopItemType": 0,
+      "ItemType": 1,
+      "Amount": 100000,
       "Price": 5000
     }
   ]

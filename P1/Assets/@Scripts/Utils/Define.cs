@@ -334,12 +334,18 @@ public static class Define
 
     public static class ProductIDs
     {
+        public const string DiaAd = "diaAd";
         public const string Dia40 = "dia40";
         public const string Dia220 = "dia220";
         public const string Dia480 = "dia480";
         public const string Dia1040 = "dia1040";
         public const string Dia2800 = "dia2800";
         public const string Dia6400 = "dia6400";
+        public const string GoldAd = "goldAd";
+        public const string Gold10000 = "gold10000";
+        public const string Gold100000 = "gold100000";
+
+
     }
 
     public enum EQuestPeriodType
@@ -440,6 +446,12 @@ public static class Define
     {
         Paid,
         AdWatched
+    }
+
+    public enum EAdRewardType 
+    {
+        Gold,
+        Dia
     }
     #endregion
 
