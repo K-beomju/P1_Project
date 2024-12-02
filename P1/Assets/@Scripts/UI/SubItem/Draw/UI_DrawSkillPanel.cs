@@ -11,7 +11,8 @@ public class UI_DrawSkillPanel : UI_Base
     public enum Texts
     {
         Text_DrawSkillLevel,
-        Text_DrawValue
+        Text_DrawValue,
+        Text_AdWatchedDrawSkillCount
     }
 
     public enum Sliders
@@ -52,7 +53,27 @@ public class UI_DrawSkillPanel : UI_Base
 
         GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => ShowProbabilityPopup());
 
-        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawSkill(10));
+        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => 
+        {
+            Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned => 
+            {
+                if(onRewardEarned)
+                {
+                    // 광고 시청 처리
+                    Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawSkill);
+
+                    // 보상 지급 
+                    OnDrawSkill(10);
+
+                    // UI 업데이트 
+                    RefreshUI();
+                }
+                else
+                {
+                    Debug.LogWarning("광고 시청 실패!");
+                }
+            });
+        });
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawSkill(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawSkill(30));
 
@@ -66,20 +87,15 @@ public class UI_DrawSkillPanel : UI_Base
 
     private void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.DrawSkillUIUpdated, new Action(UpdateSkillUI));
+        Managers.Event.AddEvent(EEventType.DrawSkillUIUpdated, new Action(RefreshUI));
     }
 
     private void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.DrawSkillUIUpdated, new Action(UpdateSkillUI));
+        Managers.Event.RemoveEvent(EEventType.DrawSkillUIUpdated, new Action(RefreshUI));
     }
 
     public void RefreshUI()
-    {
-        UpdateSkillUI();
-    }
-
-    public void UpdateSkillUI()
     {
         _drawData = Managers.Backend.GameData.DrawLevelData.DrawDic[_drawType.ToString()];
 
@@ -96,6 +112,10 @@ public class UI_DrawSkillPanel : UI_Base
 
         GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawSkillChart[_drawLevel].MaxExp;
         GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+
+        var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
+        GetTMPText((int)Texts.Text_AdWatchedDrawSkillCount).text = 
+        $"({rewardAdDic[EAdRewardType.DrawSkill.ToString()].WatchedCount}/{RewardAdData.MaxCount})";
     }
 
 

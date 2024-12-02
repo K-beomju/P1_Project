@@ -49,11 +49,11 @@ public class Managers : MonoBehaviour
     #region Server
     private BackendManager _backend = new BackendManager();
     private AdManager _ad = new AdManager();
-    private IAPManager _iap = new IAPManager();
+    //private IAPManager _iap = new IAPManager();
 
     public static BackendManager Backend { get { return Instance?._backend; } }
     public static AdManager Ad { get { return Instance?._ad; } }
-    public static IAPManager IAP { get { return Instance?._iap; } }
+    //public static IAPManager IAP { get { return Instance?._iap; } }
     #endregion
 
     public static void Init()

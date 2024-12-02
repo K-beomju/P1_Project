@@ -219,6 +219,7 @@ public class UI_EquipmentPopup : UI_Popup
         GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
 
         GetTMPText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
+        GetTMPText((int)Texts.Text_EquipmentRare).color = Util.GetRareTypeColor(SelectEquipmentInfo.Data.RareType);
 
         float ownedValue = SelectEquipmentInfo.Data.OwnedValue + (SelectEquipmentInfo.Data.OwnedIncreaseRate * SelectEquipmentInfo.Level);
         float equipValue = SelectEquipmentInfo.Data.EquippedValue + (SelectEquipmentInfo.Data.EquippedIncreaseRate * SelectEquipmentInfo.Level);

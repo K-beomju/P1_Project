@@ -41,7 +41,7 @@ public class UI_ShopPaidItem : UI_Base
 
     private void OnClickButtonBuyItem()
     {
-        Managers.IAP.Purchase(ShopData.ShopItemName);
+        //Managers.IAP.Purchase(ShopData.ShopItemName);
     }
 
     public void RefreshUI()

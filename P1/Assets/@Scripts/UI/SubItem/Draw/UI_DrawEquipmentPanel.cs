@@ -11,7 +11,8 @@ public class UI_DrawEquipmentPanel : UI_Base
     public enum Texts
     {
         Text_DrawEquipmentLevel,
-        Text_DrawValue
+        Text_DrawValue,
+        Text_AdWatchedDrawEquipmentCount
     }
 
     public enum Sliders
@@ -84,7 +85,27 @@ public class UI_DrawEquipmentPanel : UI_Base
 
         GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => ShowProbabilityPopup());
 
-        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => OnDrawEquipment(10));
+        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => 
+        {
+            Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned => 
+            {
+                if(onRewardEarned)
+                {
+                    // 광고 시청 처리
+                    Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawEquipment);
+
+                    // 보상 지급 
+                    OnDrawEquipment(10);
+
+                    // UI 업데이트 
+                    RefreshUI();
+                }
+                else
+                {
+                    Debug.LogWarning("광고 시청 실패!");
+                }
+            });
+        });
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
 
@@ -151,6 +172,10 @@ public class UI_DrawEquipmentPanel : UI_Base
 
         GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp;
         GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+
+        var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
+        GetTMPText((int)Texts.Text_AdWatchedDrawEquipmentCount).text = 
+        $"({rewardAdDic[EAdRewardType.DrawEquipment.ToString()].WatchedCount}/{RewardAdData.MaxCount})";
     }
 
 

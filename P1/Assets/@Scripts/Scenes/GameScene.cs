@@ -72,9 +72,6 @@ public class GameScene : BaseScene
         StartCoroutine(Managers.Backend.UpdateGameDataTransaction());
         StartCoroutine(Managers.Backend.GetAdminPostList());
         //StartCoroutine(Managers.Backend.UpdateRankScore());
-
-        // 출석체크 로직
-        //CharacterData.AttendanceCheck();
     }
 
     private void InitializeGameComponents()
@@ -92,6 +89,8 @@ public class GameScene : BaseScene
         cameraController.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cameraController.Target = hero.transform;
+
+        Managers.Ad.LoadBannerAd();
     }
 
     private void InitializeUI()
@@ -99,6 +98,15 @@ public class GameScene : BaseScene
         Managers.UI.CacheAllPopups();
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
+
+        // 출석체크 로직
+        if(CharacterData.AttendanceCheck() == true)
+        {
+            Debug.Log("하루가 지나 출석체크 팝업 On");
+            var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
+        }
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);

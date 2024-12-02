@@ -167,6 +167,7 @@ public class UI_SkillPopup : UI_Popup
         GetTMPText((int)Texts.Text_SkillName).text = SelectSkillInfo.Data.Name;
         GetTMPText((int)Texts.Text_SkillLevel).text = $"Lv. {SelectSkillInfo.Level}";
         GetTMPText((int)Texts.Text_SkillRare).text = Util.GetRareTypeString(SelectSkillInfo.Data.RareType);
+        GetTMPText((int)Texts.Text_SkillRare).color = Util.GetRareTypeColor(SelectSkillInfo.Data.RareType);
 
         string originalString = SelectSkillInfo.Data.Description;
         string replacedString = originalString.Replace("{value}",   SelectSkillInfo.Data.DamageMultiplier.ToString());
@@ -257,7 +258,7 @@ public class UI_SkillPopup : UI_Popup
     {
         _placeCompanionItem.gameObject.SetActive(true);
         _placeCompanionItem.PlayShakeAnimation();
-        _placeCompanionItem.DisplayItem(SelectSkillInfo, EItemDisplayType.ImageOnly);
+        _placeCompanionItem.DisplayItem(SelectSkillInfo, EItemDisplayType.SlotItem);
         GetObject((int)GameObjects.Content_Skill).SetActive(false);
 
         // 모든 슬롯의 버튼을 비활성화하여 교체 대기 상태로 전환
@@ -300,7 +301,7 @@ public class UI_SkillPopup : UI_Popup
                         (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[equipResult].RefreshUI();
                         _skillSlotList[slotIndex].RefreshUI();
                         SetEquipButtonState(true);
-
+                        _placeCompanionItem.StopShakeAnimation();
                         _placeCompanionItem.gameObject.SetActive(false);
                         GetObject((int)GameObjects.Content_Skill).SetActive(true);
                         foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList.Where(slot => slot.SlotType == ESkillSlotType.Equipped))

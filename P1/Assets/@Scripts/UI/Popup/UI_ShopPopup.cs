@@ -39,21 +39,21 @@ public class UI_ShopPopup : UI_Popup
 
         BindButtons(typeof(Buttons));
         BindTMPTexts(typeof(Texts));
-        Bind<UI_ShopPaidItem>(typeof(ShopPaidItems));
+        //Bind<UI_ShopPaidItem>(typeof(ShopPaidItems));
 
         GetButton((int)Buttons.Btn_AdWatchedDia).onClick.AddListener(() => OnClickButtonAdWatch(EAdRewardType.Dia));
 
 
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_40).SetInfo(ProductIDs.Dia40);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_220).SetInfo(ProductIDs.Dia220);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_480).SetInfo(ProductIDs.Dia480);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_1040).SetInfo(ProductIDs.Dia1040);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_2800).SetInfo(ProductIDs.Dia2800);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_6400).SetInfo(ProductIDs.Dia6400);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_40).SetInfo(ProductIDs.Dia40);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_220).SetInfo(ProductIDs.Dia220);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_480).SetInfo(ProductIDs.Dia480);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_1040).SetInfo(ProductIDs.Dia1040);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_2800).SetInfo(ProductIDs.Dia2800);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemDia_6400).SetInfo(ProductIDs.Dia6400);
 
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemGold_Ad).SetInfo(ProductIDs.GoldAd);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemGold_10000).SetInfo(ProductIDs.Gold10000);
-        Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemGold_100000).SetInfo(ProductIDs.Gold100000);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemGold_Ad).SetInfo(ProductIDs.GoldAd);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemGold_10000).SetInfo(ProductIDs.Gold10000);
+        // Get<UI_ShopPaidItem>((int)ShopPaidItems.UI_ShopPaidItemGold_100000).SetInfo(ProductIDs.Gold100000);
 
         return true;
 
@@ -61,8 +61,9 @@ public class UI_ShopPopup : UI_Popup
 
     private void OnClickButtonAdWatch(EAdRewardType rewardType)
     {
-        if(Managers.Backend.GameData.ShopData.RewardAdDic[rewardType.ToString()].WatchedCount >= RewardAdData.MaxCount)
+        if(Managers.Backend.GameData.ShopData.RewardAdDic[rewardType.ToString()].WatchedCount <= 0)
         {
+            string name = rewardType == EAdRewardType.Dia ? "다이아" :"골드";
             Debug.Log($"{rewardType} 광고 시청 최대 횟수 도달.");
             return;
         }

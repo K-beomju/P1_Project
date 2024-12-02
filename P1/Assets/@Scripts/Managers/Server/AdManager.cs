@@ -17,15 +17,18 @@ public class AdManager
 
     private AppOpenAd _appOpenAd;
     private RewardedInterstitialAd _rewardedInterstitialAd;
+    private BannerView _bannerView;
 
     private const string APP_OPEN_AD_TEST_ID = "ca-app-pub-3940256099942544/9257395921";
     private const string REWARDED_AD_TEST_ID  = "ca-app-pub-3940256099942544/5354046379";
+    private const string BANNER_AD_TEST_ID = "ca-app-pub-3940256099942544/6300978111";
 
     private const string APP_OPEN_AD_ID = ""; // 실제 앱 오프닝 광고 ID
     private const string REWARDED_AD_ID = ""; // 실제 보상형 광고 ID
+    private const string BANNER_AD_ID = ""; // 실제 배너 광고 ID
 
     public const bool TEST_MODE = true; // 테스트 모드 활성화 여부
-    public const bool BLOCK_ADS = false; // 광고 차단 여부
+    private bool BLOCK_ADS = false; // 광고 차단 여부
 
     internal static List<string> TestDeviceIds = new List<string>()
     {
@@ -59,6 +62,8 @@ public class AdManager
             _isInitialized = true;
         });
     }
+
+
 
     #region App Open Ad
     public bool IsAppOpenAdAvailable =>
@@ -206,6 +211,62 @@ public class AdManager
     }
     #endregion
 
+     #region Banner Ad
+    public void LoadBannerAd()
+    {
+        if (BLOCK_ADS) return;
+
+        // 배너 광고 초기화
+        if (_bannerView != null)
+        {
+            _bannerView.Destroy();
+        }
+
+        _bannerView = new BannerView(GetAdUnitId(BANNER_AD_TEST_ID, BANNER_AD_ID), AdSize.Banner, AdPosition.Top);
+
+        var adRequest = new AdRequest();
+
+        _bannerView.LoadAd(adRequest);
+
+        // 배너 광고 이벤트 핸들러
+        _bannerView.OnBannerAdLoaded += () =>
+        {
+            Debug.Log("배너 광고 로드 성공");
+        };
+
+        _bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
+        {
+            Debug.LogError($"배너 광고 로드 실패: {error}");
+        };
+
+        _bannerView.OnAdFullScreenContentOpened += () =>
+        {
+            Debug.Log("배너 광고 열림");
+        };
+
+        _bannerView.OnAdFullScreenContentClosed += () =>
+        {
+            Debug.Log("배너 광고 닫힘");
+        };
+    }
+
+    public void HideBannerAd()
+    {
+        _bannerView?.Hide();
+    }
+
+    public void ShowBannerAd()
+    {
+        _bannerView?.Show();
+    }
+
+    public void DestroyBannerAd()
+    {
+        _bannerView?.Destroy();
+        _bannerView = null;
+    }
+    #endregion
+
     public void DestroyAd()
     {
         if (_appOpenAd != null)
@@ -221,5 +282,8 @@ public class AdManager
             _rewardedInterstitialAd.Destroy();
             _rewardedInterstitialAd = null;
         }
+
+        DestroyBannerAd();
+
     }
 }

@@ -37,7 +37,7 @@ namespace BackendData.GameData
             _rewardAdDic.Clear();
             foreach (EAdRewardType rewardType in Enum.GetValues(typeof(EAdRewardType)))
             {
-                _rewardAdDic[rewardType.ToString()] = new RewardAdData(0);
+                _rewardAdDic[rewardType.ToString()] = new RewardAdData(3);
             }
 
              // 마지막 리셋 시간 초기화
@@ -91,7 +91,7 @@ namespace BackendData.GameData
             IsChangedData = true;
             foreach(var rewardAdData in _rewardAdDic.Values)
             {
-                rewardAdData.WatchedCount = 0;
+                rewardAdData.WatchedCount = 3;
             }
             LastResetTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
             Debug.Log("하루가 경과하여 광고 데이터를 초기화했습니다.");
@@ -105,7 +105,7 @@ namespace BackendData.GameData
             var rewardAdData = _rewardAdDic[rewardType.ToString()];
 
             // 광고 시청 처리
-            rewardAdData.WatchedCount++;
+            rewardAdData.WatchedCount--;
             Debug.Log($"{rewardType} 광고 시청 완료. 현재 시청 횟수: {rewardAdData.WatchedCount}/{RewardAdData.MaxCount}");
             return true;
         }

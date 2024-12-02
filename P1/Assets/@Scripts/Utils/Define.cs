@@ -451,7 +451,9 @@ public static class Define
     public enum EAdRewardType 
     {
         Gold,
-        Dia
+        Dia,
+        DrawEquipment,
+        DrawSkill
     }
     #endregion
 

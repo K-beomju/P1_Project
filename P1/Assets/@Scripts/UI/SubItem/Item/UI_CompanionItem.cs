@@ -73,8 +73,11 @@ public class UI_CompanionItem : UI_Base
             GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(skillInfo.Data.RareType);
 
             // 스킬 슬롯 아이템 -> 이미지 사이즈 조정
-            if (displayType == EItemDisplayType.Basic || displayType == EItemDisplayType.ImageOnly || displayType == EItemDisplayType.Draw)
-                _iconImage.rectTransform.sizeDelta = new Vector2(120, 120);
+            if (displayType == EItemDisplayType.ImageOnly)
+                _iconImage.rectTransform.sizeDelta = new Vector2(160, 160);
+
+            if (displayType == EItemDisplayType.SlotItem)
+                _iconImage.rectTransform.sizeDelta = new Vector2(130, 130);
 
         }
         else if (ItemData is EquipmentInfoData equipmentInfo)
@@ -82,7 +85,7 @@ public class UI_CompanionItem : UI_Base
             _companionButton.onClick.AddListener(() => Managers.Event.TriggerEvent(EEventType.EquipmentItemClick, ItemData));
             GetImage((int)Images.BG_Rare).color = Util.GetRareTypeColor(equipmentInfo.Data.RareType);
 
-            _iconImage.rectTransform.anchoredPosition = new Vector2(0, 5);
+            //_iconImage.rectTransform.anchoredPosition = new Vector2(0, 5);
         }
 
         bool isOwned = ItemData.OwningState == EOwningState.Owned;
@@ -146,18 +149,18 @@ public class UI_CompanionItem : UI_Base
     public void DisplayEnhanceLevel(int prevLevel, EquipmentInfoData equipmentInfoData)
     {
         DisplayItem(equipmentInfoData, EItemDisplayType.Enhance);
-          // 텍스트 변경 효과
-    var textComponent = GetTMPText((int)Texts.Text_EnhanceLevel);
-    textComponent.color = Color.yellow; // 텍스트 색상 변경 (강화 시 색상)
-    textComponent.rectTransform.DOScale(1.2f, 0.15f).OnComplete(() =>
-    {
-        textComponent.DOText($"{prevLevel}   >  {equipmentInfoData.Level}", 0.3f)
-            .OnComplete(() => 
-            {
-                textComponent.color = Color.white; // 색상 원상복구
-                textComponent.rectTransform.DOScale(1f, 0.15f); // 크기 원상복구
-            });
-    });
+        // 텍스트 변경 효과
+        var textComponent = GetTMPText((int)Texts.Text_EnhanceLevel);
+        textComponent.color = Color.yellow; // 텍스트 색상 변경 (강화 시 색상)
+        textComponent.rectTransform.DOScale(1.2f, 0.15f).OnComplete(() =>
+        {
+            textComponent.DOText($"{prevLevel}   >  {equipmentInfoData.Level}", 0.3f)
+                .OnComplete(() =>
+                {
+                    textComponent.color = Color.white; // 색상 원상복구
+                    textComponent.rectTransform.DOScale(1f, 0.15f); // 크기 원상복구
+                });
+        });
     }
 
 
@@ -176,6 +179,18 @@ public class UI_CompanionItem : UI_Base
             .AppendInterval(1f)  // 1초 동안 대기
             .SetLoops(-1, LoopType.Restart)  // 무한 반복 재생
             .SetEase(Ease.OutCubic);
+    }
+
+    public void StopShakeAnimation()
+    {
+        if (_shakeSequence != null && _shakeSequence.IsPlaying())
+        {
+            _shakeSequence.Kill(); // 시퀀스를 중지하고 초기화
+            _shakeSequence = null;
+        }
+
+        // 기본 회전 상태로 복구
+        transform.rotation = Quaternion.identity;
     }
 
     public void EnableButton(bool enable)
