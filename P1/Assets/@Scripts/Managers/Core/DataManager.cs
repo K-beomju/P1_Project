@@ -39,7 +39,7 @@ public class DataManager
     public Dictionary<EHeroRankUpStatType, DrawRankUpGachaInfoData> DrawRankUpChart { get; private set; } = new(); // 승급 스탯 뽑기 차트
     
     public Dictionary<string, ShopData> ShopChart { get; private set; } = new(); // 승급 스탯 뽑기 차트
-
+    public Dictionary<int, QuestData> QuestChart { get; private set; } = new(); // 승급 스탯 뽑기 차트
 
     public void Init()
     {
@@ -67,6 +67,8 @@ public class DataManager
         DrawRankUpChart = LoadJson<DrawRankUpGachaInfoDataLoader, EHeroRankUpStatType, DrawRankUpGachaInfoData>("DrawRankUpGachaInfoData").MakeDict();
 
         ShopChart = LoadJson<ShopDataLoader, string, ShopData>("ShopData").MakeDict();
+        QuestChart = LoadJson<QuestDataLoader, int, QuestData>("QuestData").MakeDict();
+
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

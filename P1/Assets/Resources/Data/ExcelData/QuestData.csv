@@ -1,13 +1,10 @@
-﻿DataId,Name,Description,Duration,TickTime,EffectSpawnType,ProjectileKey,ExplosionKey
-60001,붉은 파동,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,,
-60002,소용돌이,한틱당 공격력 % 도트뎀 5초유지,4,0.2,HasDuration,,
-60003,강철의지,한틱에 피해감소 % 줄이는 스킬,4,0,HasDuration,,
-60004,파이어볼,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,,Object/Effect/Explosion/FireBall
-60005,붉은 그림자,기본 공격시 광역 이펙트를 생성해 % 입히는 스킬,4,0,HasDuration,,Object/Effect/Explosion/CrimsonShadow
-60006,어둠의속박,화면에 보이는 모든 적들에게 이펙트를 생성해 % 입히는 스킬,3,0,Instant,,Object/Effect/Explosion/DarkBind
-60007,얼음 화살,한틱에 공격력 % 데미지 입히는 스킬,1,0,Instant,Object/Effect/Projectile/HomingArrow,
-60008,토네이도 강타,닿을 때 공격력 % 데미지 입히는 스킬,4,0.5,HasDuration,,
-60009,천벌,닿을 때 공격력 % 데미지 입히는 스킬,3,1,HasDuration,,
-60010,서리의 폭우,닿을 때 공격력 % 데미지 입히는 스킬,3,0,Instant,Object/Effect/Projectile/FrostRainArrow,Object/Effect/Explosion/FrostRainArrow
-60011,어둠의 전사,플레이어 주변의 적 공격,3,0.1,Instant,,Object/Effect/Explosion/DarkWarrior
-60012,슈루탄,플레이어 주변에 슈루탄 떨굼,3,0,Instant,Object/Effect/Projectile/ExplosiveGrenade,Object/Effect/Explosion/ExplosiveGrenadeEx
+QuestID,QuestContent,QuestCategory,QuestType,RequestCount,RewardItem
+1,플레이 타임 10분,Daily,PlayTime,10,Gold:100&Dia:200
+2,플레이 타임 30분,Repeatable,PlayTime,30,Gold:100&Dia:200
+3,광고 1회 시청,Daily,WatchAds,1,Gold:100&Dia:200
+4,광고 3회 시청,Repeatable,WatchAds,3,Gold:100&Dia:200
+5,광고 5회 시청,Achievement,WatchAds,5,Gold:100&Dia:200
+6,장비 소환 1회,Daily,DrawEquipment,1,Gold:100&Dia:200
+7,장비 소환 5회,Repeatable,DrawEquipment,5,Gold:100&Dia:200
+8,스킬 소환 1회,Daily,DrawSkill,1,Gold:100&Dia:200
+9,스킬 소환 5회,Repeatable,DrawSkill,5,Gold:100&Dia:200

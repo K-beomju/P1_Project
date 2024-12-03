@@ -1,0 +1,103 @@
+{
+  "questDatas": [
+    {
+      "DataId": 1,
+      "QuestName": "플레이 타임 10분",
+      "QuestCategory": 0,
+      "QuestType": 0,
+      "RequestCount": 10,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 2,
+      "QuestName": "플레이 타임 30분",
+      "QuestCategory": 1,
+      "QuestType": 0,
+      "RequestCount": 30,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 3,
+      "QuestName": "광고 1회 시청",
+      "QuestCategory": 0,
+      "QuestType": 1,
+      "RequestCount": 1,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 4,
+      "QuestName": "광고 3회 시청",
+      "QuestCategory": 1,
+      "QuestType": 1,
+      "RequestCount": 3,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 5,
+      "QuestName": "광고 5회 시청",
+      "QuestCategory": 2,
+      "QuestType": 1,
+      "RequestCount": 5,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 6,
+      "QuestName": "장비 소환 1회",
+      "QuestCategory": 0,
+      "QuestType": 2,
+      "RequestCount": 1,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 7,
+      "QuestName": "장비 소환 5회",
+      "QuestCategory": 1,
+      "QuestType": 2,
+      "RequestCount": 5,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 8,
+      "QuestName": "스킬 소환 1회",
+      "QuestCategory": 0,
+      "QuestType": 3,
+      "RequestCount": 1,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 9,
+      "QuestName": "스킬 소환 5회",
+      "QuestCategory": 1,
+      "QuestType": 3,
+      "RequestCount": 5,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 200
+      }
+    }
+  ]
+}

@@ -44,6 +44,7 @@ public class DataTransformer : EditorWindow
         ParseExcelDataToJson<RankUpInfoDataLoader, RankUpInfoData>("RankUpInfo");
         ParseExcelDataToJson<DrawRankUpGachaInfoDataLoader, DrawRankUpGachaInfoData>("DrawRankUpGachaInfo");
         ParseExcelDataToJson<ShopDataLoader, ShopData>("Shop");
+        ParseExcelDataToJson<QuestDataLoader, QuestData>("Quest");
 
 	}
 
@@ -79,11 +80,18 @@ public class DataTransformer : EditorWindow
 			for (int f = 0; f < fields.Count; f++)
 			{
 				FieldInfo field = loaderData.GetType().GetField(fields[f].Name);
+				if (field == null)
+{
+    Debug.LogError($"Field '{fields[f].Name}' not found in {loaderData.GetType()}.");
+    continue;
+}
 				Type type = field.FieldType;
 
 				if (type.IsGenericType)
 				{
-					object value = ConvertList(row[f], type);
+					//object value = ConvertList(row[f], type);
+					object value = ConvertListOrDictionary(row[f], type);
+
 					field.SetValue(loaderData, value);
 				}
 				else
@@ -108,6 +116,51 @@ public class DataTransformer : EditorWindow
 		return converter.ConvertFromString(value);
 	}
 
+	private static object ConvertListOrDictionary(string value, Type type)
+	{
+		if(string.IsNullOrEmpty(value))
+		return null;
+
+		if(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+		{
+			return ConvertDictionary(value, type);
+		}
+    	else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+		{
+			return ConvertList(value, type);
+		}
+
+		    return null;
+
+	}
+
+	private static object ConvertDictionary(string value, Type type)
+	{
+		if(string.IsNullOrEmpty (value))
+		return null;
+
+		value = value.Trim();
+
+		Type[] genericArgs = type.GetGenericArguments();
+		Type keyType = genericArgs[0];
+		Type valueType = genericArgs[1];
+		Type genericDictionaryType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+		var genericDictionary = Activator.CreateInstance(genericDictionaryType) as IDictionary;
+
+		var pairs = value.Split('&');
+		foreach (var pair in pairs)
+		{
+			var keyValue = pair.Split(':');
+			if(keyValue.Length != 2) continue;
+
+			object key = ConvertValue(keyValue[0], keyType);
+			object val = ConvertValue(keyValue[1], valueType);
+			genericDictionary.Add(key, val);
+		}
+
+		return genericDictionary;
+	}
+
 	private static object ConvertList(string value, Type type)
 	{
 		if (string.IsNullOrEmpty(value))
@@ -126,6 +179,8 @@ public class DataTransformer : EditorWindow
 
 		return genericList;
 	}
+
+
 
 	public static List<FieldInfo> GetFieldsInBase(Type type, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
 	{
