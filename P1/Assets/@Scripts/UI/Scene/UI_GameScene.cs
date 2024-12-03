@@ -24,7 +24,8 @@ public class UI_GameScene : UI_Scene
         Btn_Post,
         Btn_Logout,
         Btn_Setting,
-        Btn_Menu
+        Btn_Menu,
+        Btn_Quest
     }
 
     enum Sliders
@@ -185,6 +186,12 @@ public class UI_GameScene : UI_Scene
                     Managers.Scene.LoadScene(EScene.TitleScene);
                 }
             });
+        });
+
+        GetButton((int)Buttons.Btn_Quest).onClick.AddListener(() => 
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_QuestPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
         });
 
         // Good

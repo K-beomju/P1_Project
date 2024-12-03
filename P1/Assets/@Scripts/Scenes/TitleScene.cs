@@ -35,7 +35,7 @@ public class TitleScene : BaseScene
         // 광고와 엑셀 데이터 
         Managers.Data.Init();
         Managers.Ad.Init();
-        
+
         Managers.Sound.Init();
         sceneUI = Managers.UI.ShowSceneUI<UI_TitleScene>();
         return true;
