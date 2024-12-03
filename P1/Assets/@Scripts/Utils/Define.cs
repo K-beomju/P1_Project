@@ -447,12 +447,14 @@ public static class Define
     #endregion
 
     #region Shop
+    // 상점 아이템 타입 : 결제형, 광고형 
     public enum EShopItemType
     {
         Paid,
         AdWatched
     }
 
+    // 광고형 아이템 타입 
     public enum EAdRewardType 
     {
         Gold,
@@ -460,6 +462,25 @@ public static class Define
         DrawEquipment,
         DrawSkill
     }
+    #endregion
+
+    #region Quest
+
+    public enum EQuestCategory
+    {
+        Daily,      // 일일 퀘스트 
+        Repeatable, // 반복 퀘스트 
+        Achievement // 업적 퀘스트
+    }
+
+    public enum EQuestType 
+    {
+        PlayTime,           // 플레이 타임 (예: 10분, 30분, 60분)
+        WatchAds,           // 광고 시청
+        DrawEquipment,      // 장비 소환 
+        DrawSkill           // 스킬 소환
+    }
+
     #endregion
 
 }

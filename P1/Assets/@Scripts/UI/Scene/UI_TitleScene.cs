@@ -71,11 +71,7 @@ public class UI_TitleScene : UI_Scene
 
             if (callback.IsSuccess())
             {
-#if UNITY_EDITOR
                 HandlePostLogin();
-#else
-                StartGoogleLogin();
-#endif
                 ToggleUIGroup(GameObjects.Group_Loading, true);
             }
             else
