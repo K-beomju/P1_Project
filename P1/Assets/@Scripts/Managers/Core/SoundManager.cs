@@ -58,14 +58,13 @@ public class SoundManager
 			{
 				if (audioSource.isPlaying)
 				{
-					DOTween.To(() => audioSource.volume, value => audioSource.volume = value, 0f, 1f)
-					.OnComplete(() => 
-					{
-						audioSource.Stop();
-						audioSource.clip = audioClip;
-						audioSource.Play();
-						DOTween.To(() => audioSource.volume, value => audioSource.volume = value, 1f, 1f);
-					});
+					audioSource.Stop();
+					audioSource.volume = 0;
+
+					audioSource.clip = audioClip;
+					audioSource.Play();
+					DOTween.To(() => audioSource.volume, value => audioSource.volume = value, 1f, 3f);
+				
 				}
 				else
 				{

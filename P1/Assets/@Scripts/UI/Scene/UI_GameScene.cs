@@ -130,7 +130,7 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.Btn_Setting).onClick.AddListener(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_SettingPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTINGPOPUP);
         });
         // Sub_Content
         GetButton((int)Buttons.Btn_AutoSkill).onClick.AddListener(ActiveAutoSkill);

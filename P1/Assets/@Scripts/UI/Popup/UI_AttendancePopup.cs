@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,11 @@ public class UI_AttendancePopup : UI_Popup
         Button_Receive
     }
 
+    public enum Texts 
+    {
+        Text_Timer
+    }
+
     private List<UI_AttendanceItem> attendanceItems = new List<UI_AttendanceItem>();
 
     protected override bool Init()
@@ -25,6 +31,7 @@ public class UI_AttendancePopup : UI_Popup
 
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
+        BindTMPTexts(typeof(Texts));
 
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(ClosePopupUI);
         GetButton((int)Buttons.Button_Receive).onClick.AddListener(OnClickButton);
@@ -73,9 +80,25 @@ public class UI_AttendancePopup : UI_Popup
 
     public void RefreshUI()
     {
-        bool receive = Managers.Backend.GameData.CharacterData.AttendanceCheck();  
-        Debug.Log(receive);      
+        var characterData = Managers.Backend.GameData.CharacterData;
+        bool receive = characterData.AttendanceCheck();
 
         GetButton((int)Buttons.Button_Receive).interactable = receive;
+        GetTMPText((int)Texts.Text_Timer).text = GetAttendanceResetTime(characterData.AttendanceLastLoginTime);
+    }
+
+    // 출석체크 초기화 남은 시간 체크 
+    private string GetAttendanceResetTime(string lastLoginTime)
+    {
+        DateTime lastLogin = DateTime.Parse(lastLoginTime);
+        DateTime nextReset = lastLogin.AddDays(1);
+        TimeSpan timeUntilReset = nextReset - DateTime.UtcNow;
+
+        if (timeUntilReset.TotalSeconds <= 0)
+        {
+            return "출석 체크 가능";
+        }
+
+        return $"초기화까지 남은 시간\n: {timeUntilReset.Hours}시간 {timeUntilReset.Minutes}분";
     }
 }

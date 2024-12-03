@@ -86,8 +86,6 @@ public class Monster : Creature, IDamageable
         HpBar.gameObject.SetActive(false);
 
         _initialPosition = transform.position; // 몬스터의 초기 위치 저장
-        Debug.LogWarning(_initialPosition);
-
     }
 
     protected void SetNewPatrolTarget()

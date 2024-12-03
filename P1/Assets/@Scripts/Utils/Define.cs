@@ -325,6 +325,11 @@ public static class Define
         public const int DAMAGE_FONT = 410;
         public const int UI_POPUP = 450;
         public const int UI_SCENE = 500;
+        public const int UI_SETTINGPOPUP = 510;
+
+        // Setting Popup Content 
+        public const int UI_SETTING_CONTENT_POPUP = 520;
+
         public const int UI_RESULTPOPUP = 600;
         public const int UI_TOTALPOWER = 610;
         public const int UI_NOTIFICATION = 610;

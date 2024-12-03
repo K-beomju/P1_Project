@@ -33,7 +33,7 @@ public class UI_SettingPopup : UI_Popup
         GetButton((int)Buttons.Btn_Attendance).onClick.AddListener(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
             popupUI.RefreshUI();
         });
 
