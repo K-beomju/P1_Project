@@ -285,6 +285,12 @@ public class Hero : Creature
                     return;
                 }
 
+                if(dir.magnitude < 3)
+                {
+                    Target.CreatureState = ECreatureState.Idle;
+                    
+                }
+
                 float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
                 transform.Translate(dir.normalized * moveDist);
             }

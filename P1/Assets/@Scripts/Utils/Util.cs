@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static Define;
 
 public static class Util
@@ -70,6 +71,39 @@ public static class Util
         ColorUtility.TryParseHtmlString(color, out Color parsedColor);
 
         return parsedColor;
+    }
+
+    /// <summary>
+    /// 맵 경계와 이동 범위를 고려하여 랜덤한 위치를 반환합니다.
+    /// </summary>
+    /// <param name="tileMap">타일맵</param>
+    /// <param name="currentPosition">현재 위치</param>
+    /// <param name="moveRange">이동 범위</param>
+    /// <returns>맵 안의 랜덤 위치</returns>
+    public static Vector3 GetRandomPositionWithinMap(Tilemap tileMap, Vector3 currentPosition, float moveRange, float padding)
+    {
+        // 타일맵 경계 가져오기
+        BoundsInt bounds = tileMap.cellBounds;
+        Vector3 minPosition = tileMap.CellToWorld(bounds.min);
+        Vector3 maxPosition = tileMap.CellToWorld(bounds.max);
+
+        // 보정값 적용
+        minPosition += new Vector3(padding, padding, 0);
+        maxPosition -= new Vector3(padding, padding, 0);
+
+        // 이동 가능한 범위 내에서 랜덤 위치 생성
+        float randomX = Mathf.Clamp(
+            currentPosition.x + UnityEngine.Random.Range(-moveRange, moveRange),
+            minPosition.x,
+            maxPosition.x
+        );
+        float randomY = Mathf.Clamp(
+            currentPosition.y + UnityEngine.Random.Range(-moveRange, moveRange),
+            minPosition.y,
+            maxPosition.y
+        );
+
+        return new Vector3(randomX, randomY, currentPosition.z); // Z 축은 그대로 유지
     }
 
     #region Exp System
@@ -190,7 +224,7 @@ public static class Util
             _ => throw new ArgumentException($"Unknown rare type String: {type}")
         };
     }
-    
+
     public static string GetRareTypeColorCode(ERareType type)
     {
         return type switch

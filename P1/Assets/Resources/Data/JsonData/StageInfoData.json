@@ -2,9 +2,9 @@
   "stages": [
     {
       "StageNumber": 1,
-      "KillMonsterCount": 10,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
@@ -12,1478 +12,1478 @@
       "MonsterMaxHp": 40.0,
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "BossMonsterAtk": 9.0,
+      "BossMonsterMaxHp": 360.0
     },
     {
       "StageNumber": 2,
-      "KillMonsterCount": 10,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 6.0,
+      "MonsterMaxHp": 45.0,
+      "MonsterGoldReward": 11,
+      "MonsterExpReward": 11,
+      "BossMonsterAtk": 11.0,
+      "BossMonsterMaxHp": 405.0
     },
     {
       "StageNumber": 3,
-      "KillMonsterCount": 10,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 7.0,
+      "MonsterMaxHp": 50.0,
+      "MonsterGoldReward": 12,
+      "MonsterExpReward": 12,
+      "BossMonsterAtk": 13.0,
+      "BossMonsterMaxHp": 450.0
     },
     {
       "StageNumber": 4,
-      "KillMonsterCount": 10,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 8.0,
+      "MonsterMaxHp": 56.0,
+      "MonsterGoldReward": 13,
+      "MonsterExpReward": 13,
+      "BossMonsterAtk": 15.0,
+      "BossMonsterMaxHp": 504.0
     },
     {
       "StageNumber": 5,
-      "KillMonsterCount": 10,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 9.0,
+      "MonsterMaxHp": 63.0,
+      "MonsterGoldReward": 14,
+      "MonsterExpReward": 14,
+      "BossMonsterAtk": 17.0,
+      "BossMonsterMaxHp": 567.0
     },
     {
       "StageNumber": 6,
-      "KillMonsterCount": 15,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 10.0,
+      "MonsterMaxHp": 70.0,
+      "MonsterGoldReward": 15,
+      "MonsterExpReward": 15,
+      "BossMonsterAtk": 18.0,
+      "BossMonsterMaxHp": 630.0
     },
     {
       "StageNumber": 7,
-      "KillMonsterCount": 15,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 11.0,
+      "MonsterMaxHp": 78.0,
+      "MonsterGoldReward": 16,
+      "MonsterExpReward": 16,
+      "BossMonsterAtk": 20.0,
+      "BossMonsterMaxHp": 702.0
     },
     {
       "StageNumber": 8,
-      "KillMonsterCount": 15,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 12.0,
+      "MonsterMaxHp": 87.0,
+      "MonsterGoldReward": 17,
+      "MonsterExpReward": 17,
+      "BossMonsterAtk": 22.0,
+      "BossMonsterMaxHp": 783.0
     },
     {
       "StageNumber": 9,
-      "KillMonsterCount": 15,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 13.0,
+      "MonsterMaxHp": 97.0,
+      "MonsterGoldReward": 18,
+      "MonsterExpReward": 18,
+      "BossMonsterAtk": 24.0,
+      "BossMonsterMaxHp": 873.0
     },
     {
       "StageNumber": 10,
-      "KillMonsterCount": 15,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 10,
-      "MonsterExpReward": 10,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 15.0,
+      "MonsterMaxHp": 108.0,
+      "MonsterGoldReward": 19,
+      "MonsterExpReward": 19,
+      "BossMonsterAtk": 27.0,
+      "BossMonsterMaxHp": 972.0
     },
     {
       "StageNumber": 11,
-      "KillMonsterCount": 20,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
+      "MonsterAtk": 17.0,
+      "MonsterMaxHp": 120.0,
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "BossMonsterAtk": 31.0,
+      "BossMonsterMaxHp": 1080.0
     },
     {
       "StageNumber": 12,
-      "KillMonsterCount": 20,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 19.0,
+      "MonsterMaxHp": 134.0,
+      "MonsterGoldReward": 21,
+      "MonsterExpReward": 21,
+      "BossMonsterAtk": 35.0,
+      "BossMonsterMaxHp": 1206.0
     },
     {
       "StageNumber": 13,
-      "KillMonsterCount": 20,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 21.0,
+      "MonsterMaxHp": 149.0,
+      "MonsterGoldReward": 23,
+      "MonsterExpReward": 23,
+      "BossMonsterAtk": 38.0,
+      "BossMonsterMaxHp": 1341.0
     },
     {
       "StageNumber": 14,
-      "KillMonsterCount": 20,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 23.0,
+      "MonsterMaxHp": 166.0,
+      "MonsterGoldReward": 25,
+      "MonsterExpReward": 25,
+      "BossMonsterAtk": 42.0,
+      "BossMonsterMaxHp": 1494.0
     },
     {
       "StageNumber": 15,
-      "KillMonsterCount": 20,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 25.0,
+      "MonsterMaxHp": 185.0,
+      "MonsterGoldReward": 27,
+      "MonsterExpReward": 27,
+      "BossMonsterAtk": 45.0,
+      "BossMonsterMaxHp": 1665.0
     },
     {
       "StageNumber": 16,
-      "KillMonsterCount": 25,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 27.0,
+      "MonsterMaxHp": 206.0,
+      "MonsterGoldReward": 29,
+      "MonsterExpReward": 29,
+      "BossMonsterAtk": 49.0,
+      "BossMonsterMaxHp": 1854.0
     },
     {
       "StageNumber": 17,
-      "KillMonsterCount": 25,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 30.0,
+      "MonsterMaxHp": 229.0,
+      "MonsterGoldReward": 31,
+      "MonsterExpReward": 31,
+      "BossMonsterAtk": 54.0,
+      "BossMonsterMaxHp": 2061.0
     },
     {
       "StageNumber": 18,
-      "KillMonsterCount": 25,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 33.0,
+      "MonsterMaxHp": 255.0,
+      "MonsterGoldReward": 33,
+      "MonsterExpReward": 33,
+      "BossMonsterAtk": 60.0,
+      "BossMonsterMaxHp": 2295.0
     },
     {
       "StageNumber": 19,
-      "KillMonsterCount": 25,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 36.0,
+      "MonsterMaxHp": 284.0,
+      "MonsterGoldReward": 35,
+      "MonsterExpReward": 35,
+      "BossMonsterAtk": 65.0,
+      "BossMonsterMaxHp": 2556.0
     },
     {
       "StageNumber": 20,
-      "KillMonsterCount": 25,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 20,
-      "MonsterExpReward": 20,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 39.0,
+      "MonsterMaxHp": 316.0,
+      "MonsterGoldReward": 37,
+      "MonsterExpReward": 37,
+      "BossMonsterAtk": 71.0,
+      "BossMonsterMaxHp": 2844.0
     },
     {
       "StageNumber": 21,
       "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 43.0,
+      "MonsterMaxHp": 351.0,
+      "MonsterGoldReward": 39,
+      "MonsterExpReward": 39,
+      "BossMonsterAtk": 78.0,
+      "BossMonsterMaxHp": 3159.0
     },
     {
       "StageNumber": 22,
       "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 47.0,
+      "MonsterMaxHp": 390.0,
+      "MonsterGoldReward": 41,
+      "MonsterExpReward": 41,
+      "BossMonsterAtk": 85.0,
+      "BossMonsterMaxHp": 3510.0
     },
     {
       "StageNumber": 23,
       "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 51.0,
+      "MonsterMaxHp": 433.0,
+      "MonsterGoldReward": 44,
+      "MonsterExpReward": 44,
+      "BossMonsterAtk": 92.0,
+      "BossMonsterMaxHp": 3897.0
     },
     {
       "StageNumber": 24,
       "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 56.0,
+      "MonsterMaxHp": 481.0,
+      "MonsterGoldReward": 47,
+      "MonsterExpReward": 47,
+      "BossMonsterAtk": 101.0,
+      "BossMonsterMaxHp": 4329.0
     },
     {
       "StageNumber": 25,
       "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 61.0,
+      "MonsterMaxHp": 534.0,
+      "MonsterGoldReward": 50,
+      "MonsterExpReward": 50,
+      "BossMonsterAtk": 110.0,
+      "BossMonsterMaxHp": 4806.0
     },
     {
       "StageNumber": 26,
-      "KillMonsterCount": 35,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 66.0,
+      "MonsterMaxHp": 593.0,
+      "MonsterGoldReward": 53,
+      "MonsterExpReward": 53,
+      "BossMonsterAtk": 119.0,
+      "BossMonsterMaxHp": 5337.0
     },
     {
       "StageNumber": 27,
-      "KillMonsterCount": 35,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 72.0,
+      "MonsterMaxHp": 659.0,
+      "MonsterGoldReward": 56,
+      "MonsterExpReward": 56,
+      "BossMonsterAtk": 130.0,
+      "BossMonsterMaxHp": 5931.0
     },
     {
       "StageNumber": 28,
-      "KillMonsterCount": 35,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 78.0,
+      "MonsterMaxHp": 732.0,
+      "MonsterGoldReward": 59,
+      "MonsterExpReward": 59,
+      "BossMonsterAtk": 141.0,
+      "BossMonsterMaxHp": 6588.0
     },
     {
       "StageNumber": 29,
-      "KillMonsterCount": 35,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 85.0,
+      "MonsterMaxHp": 813.0,
+      "MonsterGoldReward": 62,
+      "MonsterExpReward": 62,
+      "BossMonsterAtk": 153.0,
+      "BossMonsterMaxHp": 7317.0
     },
     {
       "StageNumber": 30,
-      "KillMonsterCount": 35,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 30,
-      "MonsterExpReward": 30,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 92.0,
+      "MonsterMaxHp": 903.0,
+      "MonsterGoldReward": 66,
+      "MonsterExpReward": 66,
+      "BossMonsterAtk": 166.0,
+      "BossMonsterMaxHp": 8127.0
     },
     {
       "StageNumber": 31,
-      "KillMonsterCount": 40,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 96.0,
+      "MonsterMaxHp": 962.0,
+      "MonsterGoldReward": 70,
+      "MonsterExpReward": 70,
+      "BossMonsterAtk": 212.0,
+      "BossMonsterMaxHp": 7215.0
     },
     {
       "StageNumber": 32,
-      "KillMonsterCount": 40,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 100.0,
+      "MonsterMaxHp": 1025.0,
+      "MonsterGoldReward": 74,
+      "MonsterExpReward": 74,
+      "BossMonsterAtk": 220.0,
+      "BossMonsterMaxHp": 7688.0
     },
     {
       "StageNumber": 33,
-      "KillMonsterCount": 40,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 104.0,
+      "MonsterMaxHp": 1092.0,
+      "MonsterGoldReward": 78,
+      "MonsterExpReward": 78,
+      "BossMonsterAtk": 229.0,
+      "BossMonsterMaxHp": 8190.0
     },
     {
       "StageNumber": 34,
-      "KillMonsterCount": 40,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 108.0,
+      "MonsterMaxHp": 1163.0,
+      "MonsterGoldReward": 82,
+      "MonsterExpReward": 82,
+      "BossMonsterAtk": 238.0,
+      "BossMonsterMaxHp": 8723.0
     },
     {
       "StageNumber": 35,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 112.0,
+      "MonsterMaxHp": 1239.0,
+      "MonsterGoldReward": 87,
+      "MonsterExpReward": 87,
+      "BossMonsterAtk": 247.0,
+      "BossMonsterMaxHp": 9293.0
     },
     {
       "StageNumber": 36,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 117.0,
+      "MonsterMaxHp": 1320.0,
+      "MonsterGoldReward": 92,
+      "MonsterExpReward": 92,
+      "BossMonsterAtk": 258.0,
+      "BossMonsterMaxHp": 9900.0
     },
     {
       "StageNumber": 37,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 122.0,
+      "MonsterMaxHp": 1406.0,
+      "MonsterGoldReward": 97,
+      "MonsterExpReward": 97,
+      "BossMonsterAtk": 269.0,
+      "BossMonsterMaxHp": 10545.0
     },
     {
       "StageNumber": 38,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 127.0,
+      "MonsterMaxHp": 1498.0,
+      "MonsterGoldReward": 102,
+      "MonsterExpReward": 102,
+      "BossMonsterAtk": 280.0,
+      "BossMonsterMaxHp": 11235.0
     },
     {
       "StageNumber": 39,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 132.0,
+      "MonsterMaxHp": 1596.0,
+      "MonsterGoldReward": 108,
+      "MonsterExpReward": 108,
+      "BossMonsterAtk": 291.0,
+      "BossMonsterMaxHp": 11970.0
     },
     {
       "StageNumber": 40,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 40,
-      "MonsterExpReward": 40,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 137.0,
+      "MonsterMaxHp": 1700.0,
+      "MonsterGoldReward": 114,
+      "MonsterExpReward": 114,
+      "BossMonsterAtk": 302.0,
+      "BossMonsterMaxHp": 12750.0
     },
     {
       "StageNumber": 41,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 143.0,
+      "MonsterMaxHp": 1811.0,
+      "MonsterGoldReward": 120,
+      "MonsterExpReward": 120,
+      "BossMonsterAtk": 315.0,
+      "BossMonsterMaxHp": 13583.0
     },
     {
       "StageNumber": 42,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 149.0,
+      "MonsterMaxHp": 1929.0,
+      "MonsterGoldReward": 126,
+      "MonsterExpReward": 126,
+      "BossMonsterAtk": 328.0,
+      "BossMonsterMaxHp": 14468.0
     },
     {
       "StageNumber": 43,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 155.0,
+      "MonsterMaxHp": 2055.0,
+      "MonsterGoldReward": 133,
+      "MonsterExpReward": 133,
+      "BossMonsterAtk": 341.0,
+      "BossMonsterMaxHp": 15413.0
     },
     {
       "StageNumber": 44,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 161.0,
+      "MonsterMaxHp": 2189.0,
+      "MonsterGoldReward": 140,
+      "MonsterExpReward": 140,
+      "BossMonsterAtk": 355.0,
+      "BossMonsterMaxHp": 16418.0
     },
     {
       "StageNumber": 45,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 167.0,
+      "MonsterMaxHp": 2332.0,
+      "MonsterGoldReward": 147,
+      "MonsterExpReward": 147,
+      "BossMonsterAtk": 368.0,
+      "BossMonsterMaxHp": 17490.0
     },
     {
       "StageNumber": 46,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 174.0,
+      "MonsterMaxHp": 2484.0,
+      "MonsterGoldReward": 155,
+      "MonsterExpReward": 155,
+      "BossMonsterAtk": 383.0,
+      "BossMonsterMaxHp": 18630.0
     },
     {
       "StageNumber": 47,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 181.0,
+      "MonsterMaxHp": 2646.0,
+      "MonsterGoldReward": 163,
+      "MonsterExpReward": 163,
+      "BossMonsterAtk": 399.0,
+      "BossMonsterMaxHp": 19845.0
     },
     {
       "StageNumber": 48,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 188.0,
+      "MonsterMaxHp": 2818.0,
+      "MonsterGoldReward": 172,
+      "MonsterExpReward": 172,
+      "BossMonsterAtk": 414.0,
+      "BossMonsterMaxHp": 21135.0
     },
     {
       "StageNumber": 49,
-      "KillMonsterCount": 45,
+      "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 195.0,
+      "MonsterMaxHp": 3002.0,
+      "MonsterGoldReward": 181,
+      "MonsterExpReward": 181,
+      "BossMonsterAtk": 429.0,
+      "BossMonsterMaxHp": 22515.0
     },
     {
       "StageNumber": 50,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 50,
-      "MonsterExpReward": 50,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 203.0,
+      "MonsterMaxHp": 3198.0,
+      "MonsterGoldReward": 191,
+      "MonsterExpReward": 191,
+      "BossMonsterAtk": 447.0,
+      "BossMonsterMaxHp": 23985.0
     },
     {
       "StageNumber": 51,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 211.0,
+      "MonsterMaxHp": 3406.0,
+      "MonsterGoldReward": 201,
+      "MonsterExpReward": 201,
+      "BossMonsterAtk": 465.0,
+      "BossMonsterMaxHp": 25545.0
     },
     {
       "StageNumber": 52,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 219.0,
+      "MonsterMaxHp": 3628.0,
+      "MonsterGoldReward": 212,
+      "MonsterExpReward": 212,
+      "BossMonsterAtk": 482.0,
+      "BossMonsterMaxHp": 27210.0
     },
     {
       "StageNumber": 53,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 228.0,
+      "MonsterMaxHp": 3864.0,
+      "MonsterGoldReward": 223,
+      "MonsterExpReward": 223,
+      "BossMonsterAtk": 502.0,
+      "BossMonsterMaxHp": 28980.0
     },
     {
       "StageNumber": 54,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 237.0,
+      "MonsterMaxHp": 4116.0,
+      "MonsterGoldReward": 235,
+      "MonsterExpReward": 235,
+      "BossMonsterAtk": 522.0,
+      "BossMonsterMaxHp": 30870.0
     },
     {
       "StageNumber": 55,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 246.0,
+      "MonsterMaxHp": 4384.0,
+      "MonsterGoldReward": 247,
+      "MonsterExpReward": 247,
+      "BossMonsterAtk": 542.0,
+      "BossMonsterMaxHp": 32880.0
     },
     {
       "StageNumber": 56,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 256.0,
+      "MonsterMaxHp": 4669.0,
+      "MonsterGoldReward": 260,
+      "MonsterExpReward": 260,
+      "BossMonsterAtk": 564.0,
+      "BossMonsterMaxHp": 35018.0
     },
     {
       "StageNumber": 57,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 266.0,
+      "MonsterMaxHp": 4973.0,
+      "MonsterGoldReward": 273,
+      "MonsterExpReward": 273,
+      "BossMonsterAtk": 586.0,
+      "BossMonsterMaxHp": 37298.0
     },
     {
       "StageNumber": 58,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 276.0,
+      "MonsterMaxHp": 5297.0,
+      "MonsterGoldReward": 287,
+      "MonsterExpReward": 287,
+      "BossMonsterAtk": 608.0,
+      "BossMonsterMaxHp": 39728.0
     },
     {
       "StageNumber": 59,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 287.0,
+      "MonsterMaxHp": 5642.0,
+      "MonsterGoldReward": 302,
+      "MonsterExpReward": 302,
+      "BossMonsterAtk": 632.0,
+      "BossMonsterMaxHp": 42315.0
     },
     {
       "StageNumber": 60,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 60,
-      "MonsterExpReward": 60,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 298.0,
+      "MonsterMaxHp": 6009.0,
+      "MonsterGoldReward": 318,
+      "MonsterExpReward": 318,
+      "BossMonsterAtk": 656.0,
+      "BossMonsterMaxHp": 45068.0
     },
     {
       "StageNumber": 61,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 310.0,
+      "MonsterMaxHp": 6400.0,
+      "MonsterGoldReward": 334,
+      "MonsterExpReward": 334,
+      "BossMonsterAtk": 682.0,
+      "BossMonsterMaxHp": 48000.0
     },
     {
       "StageNumber": 62,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 322.0,
+      "MonsterMaxHp": 6816.0,
+      "MonsterGoldReward": 351,
+      "MonsterExpReward": 351,
+      "BossMonsterAtk": 709.0,
+      "BossMonsterMaxHp": 51120.0
     },
     {
       "StageNumber": 63,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 334.0,
+      "MonsterMaxHp": 7260.0,
+      "MonsterGoldReward": 369,
+      "MonsterExpReward": 369,
+      "BossMonsterAtk": 735.0,
+      "BossMonsterMaxHp": 54450.0
     },
     {
       "StageNumber": 64,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 347.0,
+      "MonsterMaxHp": 7732.0,
+      "MonsterGoldReward": 388,
+      "MonsterExpReward": 388,
+      "BossMonsterAtk": 764.0,
+      "BossMonsterMaxHp": 57990.0
     },
     {
       "StageNumber": 65,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 360.0,
+      "MonsterMaxHp": 8235.0,
+      "MonsterGoldReward": 408,
+      "MonsterExpReward": 408,
+      "BossMonsterAtk": 792.0,
+      "BossMonsterMaxHp": 61763.0
     },
     {
       "StageNumber": 66,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 374.0,
+      "MonsterMaxHp": 8771.0,
+      "MonsterGoldReward": 429,
+      "MonsterExpReward": 429,
+      "BossMonsterAtk": 823.0,
+      "BossMonsterMaxHp": 65783.0
     },
     {
       "StageNumber": 67,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 388.0,
+      "MonsterMaxHp": 9342.0,
+      "MonsterGoldReward": 451,
+      "MonsterExpReward": 451,
+      "BossMonsterAtk": 854.0,
+      "BossMonsterMaxHp": 70065.0
     },
     {
       "StageNumber": 68,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 403.0,
+      "MonsterMaxHp": 9950.0,
+      "MonsterGoldReward": 474,
+      "MonsterExpReward": 474,
+      "BossMonsterAtk": 887.0,
+      "BossMonsterMaxHp": 74625.0
     },
     {
       "StageNumber": 69,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 418.0,
+      "MonsterMaxHp": 10597.0,
+      "MonsterGoldReward": 498,
+      "MonsterExpReward": 498,
+      "BossMonsterAtk": 920.0,
+      "BossMonsterMaxHp": 79478.0
     },
     {
       "StageNumber": 70,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 70,
-      "MonsterExpReward": 70,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 434.0,
+      "MonsterMaxHp": 11286.0,
+      "MonsterGoldReward": 523,
+      "MonsterExpReward": 523,
+      "BossMonsterAtk": 955.0,
+      "BossMonsterMaxHp": 84645.0
     },
     {
       "StageNumber": 71,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 442.0,
+      "MonsterMaxHp": 11738.0,
+      "MonsterGoldReward": 550,
+      "MonsterExpReward": 550,
+      "BossMonsterAtk": 1326.0,
+      "BossMonsterMaxHp": 76297.0
     },
     {
       "StageNumber": 72,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 450.0,
+      "MonsterMaxHp": 12208.0,
+      "MonsterGoldReward": 578,
+      "MonsterExpReward": 578,
+      "BossMonsterAtk": 1350.0,
+      "BossMonsterMaxHp": 79352.0
     },
     {
       "StageNumber": 73,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 459.0,
+      "MonsterMaxHp": 12697.0,
+      "MonsterGoldReward": 607,
+      "MonsterExpReward": 607,
+      "BossMonsterAtk": 1377.0,
+      "BossMonsterMaxHp": 82531.0
     },
     {
       "StageNumber": 74,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 468.0,
+      "MonsterMaxHp": 13205.0,
+      "MonsterGoldReward": 638,
+      "MonsterExpReward": 638,
+      "BossMonsterAtk": 1404.0,
+      "BossMonsterMaxHp": 85833.0
     },
     {
       "StageNumber": 75,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 477.0,
+      "MonsterMaxHp": 13734.0,
+      "MonsterGoldReward": 670,
+      "MonsterExpReward": 670,
+      "BossMonsterAtk": 1431.0,
+      "BossMonsterMaxHp": 89271.0
     },
     {
       "StageNumber": 76,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 486.0,
+      "MonsterMaxHp": 14284.0,
+      "MonsterGoldReward": 704,
+      "MonsterExpReward": 704,
+      "BossMonsterAtk": 1458.0,
+      "BossMonsterMaxHp": 92846.0
     },
     {
       "StageNumber": 77,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 495.0,
+      "MonsterMaxHp": 14856.0,
+      "MonsterGoldReward": 740,
+      "MonsterExpReward": 740,
+      "BossMonsterAtk": 1485.0,
+      "BossMonsterMaxHp": 96564.0
     },
     {
       "StageNumber": 78,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 504.0,
+      "MonsterMaxHp": 15451.0,
+      "MonsterGoldReward": 777,
+      "MonsterExpReward": 777,
+      "BossMonsterAtk": 1512.0,
+      "BossMonsterMaxHp": 100432.0
     },
     {
       "StageNumber": 79,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 514.0,
+      "MonsterMaxHp": 16070.0,
+      "MonsterGoldReward": 816,
+      "MonsterExpReward": 816,
+      "BossMonsterAtk": 1542.0,
+      "BossMonsterMaxHp": 104455.0
     },
     {
       "StageNumber": 80,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 80,
-      "MonsterExpReward": 80,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 524.0,
+      "MonsterMaxHp": 16713.0,
+      "MonsterGoldReward": 857,
+      "MonsterExpReward": 857,
+      "BossMonsterAtk": 1572.0,
+      "BossMonsterMaxHp": 108635.0
     },
     {
       "StageNumber": 81,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 534.0,
+      "MonsterMaxHp": 17382.0,
+      "MonsterGoldReward": 900,
+      "MonsterExpReward": 900,
+      "BossMonsterAtk": 1602.0,
+      "BossMonsterMaxHp": 112983.0
     },
     {
       "StageNumber": 82,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 544.0,
+      "MonsterMaxHp": 18078.0,
+      "MonsterGoldReward": 945,
+      "MonsterExpReward": 945,
+      "BossMonsterAtk": 1632.0,
+      "BossMonsterMaxHp": 117507.0
     },
     {
       "StageNumber": 83,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 554.0,
+      "MonsterMaxHp": 18802.0,
+      "MonsterGoldReward": 993,
+      "MonsterExpReward": 993,
+      "BossMonsterAtk": 1662.0,
+      "BossMonsterMaxHp": 122213.0
     },
     {
       "StageNumber": 84,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 564.0,
+      "MonsterMaxHp": 19555.0,
+      "MonsterGoldReward": 1043,
+      "MonsterExpReward": 1043,
+      "BossMonsterAtk": 1692.0,
+      "BossMonsterMaxHp": 127108.0
     },
     {
       "StageNumber": 85,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 575.0,
+      "MonsterMaxHp": 20338.0,
+      "MonsterGoldReward": 1096,
+      "MonsterExpReward": 1096,
+      "BossMonsterAtk": 1725.0,
+      "BossMonsterMaxHp": 132197.0
     },
     {
       "StageNumber": 86,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 586.0,
+      "MonsterMaxHp": 21152.0,
+      "MonsterGoldReward": 1151,
+      "MonsterExpReward": 1151,
+      "BossMonsterAtk": 1758.0,
+      "BossMonsterMaxHp": 137488.0
     },
     {
       "StageNumber": 87,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 597.0,
+      "MonsterMaxHp": 21999.0,
+      "MonsterGoldReward": 1209,
+      "MonsterExpReward": 1209,
+      "BossMonsterAtk": 1791.0,
+      "BossMonsterMaxHp": 142994.0
     },
     {
       "StageNumber": 88,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 608.0,
+      "MonsterMaxHp": 22879.0,
+      "MonsterGoldReward": 1270,
+      "MonsterExpReward": 1270,
+      "BossMonsterAtk": 1824.0,
+      "BossMonsterMaxHp": 148714.0
     },
     {
       "StageNumber": 89,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 619.0,
+      "MonsterMaxHp": 23795.0,
+      "MonsterGoldReward": 1334,
+      "MonsterExpReward": 1334,
+      "BossMonsterAtk": 1857.0,
+      "BossMonsterMaxHp": 154668.0
     },
     {
       "StageNumber": 90,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 90,
-      "MonsterExpReward": 90,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 631.0,
+      "MonsterMaxHp": 24747.0,
+      "MonsterGoldReward": 1401,
+      "MonsterExpReward": 1401,
+      "BossMonsterAtk": 1893.0,
+      "BossMonsterMaxHp": 160856.0
     },
     {
       "StageNumber": 91,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 643.0,
+      "MonsterMaxHp": 25737.0,
+      "MonsterGoldReward": 1472,
+      "MonsterExpReward": 1472,
+      "BossMonsterAtk": 1929.0,
+      "BossMonsterMaxHp": 167291.0
     },
     {
       "StageNumber": 92,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 655.0,
+      "MonsterMaxHp": 26767.0,
+      "MonsterGoldReward": 1546,
+      "MonsterExpReward": 1546,
+      "BossMonsterAtk": 1965.0,
+      "BossMonsterMaxHp": 173986.0
     },
     {
       "StageNumber": 93,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 667.0,
+      "MonsterMaxHp": 27838.0,
+      "MonsterGoldReward": 1624,
+      "MonsterExpReward": 1624,
+      "BossMonsterAtk": 2001.0,
+      "BossMonsterMaxHp": 180947.0
     },
     {
       "StageNumber": 94,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 680.0,
+      "MonsterMaxHp": 28952.0,
+      "MonsterGoldReward": 1706,
+      "MonsterExpReward": 1706,
+      "BossMonsterAtk": 2040.0,
+      "BossMonsterMaxHp": 188188.0
     },
     {
       "StageNumber": 95,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 693.0,
+      "MonsterMaxHp": 30111.0,
+      "MonsterGoldReward": 1792,
+      "MonsterExpReward": 1792,
+      "BossMonsterAtk": 2079.0,
+      "BossMonsterMaxHp": 195722.0
     },
     {
       "StageNumber": 96,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 706.0,
+      "MonsterMaxHp": 31316.0,
+      "MonsterGoldReward": 1882,
+      "MonsterExpReward": 1882,
+      "BossMonsterAtk": 2118.0,
+      "BossMonsterMaxHp": 203554.0
     },
     {
       "StageNumber": 97,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 719.0,
+      "MonsterMaxHp": 32569.0,
+      "MonsterGoldReward": 1977,
+      "MonsterExpReward": 1977,
+      "BossMonsterAtk": 2157.0,
+      "BossMonsterMaxHp": 211699.0
     },
     {
       "StageNumber": 98,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 732.0,
+      "MonsterMaxHp": 33872.0,
+      "MonsterGoldReward": 2076,
+      "MonsterExpReward": 2076,
+      "BossMonsterAtk": 2196.0,
+      "BossMonsterMaxHp": 220168.0
     },
     {
       "StageNumber": 99,
       "KillMonsterCount": 50,
       "BossDataId": 60001000,
-      "BossBattleTimeLimit": 30,
+      "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
         50001000
       ],
-      "MonsterAtk": 5.0,
-      "MonsterMaxHp": 40.0,
-      "MonsterGoldReward": 100,
-      "MonsterExpReward": 100,
-      "BossMonsterAtk": 10.0,
-      "BossMonsterMaxHp": 400.0
+      "MonsterAtk": 746.0,
+      "MonsterMaxHp": 35227.0,
+      "MonsterGoldReward": 2180,
+      "MonsterExpReward": 2180,
+      "BossMonsterAtk": 2238.0,
+      "BossMonsterMaxHp": 228976.0
     }
   ]
 }

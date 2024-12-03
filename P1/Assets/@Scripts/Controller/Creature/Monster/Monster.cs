@@ -29,8 +29,6 @@ public class Monster : Creature, IDamageable
         _isDamaged = false;
         ObjectType = EObjectType.Monster;
         gameObject.layer = (int)ELayer.Monster;
-        _initialPosition = transform.position; // 몬스터의 초기 위치 저장
-
         SetNewPatrolTarget(); // 첫 번째 목표 지점 설정
 
         return true;
@@ -86,13 +84,23 @@ public class Monster : Creature, IDamageable
         HpBar.transform.localPosition = Vector2.zero;
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(false);
+
+        _initialPosition = transform.position; // 몬스터의 초기 위치 저장
+        Debug.LogWarning(_initialPosition);
+
     }
 
     protected void SetNewPatrolTarget()
     {
-        // 패트롤 범위 내에서 새로운 목표 위치 설정
-        _targetPosition = _initialPosition +
-                          new Vector3(Random.Range(-MoveRange, MoveRange), Random.Range(-MoveRange, MoveRange), 0);
+        // 타일맵이 null이 아닌지 확인
+        if (Managers.Game.TileMap == null)
+        {
+            Debug.LogError("TileMap is not set!");
+            return;
+        }
+
+        // 맵 안에서 이동 가능한 랜덤 위치 설정
+        _targetPosition = Util.GetRandomPositionWithinMap(Managers.Game.TileMap, _initialPosition, MoveRange, 2);
         _isPatrol = true;
     }
 
@@ -143,8 +151,7 @@ public class Monster : Creature, IDamageable
             float distanceToTarget = direction.magnitude;
 
             // 목표 지점에 가까워지면 이동 멈추고 Idle 상태로 전환
-            if (distanceToTarget < 0.1f ||
-                Vector2.Distance(transform.position, Managers.Object.Hero.transform.position) < 2)
+            if (distanceToTarget < 0.1f)
             {
                 _isPatrol = false;
                 CreatureState = ECreatureState.Idle;

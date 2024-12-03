@@ -124,7 +124,7 @@ namespace BackendData.GameData
                 return;
             }
 
-
+            RemainChargeHour = 12;
             // 충전 완료: 키 리필 및 마지막 로그인 시간 갱신
             Debug.Log("12시간 이상 경과: 키 리필 및 마지막 로그인 시간 업데이트.");
             IsChangedData = true;

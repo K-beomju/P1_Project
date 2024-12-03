@@ -6,7 +6,20 @@ using static Define;
 
 public class GameManager
 {
-    private Tilemap _tileMap;
+    private Tilemap tileMap;
+    public Tilemap TileMap
+    {
+        get
+        {
+            if (tileMap == null)
+            {
+                tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
+                tileMap.CompressBounds();
+            }
+            return tileMap;
+        }
+    }
+
     private int _killMonsters;
     private int _maxMonsters;
     private EDungeonType DungeonType;
@@ -21,10 +34,10 @@ public class GameManager
 
     public void SpawnStageMonster(StageInfoData stageInfo, bool isBoss = false)
     {
-        if (_tileMap == null)
+        if (tileMap == null)
         {
-            _tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
-            _tileMap.CompressBounds();
+            tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
+            tileMap.CompressBounds();
         }
 
         Vector3 heroPosition = Managers.Object.Hero.transform.position;
@@ -36,7 +49,7 @@ public class GameManager
                 Vector3 spawnPosition;
                 do
                 {
-                    spawnPosition = GetRandomPositionInTileMap(_tileMap.cellBounds);
+                    spawnPosition = GetRandomPositionInTileMap(tileMap.cellBounds,2);
                 }
                 while (Vector3.Distance(spawnPosition, heroPosition) < 5f);
 
@@ -92,13 +105,21 @@ public class GameManager
         DungeonType = EDungeonType.Unknown;
     }
 
-    private Vector3 GetRandomPositionInTileMap(BoundsInt bounds)
+    private Vector3 GetRandomPositionInTileMap(BoundsInt bounds, float padding)
     {
-        int randomX = Random.Range(bounds.xMin, bounds.xMax);
-        int randomY = Random.Range(bounds.yMin, bounds.yMax);
+        // 보정값 적용
+        int minX = bounds.xMin + Mathf.CeilToInt(padding);
+        int maxX = bounds.xMax - Mathf.CeilToInt(padding);
+        int minY = bounds.yMin + Mathf.CeilToInt(padding);
+        int maxY = bounds.yMax - Mathf.CeilToInt(padding);
 
+        // 랜덤한 셀 위치 생성
+        int randomX = Random.Range(minX, maxX);
+        int randomY = Random.Range(minY, maxY);
+
+        // 셀 위치를 월드 좌표로 변환
         Vector3Int randomCellPosition = new Vector3Int(randomX, randomY, 0);
-        Vector3 worldPosition = _tileMap.CellToWorld(randomCellPosition);
+        Vector3 worldPosition = tileMap.CellToWorld(randomCellPosition);
 
         return new Vector3(worldPosition.x, worldPosition.y, 0);
     }
