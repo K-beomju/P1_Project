@@ -47,8 +47,7 @@ namespace BackendData.GameData
             BackendReturnObject servertime = Backend.Utils.GetServerTime();
 
             string time = servertime.GetReturnValuetoJSON()["utcTime"].ToString();
-            DateTime serverTimeParsed = DateTime.Parse(time, null, DateTimeStyles.RoundtripKind);
-            LastLoginTime = serverTimeParsed.ToString();
+            LastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
 
         protected override void SetServerDataToLocal(JsonData Data)
@@ -88,10 +87,10 @@ namespace BackendData.GameData
 
         public void CheckDungeonKeyRecharge()
         {
-            if ((DateTime.UtcNow - UpdateTime).Hours < 1) {
-                Debug.Log("아직 1시간이 지나지 않았습니다.");
-                return;
-            }
+            // if ((DateTime.UtcNow - UpdateTime).Hours < 1) {
+            //     Debug.Log("아직 1시간이 지나지 않았습니다.");
+            //     return;
+            // }
 
             // 갱신 주기 갱신
             UpdateTime = DateTime.UtcNow;
@@ -104,11 +103,7 @@ namespace BackendData.GameData
             }
 
             // 서버 시간과 마지막 로그인 시간을 비교하여 시간 차이를 계산
-            string time = serverTime.GetReturnValuetoJSON()["utcTime"].ToString();
-
-            DateTime serverTimeParsed = DateTime.Parse(time, null, DateTimeStyles.RoundtripKind);
-            DateTime lastLoginDate = DateTime.Parse(LastLoginTime);
-            TimeSpan timeDifference = serverTimeParsed - lastLoginDate;
+            TimeSpan timeDifference = DateTime.UtcNow - DateTime.Parse(LastLoginTime);
 
             // `RemainChargeHour` 설정: 남은 충전 시간을 계산
             RemainChargeHour = Mathf.Clamp(12 - (int)timeDifference.TotalHours, 1, 12);
@@ -128,7 +123,7 @@ namespace BackendData.GameData
             // 충전 완료: 키 리필 및 마지막 로그인 시간 갱신
             Debug.Log("12시간 이상 경과: 키 리필 및 마지막 로그인 시간 업데이트.");
             IsChangedData = true;
-            LastLoginTime = serverTimeParsed.ToString();
+            LastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
             
             foreach (EDungeonType dungeonType in Enum.GetValues(typeof(EDungeonType)))
             {
