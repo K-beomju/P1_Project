@@ -17,8 +17,6 @@ public class TitleScene : BaseScene
     private delegate void BackendLoadStep();
     private readonly Queue<BackendLoadStep> _initializeStep = new Queue<BackendLoadStep>();
 
-    public bool SceneMove { get; set;} = true;
-
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -37,7 +35,8 @@ public class TitleScene : BaseScene
         // 광고와 엑셀 데이터 
         Managers.Data.Init();
         Managers.Ad.Init();
-
+        
+        Managers.Sound.Init();
         sceneUI = Managers.UI.ShowSceneUI<UI_TitleScene>();
         return true;
     }
@@ -96,10 +95,7 @@ public class TitleScene : BaseScene
             }
             else
             {
-                sceneUI.ShowDataName("게임 시작 준비 완료");
-
-                if(SceneMove)
-                InGameStart();
+                sceneUI.ShowTouchToStart();
             }
         }
         else
@@ -186,10 +182,8 @@ public class TitleScene : BaseScene
     // 인게임씬으로 이동가는 함수
     public void InGameStart()
     {
-        sceneUI.ShowDataName("게임 시작하는 중");
         _initializeStep.Clear();
         Managers.Scene.LoadScene(EScene.GameScene);
-
     }
 
 }

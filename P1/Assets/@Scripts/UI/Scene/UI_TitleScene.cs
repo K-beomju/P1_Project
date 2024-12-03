@@ -27,7 +27,8 @@ public class UI_TitleScene : UI_Scene
 
     public enum Texts
     {
-        Text_Loading
+        Text_Loading,
+        Text_TouchStart
     }
 
     protected override bool Init()
@@ -41,19 +42,23 @@ public class UI_TitleScene : UI_Scene
         BindTMPTexts(typeof(Texts));
 
         // 초기 UI 상태 설정
-        ToggleUIGroup(GameObjects.Group_Buttons, true);
+        ToggleUIGroup(GameObjects.Group_Buttons, false);
         ToggleUIGroup(GameObjects.Group_Loading, false);
 
         // 버튼 이벤트 바인딩
         GetButton((int)Buttons.Btn_LoginWithGoogle).onClick.AddListener(StartGoogleLogin);
         GetButton((int)Buttons.Btn_CustomLogin).onClick.AddListener(StartCustomLogin);
 
+        GetTMPText((int)Texts.Text_TouchStart).gameObject.SetActive(false);
+
+        Managers.Sound.Play(ESound.Bgm,"Sounds/TitleBGM", 0.3f);
         return true;
     }
 
 
     private void Start()
     {
+        // 자동로그인 토큰 검사 
         LoginWithBackendToken();
     }
 
@@ -67,12 +72,11 @@ public class UI_TitleScene : UI_Scene
             if (callback.IsSuccess())
             {
 #if UNITY_EDITOR
-                ToggleUIGroup(GameObjects.Group_Buttons, false);
-                ToggleUIGroup(GameObjects.Group_Loading, true);
                 HandlePostLogin();
 #else
                 StartGoogleLogin();
 #endif
+                ToggleUIGroup(GameObjects.Group_Loading, true);
             }
             else
             {
@@ -121,14 +125,10 @@ public class UI_TitleScene : UI_Scene
     #region Helper Methods
     private void HandlePostLogin()
     {
-        TitleScene titleScene = Managers.Scene.GetCurrentScene<TitleScene>();
-
         if (string.IsNullOrEmpty(Backend.UserNickName))
         {
             ShowAlertUI($"닉네임이 없습니다.");
             Managers.UI.ShowPopupUI<UI_NicknamePopup>();
-            titleScene.SceneMove = false;
-            titleScene.InitBackendDataLoad();
         }
         else
         {
@@ -137,8 +137,8 @@ public class UI_TitleScene : UI_Scene
             Debug.Log($"유저 인데이트 : {Backend.UserInDate}");
             Debug.Log($"유저 UID(쿠폰용) : {Backend.UID}");
             ShowAlertUI($"로그인에 성공하였습니다.");
-            titleScene.InitBackendDataLoad();
         }
+        Managers.Scene.GetCurrentScene<TitleScene>().InitBackendDataLoad();   
     }
 
     private bool HandleBackendError(BackendReturnObject bro)
@@ -185,5 +185,15 @@ public class UI_TitleScene : UI_Scene
     }
     #endregion
 
+    public void ShowTouchToStart()
+    {
+        ToggleUIGroup(GameObjects.Group_Loading, false);
+        GetTMPText((int)Texts.Text_TouchStart).gameObject.SetActive(true);
+        GetTMPText((int)Texts.Text_TouchStart).gameObject.BindEvent(() => 
+        {
+            TitleScene titleScene = Managers.Scene.GetCurrentScene<TitleScene>();        
+            titleScene.InGameStart();
+        }, EUIEvent.Click);
+    }
 
 }

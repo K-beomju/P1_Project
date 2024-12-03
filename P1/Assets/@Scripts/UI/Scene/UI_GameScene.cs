@@ -140,7 +140,7 @@ public class UI_GameScene : UI_Scene
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
         });
 
-
+        // Menu
         GetButton((int)Buttons.Btn_Menu).onClick.AddListener(() =>
         {
             GameObject menuGroup = GetObject((int)GameObjects.MenuGroup);
@@ -172,10 +172,12 @@ public class UI_GameScene : UI_Scene
         });
         GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
         {
-#if UNITY_EDITOR
             SendQueue.Enqueue(Backend.BMember.Logout, callback =>
             {
                 Debug.Log($"Backend.BMember.Logout : {callback}");
+                #if UNITY_ANDROID
+                TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
+                #endif
 
                 if (callback.IsSuccess())
                 {
@@ -183,11 +185,9 @@ public class UI_GameScene : UI_Scene
                     Managers.Scene.LoadScene(EScene.TitleScene);
                 }
             });
-#else
-            TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
-#endif
         });
 
+        // Good
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint).SetInfo(EItemType.ExpPoint);
@@ -203,6 +203,9 @@ public class UI_GameScene : UI_Scene
         Managers.Buff.OnBuffExpired += RemoveBuffUI;
 
         RefreshUI();
+
+        Managers.Sound.Play(ESound.Bgm,"Sounds/GameBGM", 0.3f);
+
         return true;
     }
 

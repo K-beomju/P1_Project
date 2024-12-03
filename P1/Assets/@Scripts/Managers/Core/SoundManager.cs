@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,19 +47,31 @@ public class SoundManager
 		audioSource.Play();
 	}
 
-	public void Play(Define.ESound type, string key, float pitch = 1.0f)
+	public void Play(Define.ESound type, string key, float volume = 1.0f, float pitch = 1.0f)
 	{
 		AudioSource audioSource = _audioSources[(int)type];
+		audioSource.volume = volume;
 
 		if (type == Define.ESound.Bgm)
 		{
 			LoadAudioClip(key, (audioClip) =>
 			{
 				if (audioSource.isPlaying)
-					audioSource.Stop();
-
-				audioSource.clip = audioClip;
-				audioSource.Play();
+				{
+					DOTween.To(() => audioSource.volume, value => audioSource.volume = value, 0f, 1f)
+					.OnComplete(() => 
+					{
+						audioSource.Stop();
+						audioSource.clip = audioClip;
+						audioSource.Play();
+						DOTween.To(() => audioSource.volume, value => audioSource.volume = value, 1f, 1f);
+					});
+				}
+				else
+				{
+					audioSource.clip = audioClip;
+					audioSource.Play();
+				}
 			});
 		}
 		else
@@ -112,4 +125,5 @@ public class SoundManager
 
 		callback?.Invoke(audioClip);
 	}
+
 }

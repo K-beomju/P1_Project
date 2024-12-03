@@ -6,11 +6,6 @@ using UnityEngine;
 
 public class AdManager
 {
-    public void Init()
-    {
-        InitializeAds();
-    }
-
     private bool _isInitialized;
     private readonly TimeSpan TIMEOUT = TimeSpan.FromHours(4);
     private DateTime _appOpenAdLoadTime;
@@ -42,6 +37,12 @@ public class AdManager
 
     private string GetAdUnitId(string testId, string liveId) => TEST_MODE ? testId : liveId;
 
+    public void Init()
+    {
+        InitializeAds();
+
+    }
+
     /// <summary>
     /// Google Mobile Ads 초기화
     /// </summary>
@@ -60,7 +61,12 @@ public class AdManager
         {
             Debug.Log("Google Mobile Ads 초기화 완료.");
             _isInitialized = true;
+
+            
+            LoadAppOpenAd();
+            LoadRewardedInterstitialAd();
         });
+        //LoadBannerAd();
     }
 
 
