@@ -192,6 +192,7 @@ public class UI_GameScene : UI_Scene
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_QuestPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
         });
 
         // Good

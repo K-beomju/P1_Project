@@ -50,6 +50,7 @@ public class UI_QuestPopup : UI_Popup
                 itemList = new List<UI_QuestItem>();
                 questItemDic[questCategory] = itemList;
             }
+            item.SetInfo(quest.Value);
             itemList.Add(item);
 
             item.gameObject.SetActive(false);
@@ -57,7 +58,6 @@ public class UI_QuestPopup : UI_Popup
 
         // 기본 카테고리 설정 및 UI 갱신
         currentQuestCategory = EQuestCategory.Daily;
-        RefreshUI();
         return true;
     }
 
@@ -73,7 +73,14 @@ public class UI_QuestPopup : UI_Popup
         foreach (var (category, items) in questItemDic)
         {
             bool isActive = category == currentQuestCategory;
-            items.ForEach(item => item.gameObject.SetActive(isActive));
+            items.ForEach(item => 
+            {
+                item.gameObject.SetActive(isActive);
+                if(item.gameObject.activeSelf)
+                {
+                    item.RefreshUI();
+                }
+            });
         }
     }
 }

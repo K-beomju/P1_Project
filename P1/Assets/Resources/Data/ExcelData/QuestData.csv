@@ -1,10 +1,10 @@
-QuestID,QuestContent,QuestCategory,QuestType,RequestCount,RewardItem
-1,플레이 타임 10분,Daily,PlayTime,10,Gold:100&Dia:200
-2,플레이 타임 30분,Repeatable,PlayTime,30,Gold:100&Dia:200
-3,광고 1회 시청,Daily,WatchAds,1,Gold:100&Dia:200
-4,광고 3회 시청,Repeatable,WatchAds,3,Gold:100&Dia:200
-5,광고 5회 시청,Achievement,WatchAds,5,Gold:100&Dia:200
-6,장비 소환 1회,Daily,DrawEquipment,1,Gold:100&Dia:200
-7,장비 소환 5회,Repeatable,DrawEquipment,5,Gold:100&Dia:200
-8,스킬 소환 1회,Daily,DrawSkill,1,Gold:100&Dia:200
-9,스킬 소환 5회,Repeatable,DrawSkill,5,Gold:100&Dia:200
+﻿QuestID,QuestContent,QuestCategory,QuestType,RequestCount,RewardItem
+1,플레이 타임 10분,Daily,PlayTime,600,Dia:200
+2,플레이 타임 30분,Repeatable,PlayTime,1800,Dia:200
+3,광고 1회 시청,Daily,WatchAds,1,Dia:200
+4,광고 3회 시청,Repeatable,WatchAds,3,Dia:200
+5,광고 5회 시청,Achievement,WatchAds,5,Dia:200
+6,장비 소환 1회,Daily,DrawEquipment,1,Dia:200
+7,장비 소환 5회,Repeatable,DrawEquipment,5,Dia:200
+8,스킬 소환 1회,Daily,DrawSkill,1,Dia:200
+9,스킬 소환 5회,Repeatable,DrawSkill,5,Dia:200

@@ -5,9 +5,8 @@
       "QuestName": "플레이 타임 10분",
       "QuestCategory": 0,
       "QuestType": 0,
-      "RequestCount": 10,
+      "RequestCount": 600,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -16,9 +15,8 @@
       "QuestName": "플레이 타임 30분",
       "QuestCategory": 1,
       "QuestType": 0,
-      "RequestCount": 30,
+      "RequestCount": 1800,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -29,7 +27,6 @@
       "QuestType": 1,
       "RequestCount": 1,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -40,7 +37,6 @@
       "QuestType": 1,
       "RequestCount": 3,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -51,7 +47,6 @@
       "QuestType": 1,
       "RequestCount": 5,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -62,7 +57,6 @@
       "QuestType": 2,
       "RequestCount": 1,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -73,7 +67,6 @@
       "QuestType": 2,
       "RequestCount": 5,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -84,7 +77,6 @@
       "QuestType": 3,
       "RequestCount": 1,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     },
@@ -95,7 +87,6 @@
       "QuestType": 3,
       "RequestCount": 5,
       "RewardItem": {
-        "Gold": 100,
         "Dia": 200
       }
     }

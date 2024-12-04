@@ -314,7 +314,6 @@ namespace BackendData.GameData
         {
             IsChangedData = true;
             WorldBossCombatPower = power;
-            Managers.Backend.UpdateRankScore();
         }
 
         // 스크롤 광고 버프

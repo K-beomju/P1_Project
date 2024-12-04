@@ -75,6 +75,15 @@ public class Managers : MonoBehaviour
         }
     }
 
+    public void UpdateBackendData()
+    {
+        StartCoroutine(Backend.UpdateGameDataTransaction());
+        StartCoroutine(Backend.GetAdminPostList());
+        StartCoroutine(Backend.UpdateRankScore());
+
+        StartCoroutine(Backend.UpdateGamePlayTime());
+    }
+
 
     public static void Clear()
     {

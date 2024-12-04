@@ -133,7 +133,10 @@ public static class Define
         HeroRankUpdated,
 
         /// <summary>영웅 승급전 진행중</summary>
-        HeroRankChallenging
+        HeroRankChallenging,
+
+        /// <summary>퀘스트 아이템 업데이트</summary>
+        QuestItemUpdateed
     }
 
     public enum EItemDisplayType
@@ -455,7 +458,7 @@ public static class Define
     }
 
     // 광고형 아이템 타입 
-    public enum EAdRewardType 
+    public enum EAdRewardType
     {
         Gold,
         Dia,
@@ -473,12 +476,20 @@ public static class Define
         Achievement // 업적 퀘스트
     }
 
-    public enum EQuestType 
+    public enum EQuestType
     {
         PlayTime,           // 플레이 타임 (예: 10분, 30분, 60분)
         WatchAds,           // 광고 시청
         DrawEquipment,      // 장비 소환 
         DrawSkill           // 스킬 소환
+    }
+
+    public enum EQuestState
+    {
+        Locked,         // 잠금 상태 (퀘스트 시작 불가능)
+        InProgress,     // 도전 중
+        ReadyToClaim,   // 보상을 받을 수 있는 상태
+        Completed       // 보상을 받은 상태
     }
 
     #endregion

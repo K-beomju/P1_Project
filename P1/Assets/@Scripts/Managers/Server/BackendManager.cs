@@ -5,6 +5,7 @@ using System.Reflection;
 using BackEnd;
 using BackendData.Base;
 using UnityEngine;
+using static Define;
 using Debug = UnityEngine.Debug;
 
 public class BackendManager
@@ -36,12 +37,14 @@ public class BackendManager
         public readonly BackendData.GameData.DungeonData DungeonData = new();
         public readonly BackendData.GameData.RankUpData RankUpData = new();
         public readonly BackendData.GameData.ShopData ShopData = new();
+        public readonly BackendData.GameData.QuestData QuestData = new();
 
         public readonly Dictionary<string, GameData>
             GameDataList = new Dictionary<string, GameData>();
 
         public BackendGameData()
         {
+            GameDataList.Add("내 퀘스트 정보", QuestData);
             GameDataList.Add("내 상점 정보", ShopData);
             GameDataList.Add("내 랭크 정보", RankUpData);
             GameDataList.Add("내 던전 정보", DungeonData);
@@ -296,29 +299,38 @@ public class BackendManager
     }
 
     // 일정 주기마다 랭킹 데이터 업데이트 호출 
-    public void UpdateRankScore()
+    public IEnumerator UpdateRankScore()
     {
+        var seconds = new WaitForSeconds(600);
+        yield return seconds;
 
-        foreach (var li in Rank.List)
+        while (!_isErrorOccured)
         {
-            Debug.Log("랭킹 업데이트 주기");
-            UpdateUserRankScore(li.uuid, callback =>
+            if (Managers.Backend.GameData.CharacterData.WorldBossCombatPower != 0)
             {
-                if (callback == null)
+                foreach (var li in Rank.List)
                 {
-                    Debug.LogWarning("랭킹 데이터 미존재, 저장할 랭킹 데이터가 존재하지 않습니다.");
-                    return;
-                }
+                    Debug.Log("랭킹 업데이트 주기");
+                    UpdateUserRankScore(li.uuid, callback =>
+                    {
+                        if (callback == null)
+                        {
+                            Debug.LogWarning("랭킹 데이터 미존재, 저장할 랭킹 데이터가 존재하지 않습니다.");
+                            return;
+                        }
 
-                if (callback.IsSuccess())
-                {
-                    Debug.Log("랭킹 성공, 랭킹에 성공했습니다.");
+                        if (callback.IsSuccess())
+                        {
+                            Debug.Log("랭킹 성공, 랭킹에 성공했습니다.");
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"랭킹 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                        }
+                    });
                 }
-                else
-                {
-                    Debug.LogWarning($"랭킹 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
-                }
-            });
+            }
+            yield return seconds;
         }
 
     }
@@ -364,14 +376,14 @@ public class BackendManager
         }
 
     }
-    
+
     // 일정 주기마다 우편을 불러오는 코루틴 함수 
     public IEnumerator GetAdminPostList()
     {
         var seconds = new WaitForSeconds(600);
         yield return seconds;
 
-        while(_isErrorOccured)
+        while (!_isErrorOccured)
         {
             // 현재 post 함수 체크 
             int postCount = Post.Dictionary.Count;
@@ -379,14 +391,14 @@ public class BackendManager
             //랭크보상은 수동으로 체크하도록 구성
             // 관리자 우편은 자동으로 일정 주기마다 호출하도록 구성
 
-            Post.GetPostList(PostType.Admin, (success, info) => 
+            Post.GetPostList(PostType.Admin, (success, info) =>
             {
-                if(success)
+                if (success)
                 {
                     //호출하기 전 우편의 갯수와 동일하지 않다면 우편 아이콘 오른쪽에 표시 
-                    if(postCount != Post.Dictionary.Count)
+                    if (postCount != Post.Dictionary.Count)
                     {
-                        if(Post.Dictionary.Count > 0)
+                        if (Post.Dictionary.Count > 0)
                         {
                             //FindObjectOfType<InGameScene.RightButtonGroupManager>().SetPostIconAlert(true);
                         }
@@ -400,6 +412,20 @@ public class BackendManager
             });
             yield return seconds;
 
+        }
+    }
+
+    // 게임 플레이 타임 코루틴 함수
+    public IEnumerator UpdateGamePlayTime()
+    {
+        var seconds = new WaitForSeconds(1);
+        yield return seconds;
+
+        while(!_isErrorOccured)
+        {
+            Managers.Backend.GameData.QuestData.CountPlayTime();
+            Managers.Event.TriggerEvent(EEventType.QuestItemUpdateed);
+            yield return seconds;   
         }
     }
 
