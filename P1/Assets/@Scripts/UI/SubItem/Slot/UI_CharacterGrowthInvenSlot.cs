@@ -107,7 +107,13 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
                     Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(_heroUpgradeType);
 
                     if (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp)
+                    {
+                        var questType = _heroUpgradeType == EHeroUpgradeType.Growth_Atk
+                            ? EQuestType.UpgradeAtk
+                            : EQuestType.UpgradeMaxHp;
+                        Managers.Backend.GameData.QuestData.UpdateQuest(questType);
                         isUpgraded = true;
+                    }
                 }
             }
             _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
@@ -131,7 +137,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         // 한번이라도 업그레이드 했을 때
         if (isUpgraded && (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp))
         {
-            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);    
+            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);
             Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
             isUpgraded = false;
         }

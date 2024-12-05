@@ -140,21 +140,19 @@ namespace BackendData.GameData
             return null;
         }
 
-        // 플레이 시간 기록하는 함수
-        public void CountPlayTime()
+        public void UpdateQuest(EQuestType questType)
         {
             IsChangedData = true;
-            _dailyQuestDic[EQuestType.PlayTime.ToString()].CheckAndUpdateState();
-            _repeatableQuestDic[EQuestType.PlayTime.ToString()].CheckAndUpdateState();
-        }
 
-        // 광고 시청 퀘스트 
-        public void CountWatchAd()
-        {
-            IsChangedData = true;
-            _dailyQuestDic[EQuestType.WatchAds.ToString()].CheckAndUpdateState();
-            _repeatableQuestDic[EQuestType.WatchAds.ToString()].CheckAndUpdateState();
-            _achievementQuestDic[EQuestType.WatchAds.ToString()].CheckAndUpdateState();
+            // 모든 퀘스트 딕셔너리를 순회하며 해당 퀘스트 타입의 상태를 업데이트
+            if (_dailyQuestDic.ContainsKey(questType.ToString()))
+                _dailyQuestDic[questType.ToString()].CheckAndUpdateState();
+
+            if (_repeatableQuestDic.ContainsKey(questType.ToString()))
+                _repeatableQuestDic[questType.ToString()].CheckAndUpdateState();
+
+            if (_achievementQuestDic.ContainsKey(questType.ToString()))
+                _achievementQuestDic[questType.ToString()].CheckAndUpdateState();
         }
 
         public void CompleteQuest(Data.QuestData questData)
@@ -166,6 +164,9 @@ namespace BackendData.GameData
                     if (_dailyQuestDic.TryGetValue(questData.QuestType.ToString(), out var dailyQuest))
                     {
                         dailyQuest.QuestState = EQuestState.Completed;
+
+                        // 일퀘 완료 증가
+                        _dailyQuestDic[EQuestType.CompleteDailyQuest.ToString()].CheckAndUpdateState();
                     }
                     break;
 

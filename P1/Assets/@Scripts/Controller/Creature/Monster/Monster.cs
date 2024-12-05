@@ -237,7 +237,7 @@ public class Monster : Creature, IDamageable
                         });
 
                         Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
-
+                        Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
                     }
                     else if (ObjectType == EObjectType.BossMonster)
                     {

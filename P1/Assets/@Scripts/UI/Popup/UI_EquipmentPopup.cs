@@ -286,6 +286,7 @@ public class UI_EquipmentPopup : UI_Popup
             try
             {
                 Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(SelectEquipmentInfo, maxCount);
+                Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.UpgradeEquipment);
                 RefreshUI(false);
 
             }
@@ -368,6 +369,7 @@ public class UI_EquipmentPopup : UI_Popup
 
                     // 장비 강화 수행
                     Managers.Backend.GameData.EquipmentInventory.EquipmentLevelUp(equipment, maxCount);
+                    Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.UpgradeEquipment);
 
                 }
                 catch (Exception e)

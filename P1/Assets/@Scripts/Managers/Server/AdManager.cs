@@ -178,7 +178,7 @@ public class AdManager
         Debug.Log("보상형 전면 광고 표시.");
         _rewardedInterstitialAd.Show(reward =>
         {       
-            Managers.Backend.GameData.QuestData.CountWatchAd();     
+            Managers.Backend.GameData.QuestData.UpdateQuest(Define.EQuestType.WatchAds);     
             onRewardEarned?.Invoke(true); // 보상 성공
         });
     }

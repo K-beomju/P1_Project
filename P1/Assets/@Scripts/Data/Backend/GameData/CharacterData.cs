@@ -239,6 +239,7 @@ namespace BackendData.GameData
 
             Level++;
 
+            Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroLevelUp);
             Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, Level); // 레벨업 이벤트 발생
         }
 

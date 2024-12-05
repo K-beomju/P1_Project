@@ -2,92 +2,172 @@
   "questDatas": [
     {
       "DataId": 1,
-      "QuestName": "플레이 타임 10분",
+      "QuestName": "일일 퀘스트 완료",
       "QuestCategory": 0,
-      "QuestType": 0,
-      "RequestCount": 600,
+      "QuestType": 2,
+      "RequestCount": 5,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 3000
       }
     },
     {
       "DataId": 2,
-      "QuestName": "플레이 타임 30분",
-      "QuestCategory": 1,
+      "QuestName": "플레이 타임",
+      "QuestCategory": 0,
       "QuestType": 0,
-      "RequestCount": 1800,
+      "RequestCount": 600,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 3,
-      "QuestName": "광고 1회 시청",
+      "QuestName": "광고 보기",
       "QuestCategory": 0,
       "QuestType": 1,
-      "RequestCount": 1,
+      "RequestCount": 3,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 4,
-      "QuestName": "광고 3회 시청",
-      "QuestCategory": 1,
-      "QuestType": 1,
-      "RequestCount": 3,
+      "QuestName": "스킬 소환",
+      "QuestCategory": 0,
+      "QuestType": 4,
+      "RequestCount": 5,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 5,
-      "QuestName": "광고 5회 시청",
-      "QuestCategory": 2,
-      "QuestType": 1,
+      "QuestName": "장비 소환",
+      "QuestCategory": 0,
+      "QuestType": 3,
       "RequestCount": 5,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 6,
-      "QuestName": "장비 소환 1회",
+      "QuestName": "장비 강화",
       "QuestCategory": 0,
-      "QuestType": 2,
-      "RequestCount": 1,
+      "QuestType": 6,
+      "RequestCount": 5,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 7,
-      "QuestName": "장비 소환 5회",
+      "QuestName": "플레이 타임",
       "QuestCategory": 1,
-      "QuestType": 2,
-      "RequestCount": 5,
+      "QuestType": 0,
+      "RequestCount": 1800,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 8,
-      "QuestName": "스킬 소환 1회",
-      "QuestCategory": 0,
-      "QuestType": 3,
-      "RequestCount": 1,
+      "QuestName": "공격력 강화",
+      "QuestCategory": 1,
+      "QuestType": 7,
+      "RequestCount": 10,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
       }
     },
     {
       "DataId": 9,
-      "QuestName": "스킬 소환 5회",
+      "QuestName": "체력 강화",
+      "QuestCategory": 1,
+      "QuestType": 8,
+      "RequestCount": 10,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 10,
+      "QuestName": "몬스터 처치",
+      "QuestCategory": 1,
+      "QuestType": 11,
+      "RequestCount": 500,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 11,
+      "QuestName": "장비 소환",
       "QuestCategory": 1,
       "QuestType": 3,
+      "RequestCount": 30,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 12,
+      "QuestName": "장비 강화",
+      "QuestCategory": 1,
+      "QuestType": 6,
+      "RequestCount": 15,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 13,
+      "QuestName": "캐릭터 레벨업",
+      "QuestCategory": 2,
+      "QuestType": 9,
       "RequestCount": 5,
       "RewardItem": {
-        "Dia": 200
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 14,
+      "QuestName": "장비 강화",
+      "QuestCategory": 2,
+      "QuestType": 6,
+      "RequestCount": 10,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 15,
+      "QuestName": "유물 소환",
+      "QuestCategory": 2,
+      "QuestType": 5,
+      "RequestCount": 10,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 16,
+      "QuestName": "영웅 승급",
+      "QuestCategory": 2,
+      "QuestType": 10,
+      "RequestCount": 1,
+      "RewardItem": {
+        "Dia": 1
+      }
+    },
+    {
+      "DataId": 17,
+      "QuestName": "스테이지 클리어",
+      "QuestCategory": 2,
+      "QuestType": 12,
+      "RequestCount": 3,
+      "RewardItem": {
+        "Dia": 1
       }
     }
   ]

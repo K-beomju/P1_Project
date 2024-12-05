@@ -245,8 +245,10 @@ public class GameScene : BaseScene
             yield return null; // 다음 프레임 대기
         }
 
+        // 랭크전 성공___________________
         ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
         Managers.Backend.GameData.RankUpData.UpdateRankUp(rankType);
+        Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroRankUp);
 
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
         {
@@ -291,6 +293,7 @@ public class GameScene : BaseScene
     private IEnumerator CoStageClear()
     {
         MoveToNextStage(true);
+        Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.StageClear);
         yield return null;
     }
 

@@ -151,7 +151,7 @@ public class MyCustomEditorWindow : EditorWindow
         }
         if (GUILayout.Button("퀘스트 광고 시청", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.Backend.GameData.QuestData.CountWatchAd();
+            Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.WatchAds);
         }
     }
 }

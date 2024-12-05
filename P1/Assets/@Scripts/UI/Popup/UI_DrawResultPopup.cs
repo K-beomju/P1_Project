@@ -151,15 +151,19 @@ public class UI_DrawResultPopup : UI_Popup
                 {
                     // 장비 인벤토리에 추가
                     Managers.Backend.GameData.EquipmentInventory.AddEquipment(itemData.DataTemplateID);
+                    Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.DrawEquipment);
+
                 }
                 if (_type == EDrawType.Skill)
                 {
                     // 스킬 인벤토리에 추가
                     Managers.Backend.GameData.SkillInventory.AddSkill(itemData.DataTemplateID);
+                    Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.DrawSkill);
                 }
                 UI_CompanionItem drawItem = _drawItems[i];
                 drawItem.DisplayItem(itemData, EItemDisplayType.Draw);
                 drawItem.gameObject.SetActive(true);
+
             }
             catch (Exception e)
             {

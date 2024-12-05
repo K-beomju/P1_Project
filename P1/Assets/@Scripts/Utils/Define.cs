@@ -480,8 +480,20 @@ public static class Define
     {
         PlayTime,           // 플레이 타임 (예: 10분, 30분, 60분)
         WatchAds,           // 광고 시청
+
+        CompleteDailyQuest, // 일일 퀘스트 완료 
+
         DrawEquipment,      // 장비 소환 
-        DrawSkill           // 스킬 소환
+        DrawSkill,          // 스킬 소환  
+        DrawRelic,          // 유물 소환
+        UpgradeEquipment,   // 장비 강화 
+        UpgradeAtk,         // 공격력 강화
+        UpgradeMaxHp,       // 체력 강화 
+
+        HeroLevelUp,        // 영웅 레벨업 
+        HeroRankUp,         // 영웅 승급전
+        KillMonster,        // 처치 몬스터 
+        StageClear          // 스테이지 클리어 
     }
 
     public enum EQuestState

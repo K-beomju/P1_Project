@@ -423,7 +423,7 @@ public class BackendManager
 
         while(!_isErrorOccured)
         {
-            Managers.Backend.GameData.QuestData.CountPlayTime();
+            Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.PlayTime);
             Managers.Event.TriggerEvent(EEventType.QuestItemUpdateed);
             yield return seconds;   
         }
@@ -432,6 +432,8 @@ public class BackendManager
     // 에러 발생시 게임로그를 삽입하는 함수
     public void SendBugReport(string className, string functionName, string errorInfo, int repeatCount = 3)
     {
+
+        
         // 에러가 실패할 경우 재귀함수를 통해 최대 3번까지 호출을 시도한다.
         if (repeatCount <= 0)
         {
