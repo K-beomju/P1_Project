@@ -19,6 +19,8 @@ namespace BackendData.GameData
         public float Exp { get; private set; }
         public float MaxExp { get; private set; }
 
+        public string LastLoginTime { get; private set; }
+
         // 출석체크 
         public int AttendanceIndex { get; private set; }
         public string AttendanceLastLoginTime { get; private set; }
@@ -67,6 +69,7 @@ namespace BackendData.GameData
             Level = 1;
             Exp = 0;
             MaxExp = Util.CalculateRequiredExp(Level);
+            LastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
             AttendanceIndex = 1;
             DateTime initialLoginTime = DateTime.UtcNow.AddDays(-1); // 24시간 이전으로 설정
             AttendanceLastLoginTime = initialLoginTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
@@ -117,6 +120,7 @@ namespace BackendData.GameData
             Level = int.Parse(Data["Level"].ToString());
             Exp = float.Parse(Data["Exp"].ToString());
             MaxExp = float.Parse(Data["MaxExp"].ToString());
+            LastLoginTime = Data["LastLoginTime"].ToString();
             AttendanceIndex = int.Parse(Data["AttendanceIndex"].ToString());
             AttendanceLastLoginTime = Data["AttendanceLastLoginTime"].ToString();
             StageLevel = int.Parse(Data["StageLevel"].ToString());
@@ -172,9 +176,9 @@ namespace BackendData.GameData
             param.Add("Exp", Exp);
             param.Add("MaxExp", MaxExp);
             param.Add("StageLevel", StageLevel);
+            param.Add("LastLoginTime", LastLoginTime);
             param.Add("AttendanceIndex", AttendanceIndex);
             param.Add("AttendanceLastLoginTime", AttendanceLastLoginTime);
-
             param.Add("WorldBossCombatPower", WorldBossCombatPower);
             param.Add("Purse", _purseDic);
             param.Add("UpgradeStat", _upgradeStatDic);
@@ -322,6 +326,12 @@ namespace BackendData.GameData
         {
             IsChangedData = true;
             _adBuffDic[buffType.ToString()] += 1;
+        }
+
+        public void UpdateIdleTime()
+        {
+            TimeSpan timeSinceLastLogin = DateTime.UtcNow - DateTime.Parse(LastLoginTime);
+            Debug.Log("방치한 시간:" + timeSinceLastLogin.TotalMinutes);
         }
 
         #region Attendance 
