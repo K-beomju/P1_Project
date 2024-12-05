@@ -71,6 +71,8 @@ public class UI_QuestItem : UI_Base
 
         // 일퀘면 바로 잠궈줌
         GetImage((int)Images.Image_Complete).gameObject.SetActive(_questData.QuestCategory == EQuestCategory.Daily);
+
+        Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
     }
 
     public void RefreshUI()
@@ -78,6 +80,7 @@ public class UI_QuestItem : UI_Base
         GetTMPText((int)Texts.Text_QuestName).text = _questData.QuestName;
         var questDic = Managers.Backend.GameData.QuestData.GetQuestCategory(_questData.QuestCategory);
         var questInfo = questDic[_questData.QuestType.ToString()];
+        Debug.Log(_questData.QuestName + " " + questInfo.QuestState);
 
         int targetCount = questInfo.TargetCount;
         int currentCount = questInfo.CurrentCount;
@@ -100,6 +103,8 @@ public class UI_QuestItem : UI_Base
         GetSlider((int)Sliders.Slider_QuestProgress).value = currentCount;
         GetTMPText((int)Texts.Text_QuestProgress).text = $"{currentCount} / {targetCount}";
 
-        GetButton((int)Buttons.Btn_Complete).interactable = questInfo.QuestState != EQuestState.InProgress;
+        GetButton((int)Buttons.Btn_Complete).interactable = questInfo.QuestState == EQuestState.ReadyToClaim;
+        GetImage((int)Images.Image_Complete).gameObject.SetActive(questInfo.QuestState == EQuestState.Completed && _questData.QuestCategory == EQuestCategory.Daily);
+
     }
 }

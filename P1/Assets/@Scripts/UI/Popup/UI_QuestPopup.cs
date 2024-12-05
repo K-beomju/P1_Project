@@ -4,13 +4,18 @@ using UnityEngine;
 using static Define;
 using Data;
 using System.Linq;
+using BackEnd.Quobject.SocketIoClientDotNet.Client;
+using System;
 
 public class UI_QuestPopup : UI_Popup
 {
     public enum GameObjects
     {
         BG,
-        QuestContent
+        QuestContent,
+        Daily_NotifiBadge,
+        Repeatable_NotifiBadge,
+        Achievement_NotifiBadge
     }
 
     public enum Buttons
@@ -33,6 +38,10 @@ public class UI_QuestPopup : UI_Popup
 
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(ClosePopupUI);
         GetObject((int)GameObjects.BG).BindEvent(ClosePopupUI);
+
+        GetObject((int)GameObjects.Daily_NotifiBadge).SetActive(false);
+        GetObject((int)GameObjects.Repeatable_NotifiBadge).SetActive(false);
+        GetObject((int)GameObjects.Achievement_NotifiBadge).SetActive(false);
 
         GetButton((int)Buttons.Btn_Daily).onClick.AddListener(() => OnClickButtonChangeCategory(EQuestCategory.Daily));
         GetButton((int)Buttons.Btn_Repeatable).onClick.AddListener(() => OnClickButtonChangeCategory(EQuestCategory.Repeatable));
@@ -61,6 +70,16 @@ public class UI_QuestPopup : UI_Popup
         return true;
     }
 
+    private void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.QuestCheckNotification, new Action(CheckReadyToClaimQuest));
+    }
+
+    private void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.QuestCheckNotification, new Action(CheckReadyToClaimQuest));
+    }
+
     private void OnClickButtonChangeCategory(EQuestCategory questCategory)
     {
         if (currentQuestCategory == questCategory) return; // 동일 카테고리 클릭 방지
@@ -73,14 +92,28 @@ public class UI_QuestPopup : UI_Popup
         foreach (var (category, items) in questItemDic)
         {
             bool isActive = category == currentQuestCategory;
-            items.ForEach(item => 
+            items.ForEach(item =>
             {
                 item.gameObject.SetActive(isActive);
-                if(item.gameObject.activeSelf)
+                if (item.gameObject.activeSelf)
                 {
                     item.RefreshUI();
                 }
             });
         }
+        Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
+    }
+
+    private void CheckReadyToClaimQuest()
+    {
+        GetObject((int)GameObjects.Daily_NotifiBadge).SetActive(
+            Managers.Backend.GameData.QuestData.DailyQuestDic.Values.Any(q => q.QuestState == EQuestState.ReadyToClaim));
+
+        GetObject((int)GameObjects.Repeatable_NotifiBadge).SetActive(
+            Managers.Backend.GameData.QuestData.RepeatableQuestDic.Values.Any(q => q.QuestState == EQuestState.ReadyToClaim));
+
+        GetObject((int)GameObjects.Achievement_NotifiBadge).SetActive(
+            Managers.Backend.GameData.QuestData.AchievementQuestDic.Values.Any(q => q.QuestState == EQuestState.ReadyToClaim));
+
     }
 }

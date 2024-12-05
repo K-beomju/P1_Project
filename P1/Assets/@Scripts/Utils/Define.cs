@@ -136,7 +136,10 @@ public static class Define
         HeroRankChallenging,
 
         /// <summary>퀘스트 아이템 업데이트</summary>
-        QuestItemUpdateed
+        QuestItemUpdateed,
+
+        /// <summary>퀘스트 아이템 업데이트</summary>
+        QuestCheckNotification
     }
 
     public enum EItemDisplayType

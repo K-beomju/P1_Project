@@ -54,7 +54,8 @@ public class UI_GameScene : UI_Scene
         TopStage,
         RemainMonster,
         RankUpStage,
-        MenuGroup
+        MenuGroup,
+        Quest_NotifiBadge
     }
 
     enum CanvasGroups
@@ -155,7 +156,7 @@ public class UI_GameScene : UI_Scene
             string spritePath = isActive ? "Sprites/Icon_Close02" : "Sprites/Icon_Menu_Hamburger";
             buttonImage.sprite = Managers.Resource.Load<Sprite>(spritePath);
         });
-        
+
         GetButton((int)Buttons.Btn_Ranking).onClick.AddListener(() =>
         {
             if (Managers.Backend.Rank.List.Count <= 0)
@@ -176,9 +177,9 @@ public class UI_GameScene : UI_Scene
             SendQueue.Enqueue(Backend.BMember.Logout, callback =>
             {
                 Debug.Log($"Backend.BMember.Logout : {callback}");
-                #if UNITY_ANDROID
+#if UNITY_ANDROID
                 TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
-                #endif
+#endif
 
                 if (callback.IsSuccess())
                 {
@@ -188,7 +189,7 @@ public class UI_GameScene : UI_Scene
             });
         });
 
-        GetButton((int)Buttons.Btn_Quest).onClick.AddListener(() => 
+        GetButton((int)Buttons.Btn_Quest).onClick.AddListener(() =>
         {
             var popupUI = Managers.UI.ShowPopupUI<UI_QuestPopup>();
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
@@ -212,7 +213,7 @@ public class UI_GameScene : UI_Scene
 
         RefreshUI();
 
-        Managers.Sound.Play(ESound.Bgm,"Sounds/GameBGM", 0.3f);
+        Managers.Sound.Play(ESound.Bgm, "Sounds/GameBGM", 0.3f);
 
         return true;
     }
@@ -221,6 +222,30 @@ public class UI_GameScene : UI_Scene
     {
         Managers.Buff.OnBuffTimeUpdated -= UpdateBuffUI;
         Managers.Buff.OnBuffExpired -= RemoveBuffUI;
+    }
+
+    private void OnEnable()
+    {
+        Managers.Event.AddEvent(EEventType.QuestCheckNotification, new Action(() =>
+        {
+            if (Managers.Backend.GameData.QuestData.IsReadyToClaimQuest())
+                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(true);
+            else
+                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
+        }));
+
+    }
+
+    private void OnDisable()
+    {
+        Managers.Event.RemoveEvent(EEventType.QuestCheckNotification, new Action(() =>
+        {
+            if (Managers.Backend.GameData.QuestData.IsReadyToClaimQuest())
+                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(true);
+            else
+                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
+        }));
+
     }
 
     private void InitializeUIElements()
@@ -240,6 +265,7 @@ public class UI_GameScene : UI_Scene
         }
         LoadExistingBuffs();
 
+
         GetSlider((int)Sliders.Slider_Exp).value = 0;
         GetSlider((int)Sliders.Slider_BossTimer).value = 0;
         GetSlider((int)Sliders.Slider_StageInfo).value = 0;
@@ -251,6 +277,7 @@ public class UI_GameScene : UI_Scene
         GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
         GetObject((int)GameObjects.RankUpStage).SetActive(false);
         GetObject((int)GameObjects.MenuGroup).SetActive(false);
+        GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
     }
@@ -564,9 +591,9 @@ public class UI_GameScene : UI_Scene
 
     public void ShowPopupActiveGameUI(bool active)
     {
-        if(!active)
-        GetObject((int)GameObjects.MenuGroup).SetActive(false);
-        
+        if (!active)
+            GetObject((int)GameObjects.MenuGroup).SetActive(false);
+
         GetObject((int)GameObjects.TopStage).SetActive(active);
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0;
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;

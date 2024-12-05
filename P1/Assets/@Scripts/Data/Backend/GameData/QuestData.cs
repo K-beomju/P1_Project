@@ -32,6 +32,7 @@ namespace BackendData.GameData
             if (CurrentCount >= TargetCount && QuestState == EQuestState.InProgress)
             {
                 QuestState = EQuestState.ReadyToClaim; // 상태를 "보상 받을 상태"로 변경
+                Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
             }
         }
 
@@ -205,6 +206,27 @@ namespace BackendData.GameData
                     break;
             }
 
+        }
+
+        public bool IsReadyToClaimQuest()
+        {
+            foreach (var item in _dailyQuestDic.Values)
+            {
+                if (item.QuestState == EQuestState.ReadyToClaim)
+                    return true;
+            }
+            foreach (var item in _repeatableQuestDic.Values)
+            {
+                if (item.QuestState == EQuestState.ReadyToClaim)
+                    return true;
+            }
+            foreach (var item in _achievementQuestDic.Values)
+            {
+                if (item.QuestState == EQuestState.ReadyToClaim)
+                    return true;
+            }
+
+            return false;
         }
     }
 
