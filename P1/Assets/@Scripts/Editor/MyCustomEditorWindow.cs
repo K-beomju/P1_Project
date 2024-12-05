@@ -153,5 +153,11 @@ public class MyCustomEditorWindow : EditorWindow
         {
             Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.WatchAds);
         }
+        if (GUILayout.Button("몬스터 클리어", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            FindAnyObjectByType<GameScene>().Clear();
+              FindAnyObjectByType<GameScene>().       GameSceneState = EGameSceneState.Boss;
+
+        }
     }
 }

@@ -214,8 +214,8 @@ public class Creature : BaseObject, IDamageable
 
         Sprite.color = originalColor;
         Sprite.DOKill(); // 기존 색상 변경 애니메이션 중지
-        Sprite.DOColor(Color.red, 0.05f)
-            .OnComplete(() => Sprite.DOColor(originalColor, 0.05f));
+        Sprite.DOColor(Color.red, 0.15f)
+            .OnComplete(() => Sprite.DOColor(originalColor, 0.15f));
     }
 
     public virtual void OnDead()

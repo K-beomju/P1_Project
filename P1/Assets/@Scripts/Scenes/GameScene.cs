@@ -187,10 +187,27 @@ public class GameScene : BaseScene
 
     private IEnumerator CoBossStage()
     {
-        Managers.Game.SpawnStageMonster(StageInfo, true);
-        sceneUI.RefreshBossMonsterHp(Managers.Object.BossMonster);
+        ResetStageAndHero();
+        var fadeUI =  Managers.UI.ShowBaseUI<UI_FadeInBase>();
+        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_SCENE - 1);
+        fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 0);
 
-        
+
+        Managers.Game.SpawnStageMonster(StageInfo, true);
+
+        var bossMonster = Managers.Object.BossMonster;
+        sceneUI.RefreshBossMonsterHp(bossMonster);
+        Managers.Object.Hero.LookAt(bossMonster.transform.position);
+        cameraController.Target = bossMonster.transform;
+
+        Managers.UI.ShowBaseUI<UI_BossStageDisplayBase>().ShowDisplay();
+        yield return new WaitForSeconds(2);
+
+        // 연출 제작 
+        cameraController.Target = Managers.Object.Hero.transform;
+
+        Managers.Object.Hero.EnableAction();
+
         while (Managers.Object.BossMonster != null)
         {
             if (UpdateBossBattleTimer()) // 타이머 상태를 확인

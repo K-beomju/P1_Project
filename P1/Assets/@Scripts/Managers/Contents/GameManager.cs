@@ -58,7 +58,7 @@ public class GameManager
         }
         else
         {
-            Managers.Object.Spawn<BossMonster>(Vector3.zero, stageInfo.BossDataId);
+            Managers.Object.Spawn<BossMonster>(new Vector3(3,0,0), stageInfo.BossDataId);
         }
     }
 
