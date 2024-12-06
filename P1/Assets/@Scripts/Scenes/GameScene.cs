@@ -189,8 +189,8 @@ public class GameScene : BaseScene
     {
         ResetStageAndHero();
         var fadeUI =  Managers.UI.ShowBaseUI<UI_FadeInBase>();
-        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_SCENE - 1);
-        fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 0);
+        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_POPUP - 1);
+        fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
 
 
         Managers.Game.SpawnStageMonster(StageInfo, true);
@@ -215,6 +215,11 @@ public class GameScene : BaseScene
 
             yield return null;
         }
+
+        // var popupUI = Managers.UI.ShowPopupUI<UI_ItemGainPopup>();
+        // Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_POPUP - 100);
+        // popupUI.ShowCreateClearItem(StageInfo.RewardItem);
+
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
         GameSceneState = EGameSceneState.Clear;
     }

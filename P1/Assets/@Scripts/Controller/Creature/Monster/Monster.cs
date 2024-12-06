@@ -194,7 +194,7 @@ public class Monster : Creature, IDamageable
 
         _isDamaged = true;
         // 플레이어에게 데미지를 입히는 코루틴 시작
-        if (_damageCoroutine == null)
+        if (_damageCoroutine == null && gameObject.activeInHierarchy)
         {
             _damageCoroutine = StartCoroutine(DealDamageToPlayer());
         }
@@ -210,6 +210,11 @@ public class Monster : Creature, IDamageable
             {
                 StopCoroutine(_damageCoroutine);
                 _damageCoroutine = null;
+            }
+            if(_idleCoroutine != null)
+            {
+                  StopCoroutine(_idleCoroutine);
+                _idleCoroutine = null;
             }
 
             switch (Managers.Scene.GetCurrentScene<BaseScene>())
@@ -236,23 +241,18 @@ public class Monster : Creature, IDamageable
                             }
                         });
 
-                        Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
-                        Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
-                    }
-                    else if (ObjectType == EObjectType.BossMonster)
-                    {
-                        //UI_CurrencyTextWorldSpace currencyText = Managers.UI.MakeWorldSpaceUI<UI_CurrencyTextWorldSpace>();
-                        //currencyText.SetCurrencyText(gameScene.Data.MonsterGoldReward);
-                    }
 
+                        Managers.Game.OnMonsterDestroyed();
+                        Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
+
+                        Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
+                        Managers.Pool.Push(this.gameObject);
+                    }
                     break;
                 case DungeonScene dungeonScene:
 
                     break;
             }
-
-            Managers.Game.OnMonsterDestroyed();
-            Managers.Object.Despawn(this);
         }
         catch (Exception e)
         {

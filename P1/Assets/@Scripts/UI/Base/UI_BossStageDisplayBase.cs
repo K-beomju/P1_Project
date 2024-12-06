@@ -78,7 +78,7 @@ public class UI_BossStageDisplayBase : UI_Base
             .AppendInterval(1.0f) // 잠시 대기
             .Append(_bossComingImage.DOFade(0, 0.5f)) // 페이드 아웃
             .Join(_bossComingImage.rectTransform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack)) // 크기 축소
-            .OnComplete(() => _bossComingImage.gameObject.SetActive(false));
+            .OnComplete(() => gameObject.SetActive(false));
     }
 
     // 보스 아이콘 연출을 시작하는 함수
@@ -102,6 +102,6 @@ public class UI_BossStageDisplayBase : UI_Base
             .AppendInterval(1.0f) // 잠시 대기
             .Append(_bossIconImage.DOFade(0, 0.5f)) // 페이드 아웃
             .Join(_bossIconImage.rectTransform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack)) // 크기 축소
-            .OnComplete(() => _bossIconImage.gameObject.SetActive(false));
+            .OnComplete(() => gameObject.SetActive(false));
     }
 }

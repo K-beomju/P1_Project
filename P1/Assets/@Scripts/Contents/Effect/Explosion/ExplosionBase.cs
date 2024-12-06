@@ -14,9 +14,16 @@ public class ExplosionBase : EffectBase
 
         Sprite.sortingOrder = SortingLayers.SKILL_EFFECT;
         Anim = GetComponent<Animator>();
-        if (ShouldStartTimer())
-            StartCoroutine(CoStartTimer());
         return true;
+    }
+    
+    void OnEnable()
+    {
+        if (ShouldStartTimer())
+        {
+            Anim.Rebind();
+            StartCoroutine(CoStartTimer());
+        }
     }
 
     protected override IEnumerator CoStartTimer()

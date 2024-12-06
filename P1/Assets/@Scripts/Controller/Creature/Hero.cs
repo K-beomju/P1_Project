@@ -23,8 +23,8 @@ public class Hero : Creature
     private Coroutine recoveryCoroutine = null;
     private HeroGhost ghost;
 
-    private RuntimeAnimatorController  handController;
-    private RuntimeAnimatorController  weaponController;
+    private RuntimeAnimatorController handController;
+    private RuntimeAnimatorController weaponController;
     private WaitForSeconds recoveryTime = new WaitForSeconds(1);
 
     public Action OnAttackAction { get; set; } = null;
@@ -216,25 +216,30 @@ public class Hero : Creature
     #region Target Search & Movement
     private Creature FindClosestTarget(IEnumerable<Creature> objs)
     {
-        if (Managers.Object.BossMonster != null)
+        // 특정 우선순위 타겟이 있는 경우 먼저 반환
+        if (Managers.Object.BossMonster != null && Managers.Object.BossMonster.gameObject.activeInHierarchy)
             return Managers.Object.BossMonster;
 
-        if (Managers.Object.Bot != null)
+        if (Managers.Object.Bot != null && Managers.Object.Bot.gameObject.activeInHierarchy)
             return Managers.Object.Bot;
 
-        if (Managers.Object.RankMonster != null)
+        if (Managers.Object.RankMonster != null && Managers.Object.RankMonster.gameObject.activeInHierarchy)
             return Managers.Object.RankMonster;
 
-
+        // 기본 탐색: 활성화된 객체만 검색
         Creature target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함
 
         foreach (Creature obj in objs)
         {
+            // 비활성화된 객체는 무시
+            if (!obj.gameObject.activeInHierarchy)
+                continue;
+
             Vector3 dir = obj.transform.position - CenterPosition;
             float distToTargetSqr = dir.sqrMagnitude; // 제곱된 거리 계산
 
-            // 가장 가까운 몬스터를 찾음
+            // 가장 가까운 활성화된 몬스터를 찾음
             if (distToTargetSqr < bestDistanceSqr)
             {
                 target = obj;
@@ -285,10 +290,10 @@ public class Hero : Creature
                     return;
                 }
 
-                if(dir.magnitude < 3)
+                if (dir.magnitude < 3)
                 {
                     Target.CreatureState = ECreatureState.Idle;
-                    
+
                 }
 
                 float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);

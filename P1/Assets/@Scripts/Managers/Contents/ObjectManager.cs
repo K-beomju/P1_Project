@@ -34,6 +34,21 @@ public class ObjectManager
         return go;
     }
 
+    public void SpawnMonster(Vector3 position, int dataTemplateID) 
+    {
+        string prefabName = "Monster/" + Managers.Data.MonsterChart[dataTemplateID].PrefabKey;
+        GameObject go = Managers.Resource.Instantiate("Object/" + prefabName,pooling: true);
+        //go.name = prefabName;
+        go.transform.position = position;
+        
+        BaseObject obj = go.GetComponent<BaseObject>();
+
+        Monster monster = obj.GetComponent<Monster>();
+        Monsters.Add(monster);
+
+        obj.SetInfo(dataTemplateID);
+    }
+
 
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {

@@ -199,8 +199,8 @@ public class Creature : BaseObject, IDamageable
         }
 
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
-        UI_DamageTextWorldSpace damageText = Managers.UI.MakeWorldSpaceUI<UI_DamageTextWorldSpace>();
-        damageText.SetInfo(CenterPosition, (long)finalDamage, isCriticalHit, effect);
+        GameObject go = Managers.Object.SpawnGameObject(CenterPosition,"UI/WorldSpace/UI_DamageTextWorldSpace");
+        go.GetComponent<UI_DamageTextWorldSpace>().SetInfo(CenterPosition, (long)finalDamage, isCriticalHit, effect);
 
         if (HpBar != null && !HpBar.gameObject.activeSelf)
             HpBar.gameObject.SetActive(true);

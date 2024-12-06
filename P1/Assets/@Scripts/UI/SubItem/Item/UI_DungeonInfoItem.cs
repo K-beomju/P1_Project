@@ -76,7 +76,7 @@ public class UI_DungeonInfoItem : UI_Base
             dungeonData.AddKey(_dungeonType, -1);
 
             Managers.UI.ShowPopupUI<UI_ItemGainPopup>().
-            RefreshUI(dungeonInfo.ItemType, new Dictionary<Enum, int> { { _dungeonType, dungeonInfo.DungeonClearReward } });
+            ShowCreateClearItem(new Dictionary<EItemType, int> { { (EItemType)_dungeonType, dungeonInfo.DungeonClearReward } });
 
             Managers.Backend.GameData.CharacterData.AddAmount(dungeonInfo.ItemType, dungeonInfo.DungeonClearReward);
             RefreshUI();

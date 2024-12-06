@@ -53,7 +53,7 @@ public class GameManager
                 }
                 while (Vector3.Distance(spawnPosition, heroPosition) < 5f);
 
-                Managers.Object.Spawn<Monster>(spawnPosition, stageInfo.MonsterDataIdList[Random.Range(0, stageInfo.MonsterDataIdList.Count)]);
+                Managers.Object.SpawnMonster(spawnPosition, stageInfo.MonsterDataIdList[Random.Range(0, stageInfo.MonsterDataIdList.Count)]);
             }
         }
         else

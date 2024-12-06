@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Reflection;
 using static Define;
 using System;
+using System.Collections.Generic;
 
 public class MyCustomEditorWindow : EditorWindow
 {
@@ -137,7 +138,7 @@ public class MyCustomEditorWindow : EditorWindow
         if (GUILayout.Button("플레이어 사망", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
             Managers.Object.Hero.OnDead();
-            Managers.Object.Hero.CreatureState = Define.ECreatureState.Dead;
+            Managers.Object.Hero.CreatureState = ECreatureState.Dead;
         }
         if (GUILayout.Button("승급 아이템 계산", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
@@ -151,12 +152,15 @@ public class MyCustomEditorWindow : EditorWindow
         }
         if (GUILayout.Button("퀘스트 광고 시청", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
-            Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.WatchAds);
+            //Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.WatchAds);
+            
+            // Managers.UI.ShowPopupUI<UI_ItemGainPopup>().
+            // RefreshUI(new Dictionary<Enum, int> { { EItemType.Gold, 100 }, { EItemType.Dia, 100 } });
         }
         if (GUILayout.Button("몬스터 클리어", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
             FindAnyObjectByType<GameScene>().Clear();
-              FindAnyObjectByType<GameScene>().       GameSceneState = EGameSceneState.Boss;
+            FindAnyObjectByType<GameScene>().GameSceneState = EGameSceneState.Boss;
 
         }
     }

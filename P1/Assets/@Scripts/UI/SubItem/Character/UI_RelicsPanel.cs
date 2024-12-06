@@ -56,7 +56,7 @@ public class UI_RelicsPanel : UI_Base
             return;
         }
 
-        Dictionary<Enum, int> drawRelicDic = new();
+        Dictionary<EHeroRelicType, int> drawRelicDic = new();
         Array values = Enum.GetValues(typeof(EHeroRelicType));
         List<EHeroRelicType> eligibleRelics = new List<EHeroRelicType>();
 
@@ -122,7 +122,7 @@ public class UI_RelicsPanel : UI_Base
 
 
         Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
-        popupUI.RefreshUI(EItemType.Relic, drawRelicDic);
+        popupUI.ShowCreateRelicItem(drawRelicDic);
     }
 
     // 모든 유물이 MaxCount에 도달했는지 확인하는 메서드

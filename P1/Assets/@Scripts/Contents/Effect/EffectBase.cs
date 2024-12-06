@@ -59,7 +59,7 @@ public class EffectBase : BaseObject
 
     public virtual void ClearEffect()
     {
-        Managers.Object.Despawn(this);
+        Managers.Pool.Push(gameObject);
     }
 
     // HasDuration : 도드틸 ProcessDot으로 구현, Instant : 일회성 : ApplyDamage

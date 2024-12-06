@@ -59,7 +59,7 @@ public class UI_DamageTextWorldSpace : UI_Base
 		.Join(_damageText.DOFade(0, 0.5f).SetEase(Ease.InQuint))
 		.OnComplete(() =>
 		{
-			Managers.Resource.Destroy(gameObject);
+			Managers.Pool.Push(this.gameObject);
 		});
 	}
 }

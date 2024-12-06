@@ -139,6 +139,8 @@ namespace Data
         public int MonsterExpReward;
         public float BossMonsterAtk;
         public float BossMonsterMaxHp;
+        public Dictionary<EItemType, int> RewardItem = new Dictionary<EItemType, int>();
+
     }
 
     [Serializable]

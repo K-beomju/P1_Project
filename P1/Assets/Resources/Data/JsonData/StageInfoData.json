@@ -2,7 +2,7 @@
   "stages": [
     {
       "StageNumber": 1,
-      "KillMonsterCount": 5,
+      "KillMonsterCount": 30,
       "BossDataId": 60001000,
       "BossBattleTimeLimit": 50,
       "MonsterDataIdList": [
@@ -13,7 +13,11 @@
       "MonsterGoldReward": 10,
       "MonsterExpReward": 10,
       "BossMonsterAtk": 9.0,
-      "BossMonsterMaxHp": 360.0
+      "BossMonsterMaxHp": 360.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 100
+      }
     },
     {
       "StageNumber": 2,
@@ -28,7 +32,11 @@
       "MonsterGoldReward": 11,
       "MonsterExpReward": 11,
       "BossMonsterAtk": 11.0,
-      "BossMonsterMaxHp": 405.0
+      "BossMonsterMaxHp": 405.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 101
+      }
     },
     {
       "StageNumber": 3,
@@ -43,7 +51,11 @@
       "MonsterGoldReward": 12,
       "MonsterExpReward": 12,
       "BossMonsterAtk": 13.0,
-      "BossMonsterMaxHp": 450.0
+      "BossMonsterMaxHp": 450.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 102
+      }
     },
     {
       "StageNumber": 4,
@@ -58,7 +70,11 @@
       "MonsterGoldReward": 13,
       "MonsterExpReward": 13,
       "BossMonsterAtk": 15.0,
-      "BossMonsterMaxHp": 504.0
+      "BossMonsterMaxHp": 504.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 103
+      }
     },
     {
       "StageNumber": 5,
@@ -73,7 +89,11 @@
       "MonsterGoldReward": 14,
       "MonsterExpReward": 14,
       "BossMonsterAtk": 17.0,
-      "BossMonsterMaxHp": 567.0
+      "BossMonsterMaxHp": 567.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 104
+      }
     },
     {
       "StageNumber": 6,
@@ -88,7 +108,11 @@
       "MonsterGoldReward": 15,
       "MonsterExpReward": 15,
       "BossMonsterAtk": 18.0,
-      "BossMonsterMaxHp": 630.0
+      "BossMonsterMaxHp": 630.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 105
+      }
     },
     {
       "StageNumber": 7,
@@ -103,7 +127,11 @@
       "MonsterGoldReward": 16,
       "MonsterExpReward": 16,
       "BossMonsterAtk": 20.0,
-      "BossMonsterMaxHp": 702.0
+      "BossMonsterMaxHp": 702.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 106
+      }
     },
     {
       "StageNumber": 8,
@@ -118,7 +146,11 @@
       "MonsterGoldReward": 17,
       "MonsterExpReward": 17,
       "BossMonsterAtk": 22.0,
-      "BossMonsterMaxHp": 783.0
+      "BossMonsterMaxHp": 783.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 107
+      }
     },
     {
       "StageNumber": 9,
@@ -133,7 +165,11 @@
       "MonsterGoldReward": 18,
       "MonsterExpReward": 18,
       "BossMonsterAtk": 24.0,
-      "BossMonsterMaxHp": 873.0
+      "BossMonsterMaxHp": 873.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 108
+      }
     },
     {
       "StageNumber": 10,
@@ -148,7 +184,11 @@
       "MonsterGoldReward": 19,
       "MonsterExpReward": 19,
       "BossMonsterAtk": 27.0,
-      "BossMonsterMaxHp": 972.0
+      "BossMonsterMaxHp": 972.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 109
+      }
     },
     {
       "StageNumber": 11,
@@ -163,7 +203,11 @@
       "MonsterGoldReward": 20,
       "MonsterExpReward": 20,
       "BossMonsterAtk": 31.0,
-      "BossMonsterMaxHp": 1080.0
+      "BossMonsterMaxHp": 1080.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 110
+      }
     },
     {
       "StageNumber": 12,
@@ -178,7 +222,11 @@
       "MonsterGoldReward": 21,
       "MonsterExpReward": 21,
       "BossMonsterAtk": 35.0,
-      "BossMonsterMaxHp": 1206.0
+      "BossMonsterMaxHp": 1206.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 111
+      }
     },
     {
       "StageNumber": 13,
@@ -193,7 +241,11 @@
       "MonsterGoldReward": 23,
       "MonsterExpReward": 23,
       "BossMonsterAtk": 38.0,
-      "BossMonsterMaxHp": 1341.0
+      "BossMonsterMaxHp": 1341.0,
+      "RewardItem": {
+        "Gold": 100,
+        "Dia": 112
+      }
     },
     {
       "StageNumber": 14,
@@ -208,7 +260,8 @@
       "MonsterGoldReward": 25,
       "MonsterExpReward": 25,
       "BossMonsterAtk": 42.0,
-      "BossMonsterMaxHp": 1494.0
+      "BossMonsterMaxHp": 1494.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 15,
@@ -223,7 +276,8 @@
       "MonsterGoldReward": 27,
       "MonsterExpReward": 27,
       "BossMonsterAtk": 45.0,
-      "BossMonsterMaxHp": 1665.0
+      "BossMonsterMaxHp": 1665.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 16,
@@ -238,7 +292,8 @@
       "MonsterGoldReward": 29,
       "MonsterExpReward": 29,
       "BossMonsterAtk": 49.0,
-      "BossMonsterMaxHp": 1854.0
+      "BossMonsterMaxHp": 1854.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 17,
@@ -253,7 +308,8 @@
       "MonsterGoldReward": 31,
       "MonsterExpReward": 31,
       "BossMonsterAtk": 54.0,
-      "BossMonsterMaxHp": 2061.0
+      "BossMonsterMaxHp": 2061.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 18,
@@ -268,7 +324,8 @@
       "MonsterGoldReward": 33,
       "MonsterExpReward": 33,
       "BossMonsterAtk": 60.0,
-      "BossMonsterMaxHp": 2295.0
+      "BossMonsterMaxHp": 2295.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 19,
@@ -283,7 +340,8 @@
       "MonsterGoldReward": 35,
       "MonsterExpReward": 35,
       "BossMonsterAtk": 65.0,
-      "BossMonsterMaxHp": 2556.0
+      "BossMonsterMaxHp": 2556.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 20,
@@ -298,7 +356,8 @@
       "MonsterGoldReward": 37,
       "MonsterExpReward": 37,
       "BossMonsterAtk": 71.0,
-      "BossMonsterMaxHp": 2844.0
+      "BossMonsterMaxHp": 2844.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 21,
@@ -313,7 +372,8 @@
       "MonsterGoldReward": 39,
       "MonsterExpReward": 39,
       "BossMonsterAtk": 78.0,
-      "BossMonsterMaxHp": 3159.0
+      "BossMonsterMaxHp": 3159.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 22,
@@ -328,7 +388,8 @@
       "MonsterGoldReward": 41,
       "MonsterExpReward": 41,
       "BossMonsterAtk": 85.0,
-      "BossMonsterMaxHp": 3510.0
+      "BossMonsterMaxHp": 3510.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 23,
@@ -343,7 +404,8 @@
       "MonsterGoldReward": 44,
       "MonsterExpReward": 44,
       "BossMonsterAtk": 92.0,
-      "BossMonsterMaxHp": 3897.0
+      "BossMonsterMaxHp": 3897.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 24,
@@ -358,7 +420,8 @@
       "MonsterGoldReward": 47,
       "MonsterExpReward": 47,
       "BossMonsterAtk": 101.0,
-      "BossMonsterMaxHp": 4329.0
+      "BossMonsterMaxHp": 4329.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 25,
@@ -373,7 +436,8 @@
       "MonsterGoldReward": 50,
       "MonsterExpReward": 50,
       "BossMonsterAtk": 110.0,
-      "BossMonsterMaxHp": 4806.0
+      "BossMonsterMaxHp": 4806.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 26,
@@ -388,7 +452,8 @@
       "MonsterGoldReward": 53,
       "MonsterExpReward": 53,
       "BossMonsterAtk": 119.0,
-      "BossMonsterMaxHp": 5337.0
+      "BossMonsterMaxHp": 5337.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 27,
@@ -403,7 +468,8 @@
       "MonsterGoldReward": 56,
       "MonsterExpReward": 56,
       "BossMonsterAtk": 130.0,
-      "BossMonsterMaxHp": 5931.0
+      "BossMonsterMaxHp": 5931.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 28,
@@ -418,7 +484,8 @@
       "MonsterGoldReward": 59,
       "MonsterExpReward": 59,
       "BossMonsterAtk": 141.0,
-      "BossMonsterMaxHp": 6588.0
+      "BossMonsterMaxHp": 6588.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 29,
@@ -433,7 +500,8 @@
       "MonsterGoldReward": 62,
       "MonsterExpReward": 62,
       "BossMonsterAtk": 153.0,
-      "BossMonsterMaxHp": 7317.0
+      "BossMonsterMaxHp": 7317.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 30,
@@ -448,7 +516,8 @@
       "MonsterGoldReward": 66,
       "MonsterExpReward": 66,
       "BossMonsterAtk": 166.0,
-      "BossMonsterMaxHp": 8127.0
+      "BossMonsterMaxHp": 8127.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 31,
@@ -463,7 +532,8 @@
       "MonsterGoldReward": 70,
       "MonsterExpReward": 70,
       "BossMonsterAtk": 212.0,
-      "BossMonsterMaxHp": 7215.0
+      "BossMonsterMaxHp": 7215.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 32,
@@ -478,7 +548,8 @@
       "MonsterGoldReward": 74,
       "MonsterExpReward": 74,
       "BossMonsterAtk": 220.0,
-      "BossMonsterMaxHp": 7688.0
+      "BossMonsterMaxHp": 7688.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 33,
@@ -493,7 +564,8 @@
       "MonsterGoldReward": 78,
       "MonsterExpReward": 78,
       "BossMonsterAtk": 229.0,
-      "BossMonsterMaxHp": 8190.0
+      "BossMonsterMaxHp": 8190.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 34,
@@ -508,7 +580,8 @@
       "MonsterGoldReward": 82,
       "MonsterExpReward": 82,
       "BossMonsterAtk": 238.0,
-      "BossMonsterMaxHp": 8723.0
+      "BossMonsterMaxHp": 8723.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 35,
@@ -523,7 +596,8 @@
       "MonsterGoldReward": 87,
       "MonsterExpReward": 87,
       "BossMonsterAtk": 247.0,
-      "BossMonsterMaxHp": 9293.0
+      "BossMonsterMaxHp": 9293.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 36,
@@ -538,7 +612,8 @@
       "MonsterGoldReward": 92,
       "MonsterExpReward": 92,
       "BossMonsterAtk": 258.0,
-      "BossMonsterMaxHp": 9900.0
+      "BossMonsterMaxHp": 9900.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 37,
@@ -553,7 +628,8 @@
       "MonsterGoldReward": 97,
       "MonsterExpReward": 97,
       "BossMonsterAtk": 269.0,
-      "BossMonsterMaxHp": 10545.0
+      "BossMonsterMaxHp": 10545.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 38,
@@ -568,7 +644,8 @@
       "MonsterGoldReward": 102,
       "MonsterExpReward": 102,
       "BossMonsterAtk": 280.0,
-      "BossMonsterMaxHp": 11235.0
+      "BossMonsterMaxHp": 11235.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 39,
@@ -583,7 +660,8 @@
       "MonsterGoldReward": 108,
       "MonsterExpReward": 108,
       "BossMonsterAtk": 291.0,
-      "BossMonsterMaxHp": 11970.0
+      "BossMonsterMaxHp": 11970.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 40,
@@ -598,7 +676,8 @@
       "MonsterGoldReward": 114,
       "MonsterExpReward": 114,
       "BossMonsterAtk": 302.0,
-      "BossMonsterMaxHp": 12750.0
+      "BossMonsterMaxHp": 12750.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 41,
@@ -613,7 +692,8 @@
       "MonsterGoldReward": 120,
       "MonsterExpReward": 120,
       "BossMonsterAtk": 315.0,
-      "BossMonsterMaxHp": 13583.0
+      "BossMonsterMaxHp": 13583.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 42,
@@ -628,7 +708,8 @@
       "MonsterGoldReward": 126,
       "MonsterExpReward": 126,
       "BossMonsterAtk": 328.0,
-      "BossMonsterMaxHp": 14468.0
+      "BossMonsterMaxHp": 14468.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 43,
@@ -643,7 +724,8 @@
       "MonsterGoldReward": 133,
       "MonsterExpReward": 133,
       "BossMonsterAtk": 341.0,
-      "BossMonsterMaxHp": 15413.0
+      "BossMonsterMaxHp": 15413.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 44,
@@ -658,7 +740,8 @@
       "MonsterGoldReward": 140,
       "MonsterExpReward": 140,
       "BossMonsterAtk": 355.0,
-      "BossMonsterMaxHp": 16418.0
+      "BossMonsterMaxHp": 16418.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 45,
@@ -673,7 +756,8 @@
       "MonsterGoldReward": 147,
       "MonsterExpReward": 147,
       "BossMonsterAtk": 368.0,
-      "BossMonsterMaxHp": 17490.0
+      "BossMonsterMaxHp": 17490.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 46,
@@ -688,7 +772,8 @@
       "MonsterGoldReward": 155,
       "MonsterExpReward": 155,
       "BossMonsterAtk": 383.0,
-      "BossMonsterMaxHp": 18630.0
+      "BossMonsterMaxHp": 18630.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 47,
@@ -703,7 +788,8 @@
       "MonsterGoldReward": 163,
       "MonsterExpReward": 163,
       "BossMonsterAtk": 399.0,
-      "BossMonsterMaxHp": 19845.0
+      "BossMonsterMaxHp": 19845.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 48,
@@ -718,7 +804,8 @@
       "MonsterGoldReward": 172,
       "MonsterExpReward": 172,
       "BossMonsterAtk": 414.0,
-      "BossMonsterMaxHp": 21135.0
+      "BossMonsterMaxHp": 21135.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 49,
@@ -733,7 +820,8 @@
       "MonsterGoldReward": 181,
       "MonsterExpReward": 181,
       "BossMonsterAtk": 429.0,
-      "BossMonsterMaxHp": 22515.0
+      "BossMonsterMaxHp": 22515.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 50,
@@ -748,7 +836,8 @@
       "MonsterGoldReward": 191,
       "MonsterExpReward": 191,
       "BossMonsterAtk": 447.0,
-      "BossMonsterMaxHp": 23985.0
+      "BossMonsterMaxHp": 23985.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 51,
@@ -763,7 +852,8 @@
       "MonsterGoldReward": 201,
       "MonsterExpReward": 201,
       "BossMonsterAtk": 465.0,
-      "BossMonsterMaxHp": 25545.0
+      "BossMonsterMaxHp": 25545.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 52,
@@ -778,7 +868,8 @@
       "MonsterGoldReward": 212,
       "MonsterExpReward": 212,
       "BossMonsterAtk": 482.0,
-      "BossMonsterMaxHp": 27210.0
+      "BossMonsterMaxHp": 27210.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 53,
@@ -793,7 +884,8 @@
       "MonsterGoldReward": 223,
       "MonsterExpReward": 223,
       "BossMonsterAtk": 502.0,
-      "BossMonsterMaxHp": 28980.0
+      "BossMonsterMaxHp": 28980.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 54,
@@ -808,7 +900,8 @@
       "MonsterGoldReward": 235,
       "MonsterExpReward": 235,
       "BossMonsterAtk": 522.0,
-      "BossMonsterMaxHp": 30870.0
+      "BossMonsterMaxHp": 30870.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 55,
@@ -823,7 +916,8 @@
       "MonsterGoldReward": 247,
       "MonsterExpReward": 247,
       "BossMonsterAtk": 542.0,
-      "BossMonsterMaxHp": 32880.0
+      "BossMonsterMaxHp": 32880.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 56,
@@ -838,7 +932,8 @@
       "MonsterGoldReward": 260,
       "MonsterExpReward": 260,
       "BossMonsterAtk": 564.0,
-      "BossMonsterMaxHp": 35018.0
+      "BossMonsterMaxHp": 35018.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 57,
@@ -853,7 +948,8 @@
       "MonsterGoldReward": 273,
       "MonsterExpReward": 273,
       "BossMonsterAtk": 586.0,
-      "BossMonsterMaxHp": 37298.0
+      "BossMonsterMaxHp": 37298.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 58,
@@ -868,7 +964,8 @@
       "MonsterGoldReward": 287,
       "MonsterExpReward": 287,
       "BossMonsterAtk": 608.0,
-      "BossMonsterMaxHp": 39728.0
+      "BossMonsterMaxHp": 39728.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 59,
@@ -883,7 +980,8 @@
       "MonsterGoldReward": 302,
       "MonsterExpReward": 302,
       "BossMonsterAtk": 632.0,
-      "BossMonsterMaxHp": 42315.0
+      "BossMonsterMaxHp": 42315.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 60,
@@ -898,7 +996,8 @@
       "MonsterGoldReward": 318,
       "MonsterExpReward": 318,
       "BossMonsterAtk": 656.0,
-      "BossMonsterMaxHp": 45068.0
+      "BossMonsterMaxHp": 45068.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 61,
@@ -913,7 +1012,8 @@
       "MonsterGoldReward": 334,
       "MonsterExpReward": 334,
       "BossMonsterAtk": 682.0,
-      "BossMonsterMaxHp": 48000.0
+      "BossMonsterMaxHp": 48000.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 62,
@@ -928,7 +1028,8 @@
       "MonsterGoldReward": 351,
       "MonsterExpReward": 351,
       "BossMonsterAtk": 709.0,
-      "BossMonsterMaxHp": 51120.0
+      "BossMonsterMaxHp": 51120.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 63,
@@ -943,7 +1044,8 @@
       "MonsterGoldReward": 369,
       "MonsterExpReward": 369,
       "BossMonsterAtk": 735.0,
-      "BossMonsterMaxHp": 54450.0
+      "BossMonsterMaxHp": 54450.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 64,
@@ -958,7 +1060,8 @@
       "MonsterGoldReward": 388,
       "MonsterExpReward": 388,
       "BossMonsterAtk": 764.0,
-      "BossMonsterMaxHp": 57990.0
+      "BossMonsterMaxHp": 57990.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 65,
@@ -973,7 +1076,8 @@
       "MonsterGoldReward": 408,
       "MonsterExpReward": 408,
       "BossMonsterAtk": 792.0,
-      "BossMonsterMaxHp": 61763.0
+      "BossMonsterMaxHp": 61763.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 66,
@@ -988,7 +1092,8 @@
       "MonsterGoldReward": 429,
       "MonsterExpReward": 429,
       "BossMonsterAtk": 823.0,
-      "BossMonsterMaxHp": 65783.0
+      "BossMonsterMaxHp": 65783.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 67,
@@ -1003,7 +1108,8 @@
       "MonsterGoldReward": 451,
       "MonsterExpReward": 451,
       "BossMonsterAtk": 854.0,
-      "BossMonsterMaxHp": 70065.0
+      "BossMonsterMaxHp": 70065.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 68,
@@ -1018,7 +1124,8 @@
       "MonsterGoldReward": 474,
       "MonsterExpReward": 474,
       "BossMonsterAtk": 887.0,
-      "BossMonsterMaxHp": 74625.0
+      "BossMonsterMaxHp": 74625.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 69,
@@ -1033,7 +1140,8 @@
       "MonsterGoldReward": 498,
       "MonsterExpReward": 498,
       "BossMonsterAtk": 920.0,
-      "BossMonsterMaxHp": 79478.0
+      "BossMonsterMaxHp": 79478.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 70,
@@ -1048,7 +1156,8 @@
       "MonsterGoldReward": 523,
       "MonsterExpReward": 523,
       "BossMonsterAtk": 955.0,
-      "BossMonsterMaxHp": 84645.0
+      "BossMonsterMaxHp": 84645.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 71,
@@ -1063,7 +1172,8 @@
       "MonsterGoldReward": 550,
       "MonsterExpReward": 550,
       "BossMonsterAtk": 1326.0,
-      "BossMonsterMaxHp": 76297.0
+      "BossMonsterMaxHp": 76297.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 72,
@@ -1078,7 +1188,8 @@
       "MonsterGoldReward": 578,
       "MonsterExpReward": 578,
       "BossMonsterAtk": 1350.0,
-      "BossMonsterMaxHp": 79352.0
+      "BossMonsterMaxHp": 79352.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 73,
@@ -1093,7 +1204,8 @@
       "MonsterGoldReward": 607,
       "MonsterExpReward": 607,
       "BossMonsterAtk": 1377.0,
-      "BossMonsterMaxHp": 82531.0
+      "BossMonsterMaxHp": 82531.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 74,
@@ -1108,7 +1220,8 @@
       "MonsterGoldReward": 638,
       "MonsterExpReward": 638,
       "BossMonsterAtk": 1404.0,
-      "BossMonsterMaxHp": 85833.0
+      "BossMonsterMaxHp": 85833.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 75,
@@ -1123,7 +1236,8 @@
       "MonsterGoldReward": 670,
       "MonsterExpReward": 670,
       "BossMonsterAtk": 1431.0,
-      "BossMonsterMaxHp": 89271.0
+      "BossMonsterMaxHp": 89271.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 76,
@@ -1138,7 +1252,8 @@
       "MonsterGoldReward": 704,
       "MonsterExpReward": 704,
       "BossMonsterAtk": 1458.0,
-      "BossMonsterMaxHp": 92846.0
+      "BossMonsterMaxHp": 92846.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 77,
@@ -1153,7 +1268,8 @@
       "MonsterGoldReward": 740,
       "MonsterExpReward": 740,
       "BossMonsterAtk": 1485.0,
-      "BossMonsterMaxHp": 96564.0
+      "BossMonsterMaxHp": 96564.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 78,
@@ -1168,7 +1284,8 @@
       "MonsterGoldReward": 777,
       "MonsterExpReward": 777,
       "BossMonsterAtk": 1512.0,
-      "BossMonsterMaxHp": 100432.0
+      "BossMonsterMaxHp": 100432.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 79,
@@ -1183,7 +1300,8 @@
       "MonsterGoldReward": 816,
       "MonsterExpReward": 816,
       "BossMonsterAtk": 1542.0,
-      "BossMonsterMaxHp": 104455.0
+      "BossMonsterMaxHp": 104455.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 80,
@@ -1198,7 +1316,8 @@
       "MonsterGoldReward": 857,
       "MonsterExpReward": 857,
       "BossMonsterAtk": 1572.0,
-      "BossMonsterMaxHp": 108635.0
+      "BossMonsterMaxHp": 108635.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 81,
@@ -1213,7 +1332,8 @@
       "MonsterGoldReward": 900,
       "MonsterExpReward": 900,
       "BossMonsterAtk": 1602.0,
-      "BossMonsterMaxHp": 112983.0
+      "BossMonsterMaxHp": 112983.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 82,
@@ -1228,7 +1348,8 @@
       "MonsterGoldReward": 945,
       "MonsterExpReward": 945,
       "BossMonsterAtk": 1632.0,
-      "BossMonsterMaxHp": 117507.0
+      "BossMonsterMaxHp": 117507.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 83,
@@ -1243,7 +1364,8 @@
       "MonsterGoldReward": 993,
       "MonsterExpReward": 993,
       "BossMonsterAtk": 1662.0,
-      "BossMonsterMaxHp": 122213.0
+      "BossMonsterMaxHp": 122213.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 84,
@@ -1258,7 +1380,8 @@
       "MonsterGoldReward": 1043,
       "MonsterExpReward": 1043,
       "BossMonsterAtk": 1692.0,
-      "BossMonsterMaxHp": 127108.0
+      "BossMonsterMaxHp": 127108.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 85,
@@ -1273,7 +1396,8 @@
       "MonsterGoldReward": 1096,
       "MonsterExpReward": 1096,
       "BossMonsterAtk": 1725.0,
-      "BossMonsterMaxHp": 132197.0
+      "BossMonsterMaxHp": 132197.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 86,
@@ -1288,7 +1412,8 @@
       "MonsterGoldReward": 1151,
       "MonsterExpReward": 1151,
       "BossMonsterAtk": 1758.0,
-      "BossMonsterMaxHp": 137488.0
+      "BossMonsterMaxHp": 137488.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 87,
@@ -1303,7 +1428,8 @@
       "MonsterGoldReward": 1209,
       "MonsterExpReward": 1209,
       "BossMonsterAtk": 1791.0,
-      "BossMonsterMaxHp": 142994.0
+      "BossMonsterMaxHp": 142994.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 88,
@@ -1318,7 +1444,8 @@
       "MonsterGoldReward": 1270,
       "MonsterExpReward": 1270,
       "BossMonsterAtk": 1824.0,
-      "BossMonsterMaxHp": 148714.0
+      "BossMonsterMaxHp": 148714.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 89,
@@ -1333,7 +1460,8 @@
       "MonsterGoldReward": 1334,
       "MonsterExpReward": 1334,
       "BossMonsterAtk": 1857.0,
-      "BossMonsterMaxHp": 154668.0
+      "BossMonsterMaxHp": 154668.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 90,
@@ -1348,7 +1476,8 @@
       "MonsterGoldReward": 1401,
       "MonsterExpReward": 1401,
       "BossMonsterAtk": 1893.0,
-      "BossMonsterMaxHp": 160856.0
+      "BossMonsterMaxHp": 160856.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 91,
@@ -1363,7 +1492,8 @@
       "MonsterGoldReward": 1472,
       "MonsterExpReward": 1472,
       "BossMonsterAtk": 1929.0,
-      "BossMonsterMaxHp": 167291.0
+      "BossMonsterMaxHp": 167291.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 92,
@@ -1378,7 +1508,8 @@
       "MonsterGoldReward": 1546,
       "MonsterExpReward": 1546,
       "BossMonsterAtk": 1965.0,
-      "BossMonsterMaxHp": 173986.0
+      "BossMonsterMaxHp": 173986.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 93,
@@ -1393,7 +1524,8 @@
       "MonsterGoldReward": 1624,
       "MonsterExpReward": 1624,
       "BossMonsterAtk": 2001.0,
-      "BossMonsterMaxHp": 180947.0
+      "BossMonsterMaxHp": 180947.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 94,
@@ -1408,7 +1540,8 @@
       "MonsterGoldReward": 1706,
       "MonsterExpReward": 1706,
       "BossMonsterAtk": 2040.0,
-      "BossMonsterMaxHp": 188188.0
+      "BossMonsterMaxHp": 188188.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 95,
@@ -1423,7 +1556,8 @@
       "MonsterGoldReward": 1792,
       "MonsterExpReward": 1792,
       "BossMonsterAtk": 2079.0,
-      "BossMonsterMaxHp": 195722.0
+      "BossMonsterMaxHp": 195722.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 96,
@@ -1438,7 +1572,8 @@
       "MonsterGoldReward": 1882,
       "MonsterExpReward": 1882,
       "BossMonsterAtk": 2118.0,
-      "BossMonsterMaxHp": 203554.0
+      "BossMonsterMaxHp": 203554.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 97,
@@ -1453,7 +1588,8 @@
       "MonsterGoldReward": 1977,
       "MonsterExpReward": 1977,
       "BossMonsterAtk": 2157.0,
-      "BossMonsterMaxHp": 211699.0
+      "BossMonsterMaxHp": 211699.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 98,
@@ -1468,7 +1604,8 @@
       "MonsterGoldReward": 2076,
       "MonsterExpReward": 2076,
       "BossMonsterAtk": 2196.0,
-      "BossMonsterMaxHp": 220168.0
+      "BossMonsterMaxHp": 220168.0,
+      "RewardItem": null
     },
     {
       "StageNumber": 99,
@@ -1483,7 +1620,8 @@
       "MonsterGoldReward": 2180,
       "MonsterExpReward": 2180,
       "BossMonsterAtk": 2238.0,
-      "BossMonsterMaxHp": 228976.0
+      "BossMonsterMaxHp": 228976.0,
+      "RewardItem": null
     }
   ]
 }

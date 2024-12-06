@@ -16,7 +16,6 @@ public class UI_ItemGainPopup : UI_Popup
     private List<UI_GainedItem> _relicItems = new List<UI_GainedItem>();
     private List<UI_ClearItem> _clearItems = new List<UI_ClearItem>();
 
-    private EItemType _type;
 
     protected override bool Init()
     {
@@ -24,15 +23,12 @@ public class UI_ItemGainPopup : UI_Popup
             return false;
 
         BindObjects(typeof(GameObjects));
-        GetObject((int)GameObjects.BG).BindEvent(() =>
-        {
-            if (_type == EItemType.Relic)
-                Managers.Event.TriggerEvent(EEventType.HeroRelicUpdated);
+        // GetObject((int)GameObjects.BG).BindEvent(() => 
+        // {
+        //     ClosePopupUI();
+        //     (Managers.UI.SceneUI as UI_GameScene).ShowPopupActiveGameUI(true);
 
-            ClosePopupUI();
-
-        }, Define.EUIEvent.Click);
-
+        // });
         for (int i = 0; i < 30; i++)
         {
             var item = Managers.UI.MakeSubItem<UI_GainedItem>(GetObject((int)GameObjects.Content_Item).transform);
@@ -50,44 +46,68 @@ public class UI_ItemGainPopup : UI_Popup
         return true;
     }
 
-    public void RefreshUI(EItemType type, Dictionary<Enum, int> itemDic)
+    public void ShowCreateRelicItem(Dictionary<EHeroRelicType, int> relicDic)
     {
-        _type = type;
-        StartCoroutine(CreateGainItem(itemDic));
+        //(Managers.UI.SceneUI as UI_GameScene).ShowPopupActiveGameUI(false);
+        StartCoroutine(CreateRelicItems(relicDic));
     }
 
-    // Enum으로 획득할 아이템, Value 값은 갯수 -> 범용적으로 사용해야함 
-    private IEnumerator CreateGainItem(Dictionary<Enum, int> itemDic)
+    public void ShowCreateClearItem(Dictionary<EItemType, int> itemDic)
+    {
+        //(Managers.UI.SceneUI as UI_GameScene).ShowPopupActiveGameUI(false);
+        StartCoroutine(CreateClearItems(itemDic));
+    }
+
+    /// <summary>
+    /// 유물 아이템 생성
+    /// </summary>
+    private IEnumerator CreateRelicItems(Dictionary<EHeroRelicType, int> relicDic)
     {
         _relicItems.ForEach(item => item.gameObject.SetActive(false));
+
+        int relicIndex = 0;
+        foreach (var item in relicDic)
+        {
+            if (relicIndex < _relicItems.Count)
+            {
+                DisplayRelicItem(_relicItems[relicIndex], item);
+                relicIndex++;
+            }
+        }
+
+        Managers.Event.TriggerEvent(EEventType.HeroRelicUpdated);
+        yield return null;
+    }
+
+    /// <summary>
+    /// 클리어 아이템 (골드, 다이아) 생성
+    /// </summary>
+    private IEnumerator CreateClearItems(Dictionary<EItemType, int> itemDic)
+    {
         _clearItems.ForEach(item => item.gameObject.SetActive(false));
 
-        int index = 0;
+        int clearIndex = 0;
         foreach (var item in itemDic)
         {
-            if (_type == EItemType.Relic && index < _relicItems.Count)
+            if (clearIndex < _clearItems.Count)
             {
-                DisplayRelicItem(_relicItems[index], item);
+                DisplayClearItem(_clearItems[clearIndex], item);
+                clearIndex++;
             }
-            else if ((_type == EItemType.Gold || _type == EItemType.Dia) && index < _clearItems.Count)
-            {
-                DisplayClearItem(_clearItems[index], item);
-            }
-            index++;
         }
 
         yield return null;
     }
 
-    private void DisplayRelicItem(UI_GainedItem relicItem, KeyValuePair<Enum, int> item)
+    private void DisplayRelicItem(UI_GainedItem relicItem, KeyValuePair<EHeroRelicType, int> item)
     {
-        relicItem.DisplayItem(Managers.Data.HeroRelicChart[(EHeroRelicType)item.Key], item.Value);
+        relicItem.DisplayItem(Managers.Data.HeroRelicChart[item.Key], item.Value);
         relicItem.gameObject.SetActive(true);
     }
 
-    private void DisplayClearItem(UI_ClearItem clearItem, KeyValuePair<Enum, int> item)
+    private void DisplayClearItem(UI_ClearItem clearItem, KeyValuePair<EItemType, int> item)
     {
-        clearItem.DisplayItem(Managers.Data.ItemChart[(EItemType)item.Key], item.Value);
+        clearItem.DisplayItem(Managers.Data.ItemChart[item.Key], item.Value);
         clearItem.gameObject.SetActive(true);
     }
 }
