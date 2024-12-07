@@ -305,7 +305,7 @@ public class UI_RankUpPanel : UI_Base
         if (rankType == ERankType.Unknown)
         {
             GetTMPText((int)Texts.Text_MyRankName).text = "랭크 없음";
-            GetImage((int)Images.Image_MyRankIcon).gameObject.SetActive(false);
+            GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/Unranked");
         }
         else
         {

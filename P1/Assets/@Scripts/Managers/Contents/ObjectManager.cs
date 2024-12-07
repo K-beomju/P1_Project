@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static Define;
 
@@ -34,13 +35,12 @@ public class ObjectManager
         return go;
     }
 
-    public void SpawnMonster(Vector3 position, int dataTemplateID) 
+    public void SpawnMonster(Vector3 position, int dataTemplateID)
     {
         string prefabName = "Monster/" + Managers.Data.MonsterChart[dataTemplateID].PrefabKey;
-        GameObject go = Managers.Resource.Instantiate("Object/" + prefabName,pooling: true);
-        //go.name = prefabName;
+        GameObject go = Managers.Resource.Instantiate("Object/" + prefabName, pooling: true);
         go.transform.position = position;
-        
+
         BaseObject obj = go.GetComponent<BaseObject>();
 
         Monster monster = obj.GetComponent<Monster>();
@@ -49,15 +49,41 @@ public class ObjectManager
         obj.SetInfo(dataTemplateID);
     }
 
+    public void SpawnBossMonster(Vector3 position, int dataTemplateID)
+    {
+        string prefabName = "BossMonster/" + Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey;
+        GameObject go = Managers.Resource.Instantiate("Object/" + prefabName, pooling: true);
+        go.transform.position = position;
+
+        BaseObject obj = go.GetComponent<BaseObject>();
+
+        BossMonster bossMonster = obj.GetComponent<BossMonster>();
+        BossMonster = bossMonster;
+
+        obj.SetInfo(dataTemplateID);
+    }
+
+    public RankMonster SpawnRankMonster(Vector3 position, int dataTemplateID)
+    {
+        string prefabName = "RankMonster/" + Managers.Data.RankUpMonsterChart[dataTemplateID].PrefabKey;
+        GameObject go = Managers.Resource.Instantiate("Object/" + prefabName, pooling: true);
+        go.transform.position = position;
+
+        BaseObject obj = go.GetComponent<BaseObject>();
+
+        RankMonster rankMonster = obj.GetComponent<RankMonster>();
+        RankMonster = rankMonster;
+
+        obj.SetInfo(dataTemplateID);
+
+        return rankMonster;
+    }
+
 
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
         string prefabName = typeof(T).Name;
-        if (prefabName == "Monster")
-            prefabName += "/" + Managers.Data.MonsterChart[dataTemplateID].PrefabKey;
-        else if (prefabName == "BossMonster")
-            prefabName += "/" + Managers.Data.BossMonsterChart[dataTemplateID].PrefabKey;
-        else if (prefabName == "WorldBoss")
+        if (prefabName == "WorldBoss")
             prefabName += "/" + Managers.Data.WorldBossDungeonChart[1].PrefabKey;
         else if (prefabName == "RankMonster")
             prefabName += "/" + Managers.Data.RankUpMonsterChart[dataTemplateID].PrefabKey;
@@ -68,21 +94,11 @@ public class ObjectManager
         go.transform.position = position;
 
         BaseObject obj = go.GetComponent<BaseObject>();
-        if (obj is Monster monster)
-        {
-            monster.transform.parent = MonsterRoot;
-            Monsters.Add(monster);
-        }
-        if (obj is BossMonster bossMonster)
-        {
-            bossMonster.transform.parent = BossMonsterRoot;
-            BossMonster = bossMonster;
-        }
         if (obj is WorldBoss worldBoss)
         {
             WorldBoss = worldBoss;
         }
-        if(obj is RankMonster rankUpMonster)
+        if (obj is RankMonster rankUpMonster)
         {
             RankMonster = rankUpMonster;
         }
@@ -112,11 +128,37 @@ public class ObjectManager
         {
             BossMonster = null;
         }
-        if (typeof(T) == typeof(Hero))
+        if (typeof(T) == typeof(RankMonster))
         {
-            Hero = null;
+            RankMonster = null;
         }
-        Managers.Resource.Destroy(obj.gameObject);
+
+
+        Managers.Pool.Push(obj.gameObject);
+    }
+
+    public void DeleteRankMonster()
+    {
+        if (RankMonster == null)
+            return;
+        
+        Transform poolTrm = GetRootTransform($"@{RankMonster.name}Pool");
+        Managers.Resource.Destroy(poolTrm.gameObject);
+    }
+
+    public void KillAllMonsters()
+    {
+        for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
+        {
+            Monster monster = Monsters.ElementAt(i);
+            Despawn(monster);
+        }
+
+        if (BossMonster != null)
+            Despawn(BossMonster);
+
+        if (RankMonster != null)
+            Despawn(RankMonster);
     }
 
     public void Clear()

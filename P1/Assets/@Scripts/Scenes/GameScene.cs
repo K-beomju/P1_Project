@@ -103,6 +103,8 @@ public class GameScene : BaseScene
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         }
+        // 일일퀘스트 로직 
+        Managers.Backend.GameData.QuestData.DailyQuestTimeCheck();
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
@@ -274,10 +276,13 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
         {
+            Managers.Object.DeleteRankMonster();
             GameSceneState = EGameSceneState.Over;
             Managers.Object.Hero.Rebirth();
         }, () =>
         {
+            // 성공하면 풀링은 더이상 사용 안함 X 
+
             Managers.UI.ShowPopupUI<UI_RankUpClearPopup>().RefreshUI();
             Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
         });
@@ -285,7 +290,7 @@ public class GameScene : BaseScene
 
     private void ResetStageAndHero()
     {
-        KillAllMonsters();
+        Managers.Object.KillAllMonsters();
         Hero hero = Managers.Object.Hero;
         hero.Rebirth();
         hero.ForceMove(new Vector3(-3, 0, 0));
@@ -298,7 +303,7 @@ public class GameScene : BaseScene
         BossBattleTimer = BossBattleTimeLimit;
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
-        var monster = Managers.Object.Spawn<RankMonster>(new Vector3(3, 0, 0), rankUpInfo.MonsterDataId);
+        RankMonster monster = Managers.Object.SpawnRankMonster(new Vector3(3, 0, 0), rankUpInfo.MonsterDataId);
         Managers.Object.Hero.LookAt(monster.transform.position);
         sceneUI.RefreshBossMonsterHp(Managers.Object.RankMonster);
     }
@@ -321,7 +326,7 @@ public class GameScene : BaseScene
 
     public void MoveToNextStage(bool isClear)
     {
-        KillAllMonsters();
+        Managers.Object.KillAllMonsters();
         StartCoroutine(MoveToStageAfterDelay(isClear ? 1 : -1));
     }
 
@@ -370,19 +375,6 @@ public class GameScene : BaseScene
         });
     }
 
-    private void KillAllMonsters()
-    {
-        for (int i = Managers.Object.Monsters.Count - 1; i >= 0; i--)
-        {
-            Monster monster = Managers.Object.Monsters.ElementAt(i);
-            Managers.Object.Despawn(monster);
-        }
-
-        if (Managers.Object.BossMonster != null)
-            Managers.Object.Despawn(Managers.Object.BossMonster);
-
-    }
-
     public string GetCurrentStage()
     {
         return $"{ChapterLevel}-{CharacterData.StageLevel}";
@@ -390,6 +382,6 @@ public class GameScene : BaseScene
 
     public override void Clear()
     {
-        KillAllMonsters();
+        Managers.Object.KillAllMonsters();
     }
 }

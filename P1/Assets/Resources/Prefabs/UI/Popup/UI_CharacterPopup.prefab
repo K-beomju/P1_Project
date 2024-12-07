@@ -3064,7 +3064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3273260941563923726, guid: 2d2fd6bc8f4e25e4794fb1a24febcbba, type: 3}
       propertyPath: m_Size
-      value: 0.4571739
+      value: 0.41860625
       objectReference: {fileID: 0}
     - target: {fileID: 3273260941563923726, guid: 2d2fd6bc8f4e25e4794fb1a24febcbba, type: 3}
       propertyPath: m_Value
@@ -3096,11 +3096,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3515026264350153466, guid: 2d2fd6bc8f4e25e4794fb1a24febcbba, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 525.75
+      value: 481.3972
       objectReference: {fileID: 0}
     - target: {fileID: 3515026264350153466, guid: 2d2fd6bc8f4e25e4794fb1a24febcbba, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -318.48
+      value: -326.54422
       objectReference: {fileID: 0}
     - target: {fileID: 3613157723311071553, guid: 2d2fd6bc8f4e25e4794fb1a24febcbba, type: 3}
       propertyPath: m_fontSize
@@ -3804,7 +3804,7 @@ MonoBehaviour:
   fitType: 4
   rows: 2
   columns: 3
-  cellSize: {x: 300.42654, y: 347.8282}
+  cellSize: {x: 300.51834, y: 347.8282}
   spacing: {x: 20, y: 20}
   fitX: 1
   fitY: 1

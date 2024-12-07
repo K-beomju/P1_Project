@@ -39,12 +39,14 @@ public class UI_GameScene : UI_Scene
         ExpValueText,
         Text_StageInfo,
         Text_AutoSkill,
-        RankUpDescText
+        RankUpDescText,
+        Text_NickName
     }
 
     enum Images
     {
-        Image_RankUpIcon
+        Image_RankUpIcon,
+        Image_MyRankIcon
     }
 
     enum GameObjects
@@ -261,12 +263,16 @@ public class UI_GameScene : UI_Scene
             _displayAdBuffList.Add(Get<UI_DisplayAdBuffItem>(i));
             _displayAdBuffList[i].gameObject.SetActive(false);
         }
-        LoadExistingBuffs();
 
+        // 광고형 버프 시간 체크 
+        LoadExistingBuffs();
+        UpdateMyNickName();
+        UpdateMyRank();
 
         GetSlider((int)Sliders.Slider_Exp).value = 0;
         GetSlider((int)Sliders.Slider_BossTimer).value = 0;
         GetSlider((int)Sliders.Slider_StageInfo).value = 0;
+
 
         GetTMPText((int)Texts.ExpValueText).text = string.Empty;
         GetTMPText((int)Texts.RemainMonsterValueText).text = string.Empty;
@@ -357,42 +363,6 @@ public class UI_GameScene : UI_Scene
 
     #endregion
 
-    #region Good, Dia,
-
-    public UI_GoodItem GetGoodItem(EItemType goodType)
-    {
-        return goodType switch
-        {
-            EItemType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
-            EItemType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
-            EItemType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
-            EItemType.AbilityPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_AbilityPoint),
-            _ => null,
-        };
-    }
-
-    public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
-    {
-        // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
-        if (maxExp > 0)
-        {
-            // 경험치 슬라이더와 텍스트 갱신
-            GetSlider((int)Sliders.Slider_Exp).value = currentExp / maxExp;
-
-            float expPercentage = (currentExp / maxExp) * 100;
-            // 텍스트에 반영 (소수점 2자리로 표시)
-            GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
-        }
-        else
-        {
-            // 경험치 슬라이더가 0인 경우 처리 (경험치가 없거나 초기화 상황)
-            GetSlider((int)Sliders.Slider_Exp).value = 0;
-            GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
-        }
-    }
-
-    #endregion
-
     #region Tab
 
     public void ShowTab(PlayTab tab)
@@ -458,6 +428,8 @@ public class UI_GameScene : UI_Scene
             switch (tab)
             {
                 case PlayTab.Character:
+                    GetGoodItem(EItemType.Gold).gameObject.SetActive(true);
+                    GetGoodItem(EItemType.Dia).gameObject.SetActive(true);
                     GetGoodItem(EItemType.ExpPoint).gameObject.SetActive(false);
                     GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
                     break;
@@ -599,4 +571,79 @@ public class UI_GameScene : UI_Scene
         Get<CanvasGroup>((int)CanvasGroups.BuffGroup).blocksRaycasts = active;
 
     }
+
+
+    #region TOP 
+
+
+    public UI_GoodItem GetGoodItem(EItemType goodType)
+    {
+        return goodType switch
+        {
+            EItemType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
+            EItemType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
+            EItemType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
+            EItemType.AbilityPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_AbilityPoint),
+            _ => null,
+        };
+    }
+
+
+    public void UpdateMyNickName()
+    {
+        // TOP - HeroInfo UI 
+        SendQueue.Enqueue(Backend.BMember.GetUserInfo, (callback) =>
+        {
+            if (!callback.IsSuccess())
+            {
+                ShowAlertUI($"닉네임이 불러오기 실패");
+                return;
+            }
+            string nickname = callback.GetReturnValuetoJSON()["row"]["nickname"].ToString();
+            GetTMPText((int)Texts.Text_NickName).text = nickname;
+        });
+    }
+
+    public void UpdateMyRank()
+    {
+        ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Current);
+
+        if (rankType != ERankType.Unknown)
+        {
+            GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
+        }
+        else
+        {
+            GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/Unranked");
+        }
+    }
+
+    #endregion
+
+
+
+    #region Bottom
+
+    public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
+    {
+        // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
+        if (maxExp > 0)
+        {
+            // 경험치 슬라이더와 텍스트 갱신
+            GetSlider((int)Sliders.Slider_Exp).value = currentExp / maxExp;
+
+            float expPercentage = (currentExp / maxExp) * 100;
+            // 텍스트에 반영 (소수점 2자리로 표시)
+            GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
+        }
+        else
+        {
+            // 경험치 슬라이더가 0인 경우 처리 (경험치가 없거나 초기화 상황)
+            GetSlider((int)Sliders.Slider_Exp).value = 0;
+            GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
+        }
+    }
+
+
+    #endregion
 }

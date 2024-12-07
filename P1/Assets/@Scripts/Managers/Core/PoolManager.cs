@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -61,7 +62,7 @@ internal class Pool
         go.SetActive(false);
     }
 
-    private void OnDestroy(GameObject go)
+    public void OnDestroy(GameObject go)
     {
         GameObject.Destroy(go);
     }
@@ -87,6 +88,16 @@ public class PoolManager
 
         _pools[go.name].Push(go);
         return true;
+    }
+
+    public void Delete(GameObject go)
+    {
+        if (_pools.ContainsKey(go.name) == false)
+        return;
+
+        _pools[go.name].OnDestroy(go);
+        _pools[go.name] = null;
+        
     }
 
     public void Clear()

@@ -206,58 +206,84 @@ public class Monster : Creature, IDamageable
     {
         try
         {
-            if (_damageCoroutine != null)
-            {
-                StopCoroutine(_damageCoroutine);
-                _damageCoroutine = null;
-            }
-            if(_idleCoroutine != null)
-            {
-                  StopCoroutine(_idleCoroutine);
-                _idleCoroutine = null;
-            }
+            // 공통 로직: 코루틴 중지 및 기본 처리
+            StopCoroutines();
 
             switch (Managers.Scene.GetCurrentScene<BaseScene>())
             {
                 case GameScene gameScene:
-
-                    gameScene = Managers.Scene.GetCurrentScene<GameScene>();
-                    Managers.Backend.GameData.CharacterData.AddExp(gameScene.StageInfo.MonsterExpReward);
-
-                    if (ObjectType == EObjectType.Monster)
-                    {
-                        UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
-                        goldIcon.SetGoldIconAtPosition(transform.position, () =>
-                        {
-                            try
-                            {
-                                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold,
-                                    gameScene.StageInfo.MonsterGoldReward);
-                            }
-                            catch (Exception e)
-                            {
-                                throw new Exception(
-                                    $"OnDead -> AddAmount ({EItemType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
-                            }
-                        });
-
-
-                        Managers.Game.OnMonsterDestroyed();
-                        Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
-
-                        Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
-                        Managers.Pool.Push(this.gameObject);
-                    }
+                    HandleGameSceneDeath(gameScene);
                     break;
-                case DungeonScene dungeonScene:
 
+                case DungeonScene dungeonScene:
+                    HandleDungeonSceneDeath(dungeonScene);
                     break;
             }
+
+            // 추가 처리는 자식 클래스에서 오버라이드 가능
+            OnAfterDead();
         }
         catch (Exception e)
         {
             throw new Exception($"Monster OnDead 중 에러가 발생하였습니다\n{e}");
         }
+    }
+
+    private void StopCoroutines()
+    {
+        if (_damageCoroutine != null)
+        {
+            StopCoroutine(_damageCoroutine);
+            _damageCoroutine = null;
+        }
+        if (_idleCoroutine != null)
+        {
+            StopCoroutine(_idleCoroutine);
+            _idleCoroutine = null;
+        }
+    }
+
+    // 공통 처리: 게임 씬에서 몬스터가 죽었을 때
+    private void HandleGameSceneDeath(GameScene gameScene)
+    {
+        Managers.Backend.GameData.CharacterData.AddExp(gameScene.StageInfo.MonsterExpReward);
+
+        if (ObjectType == EObjectType.Monster)
+        {
+            UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
+            goldIcon.SetGoldIconAtPosition(transform.position, () =>
+            {
+                try
+                {
+                    Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold,
+                        gameScene.StageInfo.MonsterGoldReward);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(
+                        $"OnDead -> AddAmount ({EItemType.Gold}, {gameScene.StageInfo.MonsterGoldReward}) 중 에러가 발생하였습니다\n{e}");
+                }
+            });
+
+            Managers.Game.OnMonsterDestroyed();
+            Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
+
+            // 폭발 효과 생성
+            Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
+            Managers.Pool.Push(this.gameObject);
+        }
+    }
+
+    // 공통 처리: 던전 씬에서 몬스터가 죽었을 때
+    private void HandleDungeonSceneDeath(DungeonScene dungeonScene)
+    {
+        // 던전 씬에 대한 추가 처리
+    }
+
+    // 추가 작업을 위한 Hook 메서드
+    protected virtual void OnAfterDead()
+    {
+        // 자식 클래스에서 필요한 경우 오버라이드
     }
 
     #endregion

@@ -32,6 +32,7 @@ public class RankMonster : Monster
         IdleWaitTime = 2;
 
         Target = Managers.Object.Hero;
+        CancelWait();
     }
 
     protected override void UpdateAnimation()
@@ -145,6 +146,8 @@ public class RankMonster : Monster
     public override void OnDead()
     {
         Anim.SetTrigger(AnimName.HashDead);
+        //Managers.Resource.Destroy(this.gameObject);
+
     }
 
     #endregion

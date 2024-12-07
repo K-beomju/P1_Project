@@ -1,7 +1,9 @@
 using BackEnd;
 using LitJson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
@@ -40,6 +42,9 @@ namespace BackendData.GameData
 
     public partial class QuestData
     {
+        // 일일 퀘스트 리셋 타임
+        public string DailyQuestResetTime { get; private set; }
+
         private Dictionary<string, QuestInfoData> _dailyQuestDic = new();       // 일일 퀘스트
         private Dictionary<string, QuestInfoData> _repeatableQuestDic = new();  // 반복 퀘스트
         private Dictionary<string, QuestInfoData> _achievementQuestDic = new(); // 업적 퀘스트 
@@ -53,6 +58,8 @@ namespace BackendData.GameData
     {
         protected override void InitializeData()
         {
+            DailyQuestResetTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+
             _dailyQuestDic.Clear();
             _repeatableQuestDic.Clear();
             _achievementQuestDic.Clear();
@@ -76,6 +83,8 @@ namespace BackendData.GameData
 
         protected override void SetServerDataToLocal(JsonData Data)
         {
+            DailyQuestResetTime = Data["DailyQuestResetTime"].ToString();
+
             foreach (var column in Data["AchievementQuest"].Keys)
             {
                 int currentCount = int.Parse(Data["AchievementQuest"][column]["CurrentCount"].ToString());
@@ -105,6 +114,7 @@ namespace BackendData.GameData
 
                 _dailyQuestDic.Add(column, new QuestInfoData(currentCount, targetCount, currentLevel, questState));
             }
+        
         }
 
         public override string GetTableName()
@@ -120,6 +130,7 @@ namespace BackendData.GameData
         public override Param GetParam()
         {
             Param param = new Param();
+            param.Add("DailyQuestResetTime", DailyQuestResetTime);
             param.Add("DailyQuest", _dailyQuestDic);
             param.Add("RepeatableQuest", _repeatableQuestDic);
             param.Add("AchievementQuest", _achievementQuestDic);
@@ -139,6 +150,28 @@ namespace BackendData.GameData
             }
 
             return null;
+        }
+
+        public void DailyQuestTimeCheck()
+        {
+            TimeSpan timeSinceLastLogin = DateTime.UtcNow - DateTime.Parse(DailyQuestResetTime);
+            Debug.Log($"경과 시간: {timeSinceLastLogin.TotalHours:F2}시간");
+            Debug.Log($"현재 DailyQuestResetTime: {DailyQuestResetTime}");
+
+            // 하루가 지나면 초기화 해줘야함
+            if (timeSinceLastLogin.TotalDays >= 1)
+            {
+                _dailyQuestDic.Clear();
+                foreach (var quest in Managers.Data.QuestChart)
+                {
+                    if(quest.Value.QuestCategory == EQuestCategory.Daily)
+                    _dailyQuestDic.Add(quest.Value.QuestType.ToString(), new QuestInfoData(0, quest.Value.RequestCount, 0, EQuestState.InProgress));
+                }
+                DailyQuestResetTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+
+            }
+
+            Debug.Log("출석 체크 실패");
         }
 
         public void UpdateQuest(EQuestType questType)
