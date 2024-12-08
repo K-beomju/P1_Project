@@ -187,6 +187,8 @@ public class GameScene : BaseScene
         yield return null;
     }
 
+    #region Boss
+
     private IEnumerator CoBossStage()
     {
         ResetStageAndHero();
@@ -208,23 +210,34 @@ public class GameScene : BaseScene
         // 연출 제작 
         cameraController.Target = Managers.Object.Hero.transform;
 
+        // Battle Start
         Managers.Object.Hero.EnableAction();
+        yield return MonitorBossMonsterBattle();
+        Debug.Log("코루틴이 끝ㄴ나넉ㄴ가");
+    }
 
-        while (Managers.Object.BossMonster != null)
+    private IEnumerator MonitorBossMonsterBattle()
+    {
+        // 몬스터 살아있는지 검사
+        while (Managers.Object.BossMonster.CreatureState != ECreatureState.Dead)
         {
+
             if (UpdateBossBattleTimer()) // 타이머 상태를 확인
+            {
+                // 못움직이게 함.
+                Managers.Object.BossMonster.DisableAction();
+                Managers.Object.Hero.DisableAction();
                 yield break; // 타이머가 종료되면 코루틴 중단
-
-            yield return null;
+            }
+            yield return null; // 다음 프레임 대기
         }
-
-        // var popupUI = Managers.UI.ShowPopupUI<UI_ItemGainPopup>();
-        // Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_POPUP - 100);
-        // popupUI.ShowCreateClearItem(StageInfo.RewardItem);
-
+        
+        Debug.Log("보스전 이김");
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
         GameSceneState = EGameSceneState.Clear;
     }
+
+    #endregion
 
     #region RankUp
 
@@ -349,7 +362,7 @@ public class GameScene : BaseScene
         BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
-        if (BossBattleTimer <= 0)
+        if (BossBattleTimer <= 0 )
         {
             HandleBattleFailure();
             return true; // 타이머 종료

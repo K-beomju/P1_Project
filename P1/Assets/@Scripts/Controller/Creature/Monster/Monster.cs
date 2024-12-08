@@ -198,8 +198,6 @@ public class Monster : Creature, IDamageable
         {
             _damageCoroutine = StartCoroutine(DealDamageToPlayer());
         }
-
-        CreatureState = ECreatureState.Idle;
     }
 
     public override void OnDead()

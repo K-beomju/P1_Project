@@ -133,7 +133,9 @@ public class Creature : BaseObject, IDamageable
     public virtual void OnDamaged(Creature attacker, EffectBase effect = null)
     {
         if (!isActionEnabled || CreatureState == ECreatureState.Dead)
+        {
             return;
+        }
 
         float finalDamage = 0;
         bool isCriticalHit = false;

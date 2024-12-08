@@ -55,7 +55,6 @@ public class BossMonster : Monster
     public override void OnDead()
     {
         Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
-        Managers.Pool.Push(this.gameObject);
     }
     #endregion
 }

@@ -133,7 +133,7 @@ public class ObjectManager
             RankMonster = null;
         }
 
-
+        Debug.Log(obj.gameObject);
         Managers.Pool.Push(obj.gameObject);
     }
 
