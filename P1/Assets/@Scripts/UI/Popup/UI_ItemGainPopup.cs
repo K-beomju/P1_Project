@@ -23,12 +23,10 @@ public class UI_ItemGainPopup : UI_Popup
             return false;
 
         BindObjects(typeof(GameObjects));
-        // GetObject((int)GameObjects.BG).BindEvent(() => 
-        // {
-        //     ClosePopupUI();
-        //     (Managers.UI.SceneUI as UI_GameScene).ShowPopupActiveGameUI(true);
-
-        // });
+        GetObject((int)GameObjects.BG).BindEvent(() => 
+        {
+            ClosePopupUI();
+        });
         for (int i = 0; i < 30; i++)
         {
             var item = Managers.UI.MakeSubItem<UI_GainedItem>(GetObject((int)GameObjects.Content_Item).transform);

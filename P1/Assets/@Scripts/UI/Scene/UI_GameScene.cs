@@ -106,6 +106,8 @@ public class UI_GameScene : UI_Scene
     public List<UI_EquipSkillSlot> _equipSkillSlotList { get; set; } = new List<UI_EquipSkillSlot>();
     public List<UI_DisplayAdBuffItem> _displayAdBuffList { get; set; } = new List<UI_DisplayAdBuffItem>();
 
+    private Coroutine[] _autoSkillCheckCoroutines = new Coroutine[6];
+
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -452,6 +454,63 @@ public class UI_GameScene : UI_Scene
     #endregion
 
     #region Skill Slot
+
+    // CompleteSkillCool 이벤트 핸들러
+    private void OnCompleteSkillCool(int slotIndex)
+    {
+        if (_autoSkillCheckCoroutines[slotIndex] == null)
+        {
+            _autoSkillCheckCoroutines[slotIndex] = StartCoroutine(AutoSkillCheckRoutine(slotIndex));
+        }
+    }
+
+    // 슬롯별 타겟 상태를 검사하고 스킬 실행
+    private IEnumerator AutoSkillCheckRoutine(int slotIndex)
+    {
+        var slot = _equipSkillSlotList[slotIndex];
+        if (slot == null) yield break;
+
+        while (!Managers.Object.Hero.Target.IsValid())
+        {
+            // 타겟이 유효할 때까지 0.2초 대기
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        // 타겟이 유효해지면 스킬 실행
+        if (slot.IsSkillReady())
+        {
+            slot.OnUseSkill();
+        }
+
+        _autoSkillCheckCoroutines[slotIndex] = null;
+    }
+
+    // 모든 슬롯의 자동 스킬 활성화
+    public void EnableAutoSkill()
+    {
+        for (int i = 0; i < _equipSkillSlotList.Count; i++)
+        {
+            if (_autoSkillCheckCoroutines[i] == null)
+            {
+                _autoSkillCheckCoroutines[i] = StartCoroutine(AutoSkillCheckRoutine(i));
+            }
+        }
+    }
+
+    // 모든 슬롯의 자동 스킬 비활성화
+    public void DisableAutoSkill()
+    {
+        for (int i = 0; i < _autoSkillCheckCoroutines.Length; i++)
+        {
+            if (_autoSkillCheckCoroutines[i] != null)
+            {
+                StopCoroutine(_autoSkillCheckCoroutines[i]);
+                _autoSkillCheckCoroutines[i] = null;
+            }
+        }
+    }
+
+    // UI Update
     public void UpdatedSkillSlotUI()
     {
         foreach (var slot in Managers.Backend.GameData.SkillInventory.SkillSlotList)
@@ -460,6 +519,7 @@ public class UI_GameScene : UI_Scene
         }
     }
 
+    // Auto Skill Button Logic
     public void ActiveAutoSkill()
     {
         Managers.Backend.GameData.SkillInventory.ActiveAutoSkill();
@@ -472,16 +532,19 @@ public class UI_GameScene : UI_Scene
         {
             Debug.Log("Auto Skill 기능이 활성화되었습니다.");
             GetTMPText((int)Texts.Text_AutoSkill).text = "AUTO\nON";
-            CheckUseSkillSlot(-1);
-            Managers.Event.AddEvent(EEventType.CompleteSkillCool, new Action<int>(CheckUseSkillSlot));
+            EnableAutoSkill();
+            Managers.Event.AddEvent(EEventType.CompleteSkillCool, new Action<int>(OnCompleteSkillCool));
         }
         else
         {
             Debug.Log("Auto Skill 기능이 비활성화되었습니다.");
             GetTMPText((int)Texts.Text_AutoSkill).text = "AUTO\nOFF";
-            Managers.Event.RemoveEvent(EEventType.CompleteSkillCool, new Action<int>(CheckUseSkillSlot));
+            DisableAutoSkill();
+            Managers.Event.RemoveEvent(EEventType.CompleteSkillCool, new Action<int>(OnCompleteSkillCool));
         }
     }
+
+    #endregion
 
     #region AdBuff
 
@@ -535,29 +598,6 @@ public class UI_GameScene : UI_Scene
     }
 
     #endregion
-
-    public void CheckUseSkillSlot(int slotIndex = -1)
-    {
-
-        // slotIndex가 -1인 경우 모든 슬롯을 검사하여 사용할 수 있는 스킬이 있는지 확인
-        if (slotIndex == -1)
-        {
-            foreach (var slot in _equipSkillSlotList)
-            {
-                if (slot.IsSkillReady())
-                    slot.OnUseSkill();
-            }
-            return;
-        } // 특정 슬롯의 스킬만 검사하여 사용할 수 있는지 확인
-        else if (slotIndex >= 0 && slotIndex < _equipSkillSlotList.Count)
-        {
-            if (_equipSkillSlotList[slotIndex].IsSkillReady())
-                _equipSkillSlotList[slotIndex].OnUseSkill();
-        }
-    }
-    #endregion
-
-
 
     public void ShowPopupActiveGameUI(bool active)
     {

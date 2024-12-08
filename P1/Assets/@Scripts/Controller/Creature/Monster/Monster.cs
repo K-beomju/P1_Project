@@ -26,11 +26,8 @@ public class Monster : Creature, IDamageable
             return false;
         }
 
-        _isDamaged = false;
         ObjectType = EObjectType.Monster;
         gameObject.layer = (int)ELayer.Monster;
-        SetNewPatrolTarget(); // 첫 번째 목표 지점 설정
-
         return true;
     }
 
@@ -46,6 +43,9 @@ public class Monster : Creature, IDamageable
 
         if (currnetScene is GameScene gameScene)
         {
+            _isDamaged = false;
+            SetNewPatrolTarget(); // 첫 번째 목표 지점 설정
+
             StageInfoData stageInfo = Managers.Data.StageChart[gameScene.StageInfo.StageNumber];
             Atk = stageInfo.MonsterAtk;
             MaxHp = stageInfo.MonsterMaxHp;
@@ -79,11 +79,15 @@ public class Monster : Creature, IDamageable
 
         Sprite.DOFade(0, 0);
         Sprite.DOFade(1, 1f);
-
-        HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(Util.FindChild<Transform>(gameObject, "HpBarPos"));
-        HpBar.transform.localPosition = Vector2.zero;
-        HpBar.SetSliderInfo(this);
-        HpBar.gameObject.SetActive(false);
+        
+        if(HpBar == null)
+        {
+            HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(Util.FindChild<Transform>(gameObject, "HpBarPos"));
+            HpBar.transform.localPosition = Vector2.zero;
+            HpBar.SetSliderInfo(this);
+            HpBar.gameObject.SetActive(false);
+        }
+            
 
         _initialPosition = transform.position; // 몬스터의 초기 위치 저장
     }
@@ -193,8 +197,7 @@ public class Monster : Creature, IDamageable
         LookAt(direction);
 
         _isDamaged = true;
-        // 플레이어에게 데미지를 입히는 코루틴 시작
-        if (_damageCoroutine == null && gameObject.activeInHierarchy)
+        if (_damageCoroutine == null && gameObject.activeInHierarchy && direction.magnitude < 1)
         {
             _damageCoroutine = StartCoroutine(DealDamageToPlayer());
         }
@@ -267,8 +270,9 @@ public class Monster : Creature, IDamageable
             Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
 
             // 폭발 효과 생성
+            HpBar.gameObject.SetActive(false);
             Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
-            Managers.Pool.Push(this.gameObject);
+            Managers.Object.Despawn(this);
         }
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8542260360882982053}
   - component: {fileID: 4153241649774479386}
   - component: {fileID: 8654231962858539134}
-  - component: {fileID: 8176006608934908646}
+  - component: {fileID: 6639140026079522366}
   m_Layer: 0
   m_Name: RedWaveEffect
   m_TagString: Untagged
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9bb6b7ae73dd040bf9f8ca40c42577de, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bfaa044f86dc74fc291497e6b161b233, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -148,8 +148,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &8176006608934908646
-PolygonCollider2D:
+--- !u!58 &6639140026079522366
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -180,22 +180,6 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.10703462, y: -0.655485}
-      - {x: 0.5178094, y: -0.5406432}
-      - {x: 0.7046603, y: -0.16802007}
-      - {x: 0.30880177, y: 0.6141474}
-      - {x: -0.45431972, y: 0.5362313}
-      - {x: 0.1904791, y: 0.057435006}
-  m_UseDelaunayMesh: 0
+  m_Offset: {x: 0.2, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.58

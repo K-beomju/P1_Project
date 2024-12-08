@@ -127,8 +127,16 @@ public class Hero : Creature
 
     public void OnAnimEventHandler()
     {
+        // 1차적인 검사: 타겟 체크, 죽었는지 
         if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
+        {
             return;
+        }
+        
+        // if(Vector2.Distance(transform.position, Target.CenterPosition) > 1)
+        // {
+        //     return;
+        // }
 
         if (OnAttackAction != null)
         {

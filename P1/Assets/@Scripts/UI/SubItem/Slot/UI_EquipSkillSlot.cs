@@ -176,7 +176,8 @@ public class UI_EquipSkillSlot : UI_Base
     public bool IsSkillReady()
     {
         // 스킬이 사용 가능한 상태인지 확인하는 메서드 추가
-        return Managers.Object.Monsters.Count > 1 && _skillSlot != null && _skillSlot.SkillInfoData != null &&
-               _coolTimeCo == null && _skillSlot.SlotType == ESkillSlotType.Equipped;
+        return  _skillSlot != null && _skillSlot.SkillInfoData != null &&
+               _coolTimeCo == null && _skillSlot.SlotType == ESkillSlotType.Equipped &&
+               Managers.Object.Hero.Target.IsValid();
     }
 }

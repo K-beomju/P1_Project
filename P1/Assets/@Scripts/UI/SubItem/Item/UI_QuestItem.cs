@@ -65,6 +65,11 @@ public class UI_QuestItem : UI_Base
     // CompleteQuest
     private void OnClickButton()
     {
+        var popupUI = Managers.UI.ShowPopupUI<UI_ItemGainPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_RESULTPOPUP);
+        popupUI.ShowCreateClearItem(_questData.RewardItem);
+
+
         Managers.Backend.GameData.QuestData.CompleteQuest(_questData);
 
         RefreshUI();

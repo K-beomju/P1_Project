@@ -170,8 +170,8 @@ public class GameScene : BaseScene
         Managers.Game.SpawnStageMonster(StageInfo);
 
         // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
-        if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
-            (Managers.UI.SceneUI as UI_GameScene).CheckUseSkillSlot(-1);
+        // if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
+        //     (Managers.UI.SceneUI as UI_GameScene).CheckUseSkillSlot(-1);
 
 
         while (!Managers.Game.ClearStage())

@@ -27,6 +27,9 @@ public abstract class ProjectileBase : EffectBase
     protected BaseObject FindRandomTarget(IEnumerable<BaseObject> objs)
     {
         // 객체가 없으면 null 반환
+        if (Managers.Object.BossMonster.IsValid())
+            return Managers.Object.BossMonster;
+
         if (!objs.Any())
             return null;
 
