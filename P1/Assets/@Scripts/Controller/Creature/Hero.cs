@@ -234,6 +234,9 @@ public class Hero : Creature
         if (Managers.Object.RankMonster != null && Managers.Object.RankMonster.gameObject.activeInHierarchy)
             return Managers.Object.RankMonster;
 
+         if (Managers.Object.WorldBoss != null && Managers.Object.WorldBoss.gameObject.activeInHierarchy)
+            return Managers.Object.WorldBoss;
+
         // 기본 탐색: 활성화된 객체만 검색
         Creature target = null;
         float bestDistanceSqr = float.MaxValue; // 매우 큰 값으로 초기화하여 첫 번째 비교가 무조건 이루어지게 함

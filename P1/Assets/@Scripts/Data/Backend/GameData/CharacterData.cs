@@ -29,7 +29,7 @@ namespace BackendData.GameData
         public int StageLevel { get; private set; }
 
         // 월드 보스 전투력 
-        public float WorldBossCombatPower { get; private set; }
+        public int WorldBossCombatPower { get; private set; }
 
 
         // 각 재화 담는 Dic
@@ -124,7 +124,7 @@ namespace BackendData.GameData
             AttendanceIndex = int.Parse(Data["AttendanceIndex"].ToString());
             AttendanceLastLoginTime = Data["AttendanceLastLoginTime"].ToString();
             StageLevel = int.Parse(Data["StageLevel"].ToString());
-            WorldBossCombatPower = float.Parse(Data["WorldBossCombatPower"].ToString());
+            WorldBossCombatPower = int.Parse(Data["WorldBossCombatPower"].ToString());
 
             foreach (var column in Data["Purse"].Keys)
             {
@@ -315,7 +315,7 @@ namespace BackendData.GameData
         #endregion
 
         // 월드보스전 갱신 
-        public void UpdateWorldBossCombatPower(float power)
+        public void UpdateWorldBossCombatPower(int power)
         {
             IsChangedData = true;
             WorldBossCombatPower = power;

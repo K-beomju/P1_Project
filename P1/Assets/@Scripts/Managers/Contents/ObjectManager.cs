@@ -98,10 +98,6 @@ public class ObjectManager
         {
             WorldBoss = worldBoss;
         }
-        if (obj is RankMonster rankUpMonster)
-        {
-            RankMonster = rankUpMonster;
-        }
         if (obj is Hero hero)
         {
             hero.transform.parent = HeroRoot;

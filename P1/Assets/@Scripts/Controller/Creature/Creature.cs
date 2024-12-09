@@ -48,7 +48,7 @@ public class Creature : BaseObject, IDamageable
         }
     }
 
-    public float worldBossTotalDamage { get; protected set; } = 0;
+    public int worldBossTotalDamage { get; protected set; } = 0;
     protected bool isActionEnabled = true;
 
     #endregion
@@ -197,7 +197,7 @@ public class Creature : BaseObject, IDamageable
         if (this is WorldBoss)
         {
             Debug.Log("월드 보스 데미지 누적 계산");
-            worldBossTotalDamage += finalDamage;
+            worldBossTotalDamage += (int)finalDamage;
         }
 
         Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);

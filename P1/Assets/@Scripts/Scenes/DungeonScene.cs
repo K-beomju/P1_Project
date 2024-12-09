@@ -217,8 +217,8 @@ public class DungeonScene : BaseScene
             // 월드보스에게 넣은 데미지 팝업 표시 끝 .
             // 랭킹 저장 
             var userData = Managers.Backend.GameData.CharacterData;
-            float endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
-            float currentTotalWorldBossDmg = userData.WorldBossCombatPower;
+            int endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
+            int currentTotalWorldBossDmg = userData.WorldBossCombatPower;
 
             if (currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
             {
