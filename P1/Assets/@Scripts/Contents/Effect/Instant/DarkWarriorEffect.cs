@@ -10,6 +10,18 @@ public class DarkWarriorEffect : EffectBase
     private Sprite[] sprites = new Sprite[5];
     private float moveSpeed = 50; // 이동 속도 설정
 
+    protected override bool Init()
+    {
+        if (base.Init() == false)
+            return false;
+
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            sprites[i] = Managers.Resource.Load<Sprite>($"Sprites/Skill/DarkWarrior/sword_0{i}");
+        }
+        return true;
+    }
+
     public override void SetInfo(int templateID, Hero owner, SkillData skillData)
     {
         base.SetInfo(templateID, owner, skillData);
@@ -31,14 +43,11 @@ public class DarkWarriorEffect : EffectBase
             currnetIndex++;
         }
 
-        for (int i = 0; i < sprites.Length; i++)
-        {
-            sprites[i] = Managers.Resource.Load<Sprite>($"Sprites/Skill/DarkWarrior/sword_0{i}");
-        }
     }
 
     public override void ApplyEffect()
     {
+        if(gameObject.activeInHierarchy)
         StartCoroutine(ShowDarkWarrior());
     }
 
@@ -84,11 +93,20 @@ public class DarkWarriorEffect : EffectBase
 
     private List<GameObject> FindClosestTargets(IEnumerable<BaseObject> objs, int count)
     {
+        List<GameObject> closestMonsters = new List<GameObject>();
+
+        if(Managers.Object.BossMonster.IsValid())
+        {
+            closestMonsters.Add(Managers.Object.BossMonster.gameObject);
+            return closestMonsters;
+        }
+        
+        if (objs.Count() == 0)
+            return null;
+        
         // 오브젝트들을 거리 순으로 정렬
         List<BaseObject> sortedObjs = objs.OrderBy(obj =>
             (obj.transform.position - Owner.CenterPosition).sqrMagnitude).ToList();
-
-        List<GameObject> closestMonsters = new List<GameObject>();
 
         // 가장 가까운 몬스터들을 리스트에 추가
         for (int i = 0; i < sortedObjs.Count && i < count; i++)
