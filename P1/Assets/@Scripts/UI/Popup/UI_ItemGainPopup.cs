@@ -99,7 +99,7 @@ public class UI_ItemGainPopup : UI_Popup
 
     private void DisplayRelicItem(UI_GainedItem relicItem, KeyValuePair<EHeroRelicType, int> item)
     {
-        relicItem.DisplayItem(Managers.Data.HeroRelicChart[item.Key], item.Value);
+        relicItem.DisplayItem(Managers.Data.RelicChart[item.Key], item.Value);
         relicItem.gameObject.SetActive(true);
     }
 

@@ -64,7 +64,7 @@ public class UI_RelicsPanel : UI_Base
         foreach (EHeroRelicType relic in values)
         {
             int ownedCount = Managers.Backend.GameData.CharacterData.OwnedRelicDic[relic.ToString()];
-            int maxCount = Managers.Data.HeroRelicChart[relic].MaxCount;
+            int maxCount = Managers.Data.RelicChart[relic].MaxCount;
             if (ownedCount < maxCount)
             {
                 eligibleRelics.Add(relic);
@@ -91,7 +91,7 @@ public class UI_RelicsPanel : UI_Base
 
             // 선택된 유물이 최대치에 도달했는지 확인
             int ownedCount = Managers.Backend.GameData.CharacterData.OwnedRelicDic[selectedRelic.ToString()];
-            int maxCount = Managers.Data.HeroRelicChart[selectedRelic].MaxCount;
+            int maxCount = Managers.Data.RelicChart[selectedRelic].MaxCount;
             if (ownedCount >= maxCount)
             {
                 // 유물을 획득 가능한 리스트에서 제거
@@ -131,7 +131,7 @@ public class UI_RelicsPanel : UI_Base
         foreach (var relicPair in Managers.Backend.GameData.CharacterData.OwnedRelicDic)
         {
             var relicType = (EHeroRelicType)Enum.Parse(typeof(EHeroRelicType), relicPair.Key);
-            if (relicPair.Value < Managers.Data.HeroRelicChart[relicType].MaxCount)
+            if (relicPair.Value < Managers.Data.RelicChart[relicType].MaxCount)
             {
                 return false; // 하나라도 MaxCount 미만이면 false 반환
             }

@@ -23,7 +23,7 @@ public class UI_GainedItem : UI_Base
         return true;
     }
 
-    public void DisplayItem(Data.HeroRelicInfoData relicData, int count)
+    public void DisplayItem(Data.RelicInfoData relicData, int count)
     {
         GetImage((int)Images.Image_Icon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{relicData.SpriteKey}");
         GetTMPText((int)Texts.Text_DrawCount).text = count.ToString();

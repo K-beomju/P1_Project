@@ -27,13 +27,16 @@ public class ExcelTransformer : EditorWindow
         // HeroInfoData: 영웅 정보 데이터
         // HeroUpgradeCostInfoData: 영웅 업그레이드 비용 정보 데이터
         // HeroUpgradeInfoData: 영웅 업그레이드 정보 데이터
-        // HeroRankUpInfoData: 영웅 승급전 정보 데이터
         ConvertExcelToCsv("Hero");
 
         // [유물]
-        // RelicData: 영웅 유물 정보 데이터
+        // RelicData: 유물 정보 데이터
         ConvertExcelToCsv("Relic");
 
+        // [승급]
+        // RankUpData: 승급 정보 데이터
+        ConvertExcelToCsv("RankUp");
+        
         // [가챠]
         // DrawEquipmentGachaInfoData: 장비 가챠 정보 데이터
         // DrawSkillGachaInfoData: 스킬 가챠 정보 데이터

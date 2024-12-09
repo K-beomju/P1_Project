@@ -12,34 +12,42 @@ public interface ILoader<Key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, StageInfoData> StageChart { get; private set; } = new(); // 스테이지 정보
-    public Dictionary<int, HeroInfoData> HeroChart { get; private set; } = new(); // 영웅 정보
-    public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> HeroUpgradeChart { get; private set; } = new();  // 영웅 업그레이드 스탯 정보
-    public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> HeroUpgradeCostChart { get; private set; } = new(); // 영웅 업그레이드 스탯 가격 정보
-    public Dictionary<EHeroAttrType, HeroAttributeInfoData> HeroAttributeChart { get; private set; } = new();  // 영웅 업그레이드 특성 정보
-    public Dictionary<EHeroRelicType, HeroRelicInfoData> HeroRelicChart { get; private set; } = new();  // 영웅 업그레이드 유물 정보
-    public Dictionary<EHeroAttrType, HeroAttributeCostInfoData> HeroAttributeCostChart { get; private set; } = new(); // 영웅 업그레이드 특성 가격 정보
+    // [스테이지]
+    public Dictionary<int, StageInfoData> StageChart { get; private set; } = new(); 
+    // [던전]
+    public Dictionary<int, GoldDungeonInfoData> GoldDungeonChart { get; private set; } = new(); 
+    public Dictionary<int, DiaDungeonInfoData> DiaDungeonChart { get; private set; } = new(); 
+    public Dictionary<int, WorldBossDungeonInfoData> WorldBossDungeonChart { get; private set; } = new();
+    // [영웅]
+    public Dictionary<EHeroAttrType, HeroAttributeCostInfoData> HeroAttributeCostChart { get; private set; } = new(); 
+    public Dictionary<EHeroAttrType, HeroAttributeInfoData> HeroAttributeChart { get; private set; } = new(); 
+    public Dictionary<int, HeroInfoData> HeroChart { get; private set; } = new(); 
+    public Dictionary<EHeroUpgradeType, HeroUpgradeCostInfoData> HeroUpgradeCostChart { get; private set; } = new(); 
+    public Dictionary<EHeroUpgradeType, HeroUpgradeInfoData> HeroUpgradeChart { get; private set; } = new();  
+    // [유물]
+    public Dictionary<EHeroRelicType, RelicInfoData> RelicChart { get; private set; } = new(); 
+    // [승급]
+    public Dictionary<ERankType, RankUpInfoData> RankUpChart { get; private set; } = new(); 
+    // [가챠]
+    public Dictionary<int, DrawEquipmentGachaData> DrawEquipmentChart { get; private set; } = new();
+    public Dictionary<int, DrawSkillGachaData> DrawSkillChart { get; private set; } = new();
+    public Dictionary<EHeroRankUpStatType, DrawRankUpGachaInfoData> DrawRankUpChart { get; private set; } = new(); 
+	// [몬스터]
+    public Dictionary<int, MonsterInfoData> MonsterChart { get; private set; } = new();  
+    public Dictionary<int, BossMonsterInfoData> BossMonsterChart { get; private set; } = new(); 
+    public Dictionary<int, RankUpMonsterInfoData> RankUpMonsterChart { get; private set; } = new(); 
+    // [장비]
+    public Dictionary<int, EquipmentData> EquipmentChart { get; private set; } = new(); 
+    // [스킬]
+    public Dictionary<int, SkillData> SkillChart { get; private set; } = new(); 
+    public Dictionary<int, EffectData> EffectChart { get; private set; } = new(); 
+	// [아이템], [상점], [퀘스트]
+    public Dictionary<EItemType, ItemData> ItemChart { get; private set; } = new(); 
+    public Dictionary<string, ShopData> ShopChart { get; private set; } = new();
+    public Dictionary<int, QuestData> QuestChart { get; private set; } = new(); 
 
-    public Dictionary<int, MonsterInfoData> MonsterChart { get; private set; } = new();  // 일반 몬스터 정보
-    public Dictionary<int, BossMonsterInfoData> BossMonsterChart { get; private set; } = new(); // 보스 몬스터 정보 
-    public Dictionary<int, RankUpMonsterInfoData> RankUpMonsterChart { get; private set; } = new(); // 승급전 몬스터 정보 
 
-    public Dictionary<int, DrawEquipmentGachaData> DrawEquipmentChart { get; private set; } = new();// 장비 뽑기 확률 정보
-    public Dictionary<int, DrawSkillGachaData> DrawSkillChart { get; private set; } = new(); // 스킬 뽑기 확률 정보
-    public Dictionary<int, EquipmentData> EquipmentChart { get; private set; } = new(); // 장비 정보
-    public Dictionary<int, SkillData> SkillChart { get; private set; } = new(); // 스킬 정보
-    public Dictionary<int, EffectData> EffectChart { get; private set; } = new(); // 이펙트 정보
-
-    public Dictionary<int, GoldDungeonInfoData> GoldDungeonChart { get; private set; } = new(); // 골드 던전 정보
-    public Dictionary<int, DiaDungeonInfoData> DiaDungeonChart { get; private set; } = new(); // 다이아 던전 정보
-    public Dictionary<int, WorldBossDungeonInfoData> WorldBossDungeonChart { get; private set; } = new(); // 월드보스전 정보
-
-    public Dictionary<EItemType, ItemData> ItemChart { get; private set; } = new(); // 아이템 정보
-    public Dictionary<ERankType, RankUpInfoData> RankUpChart { get; private set; } = new(); // 승급 차트
-    public Dictionary<EHeroRankUpStatType, DrawRankUpGachaInfoData> DrawRankUpChart { get; private set; } = new(); // 승급 스탯 뽑기 차트
     
-    public Dictionary<string, ShopData> ShopChart { get; private set; } = new(); // 승급 스탯 뽑기 차트
-    public Dictionary<int, QuestData> QuestChart { get; private set; } = new(); // 승급 스탯 뽑기 차트
 
     public void Init()
     {
@@ -57,10 +65,12 @@ public class DataManager
         HeroChart = LoadJson<HeroInfoDataLoader, int, HeroInfoData>("HeroInfoData").MakeDict();
         HeroUpgradeCostChart = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
         HeroUpgradeChart = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
-        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("HeroRankUpInfoData").MakeDict();
 
         // [유물]
-        HeroRelicChart = LoadJson<HeroRelicInfoDataLoader, EHeroRelicType, HeroRelicInfoData>("RelicData").MakeDict();
+        RelicChart = LoadJson<RelicInfoDataLoader, EHeroRelicType, RelicInfoData>("RelicData").MakeDict();
+
+        // [승급]
+        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("RankData").MakeDict();
 
      	// [가챠]
         DrawEquipmentChart = LoadJson<DrawEquipmentGachaDataLoader, int, DrawEquipmentGachaData>("DrawEquipmentGachaInfoData").MakeDict();

@@ -194,7 +194,7 @@ public class HeroInfo
     // 유물 계산 
     private float CaculateRelic(EHeroRelicType relicType)
     {
-        var relicData = Managers.Data.HeroRelicChart[relicType];
+        var relicData = Managers.Data.RelicChart[relicType];
         float increaseValue = relicData.IncreaseValue;
         int currentLevel = Managers.Backend.GameData.CharacterData.OwnedRelicDic[relicType.ToString()];
 

@@ -269,7 +269,7 @@ namespace Data
     }
 
     [Serializable]
-    public class HeroRelicInfoData
+    public class RelicInfoData
     {
         public EHeroRelicType HeroRelicType;
         public string Name;
@@ -280,14 +280,14 @@ namespace Data
     }
 
     [Serializable]
-    public class HeroRelicInfoDataLoader : ILoader<EHeroRelicType, HeroRelicInfoData>
+    public class RelicInfoDataLoader : ILoader<EHeroRelicType, RelicInfoData>
     {
-        public List<HeroRelicInfoData> HeroRelicInfoDatas = new List<HeroRelicInfoData>();
+        public List<RelicInfoData> HeroRelicInfoDatas = new List<RelicInfoData>();
 
-        public Dictionary<EHeroRelicType, HeroRelicInfoData> MakeDict()
+        public Dictionary<EHeroRelicType, RelicInfoData> MakeDict()
         {
-            Dictionary<EHeroRelicType, HeroRelicInfoData> dict = new Dictionary<EHeroRelicType, HeroRelicInfoData>();
-            foreach (HeroRelicInfoData infoData in HeroRelicInfoDatas)
+            Dictionary<EHeroRelicType, RelicInfoData> dict = new Dictionary<EHeroRelicType, RelicInfoData>();
+            foreach (RelicInfoData infoData in HeroRelicInfoDatas)
             {
                 dict.Add(infoData.HeroRelicType, infoData);
             }

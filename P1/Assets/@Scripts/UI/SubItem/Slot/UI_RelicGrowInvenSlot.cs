@@ -69,7 +69,7 @@ public class UI_RelicGrowInvenSlot : UI_Base
         }
 
 
-        Data.HeroRelicInfoData relicData = Managers.Data.HeroRelicChart[_heroRelicType];
+        Data.RelicInfoData relicData = Managers.Data.RelicChart[_heroRelicType];
 
         if (relicData == null)
         {

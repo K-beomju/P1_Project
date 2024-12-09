@@ -32,11 +32,13 @@ public class DataTransformer : EditorWindow
 		ParseCsvDataToJson<HeroInfoDataLoader, HeroInfoData>("HeroInfo");
 		ParseCsvDataToJson<HeroUpgradeCostInfoDataLoader, HeroUpgradeCostInfoData>("HeroUpgradeCostInfo");
 		ParseCsvDataToJson<HeroUpgradeInfoDataLoader, HeroUpgradeInfoData>("HeroUpgradeInfo");
-        ParseCsvDataToJson<RankUpInfoDataLoader, RankUpInfoData>("HeroRankUpInfo");
 		
 		// [유물]
-		ParseCsvDataToJson<HeroRelicInfoDataLoader, HeroRelicInfoData>("Relic");
+		ParseCsvDataToJson<RelicInfoDataLoader, RelicInfoData>("Relic");
 		
+		// [승급]
+        ParseCsvDataToJson<RankUpInfoDataLoader, RankUpInfoData>("RankUp");
+
      	// [가챠]
 		ParseCsvDataToJson<DrawEquipmentGachaDataLoader, DrawEquipmentGachaData>("DrawEquipmentGachaInfo");
         ParseCsvDataToJson<DrawSkillGachaDataLoader, DrawSkillGachaData>("DrawSkillGachaInfo");
