@@ -43,8 +43,7 @@ public class DivineWrathEffect : EffectBase
 
         areaCount += 1;
         GameObject areaEf = Managers.Object.SpawnGameObject(Vector2.zero, "Object/Effect/Explosion/DivineArea");
-        areaEf.transform.SetParent(transform, false);
-        areaEf.transform.localPosition = Vector2.zero;
+        areaEf.transform.localPosition = transform.position;
         areaEf.GetComponent<EffectBase>().SetInfo(EffectData.DataId, Owner, SkillData);
     }
 
@@ -62,7 +61,7 @@ public class DivineWrathEffect : EffectBase
             GameObject dustEf = Managers.Object.SpawnGameObject(Vector2.zero, "Object/Effect/Explosion/DevineDust");
             dustEf.transform.SetParent(transform, false);
             dustEf.transform.localPosition = Vector2.zero;
-            swordObject.transform.DOShakePosition(0.5f, strength: new Vector3(0.1f, 0.1f, 0), vibrato: 10, randomness: 90, snapping: false, fadeOut: true);
+            swordObject.transform.DOShakePosition(1f, strength: new Vector3(0.1f, 0.1f, 0), vibrato: 10, randomness: 90, snapping: false, fadeOut: true);
 
             isArrive = true;
             ProcessDot();

@@ -17,7 +17,6 @@ public class ExplosiveGrenadeEffect : EffectBase
     {
         for (int i = 0; i < SkillData.SkillCount; i++)
         {
-            Debug.Log(SkillData.SkillCount);
             GameObject grenade = Managers.Object.SpawnGameObject(Owner.CenterPosition, EffectData.ProjectileKey);
             if (grenade == null)
                 yield break;
@@ -36,15 +35,5 @@ public class ExplosiveGrenadeEffect : EffectBase
         }
 
         yield return new WaitForSeconds(1);
-    }
-
-    public override void ClearEffect()
-    {
-        foreach (var bomb in grenades)
-        {
-            if (bomb != null)
-                Managers.Resource.Destroy(bomb);
-        }
-        base.ClearEffect();
     }
 }

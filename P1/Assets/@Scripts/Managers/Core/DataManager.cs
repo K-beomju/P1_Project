@@ -70,7 +70,7 @@ public class DataManager
         RelicChart = LoadJson<RelicInfoDataLoader, EHeroRelicType, RelicInfoData>("RelicData").MakeDict();
 
         // [승급]
-        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("RankData").MakeDict();
+        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("RankUpData").MakeDict();
 
      	// [가챠]
         DrawEquipmentChart = LoadJson<DrawEquipmentGachaDataLoader, int, DrawEquipmentGachaData>("DrawEquipmentGachaInfoData").MakeDict();

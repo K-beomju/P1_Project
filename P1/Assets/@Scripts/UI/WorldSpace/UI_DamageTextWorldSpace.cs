@@ -32,7 +32,8 @@ public class UI_DamageTextWorldSpace : UI_Base
 	public void SetInfo(Vector3 pos, long damage = 0, bool isCritical = false, EffectBase effect = null)
 	{
 		transform.position = pos + new Vector3(0, 0.25f, 0);
-
+		_damageText.color = Color.white;
+		
 		if (damage < 0)
 		{
 			_damageText.color = Util.HexToColor("4EEE6F");
@@ -41,7 +42,7 @@ public class UI_DamageTextWorldSpace : UI_Base
 		{
 			_damageText.color = Util.HexToColor("EFAD00");
 		}
-
+		Debug.LogWarning(effect == null);
 		if (effect != null)
 		{
 			_damageText.color = Color.red;

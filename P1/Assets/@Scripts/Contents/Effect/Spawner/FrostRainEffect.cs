@@ -42,7 +42,7 @@ public class FrostRainEffect : EffectBase
         foreach (var arrow in frostRainArrows)
         {
             if (arrow != null)
-                Managers.Resource.Destroy(arrow);
+                Managers.Pool.Push(arrow);
         }
         base.ClearEffect();
     }

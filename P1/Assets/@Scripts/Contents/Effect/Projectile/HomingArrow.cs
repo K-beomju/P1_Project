@@ -67,7 +67,6 @@ public class HomingArrow : ProjectileBase
         if (Target.IsValid())
         {
             ApplyDamage(Target as Creature);
-            //GameObject explosion = Managers.Object.SpawnGameObject(Owner.Target.CenterPosition, EffectData.ExplosionKey);
         }
         base.ClearEffect();
 

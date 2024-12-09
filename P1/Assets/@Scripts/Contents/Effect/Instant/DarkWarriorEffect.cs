@@ -14,6 +14,7 @@ public class DarkWarriorEffect : EffectBase
     {
         base.SetInfo(templateID, owner, skillData);
 
+        monsters.Clear();
         List<GameObject> closestMonsters = FindClosestTargets(Managers.Object.Monsters, 5);
         if (closestMonsters == null || closestMonsters.Count == 0)
         {
@@ -61,7 +62,7 @@ public class DarkWarriorEffect : EffectBase
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
                 // 이동 중 몬스터가 죽었는지 체크
-                if (monsters[i] == null)
+                if (monsters[i].IsValid() == false)
                 {
                     break;
                 }

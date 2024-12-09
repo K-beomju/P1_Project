@@ -19,6 +19,7 @@ public class DivineAreaEx : ExplosionBase
 
     protected override IEnumerator CoStartTimer()
     {
+        transform.localScale = Vector3.one;
         yield return transform.DOScale(new Vector3(10, 10), 1).WaitForCompletion();
         yield return new WaitUntil(() => Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.99f);
         base.ClearEffect();

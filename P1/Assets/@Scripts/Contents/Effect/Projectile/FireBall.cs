@@ -45,10 +45,10 @@ public class FireBall : ProjectileBase
 
             yield return null;
         }
+        Managers.Object.SpawnGameObject(transform.position, EffectData.ExplosionKey);
 
         if (Target.IsValid())
         {
-            Managers.Object.SpawnGameObject(Target.CenterPosition, EffectData.ExplosionKey);
             ApplyDamage(Target as Creature);
         }
         base.ClearEffect();

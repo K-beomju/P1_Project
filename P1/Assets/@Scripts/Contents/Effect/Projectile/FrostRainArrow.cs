@@ -24,9 +24,8 @@ public class FrostRainArrow : ProjectileBase
             Creature enemy = other.GetComponent<Creature>();
             if (enemy != null)
             {
-                ExplosionBase explosion = 
-                Managers.Object.SpawnGameObject(enemy.CenterPosition, EffectData.ExplosionKey).GetComponent<ExplosionBase>();
-                explosion.ApplyEffect();
+                //TODO: 이펙트 데이터 이름 교체: 풀링 이름이랑 겹침
+                Managers.Object.SpawnGameObject(enemy.transform.position, EffectData.ExplosionKey + "Ex");
                 base.ApplyDamage(enemy);
             }
         }
@@ -45,8 +44,6 @@ public class FrostRainArrow : ProjectileBase
             }
             yield return null;
         }
-
-        base.ClearEffect();
     }
 
 

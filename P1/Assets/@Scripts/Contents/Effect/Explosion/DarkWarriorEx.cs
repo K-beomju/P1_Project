@@ -27,7 +27,6 @@ public class DarkWarriorEx : ExplosionBase
             // 틱마다 ProcessDot 호출
             if (sumTime >= EffectData.TickTime)
             {
-                Debug.LogWarning("asd");
                 ApplyDamage(Target);
                 sumTime -= EffectData.TickTime;
             }

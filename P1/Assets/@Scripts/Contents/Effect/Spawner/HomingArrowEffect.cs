@@ -28,15 +28,5 @@ public class HomingArrowEffect : EffectBase
         }
     }
 
-    public override void ClearEffect()
-    {
-        foreach (var arrow in homingArrows)
-        {
-            if (arrow != null)
-                Managers.Resource.Destroy(arrow);
-        }
-        base.ClearEffect();
-    }
-
 
 }

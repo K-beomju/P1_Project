@@ -215,7 +215,7 @@ public class UI_GameScene : UI_Scene
 
         RefreshUI();
 
-        Managers.Sound.Play(ESound.Bgm, "Sounds/GameBGM", 0.3f);
+        //Managers.Sound.Play(ESound.Bgm, "Sounds/GameBGM", 0.3f);
 
         return true;
     }

@@ -51,7 +51,7 @@ public class UI_TitleScene : UI_Scene
 
         GetTMPText((int)Texts.Text_TouchStart).gameObject.SetActive(false);
 
-        Managers.Sound.Play(ESound.Bgm,"Sounds/TitleBGM", 0.3f);
+        //Managers.Sound.Play(ESound.Bgm,"Sounds/TitleBGM", 0.3f);
         return true;
     }
 
