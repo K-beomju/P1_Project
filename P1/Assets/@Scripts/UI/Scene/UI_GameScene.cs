@@ -602,7 +602,14 @@ public class UI_GameScene : UI_Scene
     public void ShowPopupActiveGameUI(bool active)
     {
         if (!active)
+        {
+            // 버튼 이미지 스프라이트 변경
+            Image buttonImage = GetButton((int)Buttons.Btn_Menu).GetComponent<Image>();
+            string spritePath = "Sprites/Icon_Menu_Hamburger";
+            buttonImage.sprite = Managers.Resource.Load<Sprite>(spritePath);            
+            
             GetObject((int)GameObjects.MenuGroup).SetActive(false);
+        }
 
         GetObject((int)GameObjects.TopStage).SetActive(active);
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0;

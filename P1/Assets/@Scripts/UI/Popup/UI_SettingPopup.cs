@@ -5,6 +5,11 @@ using static Define;
 
 public class UI_SettingPopup : UI_Popup
 {
+    public enum GameObjects
+    {
+        BG
+    }
+
     public enum Buttons
     {
         Btn_Attendance,
@@ -28,7 +33,9 @@ public class UI_SettingPopup : UI_Popup
 
         BindButtons(typeof(Buttons));
         BindSliders(typeof(Sliders));
-        
+        BindObjects(typeof(GameObjects));
+
+        GetObject((int)GameObjects.BG).BindEvent(ClosePopupUI);
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(ClosePopupUI);
         GetButton((int)Buttons.Btn_Attendance).onClick.AddListener(() =>
         {
