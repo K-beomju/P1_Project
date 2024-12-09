@@ -11,11 +11,34 @@ public class GameManager
     {
         get
         {
-            if (tileMap == null)
+            if (tileMap != null)
+                return tileMap;
+
+            var scene = Managers.Scene.GetCurrentScene<BaseScene>();
+
+            if (scene is GameScene)
             {
-                tileMap = Util.FindChild(GameObject.Find("BaseMap"), "Terrain_Tile", true).GetComponent<Tilemap>();
+                tileMap = GetTileMap("BaseMap");
+            }
+            else if (scene is DungeonScene)
+            {
+                switch (GetCurrentDungeon())
+                {
+                    case EDungeonType.Gold:
+                        tileMap = GetTileMap("GoldDungeonMap");
+                        break;
+
+                    case EDungeonType.Dia:
+                        tileMap = GetTileMap("DiaDungeonMap");
+                        break;
+                }
+            }
+
+            if (tileMap != null)
+            {
                 tileMap.CompressBounds();
             }
+
             return tileMap;
         }
     }
@@ -49,7 +72,7 @@ public class GameManager
                 Vector3 spawnPosition;
                 do
                 {
-                    spawnPosition = GetRandomPositionInTileMap(tileMap.cellBounds,2);
+                    spawnPosition = GetRandomPositionInTileMap(tileMap.cellBounds, 2);
                 }
                 while (Vector3.Distance(spawnPosition, heroPosition) < 5f);
 
@@ -58,7 +81,7 @@ public class GameManager
         }
         else
         {
-            Managers.Object.SpawnBossMonster(new Vector3(3,0,0), stageInfo.BossDataId);
+            Managers.Object.SpawnBossMonster(new Vector3(3, 0, 0), stageInfo.BossDataId);
         }
     }
 
@@ -70,7 +93,7 @@ public class GameManager
             for (int i = 0; i < dungeonInfo.KillMonsterCount; i++)
             {
                 Vector3 spawnPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
-                Managers.Object.Spawn<Monster>(spawnPosition, dungeonInfo.MonsterDataIdList[Random.Range(0, dungeonInfo.MonsterDataIdList.Count)]);
+                Managers.Object.SpawnMonster(spawnPosition, dungeonInfo.MonsterDataIdList[Random.Range(0, dungeonInfo.MonsterDataIdList.Count)]);
             }
         }
         else
@@ -122,5 +145,15 @@ public class GameManager
         Vector3 worldPosition = tileMap.CellToWorld(randomCellPosition);
 
         return new Vector3(worldPosition.x, worldPosition.y, 0);
+    }
+
+
+    private Tilemap GetTileMap(string mapName)
+    {
+        GameObject mapObject = GameObject.Find(mapName);
+        if (mapObject == null)
+            return null;
+
+        return Util.FindChild(mapObject, "Terrain_Tile", true)?.GetComponent<Tilemap>();
     }
 }

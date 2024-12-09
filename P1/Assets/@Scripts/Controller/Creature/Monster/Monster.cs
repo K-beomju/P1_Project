@@ -79,15 +79,15 @@ public class Monster : Creature, IDamageable
 
         Sprite.DOFade(0, 0);
         Sprite.DOFade(1, 1f);
-        
-        if(HpBar == null)
+
+        if (HpBar == null)
         {
             HpBar = Managers.UI.MakeWorldSpaceUI<UI_HpBarWorldSpace>(Util.FindChild<Transform>(gameObject, "HpBarPos"));
             HpBar.transform.localPosition = Vector2.zero;
             HpBar.SetSliderInfo(this);
             HpBar.gameObject.SetActive(false);
         }
-            
+
 
         _initialPosition = transform.position; // 몬스터의 초기 위치 저장
     }
@@ -280,6 +280,13 @@ public class Monster : Creature, IDamageable
     private void HandleDungeonSceneDeath(DungeonScene dungeonScene)
     {
         // 던전 씬에 대한 추가 처리
+        Managers.Game.OnMonsterDestroyed();
+
+        // 폭발 효과 생성
+        HpBar.gameObject.SetActive(false);
+        Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
+        Managers.Object.Despawn(this);
+
     }
 
     // 추가 작업을 위한 Hook 메서드
