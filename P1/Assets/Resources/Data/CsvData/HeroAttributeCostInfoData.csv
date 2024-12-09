@@ -1,0 +1,7 @@
+HeroUpgradeType,Remark,ReferenceLevelList,GoodList,StartCostList,IncreaseCostList
+Attribute_Atk,특성 공격,20&40&60&80&100,ExpPoint&ExpPoint&ExpPoint&ExpPoint&ExpPoint,5&10&20&40&80,2&4&6&8&10
+Attribute_MaxHp,특성 최대체력,20&40&60&80&100,ExpPoint&ExpPoint&ExpPoint&ExpPoint&ExpPoint,10&20&30&50&100,5&10&15&20&25
+Attribute_CriRate,특성 치명타 확률,20&40&60&80&100,ExpPoint&ExpPoint&ExpPoint&ExpPoint&ExpPoint,2&4&6&8&10,1&2&3&4&5
+Attribute_CriDmg,특성 치명타 피해,20&40&60&80&100,ExpPoint&ExpPoint&ExpPoint&ExpPoint&ExpPoint,20&40&60&80&100,10&20&30&40&50
+Attribute_SkillTime,특성 스킬 쿨타임,20&40&60&80&100,ExpPoint&ExpPoint&ExpPoint&ExpPoint&ExpPoint,15&30&45&60&75,5&10&15&20&25
+Attribute_SkillDmg,특성 스킬 데미지,20&40&60&80&100,ExpPoint&ExpPoint&ExpPoint&ExpPoint&ExpPoint,15&30&45&60&75,5&10&15&20&25

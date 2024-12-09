@@ -1,0 +1,60 @@
+{
+  "HeroRelicInfoDatas": [
+    {
+      "HeroRelicType": 0,
+      "Name": "전사의 분노",
+      "Remark": "공격력 증가 +",
+      "SpriteKey": "Relic/Relic_Atk",
+      "IncreaseValue": 1.0,
+      "MaxCount": 300
+    },
+    {
+      "HeroRelicType": 1,
+      "Name": "생명의 방패",
+      "Remark": "최대체력 증가 +",
+      "SpriteKey": "Relic/Relic_MaxHp",
+      "IncreaseValue": 1.0,
+      "MaxCount": 300
+    },
+    {
+      "HeroRelicType": 2,
+      "Name": "회복의 샘",
+      "Remark": "체력 회복 증가 +",
+      "SpriteKey": "Relic/Relic_Recovery",
+      "IncreaseValue": 2.5,
+      "MaxCount": 300
+    },
+    {
+      "HeroRelicType": 3,
+      "Name": "사냥꾼의 이빨",
+      "Remark": "일반 몬스터 피해량 +",
+      "SpriteKey": "Relic/Relic_MonsterDmg",
+      "IncreaseValue": 1.0,
+      "MaxCount": 300
+    },
+    {
+      "HeroRelicType": 4,
+      "Name": "대적자의 검",
+      "Remark": "보스 몬스터 피해량 +",
+      "SpriteKey": "Relic/Relic_BossMonsterDmg",
+      "IncreaseValue": 1.0,
+      "MaxCount": 300
+    },
+    {
+      "HeroRelicType": 5,
+      "Name": "지혜의 책",
+      "Remark": "경험치 획득량 +",
+      "SpriteKey": "Relic/Relic_ExpRate",
+      "IncreaseValue": 0.2,
+      "MaxCount": 300
+    },
+    {
+      "HeroRelicType": 6,
+      "Name": "부의 상징",
+      "Remark": "골드 획득량 +",
+      "SpriteKey": "Relic/Relic_GoldRate",
+      "IncreaseValue": 0.2,
+      "MaxCount": 300
+    }
+  ]
+}

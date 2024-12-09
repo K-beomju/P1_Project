@@ -43,29 +43,44 @@ public class DataManager
 
     public void Init()
     {
+        // [스테이지]
         StageChart = LoadJson<StageInfoDataLoader, int, StageInfoData>("StageInfoData").MakeDict();
-        MonsterChart = LoadJson<MonsterInfoDataLoader, int, MonsterInfoData>("MonsterInfoData").MakeDict();
-        BossMonsterChart = LoadJson<BossMonsterInfoDataLoader, int, BossMonsterInfoData>("BossMonsterInfoData").MakeDict();
-        RankUpMonsterChart =  LoadJson<RankUpMonsterInfoDataLoader, int, RankUpMonsterInfoData>("RankUpMonsterInfoData").MakeDict();
-        HeroChart = LoadJson<HeroInfoDataLoader, int, HeroInfoData>("HeroInfoData").MakeDict();
-        HeroUpgradeChart = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
-        HeroUpgradeCostChart = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
-        HeroAttributeChart = LoadJson<HeroAttributeInfoDataLoader, EHeroAttrType, HeroAttributeInfoData>("HeroAttributeInfoData").MakeDict();
-        HeroRelicChart = LoadJson<HeroRelicInfoDataLoader, EHeroRelicType, HeroRelicInfoData>("HeroRelicInfoData").MakeDict();
-        HeroAttributeCostChart = LoadJson<HeroAttributeCostInfoDataLoader, EHeroAttrType, HeroAttributeCostInfoData>("HeroAttributeCostInfoData").MakeDict();
-        DrawEquipmentChart = LoadJson<DrawEquipmentGachaDataLoader, int, DrawEquipmentGachaData>("DrawEquipmentGachaInfoData").MakeDict();
-        DrawSkillChart = LoadJson<DrawSkillGachaDataLoader, int, DrawSkillGachaData>("DrawSkillGachaInfoData").MakeDict();
-        EquipmentChart = LoadJson<EquipmentDataLoader, int, EquipmentData>("EquipmentData").MakeDict();
-        SkillChart = LoadJson<SkillDataLoader, int, SkillData>("SkillData").MakeDict();
-        EffectChart = LoadJson<EffectDataLoader, int, EffectData>("EffectData").MakeDict();
+		
+        // [던전]
         GoldDungeonChart = LoadJson<GoldDungeonInfoDataLoader, int, GoldDungeonInfoData>("GoldDungeonInfoData").MakeDict();
         DiaDungeonChart = LoadJson<DiaDungeonInfoDataLoader, int, DiaDungeonInfoData>("DiaDungeonInfoData").MakeDict();
         WorldBossDungeonChart = LoadJson<WorldBossDungeonInfoDataLoader, int, WorldBossDungeonInfoData>("WorldBossDungeonInfoData").MakeDict();
 
-        ItemChart = LoadJson<ItemDataLoader, EItemType, ItemData>("ItemData").MakeDict();
-        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("RankUpInfoData").MakeDict();
+        // [영웅]
+        HeroAttributeChart = LoadJson<HeroAttributeInfoDataLoader, EHeroAttrType, HeroAttributeInfoData>("HeroAttributeInfoData").MakeDict();
+        HeroAttributeCostChart = LoadJson<HeroAttributeCostInfoDataLoader, EHeroAttrType, HeroAttributeCostInfoData>("HeroAttributeCostInfoData").MakeDict();
+        HeroChart = LoadJson<HeroInfoDataLoader, int, HeroInfoData>("HeroInfoData").MakeDict();
+        HeroUpgradeCostChart = LoadJson<HeroUpgradeCostInfoDataLoader, EHeroUpgradeType, HeroUpgradeCostInfoData>("HeroUpgradeCostInfoData").MakeDict();
+        HeroUpgradeChart = LoadJson<HeroUpgradeInfoDataLoader, EHeroUpgradeType, HeroUpgradeInfoData>("HeroUpgradeInfoData").MakeDict();
+        RankUpChart = LoadJson<RankUpInfoDataLoader, ERankType, RankUpInfoData>("HeroRankUpInfoData").MakeDict();
+
+        // [유물]
+        HeroRelicChart = LoadJson<HeroRelicInfoDataLoader, EHeroRelicType, HeroRelicInfoData>("RelicData").MakeDict();
+
+     	// [가챠]
+        DrawEquipmentChart = LoadJson<DrawEquipmentGachaDataLoader, int, DrawEquipmentGachaData>("DrawEquipmentGachaInfoData").MakeDict();
+        DrawSkillChart = LoadJson<DrawSkillGachaDataLoader, int, DrawSkillGachaData>("DrawSkillGachaInfoData").MakeDict();
         DrawRankUpChart = LoadJson<DrawRankUpGachaInfoDataLoader, EHeroRankUpStatType, DrawRankUpGachaInfoData>("DrawRankUpGachaInfoData").MakeDict();
 
+		// [몬스터]
+        MonsterChart = LoadJson<MonsterInfoDataLoader, int, MonsterInfoData>("MonsterInfoData").MakeDict();
+        BossMonsterChart = LoadJson<BossMonsterInfoDataLoader, int, BossMonsterInfoData>("BossMonsterInfoData").MakeDict();
+        RankUpMonsterChart =  LoadJson<RankUpMonsterInfoDataLoader, int, RankUpMonsterInfoData>("RankUpMonsterInfoData").MakeDict();
+        
+        // [장비]
+        EquipmentChart = LoadJson<EquipmentDataLoader, int, EquipmentData>("EquipmentData").MakeDict();
+        
+        // [스킬]
+        SkillChart = LoadJson<SkillDataLoader, int, SkillData>("SkillData").MakeDict();
+        EffectChart = LoadJson<EffectDataLoader, int, EffectData>("EffectData").MakeDict();
+
+		// [아이템], [상점], [퀘스트]
+        ItemChart = LoadJson<ItemDataLoader, EItemType, ItemData>("ItemData").MakeDict();
         ShopChart = LoadJson<ShopDataLoader, string, ShopData>("ShopData").MakeDict();
         QuestChart = LoadJson<QuestDataLoader, int, QuestData>("QuestData").MakeDict();
 

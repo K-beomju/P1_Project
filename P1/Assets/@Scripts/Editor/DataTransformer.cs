@@ -13,43 +13,56 @@ using Data;
 public class DataTransformer : EditorWindow
 {
 #if UNITY_EDITOR
-	[MenuItem("Tools/ParseExcel %#K")]
-	public static void ParseExcelDataToJson()
+	[MenuItem("Tools/ParseCsv %#K")]
+	public static void ParseCsvDataToJson()
 	{
 		Debug.Log("DataTransformer Completed");
-		ParseExcelDataToJson<StageInfoDataLoader, StageInfoData>("StageInfo");
-		ParseExcelDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
-		ParseExcelDataToJson<BossMonsterInfoDataLoader, BossMonsterInfoData>("BossMonsterInfo");
-		ParseExcelDataToJson<RankUpMonsterInfoDataLoader, RankUpMonsterInfoData>("RankUpMonsterInfo");
+		
+		// [스테이지]
+		ParseCsvDataToJson<StageInfoDataLoader, StageInfoData>("StageInfo");
 
-		ParseExcelDataToJson<HeroInfoDataLoader, HeroInfoData>("HeroInfo");
-		ParseExcelDataToJson<HeroUpgradeInfoDataLoader, HeroUpgradeInfoData>("HeroUpgradeInfo");
-		ParseExcelDataToJson<HeroUpgradeCostInfoDataLoader, HeroUpgradeCostInfoData>("HeroUpgradeCostInfo");
-		ParseExcelDataToJson<HeroAttributeInfoDataLoader, HeroAttributeInfoData>("HeroAttributeInfo");
-		ParseExcelDataToJson<HeroAttributeCostInfoDataLoader, HeroAttributeCostInfoData>("HeroAttributeCostInfo");
-		ParseExcelDataToJson<HeroRelicInfoDataLoader, HeroRelicInfoData>("HeroRelicInfo");
+		// [던전]
+        ParseCsvDataToJson<GoldDungeonInfoDataLoader, GoldDungeonInfoData>("GoldDungeonInfo");
+        ParseCsvDataToJson<DiaDungeonInfoDataLoader, DiaDungeonInfoData>("DiaDungeonInfo");
+		ParseCsvDataToJson<WorldBossDungeonInfoDataLoader, WorldBossDungeonInfoData>("WorldBossDungeonInfo");
+     	
+		// [영웅]
+		ParseCsvDataToJson<HeroAttributeInfoDataLoader, HeroAttributeInfoData>("HeroAttributeInfo");
+		ParseCsvDataToJson<HeroAttributeCostInfoDataLoader, HeroAttributeCostInfoData>("HeroAttributeCostInfo");
+		ParseCsvDataToJson<HeroInfoDataLoader, HeroInfoData>("HeroInfo");
+		ParseCsvDataToJson<HeroUpgradeCostInfoDataLoader, HeroUpgradeCostInfoData>("HeroUpgradeCostInfo");
+		ParseCsvDataToJson<HeroUpgradeInfoDataLoader, HeroUpgradeInfoData>("HeroUpgradeInfo");
+        ParseCsvDataToJson<RankUpInfoDataLoader, RankUpInfoData>("HeroRankUpInfo");
+		
+		// [유물]
+		ParseCsvDataToJson<HeroRelicInfoDataLoader, HeroRelicInfoData>("Relic");
+		
+     	// [가챠]
+		ParseCsvDataToJson<DrawEquipmentGachaDataLoader, DrawEquipmentGachaData>("DrawEquipmentGachaInfo");
+        ParseCsvDataToJson<DrawSkillGachaDataLoader, DrawSkillGachaData>("DrawSkillGachaInfo");
+        ParseCsvDataToJson<DrawRankUpGachaInfoDataLoader, DrawRankUpGachaInfoData>("DrawRankUpGachaInfo");
 
-		ParseExcelDataToJson<DrawEquipmentGachaDataLoader, DrawEquipmentGachaData>("DrawEquipmentGachaInfo");
-        ParseExcelDataToJson<DrawSkillGachaDataLoader, DrawSkillGachaData>("DrawSkillGachaInfo");
+		// [몬스터]
+		ParseCsvDataToJson<MonsterInfoDataLoader, MonsterInfoData>("MonsterInfo");
+		ParseCsvDataToJson<BossMonsterInfoDataLoader, BossMonsterInfoData>("BossMonsterInfo");
+		ParseCsvDataToJson<RankUpMonsterInfoDataLoader, RankUpMonsterInfoData>("RankUpMonsterInfo");
 
-		ParseExcelDataToJson<EquipmentDataLoader, EquipmentData>("Equipment");
-        ParseExcelDataToJson<SkillDataLoader, SkillData>("Skill");
-        ParseExcelDataToJson<EffectDataLoader, EffectData>("Effect");
+        // [장비]
+		ParseCsvDataToJson<EquipmentDataLoader, EquipmentData>("Equipment");
 
-        ParseExcelDataToJson<GoldDungeonInfoDataLoader, GoldDungeonInfoData>("GoldDungeonInfo");
-        ParseExcelDataToJson<DiaDungeonInfoDataLoader, DiaDungeonInfoData>("DiaDungeonInfo");
-		ParseExcelDataToJson<WorldBossDungeonInfoDataLoader, WorldBossDungeonInfoData>("WorldBossDungeonInfo");
+		// [스킬]
+        ParseCsvDataToJson<SkillDataLoader, SkillData>("Skill");
+        ParseCsvDataToJson<EffectDataLoader, EffectData>("Effect");
 
-        ParseExcelDataToJson<ItemDataLoader, ItemData>("Item");
-        ParseExcelDataToJson<RankUpInfoDataLoader, RankUpInfoData>("RankUpInfo");
-        ParseExcelDataToJson<DrawRankUpGachaInfoDataLoader, DrawRankUpGachaInfoData>("DrawRankUpGachaInfo");
-        ParseExcelDataToJson<ShopDataLoader, ShopData>("Shop");
-        ParseExcelDataToJson<QuestDataLoader, QuestData>("Quest");
+		// [아이템], [상점], [퀘스트]
+        ParseCsvDataToJson<ItemDataLoader, ItemData>("Item");
+        ParseCsvDataToJson<ShopDataLoader, ShopData>("Shop");
+        ParseCsvDataToJson<QuestDataLoader, QuestData>("Quest");
 
 	}
 
 	#region Helpers
-	private static void ParseExcelDataToJson<Loader, LoaderData>(string filename) where Loader : new() where LoaderData : new()
+	private static void ParseCsvDataToJson<Loader, LoaderData>(string filename) where Loader : new() where LoaderData : new()
 	{
 		Loader loader = new Loader();
 		FieldInfo field = loader.GetType().GetFields()[0];
@@ -64,7 +77,7 @@ public class DataTransformer : EditorWindow
 	{
 		List<LoaderData> loaderDatas = new List<LoaderData>();
 
-		string[] lines = File.ReadAllText($"{Application.dataPath}/Resources/Data/ExcelData/{filename}Data.csv").Split("\n");
+		string[] lines = File.ReadAllText($"{Application.dataPath}/Resources/Data/CsvData/{filename}Data.csv").Split("\n");
 
 		for (int l = 1; l < lines.Length; l++)
 		{
