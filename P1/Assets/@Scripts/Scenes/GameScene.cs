@@ -149,7 +149,7 @@ public class GameScene : BaseScene
     private void SetupStage()
     {
         ChapterLevel = 1;
-        StageInfo = Managers.Data.StageChart[CharacterData.StageLevel]; //Managers.Data.StageDataDic[UserData.StageLevel];
+        StageInfo = Managers.Data.StageChart[CharacterData.StageLevel]; 
         Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
 
         BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;
@@ -168,12 +168,6 @@ public class GameScene : BaseScene
 
         yield return StartWait;
         Managers.Game.SpawnStageMonster(StageInfo);
-
-        // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
-        // if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
-        //     (Managers.UI.SceneUI as UI_GameScene).CheckUseSkillSlot(-1);
-
-
         while (!Managers.Game.ClearStage())
         {
             yield return FrameWait;
@@ -195,6 +189,7 @@ public class GameScene : BaseScene
         var fadeUI =  Managers.UI.ShowBaseUI<UI_FadeInBase>();
         Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_POPUP - 1);
         fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplay("보스를 처치하세요!");
 
 
         Managers.Game.SpawnStageMonster(StageInfo, true);
@@ -213,7 +208,6 @@ public class GameScene : BaseScene
         // Battle Start
         Managers.Object.Hero.EnableAction();
         yield return MonitorBossMonsterBattle();
-        Debug.Log("코루틴이 끝ㄴ나넉ㄴ가");
     }
 
     private IEnumerator MonitorBossMonsterBattle()
@@ -333,6 +327,8 @@ public class GameScene : BaseScene
     private IEnumerator CoStageClear()
     {
         MoveToNextStage(true);
+
+        Managers.UI.ShowPopupUI<UI_ItemGainPopup>().ShowCreateClearItem(StageInfo.RewardItem);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.StageClear);
         yield return null;
     }

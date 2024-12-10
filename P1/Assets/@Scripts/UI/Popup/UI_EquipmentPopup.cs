@@ -216,7 +216,7 @@ public class UI_EquipmentPopup : UI_Popup
 
         equipmentItem.DisplayItem(SelectEquipmentInfo, EItemDisplayType.ImageOnly);
         GetTMPText((int)Texts.Text_EquipmentName).text = SelectEquipmentInfo.Data.Name;
-        GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv. {SelectEquipmentInfo.Level}";
+        GetTMPText((int)Texts.Text_EquipmentLevel).text = $"Lv.{SelectEquipmentInfo.Level}";
 
         GetTMPText((int)Texts.Text_EquipmentRare).text = Util.GetRareTypeString(SelectEquipmentInfo.Data.RareType);
         GetTMPText((int)Texts.Text_EquipmentRare).color = Util.GetRareTypeColor(SelectEquipmentInfo.Data.RareType);

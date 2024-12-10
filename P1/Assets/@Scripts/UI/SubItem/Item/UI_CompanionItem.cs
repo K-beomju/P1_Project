@@ -105,7 +105,7 @@ public class UI_CompanionItem : UI_Base
                 GetImage((int)Images.Image_Equip).gameObject.SetActive(isEquipped);
                 // DATA 
                 if (isOwned)
-                    GetTMPText((int)Texts.Text_Level).text = $"Lv. {ItemData.Level}";
+                    GetTMPText((int)Texts.Text_Level).text = $"Lv.{ItemData.Level}";
                 int currentCount = ItemData.Count;
                 int maxCount = Util.GetUpgradeEquipmentMaxCount(ItemData.Level);
                 GetSlider((int)Sliders.Slider_Count).maxValue = maxCount;

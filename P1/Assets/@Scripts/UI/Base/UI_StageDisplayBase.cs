@@ -48,7 +48,7 @@ public class UI_StageDisplayBase : UI_Base
     }
 
     // 스테이지 표시 UI를 업데이트하는 함수
-    private void ShowDisplay(string textContent)
+    public void ShowDisplay(string textContent)
     {
         // 실행 중인 시퀀스가 있으면 중지
         if (_stageSequence != null && _stageSequence.IsPlaying())
