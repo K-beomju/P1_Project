@@ -168,10 +168,22 @@ public class UI_DrawEquipmentPanel : UI_Base
         _totalCount = _drawData.DrawCount;
 
         GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetDrawTypeString(_drawType)} 뽑기 Lv. {_drawLevel}";
-        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp}";
+        
+        // 최고 레벨이라면
+        if(_drawLevel == 10)
+        {
+            GetTMPText((int)Texts.Text_DrawValue).text = "최고레벨 도달";
+            GetSlider((int)Sliders.Slider_DrawCount).maxValue = 0;
+            GetSlider((int)Sliders.Slider_DrawCount).value = 0;
+        }
+        else
+        {
+            GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp}";
 
-        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp;
-        GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+            GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp;
+            GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+        }
+
 
         var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
         GetTMPText((int)Texts.Text_AdWatchedDrawEquipmentCount).text = 

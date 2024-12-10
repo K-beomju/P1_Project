@@ -5145,22 +5145,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8983680386838950860}
     m_Modifications:
-    - target: {fileID: 229178826927199931, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
-      propertyPath: m_fontSize
-      value: 23
-      objectReference: {fileID: 0}
-    - target: {fileID: 229178826927199931, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 23
-      objectReference: {fileID: 0}
-    - target: {fileID: 229178826927199931, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
-    - target: {fileID: 272077864113037143, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -25
-      objectReference: {fileID: 0}
     - target: {fileID: 1917386648838641199, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -5252,10 +5236,6 @@ PrefabInstance:
     - target: {fileID: 4700784591809817610, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
       propertyPath: m_Name
       value: UI_CompanionItem (12)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309260332609641423, guid: 95a28f6089511471692051c9a5af2fde, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 19.753723
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

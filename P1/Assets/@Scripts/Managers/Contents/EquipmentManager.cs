@@ -80,7 +80,6 @@ public class EquipmentManager
             if (equipment.Data.EquipmentType == type && equipment.IsEquipped)
             {
                 equipValue += equipment.Data.EquippedValue + (equipment.Data.EquippedIncreaseRate * equipment.Level);
-                Debug.Log("asd");
             }
         }
 

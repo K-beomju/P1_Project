@@ -23,7 +23,7 @@ namespace BackendData.GameData
         }
     }
 
-    public  class DrawLevelData : Base.GameData
+    public class DrawLevelData : Base.GameData
     {
 
         // Draw 각 뽑기 데이터를 담는 Dic
@@ -50,6 +50,8 @@ namespace BackendData.GameData
                 int drawCount = int.Parse(Data[column]["DrawCount"].ToString());
                 _drawDic.Add(column, new DrawData(drawLevel, drawCount));
             }
+
+            _drawDic["Weapon"].DrawLevel = 1;
         }
 
         public override string GetTableName()
@@ -74,9 +76,14 @@ namespace BackendData.GameData
         // 유저의 뽑기 횟수를 변경하는 함수
         public void AddDrawCount(EDrawType drawType)
         {
-            IsChangedData = true;
             string key = drawType.ToString();
+            if (_drawDic[key].DrawLevel == 10)
+            {
+                // 최고 레벨에 도달하면 올려줄 필요 없음
+                return;
+            }
 
+            IsChangedData = true;
             _drawDic[key].DrawCount++;
 
             if (drawType.IsEquipmentType())
@@ -86,7 +93,7 @@ namespace BackendData.GameData
                     DrawLevelUp(key);
                 }
             }
-            if(drawType == EDrawType.Skill)
+            if (drawType == EDrawType.Skill)
             {
                 while (_drawDic[key].DrawCount >= Managers.Data.DrawSkillChart[_drawDic[key].DrawLevel].MaxExp) //GachaDataDic[_drawDic[key].DrawLevel].MaxExp)
                 {

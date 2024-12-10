@@ -101,17 +101,29 @@ public class UI_DrawSkillPanel : UI_Base
 
         if (_drawData == null)
         {
-            Debug.LogWarning("장비 게임 데이터가 없음");
+            Debug.LogWarning("스킬 게임 데이터가 없음");
             return;
         }
         _drawLevel = _drawData.DrawLevel;
         _totalCount = _drawData.DrawCount;
 
         GetTMPText((int)Texts.Text_DrawSkillLevel).text = $"스킬 뽑기 Lv. {_drawLevel}";
-        GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp}";
 
-        GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawSkillChart[_drawLevel].MaxExp;
-        GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+             
+        // 최고 레벨이라면
+        if(_drawLevel == 10)
+        {
+            GetTMPText((int)Texts.Text_DrawValue).text = "최고레벨 도달";
+            GetSlider((int)Sliders.Slider_DrawCount).maxValue = 0;
+            GetSlider((int)Sliders.Slider_DrawCount).value = 0;
+        }
+        else
+        {
+            GetTMPText((int)Texts.Text_DrawValue).text = $"{_totalCount} / {Managers.Data.DrawEquipmentChart[_drawLevel].MaxExp}";
+
+            GetSlider((int)Sliders.Slider_DrawCount).maxValue = Managers.Data.DrawSkillChart[_drawLevel].MaxExp;
+            GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
+        }
 
         var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
         GetTMPText((int)Texts.Text_AdWatchedDrawSkillCount).text = 

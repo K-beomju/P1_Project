@@ -1379,6 +1379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2423539292705383725}
   - component: {fileID: 5668551649831594314}
+  - component: {fileID: 5016382848660192287}
   m_Layer: 5
   m_Name: ProbabilityGroup
   m_TagString: Untagged
@@ -1426,8 +1427,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -900.0001}
-  m_SizeDelta: {x: 0, y: 899.9999}
+  m_AnchoredPosition: {x: 0, y: -1434.5624}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &5668551649831594314
 MonoBehaviour:
@@ -1455,6 +1456,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &5016382848660192287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5628951588801328330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &7258787541122418972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1862,8 +1877,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 158539425039388138}
   m_HandleRect: {fileID: 16984721689513156}
   m_Direction: 2
-  m_Value: 1.0000002
-  m_Size: 0.60352427
+  m_Value: 0.9996951
+  m_Size: 0.4884135
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

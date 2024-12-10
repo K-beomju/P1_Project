@@ -309,8 +309,7 @@ public static class Define
 
     public const float DASH_DISTANCE_THRESHOLD = 9f;
     public const float LERP_SPEED = 0.1f;
-    public const float CREATRE_DRAWITEM_DELAY = 0.03f;
-
+    
     public static class AnimName
     {
         public readonly static int HashCombo = Animator.StringToHash("IsCombo");

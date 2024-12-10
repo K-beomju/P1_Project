@@ -97,7 +97,6 @@ public class Creature : BaseObject, IDamageable
     {
         while (true)
         {
-
             switch (CreatureState)
             {
                 case ECreatureState.Idle:

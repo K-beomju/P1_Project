@@ -136,7 +136,7 @@ namespace BackendData.GameData
                 // 새롭게 장착할 장비의 IsEquipped를 true로 설정하고 장착된 장비 Dictionary에 업데이트
                 equipmentInventoryData.IsEquipped = true;
                 _equipmentEquipDic[equipmentInventoryData.Data.EquipmentType.ToString()] = equipmentInventoryData;
-                Managers.Object.Hero.ChangeAnimController(true);
+                Managers.Object.Hero.ChangeAnimController(equipmentInventoryData);
 
                 // 새롭게 장착한 장비도 인벤토리 Dictionary에 업데이트 (동기화)
                 _equipmentInventoryDic[dataTemplateID] = equipmentInventoryData;
@@ -186,6 +186,14 @@ namespace BackendData.GameData
                  }
              });
 
+        }
+
+        public EquipmentInfoData EquipCheckEquipment()
+        {
+            if (EquipmentEquipDic[EEquipmentType.Weapon.ToString()].IsEquipped)
+                return EquipmentEquipDic[EEquipmentType.Weapon.ToString()];
+
+            return null;
         }
 
         #endregion

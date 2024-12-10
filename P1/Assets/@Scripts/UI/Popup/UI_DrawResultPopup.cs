@@ -31,6 +31,10 @@ public class UI_DrawResultPopup : UI_Popup
     private int _level;
     private int _drawCount;
     private bool _drawDirection;
+    private bool _autoDraw = false;
+    
+    private int _testSpendDia = 0;
+
 
     protected override bool Init()
     {
@@ -51,6 +55,8 @@ public class UI_DrawResultPopup : UI_Popup
                 Managers.Event.TriggerEvent(EEventType.DrawSkillUIUpdated);
         });
         GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawItem());
+        GetButton((int)Buttons.Btn_AutoDraw).onClick.AddListener(() => AutoDrawItem());
+        
         for (int i = 0; i < 30; i++)
         {
             var item = Managers.UI.MakeSubItem<UI_CompanionItem>(GetObject((int)GameObjects.DrawItemGroup).transform);
@@ -63,6 +69,7 @@ public class UI_DrawResultPopup : UI_Popup
 
     private void OnEnable()
     {
+        _autoDraw = false;
         Managers.Event.AddEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetDrawTypeString(_type)} 뽑기 Lv. {level}"));
     }
@@ -70,7 +77,7 @@ public class UI_DrawResultPopup : UI_Popup
     private void OnDisable()
     {
         Managers.Event.RemoveEvent(EEventType.DrawLevelUpUIUpdated, new Action<int>((level) =>
-         GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetDrawTypeString(_type)} 뽑기 Lv. {level}"));
+        GetTMPText((int)Texts.Text_DrawLevel).text = $"{Util.GetDrawTypeString(_type)} 뽑기 Lv. {level}"));
     }
 
     public void RefreshUI(EDrawType type, int drawCount, List<int> resultList, bool drawDirection)
@@ -87,6 +94,17 @@ public class UI_DrawResultPopup : UI_Popup
         StartCoroutine(CreateEquipmentItem(resultList));
     }
 
+    private void AutoDrawItem()
+    {
+        // 자동 뽑기 실행중이면 Exit로 끄게 
+        if(_autoDraw == true)
+        return;
+
+        _autoDraw = true;
+        List<int> resultList = Util.GetDrawSystemResults(_type, _drawCount, _level);
+        RefreshUI(_type, _drawCount, resultList, _drawDirection);
+    }
+
     private void RetryDrawItem()
     {
         List<int> resultList = Util.GetDrawSystemResults(_type, _drawCount, _level);
@@ -95,9 +113,11 @@ public class UI_DrawResultPopup : UI_Popup
 
     private IEnumerator CreateEquipmentItem(List<int> resultList)
     {
+        _testSpendDia += 30;
         _drawItems.ForEach(item => item.gameObject.SetActive(false));
 
-        WaitForSeconds wait = new WaitForSeconds(CREATRE_DRAWITEM_DELAY);
+        WaitForSeconds wait = new WaitForSeconds(0.03f);
+        WaitForSeconds endDrawWait = new WaitForSeconds(0.3f);
 
         // 결과 목록에 해당하는 장비 데이터를 한 번에 미리 검증하여 유효한지 확인
         foreach (var resultId in resultList)
@@ -124,7 +144,7 @@ public class UI_DrawResultPopup : UI_Popup
         for (int i = 0; i < Mathf.Min(resultList.Count, _drawItems.Count); i++)
         {
             int resultId = resultList[i];
-            BackendData.GameData.Item itemData = null;
+            Item itemData = null;
 
 
             if (_type.IsEquipmentType())
@@ -175,6 +195,8 @@ public class UI_DrawResultPopup : UI_Popup
                 yield return wait;
         }
 
+        Debug.LogWarning($"뽑기에 쓴 다이아 {_testSpendDia} -> 시도 횟수 {_testSpendDia / 30}");
+
         Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
         {
             if (changed)
@@ -188,7 +210,17 @@ public class UI_DrawResultPopup : UI_Popup
             }
         });
 
+        GetButton((int)Buttons.Btn_Exit).interactable = true;
+        yield return endDrawWait;
+
+        if(_autoDraw)
+        {
+            List<int> autoDrawList = Util.GetDrawSystemResults(_type, _drawCount, _level);
+            RefreshUI(_type, _drawCount, autoDrawList, _drawDirection);
+            yield break;
+        }
         InteractiveButtons(true);
+
     }
 
     public void InteractiveButtons(bool active)

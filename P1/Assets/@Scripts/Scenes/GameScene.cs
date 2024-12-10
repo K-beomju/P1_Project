@@ -295,7 +295,7 @@ public class GameScene : BaseScene
         }, () =>
         {
             // 성공하면 풀링은 더이상 사용 안함 X 
-
+            (Managers.UI.SceneUI as UI_GameScene).UpdateMyRank();
             Managers.UI.ShowPopupUI<UI_RankUpClearPopup>().RefreshUI();
             Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
         });

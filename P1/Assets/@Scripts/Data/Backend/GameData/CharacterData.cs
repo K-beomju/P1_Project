@@ -55,6 +55,7 @@ namespace BackendData.GameData
         public IReadOnlyDictionary<string, int> OwnedRelicDic => (IReadOnlyDictionary<string, int>)_ownedRelicDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> AdBuffDic => (IReadOnlyDictionary<string, int>)_adBuffDic.AsReadOnlyCollection();
 
+
     }
 
     //===============================================================

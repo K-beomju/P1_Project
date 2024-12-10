@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ public class Hero : Creature
     private Coroutine comboDelayCoroutine = null;
     private Coroutine recoveryCoroutine = null;
     private HeroGhost ghost;
-
+    private SpriteRenderer weaponSprite;
+    
     private RuntimeAnimatorController handController;
     private RuntimeAnimatorController weaponController;
     private WaitForSeconds recoveryTime = new WaitForSeconds(1);
@@ -42,6 +44,10 @@ public class Hero : Creature
 
         ObjectType = EObjectType.Hero;
         gameObject.layer = (int)ELayer.Hero;
+
+        // Weapon
+        weaponSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        weaponSprite.sortingOrder = SortingLayers.HERO - 1;
         Sprite.sortingOrder = SortingLayers.HERO;
 
         handController = Managers.Resource.Load<RuntimeAnimatorController>("Animations/Hero_Hand");
@@ -90,6 +96,8 @@ public class Hero : Creature
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(true);
 
+        ChangeAnimController(Managers.Backend.GameData.EquipmentInventory.EquipCheckEquipment()); 
+
     }
 
     // 레벨업 시 스탯을 다시 계산하는 함수
@@ -132,11 +140,6 @@ public class Hero : Creature
         {
             return;
         }
-        
-        // if(Vector2.Distance(transform.position, Target.CenterPosition) > 1)
-        // {
-        //     return;
-        // }
 
         if (OnAttackAction != null)
         {
@@ -313,11 +316,15 @@ public class Hero : Creature
         }
     }
 
-    public void ChangeAnimController(bool weapon = false)
+    public void ChangeAnimController(EquipmentInfoData infoData = null)
     {
-        Anim.runtimeAnimatorController = weapon ? weaponController : handController;
-        Anim.Rebind();
-        CreatureState = ECreatureState.Idle;
+        Anim.runtimeAnimatorController = infoData != null ? weaponController : handController;
+        
+        if(infoData != null)
+        {
+            isMove = true;
+            weaponSprite.sprite = Managers.Resource.Load<Sprite>($"Sprites/{infoData.SpriteKey}");
+        }
     }
     #endregion
 
