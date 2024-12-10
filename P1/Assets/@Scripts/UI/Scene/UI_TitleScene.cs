@@ -35,7 +35,7 @@ public class UI_TitleScene : UI_Scene
     {
         if (!base.Init())
             return false;
-        
+
         BindObjects(typeof(GameObjects));
         BindButtons(typeof(Buttons));
         BindSliders(typeof(Sliders));
@@ -123,8 +123,7 @@ public class UI_TitleScene : UI_Scene
     {
         if (string.IsNullOrEmpty(Backend.UserNickName))
         {
-            ShowAlertUI($"닉네임이 없습니다.");
-            Managers.UI.ShowPopupUI<UI_NicknamePopup>();
+            Managers.UI.ShowPopupUI<UI_PolicyPopup>().GetPolicyV2();
         }
         else
         {
@@ -134,7 +133,7 @@ public class UI_TitleScene : UI_Scene
             Debug.Log($"유저 UID(쿠폰용) : {Backend.UID}");
             ShowAlertUI($"로그인에 성공하였습니다.");
         }
-        Managers.Scene.GetCurrentScene<TitleScene>().InitBackendDataLoad();   
+        Managers.Scene.GetCurrentScene<TitleScene>().InitBackendDataLoad();
     }
 
     private bool HandleBackendError(BackendReturnObject bro)
@@ -183,11 +182,13 @@ public class UI_TitleScene : UI_Scene
 
     public void ShowTouchToStart()
     {
+        if (string.IsNullOrEmpty(Backend.UserNickName))
+            return;
         ToggleUIGroup(GameObjects.Group_Loading, false);
         GetTMPText((int)Texts.Text_TouchStart).gameObject.SetActive(true);
-        GetTMPText((int)Texts.Text_TouchStart).gameObject.BindEvent(() => 
+        GetTMPText((int)Texts.Text_TouchStart).gameObject.BindEvent(() =>
         {
-            TitleScene titleScene = Managers.Scene.GetCurrentScene<TitleScene>();        
+            TitleScene titleScene = Managers.Scene.GetCurrentScene<TitleScene>();
             titleScene.InGameStart();
         }, EUIEvent.Click);
     }

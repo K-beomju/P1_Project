@@ -96,7 +96,7 @@ public class Hero : Creature
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(true);
 
-        ChangeAnimController(Managers.Backend.GameData.EquipmentInventory.EquipCheckEquipment()); 
+       //ChangeAnimController(Managers.Backend.GameData.EquipmentInventory.EquipCheckEquipment()); 
 
     }
 

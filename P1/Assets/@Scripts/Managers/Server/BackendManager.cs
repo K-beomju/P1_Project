@@ -100,7 +100,6 @@ public class BackendManager
 
             CreateSendQueueMgr();
             SetErrorHandler();
-            GetPolicyV2Test();
         }
         else
         {
@@ -108,43 +107,7 @@ public class BackendManager
         }
     }
 
-    // 개인정보처리방침
-    public void GetPolicyV2Test()
-    {
-        var bro = Backend.Policy.GetPolicyV2();
 
-        if (!bro.IsSuccess())
-        {
-            return;
-        }
-
-        Policy policy = new Policy();
-
-        LitJson.JsonData policyJson = bro.GetReturnValuetoJSON()["policy"]; // policy로 접근
-
-        policy.terms = policyJson["terms"]?.ToString(); // 입력이 없을 경우 null
-        policy.termsURL = policyJson["termsURL"]?.ToString(); // 입력이 없을 경우 null
-        policy.privacy = policyJson["privacy"]?.ToString(); // 입력이 없을 경우 null
-        policy.privacyURL = policyJson["privacyURL"]?.ToString(); // 입력이 없을 경우 null
-
-        Debug.Log(policy.ToString());
-
-        // 추가 정책을 한번이라도 수정한 경우
-        if (bro.GetReturnValuetoJSON().ContainsKey("policy2"))
-        {
-
-            LitJson.JsonData policy2Json = bro.GetReturnValuetoJSON()["policy2"]; // policy2로 접근
-
-            Policy policy2 = new Policy();
-
-            policy2.terms = policy2Json["terms"]?.ToString(); // 입력이 없을 경우 null
-            policy2.termsURL = policy2Json["termsURL"]?.ToString(); // 입력이 없을 경우 null
-            policy2.privacy = policy2Json["privacy"]?.ToString(); // 입력이 없을 경우 null
-            policy2.privacyURL = policy2Json["privacyURL"]?.ToString(); // 입력이 없을 경우 null
-
-            Debug.Log(policy2.ToString());
-        }
-    }
 
     // 모든 뒤끝 함수에서 에러 발생 시, 각 에러에 따라 호출해주는 핸들러
     private void SetErrorHandler()
