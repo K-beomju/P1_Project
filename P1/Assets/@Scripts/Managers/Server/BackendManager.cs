@@ -8,8 +8,25 @@ using UnityEngine;
 using static Define;
 using Debug = UnityEngine.Debug;
 
+
+
 public class BackendManager
 {
+    public class Policy
+    {
+        public string terms;
+        public string termsURL;
+        public string privacy;
+        public string privacyURL;
+        public override string ToString()
+        {
+            string str = $"terms : {terms}\n" +
+            $"termsURL : {termsURL}\n" +
+            $"privacy : {privacy}\n" +
+            $"privacyURL : {privacyURL}\n";
+            return str;
+        }
+    }
 
     //뒤끝 콘솔에 업로드한 차트 데이터만 모아놓은 클래스
     // public class BackendChart {
@@ -83,10 +100,49 @@ public class BackendManager
 
             CreateSendQueueMgr();
             SetErrorHandler();
+            GetPolicyV2Test();
         }
         else
         {
             Debug.LogError("초기화 실패");
+        }
+    }
+
+    // 개인정보처리방침
+    public void GetPolicyV2Test()
+    {
+        var bro = Backend.Policy.GetPolicyV2();
+
+        if (!bro.IsSuccess())
+        {
+            return;
+        }
+
+        Policy policy = new Policy();
+
+        LitJson.JsonData policyJson = bro.GetReturnValuetoJSON()["policy"]; // policy로 접근
+
+        policy.terms = policyJson["terms"]?.ToString(); // 입력이 없을 경우 null
+        policy.termsURL = policyJson["termsURL"]?.ToString(); // 입력이 없을 경우 null
+        policy.privacy = policyJson["privacy"]?.ToString(); // 입력이 없을 경우 null
+        policy.privacyURL = policyJson["privacyURL"]?.ToString(); // 입력이 없을 경우 null
+
+        Debug.Log(policy.ToString());
+
+        // 추가 정책을 한번이라도 수정한 경우
+        if (bro.GetReturnValuetoJSON().ContainsKey("policy2"))
+        {
+
+            LitJson.JsonData policy2Json = bro.GetReturnValuetoJSON()["policy2"]; // policy2로 접근
+
+            Policy policy2 = new Policy();
+
+            policy2.terms = policy2Json["terms"]?.ToString(); // 입력이 없을 경우 null
+            policy2.termsURL = policy2Json["termsURL"]?.ToString(); // 입력이 없을 경우 null
+            policy2.privacy = policy2Json["privacy"]?.ToString(); // 입력이 없을 경우 null
+            policy2.privacyURL = policy2Json["privacyURL"]?.ToString(); // 입력이 없을 경우 null
+
+            Debug.Log(policy2.ToString());
         }
     }
 
@@ -421,11 +477,11 @@ public class BackendManager
         var seconds = new WaitForSeconds(1);
         yield return seconds;
 
-        while(!_isErrorOccured)
+        while (!_isErrorOccured)
         {
             Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.PlayTime);
             Managers.Event.TriggerEvent(EEventType.QuestItemUpdateed);
-            yield return seconds;   
+            yield return seconds;
         }
     }
 
@@ -433,7 +489,7 @@ public class BackendManager
     public void SendBugReport(string className, string functionName, string errorInfo, int repeatCount = 3)
     {
 
-        
+
         // 에러가 실패할 경우 재귀함수를 통해 최대 3번까지 호출을 시도한다.
         if (repeatCount <= 0)
         {
