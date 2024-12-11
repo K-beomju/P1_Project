@@ -1,7 +1,10 @@
 using BackEnd;
+using LitJson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Firebase;
+using Firebase.Messaging;
 
 
 
@@ -60,6 +63,7 @@ public class UI_PolicyPopup : UI_Popup
 
     private string serviceDesc = null;
     private string personalDesc = null;
+    private string token = string.Empty;
 
     protected override bool Init()
     {
@@ -103,6 +107,49 @@ public class UI_PolicyPopup : UI_Popup
         
         return true;
     }
+    void Start() {
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == DependencyStatus.Available)
+            {
+                // Firebase 초기화
+                FirebaseApp app = FirebaseApp.DefaultInstance;
+                // FCM 토큰 가져오기
+                GetToken();
+            }
+            else
+            {
+                Debug.Log($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+            }
+        });
+    }
+
+    void GetToken()
+    {
+        FirebaseMessaging.TokenReceived += OnTokenReceived;
+
+        // 해당 task는 외부쓰레드로 작동합니다.
+        // 만약 GameObject.Instantiate 같은 유니티 함수나 UnityEngine.UI를 사용할 경우, 예외가 발생합니다.
+        FirebaseMessaging.GetTokenAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                token = task.Result;
+                Debug.Log($"FCM Token: {token}");
+            }
+            else
+            {
+                Debug.Log("Failed to get FCM token");
+            }
+        });
+    }
+
+    void OnTokenReceived(object sender, TokenReceivedEventArgs token)
+    {
+        Debug.Log($"Received Registration Token: {token.Token}");
+    }
+
 
     private bool EssentialPolicy()
     {
@@ -118,9 +165,27 @@ public class UI_PolicyPopup : UI_Popup
 
     private void OnClickAccpetButton()
     {
-        ClosePopupUI();
-        Managers.UI.ShowPopupUI<UI_NicknamePopup>();
+        // 푸시알림에 동의했을 경우
+        if(GetToggle((int)Toggles.Toggle_PushCheck).isOn)
+        {
+            SendQueue.Enqueue(Backend.Android.PutDeviceToken, token, (callback) => 
+            {
+                if (IsBackendError(callback)) {
+                    ShowAlertUI("푸시 알람 미처리 안내");
+                }
+                else {
+                    ClosePopupUI();
+                    Managers.UI.ShowPopupUI<UI_NicknamePopup>();
+                }
+            });
+        }
+        else
+        {
+            ClosePopupUI();
+            Managers.UI.ShowPopupUI<UI_NicknamePopup>();
+        }
     }
+    
 
     private void OnClickExitButton()
     {
