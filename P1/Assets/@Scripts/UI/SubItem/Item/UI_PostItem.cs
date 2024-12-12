@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using static Define;
 
 public class UI_PostItem : UI_Base
 {
@@ -54,14 +55,6 @@ public class UI_PostItem : UI_Base
             GetImage((int)Images.Image_PostIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Item/{_postItem.items[0].itemName}");
             GetTMPText((int)Texts.Text_ExpirationDateText).text = "만료까지 " + _postItem.expirationDate.ToString();
 
-            // if ((_postItem.expirationDate - DateTime.UtcNow).Days > 0)
-            // {
-            //     GetTMPText((int)Texts.Text_ExpirationDateText).text = (_postItem.expirationDate - DateTime.UtcNow).Days + "일 남음";
-            // }
-            // else
-            // {
-            //     GetTMPText((int)Texts.Text_ExpirationDateText).text = (_postItem.expirationDate - DateTime.UtcNow).Hours + "시간 남음";
-            // }
             _receivePostFunc = func;
         }
         catch (Exception e)
@@ -80,6 +73,11 @@ public class UI_PostItem : UI_Base
             {
                 if (isSuccess)
                 {
+                     for (int i = 0; i < 10; i++)
+                    {
+                        UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+                        itemIcon.SetItemIconAtCanvasPosition(EItemType.Dia, Vector2.zero);
+                    }
                     // 성공 시 우편 UI 제거
                     _receivePostFunc.Invoke(_postItem.inDate);
                 }

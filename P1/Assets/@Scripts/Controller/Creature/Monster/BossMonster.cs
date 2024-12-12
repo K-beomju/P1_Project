@@ -54,7 +54,28 @@ public class BossMonster : Monster
 
     public override void OnDead()
     {
+        // Clear 보상 재화 연출 
+        for (int i = 0; i < 10; i++)
+        {
+            UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+            itemIcon.SetItemIconAtPosition(EItemType.Dia, transform.position);
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+            itemIcon.SetItemIconAtPosition(EItemType.Gold, transform.position);
+        }
+
+        // Clear 보상 지급 
+        Dictionary<EItemType, int> rewardItem = Managers.Scene.GetCurrentScene<GameScene>().StageInfo.RewardItem;
+
+        Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, rewardItem[EItemType.Gold]);
+        Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, rewardItem[EItemType.Dia]);
+
         Managers.Object.SpawnGameObject(CenterPosition, "Object/Effect/Explosion/DeadEffect");
+
+        Managers.Object.Despawn(this);
     }
     #endregion
 }

@@ -39,12 +39,6 @@ public class UI_PolicyPopup : UI_Popup
         Toggle_PushCheck
     }
 
-    public enum Texts
-    {
-        Text_ServiceDesc,
-        Text_PersonalDesc
-    }
-
     public enum Buttons
     {
         Btn_Exit,
@@ -59,8 +53,6 @@ public class UI_PolicyPopup : UI_Popup
         Personal
     }
 
-    private string serviceDesc = null;
-    private string personalDesc = null;
     private string token = string.Empty;
 
     protected override bool Init()
@@ -70,7 +62,6 @@ public class UI_PolicyPopup : UI_Popup
         
         BindObjects(typeof(GameObjects));
         BindToggles(typeof(Toggles));
-        BindTMPTexts(typeof(Texts));
         BindButtons(typeof(Buttons));
 
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(OnClickExitButton);

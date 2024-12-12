@@ -96,7 +96,7 @@ public class GameScene : BaseScene
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
         // 출석체크 로직
-        if(CharacterData.AttendanceCheck() == true)
+        if (CharacterData.AttendanceCheck() == true)
         {
             Debug.Log("하루가 지나 출석체크 팝업 On");
             var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
@@ -149,7 +149,7 @@ public class GameScene : BaseScene
     private void SetupStage()
     {
         ChapterLevel = 1;
-        StageInfo = Managers.Data.StageChart[CharacterData.StageLevel]; 
+        StageInfo = Managers.Data.StageChart[CharacterData.StageLevel];
         Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
 
         BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;
@@ -186,7 +186,7 @@ public class GameScene : BaseScene
     private IEnumerator CoBossStage()
     {
         ResetStageAndHero();
-        var fadeUI =  Managers.UI.ShowBaseUI<UI_FadeInBase>();
+        var fadeUI = Managers.UI.ShowBaseUI<UI_FadeInBase>();
         Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_POPUP - 1);
         fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplay("보스를 처치하세요!");
@@ -213,7 +213,7 @@ public class GameScene : BaseScene
     private IEnumerator MonitorBossMonsterBattle()
     {
         // 몬스터 살아있는지 검사
-        while (Managers.Object.BossMonster.CreatureState != ECreatureState.Dead)
+        while (Managers.Object.BossMonster.IsValid())
         {
 
             if (UpdateBossBattleTimer()) // 타이머 상태를 확인
@@ -225,10 +225,21 @@ public class GameScene : BaseScene
             }
             yield return null; // 다음 프레임 대기
         }
-        
-        Debug.Log("보스전 이김");
+
+        // 보스전 성공___________________
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
-        GameSceneState = EGameSceneState.Clear;
+
+        Camera mainCamera = Camera.main;
+        Vector3 screenCenter = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane));
+        Managers.Object.SpawnGameObject(screenCenter, "Object/ConfettiBurst").GetComponent<ParticleSystem>().Play();
+        Managers.UI.ShowBaseUI<UI_StageClearBase>().ShowStageClearUI();
+
+        yield return new WaitForSeconds(1);
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1f,
+        fadeOutCallBack: () =>
+        {
+            GameSceneState = EGameSceneState.Clear;
+        });
     }
 
     #endregion
@@ -327,8 +338,6 @@ public class GameScene : BaseScene
     private IEnumerator CoStageClear()
     {
         MoveToNextStage(true);
-
-        Managers.UI.ShowPopupUI<UI_ItemGainPopup>().ShowCreateClearItem(StageInfo.RewardItem);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.StageClear);
         yield return null;
     }
@@ -358,7 +367,7 @@ public class GameScene : BaseScene
         BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
-        if (BossBattleTimer <= 0 )
+        if (BossBattleTimer <= 0)
         {
             HandleBattleFailure();
             return true; // 타이머 종료
