@@ -13,7 +13,7 @@ public class BossMonster : Monster
             return false;
 
         ObjectType = EObjectType.BossMonster;
-    
+
         return true;
     }
 
@@ -27,6 +27,10 @@ public class BossMonster : Monster
             Atk = stageInfo.BossMonsterAtk;
             MaxHp = stageInfo.BossMonsterMaxHp;
             Hp = MaxHp;
+            AttackRange = 1f;
+            MoveSpeed = 1.5f;
+
+            Target = Managers.Object.Hero;
         }
     }
 
@@ -39,8 +43,53 @@ public class BossMonster : Monster
 
     protected override void UpdateMove()
     {
-        base.UpdateMove();
+        if (!isActionEnabled)
+            return;
 
+        Vector3 dir = Target.CenterPosition - CenterPosition;
+        float distToTargetSqr = dir.sqrMagnitude;
+        float attackDistanceSqr = AttackRange * AttackRange;
+
+        if (distToTargetSqr <= attackDistanceSqr)
+        {
+            CreatureState = ECreatureState.Attack;
+            return;
+        }
+        else
+        {
+            LookAt(dir);
+            float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
+            transform.Translate(dir.normalized * moveDist);
+        }
+
+
+    }
+
+    protected override void UpdateAttack()
+    {
+        if (!isActionEnabled)
+            return;
+
+        Vector3 dir = Target.transform.position - transform.position;
+        float distToTargetSqr = dir.sqrMagnitude;
+
+        // 공격 범위를 벗어나면 이동 상태로 전환
+        if (distToTargetSqr > 3)
+        {
+            CreatureState = ECreatureState.Move;
+            return;
+        }
+
+        LookAt(dir);
+
+        if (_coWait == null)
+        {
+            StartWait(2);
+            if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
+                return;
+
+            Target.GetComponent<IDamageable>().OnDamaged(this);
+        }
     }
 
     #endregion

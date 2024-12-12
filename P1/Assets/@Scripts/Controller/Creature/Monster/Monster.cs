@@ -190,7 +190,7 @@ public class Monster : Creature, IDamageable
     {
         base.OnDamaged(attacker, effect);
 
-        if (this is RankMonster)
+        if (this is RankMonster || this is BossMonster)
             return;
 
         Vector2 direction = attacker.transform.position - transform.position;

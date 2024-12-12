@@ -191,10 +191,11 @@ public class GameScene : BaseScene
         fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplay("보스를 처치하세요!");
 
-
+    
         Managers.Game.SpawnStageMonster(StageInfo, true);
-
         var bossMonster = Managers.Object.BossMonster;
+        bossMonster.DisableAction();
+
         sceneUI.RefreshBossMonsterHp(bossMonster);
         Managers.Object.Hero.LookAt(bossMonster.transform.position);
         cameraController.Target = bossMonster.transform;
@@ -206,6 +207,7 @@ public class GameScene : BaseScene
         cameraController.Target = Managers.Object.Hero.transform;
 
         // Battle Start
+        bossMonster.EnableAction();
         Managers.Object.Hero.EnableAction();
         yield return MonitorBossMonsterBattle();
     }
