@@ -53,6 +53,7 @@ public class Hero : Creature
         handController = Managers.Resource.Load<RuntimeAnimatorController>("Animations/Hero_Hand");
         weaponController = Managers.Resource.Load<RuntimeAnimatorController>("Animations/Hero_Weapon");
         Anim.SetBool(AnimName.HashCombo, true);
+        weaponSprite.gameObject.SetActive(false);
 
         HeroMoveState = EHeroMoveState.None;
         return true;
@@ -319,10 +320,12 @@ public class Hero : Creature
     public void ChangeAnimController(EquipmentInfoData infoData = null)
     {
         Anim.runtimeAnimatorController = infoData != null ? weaponController : handController;
-        
+        weaponSprite.gameObject.SetActive(false);
         if(infoData != null)
         {
+            Debug.Log("ASDASD");
             isMove = true;
+            weaponSprite.gameObject.SetActive(true);
             weaponSprite.sprite = Managers.Resource.Load<Sprite>($"Sprites/{infoData.SpriteKey}");
         }
     }

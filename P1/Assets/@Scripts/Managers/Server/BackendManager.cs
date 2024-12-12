@@ -184,6 +184,32 @@ public class BackendManager
 
     }
 
+    public float saveDataCoolTime { get; private set; }
+    public bool IsSaveCoolTimeActive => saveDataCoolTime > 0;
+
+    // 수동으로 데이터를 저장하는 코루틴
+    public void StartSaveCoolTime(Action onCoolDownComplete)
+    {
+        if (IsSaveCoolTimeActive)
+            return;
+
+        Managers.Instance.StartCoroutine(SaveCoolTimeCoroutine(onCoolDownComplete));
+    }
+
+    private IEnumerator SaveCoolTimeCoroutine(Action onCoolDownComplete)
+    {
+        saveDataCoolTime = 5;
+        while (saveDataCoolTime > 0)
+        {
+            saveDataCoolTime -= Time.deltaTime;
+            yield return null;
+        }
+        saveDataCoolTime = 0; // 정확한 쿨타임 종료를 보장
+        onCoolDownComplete?.Invoke();
+    }
+
+
+
     // 업데이트가 발생한 이후에 호출에 대한 응답을 반환해주는 대리자 함수
     public delegate void AfterUpdateFunc(BackendReturnObject callback);
 

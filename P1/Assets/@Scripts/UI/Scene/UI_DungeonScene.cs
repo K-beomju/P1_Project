@@ -16,7 +16,8 @@ public class UI_DungeonScene : UI_Scene
         Text_DungeonInfo,
         Text_AutoSkill,
         Text_TotalDamage,
-        ExpValueText
+        ExpValueText,
+        RemainMonsterValueText
     }
 
     enum Sliders
@@ -28,7 +29,8 @@ public class UI_DungeonScene : UI_Scene
 
     public enum GameObjects
     {
-        UI_WorldBoss
+        UI_WorldBoss,
+        RemainMonster
     }
 
     public enum EquipSkillSlots
@@ -95,10 +97,13 @@ public class UI_DungeonScene : UI_Scene
             GetTMPText((int)Texts.Text_DungeonInfo).text = $"{Util.GetDungeonType(type)}";
 
         GetObject((int)GameObjects.UI_WorldBoss).SetActive(type == EDungeonType.WorldBoss);
+        GetObject((int)GameObjects.RemainMonster).SetActive(type == EDungeonType.Gold || type == EDungeonType.Dia);
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)
     {
+        GetTMPText((int)Texts.RemainMonsterValueText).text = $"{killMonster} / {maxMonster}";
+
         GetSlider((int)Sliders.Slider_DungeonInfo).maxValue = maxMonster;
         GetSlider((int)Sliders.Slider_DungeonInfo).value = killMonster;
     }
