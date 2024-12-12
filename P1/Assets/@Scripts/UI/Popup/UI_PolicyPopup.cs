@@ -28,9 +28,7 @@ public class UI_PolicyPopup : UI_Popup
     
     public enum GameObjects
     {
-        MainGroup,
-        ScrollView_Service,
-        ScrollView_Personal
+        MainGroup
     }
 
     public enum Toggles
@@ -76,14 +74,20 @@ public class UI_PolicyPopup : UI_Popup
         BindButtons(typeof(Buttons));
 
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(OnClickExitButton);
-        GetButton((int)Buttons.Button_Service).onClick.AddListener(() => ShowPolicyText(PolicyType.Service));
-        GetButton((int)Buttons.Button_Personal).onClick.AddListener(() => ShowPolicyText(PolicyType.Personal));
+        GetButton((int)Buttons.Button_Service).onClick.AddListener(() =>
+        {
+            // 이용약관
+            Application.OpenURL("https://storage.thebackend.io/98b106d62906bad2c8416462d83b8b90f151ab550fd19a5fa04d0607a5bb99d5/terms.html");
+        });
+        GetButton((int)Buttons.Button_Personal).onClick.AddListener(() => 
+        {
+            // 개인정보처리방침
+            Application.OpenURL("https://storage.thebackend.io/98b106d62906bad2c8416462d83b8b90f151ab550fd19a5fa04d0607a5bb99d5/privacy.html");
+        });
         GetButton((int)Buttons.Btn_Accept).onClick.AddListener(OnClickAccpetButton);
 
         // Detactive
         GetButton((int)Buttons.Btn_Exit).gameObject.SetActive(false);
-        GetObject((int)GameObjects.ScrollView_Service).SetActive(false);
-        GetObject((int)GameObjects.ScrollView_Personal).SetActive(false);
         GetButton((int)Buttons.Btn_Accept).interactable = false;
 
         // Toggle
@@ -190,65 +194,7 @@ public class UI_PolicyPopup : UI_Popup
     private void OnClickExitButton()
     {
         GetObject((int)GameObjects.MainGroup).SetActive(true);
-        GetObject((int)GameObjects.ScrollView_Service).SetActive(false);
-        GetObject((int)GameObjects.ScrollView_Personal).SetActive(false);
         GetButton((int)Buttons.Btn_Exit).gameObject.SetActive(false);
     }
 
-    private void ShowPolicyText(PolicyType policyType)
-    {
-        GetObject((int)GameObjects.MainGroup).SetActive(false);
-
-        GetButton((int)Buttons.Btn_Exit).gameObject.SetActive(true);
-        GetObject((int)GameObjects.ScrollView_Service).SetActive(policyType == PolicyType.Service);
-        GetObject((int)GameObjects.ScrollView_Personal).SetActive(policyType == PolicyType.Personal);
-
-        // 이용약관
-        if(policyType == PolicyType.Service)
-        {
-            GetTMPText((int)Texts.Text_ServiceDesc).text = serviceDesc;
-        }
-
-        // // 개정방 
-        if(policyType == PolicyType.Personal)
-        {
-            GetTMPText((int)Texts.Text_PersonalDesc).text = personalDesc;
-        }
-    }
-
-    public void GetPolicyV2()
-    {
-        var bro = Backend.Policy.GetPolicyV2();
-
-        if (!bro.IsSuccess())
-        {
-            return;
-        }
-
-        Policy policy = new Policy();
-
-        LitJson.JsonData policyJson = bro.GetReturnValuetoJSON()["policy"]; // policy로 접근
-
-        policy.terms = policyJson["terms"]?.ToString(); // 입력이 없을 경우 null
-        policy.privacy = policyJson["privacy"]?.ToString(); // 입력이 없을 경우 null
-
-        serviceDesc = policy.terms;
-        personalDesc = policy.privacy;
-
-        // // 추가 정책을 한번이라도 수정한 경우
-        // if (bro.GetReturnValuetoJSON().ContainsKey("policy2"))
-        // {
-
-        //     LitJson.JsonData policy2Json = bro.GetReturnValuetoJSON()["policy2"]; // policy2로 접근
-
-        //     Policy policy2 = new Policy();
-
-        //     policy2.terms = policy2Json["terms"]?.ToString(); // 입력이 없을 경우 null
-        //     policy2.privacy = policy2Json["privacy"]?.ToString(); // 입력이 없을 경우 null
-
-        //     serviceDesc = policy2.terms;
-        //     personalDesc = policy2.privacy;
-        // }
-
-    }
 }

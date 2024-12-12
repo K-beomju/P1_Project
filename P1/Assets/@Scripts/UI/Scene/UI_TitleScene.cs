@@ -123,7 +123,7 @@ public class UI_TitleScene : UI_Scene
     {
         if (string.IsNullOrEmpty(Backend.UserNickName))
         {
-            Managers.UI.ShowPopupUI<UI_PolicyPopup>().GetPolicyV2();
+            Managers.UI.ShowPopupUI<UI_PolicyPopup>();
         }
         else
         {

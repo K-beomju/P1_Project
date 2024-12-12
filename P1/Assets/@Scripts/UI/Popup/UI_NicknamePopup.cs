@@ -119,7 +119,8 @@ public class UI_NicknamePopup : UI_Popup
                 }
                 else
                 {
-                    Managers.Scene.GetCurrentScene<TitleScene>().InGameStart();
+                    ClosePopupUI();
+                    Managers.UI.ShowPopupUI<UI_PrologPopup>();
                 }
             }
             catch (Exception e)

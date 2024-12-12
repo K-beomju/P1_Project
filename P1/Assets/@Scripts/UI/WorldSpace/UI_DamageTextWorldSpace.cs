@@ -42,7 +42,6 @@ public class UI_DamageTextWorldSpace : UI_Base
 		{
 			_damageText.color = Util.HexToColor("EFAD00");
 		}
-		Debug.LogWarning(effect == null);
 		if (effect != null)
 		{
 			_damageText.color = Color.red;
