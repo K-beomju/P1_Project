@@ -251,8 +251,8 @@ public class Monster : Creature, IDamageable
 
         if (ObjectType == EObjectType.Monster)
         {
-            UI_GoldIconBase goldIcon = Managers.UI.ShowPooledUI<UI_GoldIconBase>();
-            goldIcon.SetGoldIconAtPosition(transform.position, () =>
+            UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+            itemIcon.SetItemIconAtPosition(EItemType.Gold,transform.position, () =>
             {
                 try
                 {

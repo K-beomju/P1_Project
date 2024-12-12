@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class UI_AttendancePopup : UI_Popup
 {
@@ -17,7 +18,7 @@ public class UI_AttendancePopup : UI_Popup
         Button_Receive
     }
 
-    public enum Texts 
+    public enum Texts
     {
         Text_Timer
     }
@@ -72,6 +73,11 @@ public class UI_AttendancePopup : UI_Popup
             }
         }
 
+        for (int i = 0; i < 10; i++)
+        {
+            UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+            itemIcon.SetItemIconAtCanvasPosition(EItemType.Dia, Vector2.zero);
+        }
         // 버튼 상태 갱신
         RefreshUI();
     }
