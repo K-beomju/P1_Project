@@ -50,6 +50,8 @@ public class UI_DrawEquipmentPanel : UI_Base
 
     private DrawData _drawData;
     private EDrawType _drawType = EDrawType.Skill;
+    private EAdRewardType _rewardType;
+
 
     private Image _portalImage;
 
@@ -85,33 +87,40 @@ public class UI_DrawEquipmentPanel : UI_Base
 
         GetButton((int)Buttons.Btn_GachaProbability).onClick.AddListener(() => ShowProbabilityPopup());
 
-        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => 
+        GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() =>
         {
-            Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned => 
+            if (Managers.Backend.GameData.ShopData.IsCheckWatch(_rewardType))
             {
-                if(onRewardEarned)
+                Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned =>
                 {
-                    // 광고 시청 처리
-                    Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawEquipment);
+                    if (onRewardEarned)
+                    {
+                        // 광고 시청 처리
+                        Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
 
-                    // 보상 지급 
-                    OnDrawEquipment(10);
+                        // 보상 지급 
+                        OnDrawEquipment(10);
 
-                    // UI 업데이트 
-                    RefreshUI();
-                }
-                else
-                {
-                    Debug.LogWarning("광고 시청 실패!");
-                }
-            });
+                        // UI 업데이트 
+                        RefreshUI();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("광고 시청 실패!");
+                    }
+                });
+            }
+            else
+            {
+                ShowAlertUI("광고 시청 횟수가 모두 소진되었습니다");
+            }
         });
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
 
-        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnClickButton(EDrawType.Weapon));
-        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EDrawType.Armor));
-        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EDrawType.Ring));
+        GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnClickButton(EDrawType.Weapon, EAdRewardType.DrawWeapon));
+        GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EDrawType.Armor, EAdRewardType.DrawArmor));
+        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EDrawType.Ring, EAdRewardType.DrawRing));
 
         // 버튼 클릭 시 Toggle의 값을 변경합니다.
         Toggle drawDirectionToggle = Get<Toggle>((int)Toggles.Toggle_DrawDirection);
@@ -119,6 +128,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         drawDirectionToggle.onValueChanged.AddListener((bool isOn) => _drawDirection = isOn);
 
         _drawType = EDrawType.Weapon;
+        _rewardType = EAdRewardType.DrawWeapon;
         return true;
     }
 
@@ -132,12 +142,13 @@ public class UI_DrawEquipmentPanel : UI_Base
         Managers.Event.RemoveEvent(EEventType.DrawEquipmentUIUpdated, new Action(UpdateEquipmentUI));
     }
 
-    void OnClickButton(EDrawType type)
+    void OnClickButton(EDrawType type, EAdRewardType rewardType)
     {
         if (_drawType == type)
             return;
 
         _drawType = type;
+        _rewardType = rewardType;
         RefreshUI();
     }
 
@@ -168,9 +179,9 @@ public class UI_DrawEquipmentPanel : UI_Base
         _totalCount = _drawData.DrawCount;
 
         GetTMPText((int)Texts.Text_DrawEquipmentLevel).text = $"{Util.GetDrawTypeString(_drawType)} 뽑기 Lv. {_drawLevel}";
-        
+
         // 최고 레벨이라면
-        if(_drawLevel == 10)
+        if (_drawLevel == 10)
         {
             GetTMPText((int)Texts.Text_DrawValue).text = "최고레벨 도달";
             GetSlider((int)Sliders.Slider_DrawCount).maxValue = 0;
@@ -185,9 +196,9 @@ public class UI_DrawEquipmentPanel : UI_Base
         }
 
 
-        var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
-        GetTMPText((int)Texts.Text_AdWatchedDrawEquipmentCount).text = 
-        $"({rewardAdDic[EAdRewardType.DrawEquipment.ToString()].WatchedCount}/{RewardAdData.MaxCount})";
+        RewardAdData rewardData =  Managers.Backend.GameData.ShopData.RewardAdDic[_rewardType.ToString()];
+        GetTMPText((int)Texts.Text_AdWatchedDrawEquipmentCount).text =
+        $"({rewardData.WatchedCount}/{rewardData.MaxCount})";
     }
 
 

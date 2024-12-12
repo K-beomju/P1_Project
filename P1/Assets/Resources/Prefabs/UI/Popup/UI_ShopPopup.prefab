@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCD5C\uB300 200\uB2E4\uC774\uC544 \uD68D\uB4DD \uAC00\uB2A5!"
+  m_text: "\uCD5C\uB300 1500\uB2E4\uC774\uC544 \uD68D\uB4DD \uAC00\uB2A5!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
   m_sharedMaterial: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
@@ -724,7 +724,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00018343, y: 309.9073}
+  m_AnchoredPosition: {x: -0.00018343, y: 0}
   m_SizeDelta: {x: 0.00018311, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &847057838360242253
@@ -4822,8 +4822,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1203485594961957331}
   m_HandleRect: {fileID: 222149921378223862}
   m_Direction: 2
-  m_Value: 0.4696756
-  m_Size: 0.6940306
+  m_Value: 1
+  m_Size: 0.69403064
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

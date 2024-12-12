@@ -31,9 +31,9 @@ public class UI_AdBuffPopup : UI_Popup
 
         GetObject((int)GameObjects.BG).gameObject.BindEvent(() => ClosePopupUI());
         GetButton((int)Buttons.Btn_Exit).onClick.AddListener(() => ClosePopupUI());
-        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Gold).SetInfo(EAdBuffType.IncreaseGold);
-        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Exp).SetInfo(EAdBuffType.IncreaseExp);
-        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Atk).SetInfo(EAdBuffType.Atk);
+        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Gold).SetInfo(EAdBuffType.IncreaseGold, EAdRewardType.IncreaseGoldBuff);
+        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Exp).SetInfo(EAdBuffType.IncreaseExp, EAdRewardType.IncreaseExpBuff);
+        Get<UI_AdBuffScrollItem>((int)AdBuffScrollItems.UI_AdBuffScrollItem_Atk).SetInfo(EAdBuffType.Atk, EAdRewardType.AtkBuff);
 
         return true;
     }

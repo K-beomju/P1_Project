@@ -12,11 +12,12 @@ namespace BackendData.GameData
     public class RewardAdData
     {
         public int WatchedCount;  // 광고 시청 횟수
-        public const int MaxCount = 3; // 최대 시청 횟수
+        public int MaxCount = 3; // 최대 시청 횟수
 
-        public RewardAdData(int watchedCount)
+        public RewardAdData(int watchCount, int maxCount)
         {
-            WatchedCount = watchedCount;
+            WatchedCount = watchCount;
+            MaxCount = maxCount;
         }
     }
 
@@ -37,7 +38,12 @@ namespace BackendData.GameData
             _rewardAdDic.Clear();
             foreach (EAdRewardType rewardType in Enum.GetValues(typeof(EAdRewardType)))
             {
-                _rewardAdDic[rewardType.ToString()] = new RewardAdData(3);
+                // 전투 효과는 2번만, 나머진 3번
+                if(rewardType == EAdRewardType.AtkBuff || rewardType == EAdRewardType.IncreaseGoldBuff || rewardType == EAdRewardType.IncreaseExpBuff)
+                _rewardAdDic[rewardType.ToString()] = new RewardAdData(2, 2);
+                else
+                _rewardAdDic[rewardType.ToString()] = new RewardAdData(3, 3);
+
             }
 
              // 마지막 리셋 시간 초기화
@@ -48,8 +54,9 @@ namespace BackendData.GameData
         {
             foreach (var column in Data["RewardAd"].Keys)
             {
-                int watchedCount = int.Parse(Data["RewardAd"][column]["WatchedCount"].ToString());
-                _rewardAdDic.Add(column, new RewardAdData(watchedCount));
+                int watchCount = int.Parse(Data["RewardAd"][column]["WatchedCount"].ToString());
+                int maxCount = int.Parse(Data["RewardAd"][column]["MaxCount"].ToString());
+                _rewardAdDic.Add(column, new RewardAdData(watchCount, maxCount));
             }
             
             LastResetTime = Data["LastResetTime"].ToString();
@@ -91,7 +98,7 @@ namespace BackendData.GameData
             IsChangedData = true;
             foreach(var rewardAdData in _rewardAdDic.Values)
             {
-                rewardAdData.WatchedCount = 3;
+                rewardAdData.WatchedCount = rewardAdData.MaxCount;
             }
             LastResetTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
             Debug.Log("하루가 경과하여 광고 데이터를 초기화했습니다.");
@@ -99,15 +106,23 @@ namespace BackendData.GameData
 
         public bool WatchAd(EAdRewardType rewardType)
         {
-            // 하루 경과 체크
-            CheckReset();
-
+            IsChangedData = true;
             var rewardAdData = _rewardAdDic[rewardType.ToString()];
 
             // 광고 시청 처리
             rewardAdData.WatchedCount--;
-            Debug.Log($"{rewardType} 광고 시청 완료. 현재 시청 횟수: {rewardAdData.WatchedCount}/{RewardAdData.MaxCount}");
+            Debug.Log($"{rewardType} 광고 시청 완료. 현재 시청 횟수: {rewardAdData.WatchedCount}/{rewardAdData.MaxCount}");
             return true;
+        }
+
+        public bool IsCheckWatch(EAdRewardType rewardType)
+        {
+            if(_rewardAdDic[rewardType.ToString()].WatchedCount != 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -464,8 +464,13 @@ public static class Define
     {
         Gold,
         Dia,
-        DrawEquipment,
-        DrawSkill
+        DrawWeapon,
+        DrawArmor,
+        DrawRing,
+        DrawSkill,
+        AtkBuff,
+        IncreaseGoldBuff,
+        IncreaseExpBuff
     }
     #endregion
 

@@ -163,5 +163,9 @@ public class MyCustomEditorWindow : EditorWindow
             FindAnyObjectByType<GameScene>().GameSceneState = EGameSceneState.Boss;
 
         }
+        if (GUILayout.Button("로컬 데이터 삭제", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 }

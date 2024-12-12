@@ -6,18 +6,18 @@ using static Define;
 
 public class UI_ShopPopup : UI_Popup
 {
-    public enum Buttons 
+    public enum Buttons
     {
         Btn_AdWatchedDia
     }
 
-    public enum Texts 
+    public enum Texts
     {
         Text_AdWatchedDiaCount
     }
 
 
-    public enum ShopPaidItems 
+    public enum ShopPaidItems
     {
         // Dia
         UI_ShopPaidItemDia_40,
@@ -61,37 +61,44 @@ public class UI_ShopPopup : UI_Popup
 
     private void OnClickButtonAdWatch(EAdRewardType rewardType)
     {
-        if(Managers.Backend.GameData.ShopData.RewardAdDic[rewardType.ToString()].WatchedCount <= 0)
+        if (Managers.Backend.GameData.ShopData.IsCheckWatch(rewardType))
         {
-            string name = rewardType == EAdRewardType.Dia ? "다이아" :"골드";
-            Debug.Log($"{rewardType} 광고 시청 최대 횟수 도달.");
-            return;
+            Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned =>
+            {
+                if (onRewardEarned)
+                {
+                    // 광고 시청 처리
+                    Managers.Backend.GameData.ShopData.WatchAd(rewardType);
+
+                    // 보상 지급 
+                    if (rewardType == EAdRewardType.Dia)
+                    {
+                        Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, 500);
+                    }
+                    else if (rewardType == EAdRewardType.Gold)
+                    {
+
+                    }
+
+                    // UI 업데이트 
+                    RefreshUI();
+                }
+                else
+                {
+                    Debug.LogWarning("광고 시청 실패!");
+                }
+            });
         }
-
-        Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned => 
+        else
         {
-            if(onRewardEarned)
-            {
-                // 광고 시청 처리
-                Managers.Backend.GameData.ShopData.WatchAd(rewardType);
-
-                // 보상 지급 
-
-                // UI 업데이트 
-                RefreshUI();
-            }
-            else
-            {
-                Debug.LogWarning("광고 시청 실패!");
-
-            }
-        });
+            ShowAlertUI("광고 시청 횟수가 모두 소진되었습니다");
+        }
     }
 
     public void RefreshUI()
     {
-        var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
-        GetTMPText((int)Texts.Text_AdWatchedDiaCount).text = 
-        $"무료({rewardAdDic[EAdRewardType.Dia.ToString()].WatchedCount}/{RewardAdData.MaxCount})";
+        RewardAdData rewardData =  Managers.Backend.GameData.ShopData.RewardAdDic[EAdRewardType.Dia.ToString()];
+        GetTMPText((int)Texts.Text_AdWatchedDiaCount).text =
+        $"무료({rewardData.WatchedCount}/{rewardData.MaxCount})";
     }
 }

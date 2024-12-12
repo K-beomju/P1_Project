@@ -55,24 +55,31 @@ public class UI_DrawSkillPanel : UI_Base
 
         GetButton((int)Buttons.Btn_DrawTenAd).onClick.AddListener(() => 
         {
-            Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned => 
+            if (Managers.Backend.GameData.ShopData.IsCheckWatch(EAdRewardType.DrawSkill))
             {
-                if(onRewardEarned)
+                Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned =>
                 {
-                    // 광고 시청 처리
-                    Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawSkill);
+                    if (onRewardEarned)
+                    {
+                        // 광고 시청 처리
+                        Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawSkill);
 
-                    // 보상 지급 
-                    OnDrawSkill(10);
+                        // 보상 지급 
+                        OnDrawSkill(10);
 
-                    // UI 업데이트 
-                    RefreshUI();
-                }
-                else
-                {
-                    Debug.LogWarning("광고 시청 실패!");
-                }
-            });
+                        // UI 업데이트 
+                        RefreshUI();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("광고 시청 실패!");
+                    }
+                });
+            }
+            else
+            {
+                ShowAlertUI("광고 시청 횟수가 모두 소진되었습니다");
+            }
         });
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawSkill(10));
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawSkill(30));
@@ -125,9 +132,9 @@ public class UI_DrawSkillPanel : UI_Base
             GetSlider((int)Sliders.Slider_DrawCount).value = _totalCount;
         }
 
-        var rewardAdDic = Managers.Backend.GameData.ShopData.RewardAdDic;
-        GetTMPText((int)Texts.Text_AdWatchedDrawSkillCount).text = 
-        $"({rewardAdDic[EAdRewardType.DrawSkill.ToString()].WatchedCount}/{RewardAdData.MaxCount})";
+        RewardAdData rewardData =  Managers.Backend.GameData.ShopData.RewardAdDic[EAdRewardType.DrawSkill.ToString()];
+        GetTMPText((int)Texts.Text_AdWatchedDrawSkillCount).text =
+        $"({rewardData.WatchedCount}/{rewardData.MaxCount})";
     }
 
 

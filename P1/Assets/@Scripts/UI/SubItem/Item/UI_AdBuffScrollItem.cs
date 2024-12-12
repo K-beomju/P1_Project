@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,9 @@ public class UI_AdBuffScrollItem : UI_Base
         Text_Amount
     }
 
-    private EAdBuffType BuffType;
-    private const int MaxCount = 2;
-    private const int DurationTimeMinutes = 30; 
+    private EAdBuffType _buffType;
+    private EAdRewardType _rewardType;
+    private const int DurationTimeMinutes = 30;
 
     protected override bool Init()
     {
@@ -35,27 +36,45 @@ public class UI_AdBuffScrollItem : UI_Base
     {
         if (IsBuffActive())
         {
-            Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("버프 효과를 사용중입니다");
+            ShowAlertUI("버프 효과를 사용중입니다");
             return;
         }
 
-        if (Managers.Backend.GameData.CharacterData.AdBuffDic[BuffType.ToString()] < MaxCount)
+        if (Managers.Backend.GameData.ShopData.IsCheckWatch(_rewardType))
         {
-            Managers.Backend.GameData.CharacterData.UsedBuff(BuffType);
-            RefreshUI();
+            Managers.Ad.ShowRewardedInterstitialAd(onRewardEarned =>
+            {
+                if (onRewardEarned)
+                {
+                    string name = Util.GetAdBuffType(_buffType);
 
-            (Managers.UI.SceneUI as UI_GameScene).UpdateAdBuffItem(BuffType, DurationTimeMinutes);
+                    ShowAlertUI($"{name} 버프를 사용합니다");
+
+                    // 광고 시청 처리
+                    Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
+
+                    // 보상 지급 
+                    (Managers.UI.SceneUI as UI_GameScene).UpdateAdBuffItem(_buffType, DurationTimeMinutes);
+
+                    // UI 업데이트 
+                    RefreshUI();
+                }
+                else
+                {
+                    Debug.LogWarning("광고 시청 실패!");
+                }
+            });
         }
         else
         {
-            Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification($"일일 사용 가능 횟수를 초과하였습니다");
+            ShowAlertUI("광고 시청 횟수가 모두 소진되었습니다");
         }
-
     }
 
-    public void SetInfo(EAdBuffType buffType)
+    public void SetInfo(EAdBuffType buffType, EAdRewardType rewardType)
     {
-        BuffType = buffType;
+        _buffType = buffType;
+        _rewardType = rewardType;
 
         if (Init() == false)
         {
@@ -65,13 +84,14 @@ public class UI_AdBuffScrollItem : UI_Base
 
     public void RefreshUI()
     {
-        GetTMPText((int)Texts.Text_Amount).text
-        = $"{Managers.Backend.GameData.CharacterData._adBuffDic[BuffType.ToString()]} / {MaxCount}";
+        RewardAdData rewardData =  Managers.Backend.GameData.ShopData.RewardAdDic[_rewardType.ToString()];
+        GetTMPText((int)Texts.Text_Amount).text =
+        $"({rewardData.WatchedCount}/{rewardData.MaxCount})";
     }
 
     private bool IsBuffActive()
     {
-        switch (BuffType)
+        switch (_buffType)
         {
             case EAdBuffType.Atk:
                 return Managers.Hero.PlayerHeroInfo.AtkBuff != 0;

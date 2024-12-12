@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Android;
 using static Define;
 
 public class TitleScene : BaseScene
@@ -17,10 +18,51 @@ public class TitleScene : BaseScene
     private delegate void BackendLoadStep();
     private readonly Queue<BackendLoadStep> _initializeStep = new Queue<BackendLoadStep>();
 
+    #region 푸시 알림 권한
+    internal void PermissionCallbacks_PermissionDenied(string permissionName)
+    {
+        Debug.Log($"{permissionName} 권한이 거부되었습니다.");
+    }
+
+    internal void PermissionCallbacks_PermissionGranted(string permissionName)
+    {
+        Debug.Log($"{permissionName} 권한이 부여되었습니다.");
+    }
+
+    internal void PermissionCallbacks_PermissionDeniedAndDontAskAgain(string permissionName)
+    {
+        Debug.Log($"{permissionName} 권한이 거부되었으며 '다시 묻지 않음'이 활성화되었습니다.");
+    }
+
+
+    private void RequestNotificationPermission()
+    {
+        if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+        {
+            var callbacks = new PermissionCallbacks();
+            callbacks.PermissionDenied += PermissionCallbacks_PermissionDenied;
+            callbacks.PermissionGranted += PermissionCallbacks_PermissionGranted;
+            callbacks.PermissionDeniedAndDontAskAgain += PermissionCallbacks_PermissionDeniedAndDontAskAgain;
+
+            Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS", callbacks);
+        }
+        else
+        {
+            Debug.Log("POST_NOTIFICATIONS 권한이 이미 부여되었습니다.");
+        }
+    }
+    #endregion
+
     protected override bool Init()
     {
         if (base.Init() == false)
             return false;
+
+        // Android 13(API Level 33) 이상에서 POST_NOTIFICATIONS 권한 요청
+        if (Application.platform == RuntimePlatform.Android && SystemInfo.operatingSystem.Contains("API-33"))
+        {
+            RequestNotificationPermission();
+        }
 
         // 씬 설정 
         SceneType = EScene.TitleScene;
@@ -28,7 +70,8 @@ public class TitleScene : BaseScene
 
         // 뒤끝 초기화 
         Managers.Backend.Init();
-        if (Backend.IsInitialized == false) {
+        if (Backend.IsInitialized == false)
+        {
             Debug.LogError("뒤끝 초기화가 안됌");
         }
 
@@ -54,7 +97,7 @@ public class TitleScene : BaseScene
         NextStep(true, string.Empty, string.Empty, string.Empty);
     }
 
-     private void InitStep(Action<bool> onCompleteCallback = null)
+    private void InitStep(Action<bool> onCompleteCallback = null)
     {
         _initializeStep.Clear();
 
@@ -187,7 +230,7 @@ public class TitleScene : BaseScene
 
         _initializeStep.Clear();
         Managers.Scene.LoadScene(EScene.GameScene);
-        
+
     }
 
 }

@@ -553,4 +553,22 @@ public static class Util
 
     #endregion
 
+
+    #region Ad Buff
+
+    
+    public static string GetAdBuffType(EAdBuffType type)
+    {
+        return type switch
+        {
+            EAdBuffType.Atk => "전투의 서",
+            EAdBuffType.IncreaseGold => "황금의 서",
+            EAdBuffType.IncreaseExp => "성장의 서",
+            _ => throw new ArgumentException($"Unknown GetDungeonType String: {type}")
+        };
+    }
+
+
+    #endregion
+
 }
