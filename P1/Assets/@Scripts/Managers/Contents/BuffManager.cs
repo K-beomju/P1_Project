@@ -103,4 +103,14 @@ public class BuffManager
         }
         PlayerPrefs.Save();
     }
+
+    public bool IsAnyBuffActive()
+    {
+        foreach (var buffTime in _buffRemainingTime.Values)
+        {
+            if (buffTime > 0)
+                return true;
+        }
+        return false;
+    }
 }

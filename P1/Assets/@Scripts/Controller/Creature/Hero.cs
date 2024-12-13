@@ -121,6 +121,16 @@ public class Hero : Creature
             return;
         }
 
+        Vector3 dir = Target.transform.position - CenterPosition;
+        float distToTargetSqr = dir.sqrMagnitude;
+        float attackDistanceSqr = AttackRange * AttackRange;
+
+        // 공격 범위안에 없으면 return
+        if (distToTargetSqr > attackDistanceSqr)
+        {
+            return;
+        }
+
         if (OnAttackAction != null)
         {
             OnAttackAction.Invoke();

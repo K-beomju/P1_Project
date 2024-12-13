@@ -1,4 +1,5 @@
 using BackEnd;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,7 +47,8 @@ public class UI_GameScene : UI_Scene
     enum Images
     {
         Image_RankUpIcon,
-        Image_MyRankIcon
+        Image_MyRankIcon,
+        Image_AdBuff
     }
 
     enum GameObjects
@@ -571,6 +573,27 @@ public class UI_GameScene : UI_Scene
                 break;
             }
         }
+        RotateAdBuffIcon();
+    }
+
+    public void RotateAdBuffIcon()
+    {
+        if (Managers.Buff.IsAnyBuffActive())
+        {
+            GetImage((int)Images.Image_AdBuff).transform.DORotate(
+                new Vector3(0, 0, -360), // Z축을 기준으로 360도 회전
+                1f,                     // 1초 동안 회전
+                RotateMode.FastBeyond360 // 빠르게 연속 회전
+            )
+            .SetEase(Ease.InOutSine)        // 일정한 속도로 회전
+            .SetLoops(-1);               // 무한 루프
+        }
+        else
+        {
+            // 애니메이션을 멈추거나 초기화
+            GetImage((int)Images.Image_AdBuff).transform.DOKill(); // DOTween 애니메이션 중지
+            GetImage((int)Images.Image_AdBuff).transform.rotation = Quaternion.identity; // 초기화
+        }
     }
 
     private void UpdateBuffUI(EAdBuffType buffType)
@@ -595,6 +618,7 @@ public class UI_GameScene : UI_Scene
                 break;
             }
         }
+        RotateAdBuffIcon();
     }
 
     #endregion
@@ -606,8 +630,8 @@ public class UI_GameScene : UI_Scene
             // 버튼 이미지 스프라이트 변경
             Image buttonImage = GetButton((int)Buttons.Btn_Menu).GetComponent<Image>();
             string spritePath = "Sprites/Icon_Menu_Hamburger";
-            buttonImage.sprite = Managers.Resource.Load<Sprite>(spritePath);            
-            
+            buttonImage.sprite = Managers.Resource.Load<Sprite>(spritePath);
+
             GetObject((int)GameObjects.MenuGroup).SetActive(false);
         }
 

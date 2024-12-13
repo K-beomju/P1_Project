@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,9 +24,12 @@ public class UI_ItemGainPopup : UI_Popup
             return false;
 
         BindObjects(typeof(GameObjects));
-        GetObject((int)GameObjects.BG).BindEvent(() => 
+        GetObject((int)GameObjects.BG).BindEvent(() =>
         {
+            _clearItems.ForEach(item => item.gameObject.SetActive(false));
+            _relicItems.ForEach(item => item.gameObject.SetActive(false));
             ClosePopupUI();
+
         });
         for (int i = 0; i < 30; i++)
         {
@@ -44,32 +48,52 @@ public class UI_ItemGainPopup : UI_Popup
         return true;
     }
 
-    public void ShowCreateRelicItem(Dictionary<EHeroRelicType, int> relicDic)
-    {
-        //(Managers.UI.SceneUI as UI_GameScene).ShowPopupActiveGameUI(false);
-        StartCoroutine(CreateRelicItems(relicDic));
-    }
+  public void ShowCreateRelicItem(Dictionary<EHeroRelicType, int> relicDic)
+{
+    // Content_Item 애니메이션 시작
+    var contentItem = GetObject((int)GameObjects.Content_Item).transform;
+    contentItem.localScale = new Vector3(0.9f, 0.9f, 1f); // 살짝 축소된 상태에서 시작
+    contentItem.DOScale(Vector3.one, 0.1f).SetEase(Ease.Linear) // 부드러운 확장
+        .OnComplete(() =>
+        {
+            // 애니메이션이 완료된 후 아이템 생성 시작
+            StartCoroutine(CreateRelicItems(relicDic));
+        });
+}
 
-    public void ShowCreateClearItem(Dictionary<EItemType, int> itemDic)
-    {
-        //(Managers.UI.SceneUI as UI_GameScene).ShowPopupActiveGameUI(false);
-        StartCoroutine(CreateClearItems(itemDic));
-    }
+public void ShowCreateClearItem(Dictionary<EItemType, int> itemDic)
+{
+    // Content_Item 애니메이션 시작
+    var contentItem = GetObject((int)GameObjects.Content_Item).transform;
+    contentItem.localScale = new Vector3(0.9f, 0.9f, 1f); // 살짝 축소된 상태에서 시작
+    contentItem.DOScale(Vector3.one, 0.1f).SetEase(Ease.Linear) // 부드러운 확장
+        .OnComplete(() =>
+        {
+            // 애니메이션이 완료된 후 아이템 생성 시작
+            StartCoroutine(CreateClearItems(itemDic));
+        });
+}
 
-    /// <summary>
-    /// 유물 아이템 생성
-    /// </summary>
+
+
     private IEnumerator CreateRelicItems(Dictionary<EHeroRelicType, int> relicDic)
     {
-        _relicItems.ForEach(item => item.gameObject.SetActive(false));
 
         int relicIndex = 0;
         foreach (var item in relicDic)
         {
             if (relicIndex < _relicItems.Count)
             {
-                DisplayRelicItem(_relicItems[relicIndex], item);
+                var relicItem = _relicItems[relicIndex];
+                DisplayRelicItem(relicItem, item);
+
+                // DOTween 애니메이션 추가
+                relicItem.transform.localScale = Vector3.zero; // 초기 스케일 설정
+                relicItem.gameObject.SetActive(true); // 활성화
+                relicItem.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce); // 스케일 애니메이션
+
                 relicIndex++;
+                yield return new WaitForSeconds(0.05f); // 아이템 간 애니메이션 간격 추가
             }
         }
 
@@ -77,25 +101,31 @@ public class UI_ItemGainPopup : UI_Popup
         yield return null;
     }
 
-    /// <summary>
-    /// 클리어 아이템 (골드, 다이아) 생성
-    /// </summary>
     private IEnumerator CreateClearItems(Dictionary<EItemType, int> itemDic)
     {
-        _clearItems.ForEach(item => item.gameObject.SetActive(false));
 
         int clearIndex = 0;
         foreach (var item in itemDic)
         {
             if (clearIndex < _clearItems.Count)
             {
-                DisplayClearItem(_clearItems[clearIndex], item);
+                var clearItem = _clearItems[clearIndex];
+                DisplayClearItem(clearItem, item);
+
+                // DOTween 애니메이션 추가
+                clearItem.transform.localScale = Vector3.zero; // 초기 스케일 설정
+                clearItem.gameObject.SetActive(true); // 활성화
+                clearItem.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce); // 스케일 애니메이션
+
                 clearIndex++;
+                yield return new WaitForSeconds(0.05f); // 아이템 간 애니메이션 간격 추가
             }
         }
 
         yield return null;
     }
+
+
 
     private void DisplayRelicItem(UI_GainedItem relicItem, KeyValuePair<EHeroRelicType, int> item)
     {
