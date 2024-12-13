@@ -17,6 +17,7 @@ public class UI_ItemGainPopup : UI_Popup
     private List<UI_GainedItem> _relicItems = new List<UI_GainedItem>();
     private List<UI_ClearItem> _clearItems = new List<UI_ClearItem>();
 
+    private Dictionary<EItemType, int> _itemDic = new Dictionary<EItemType, int>();
 
     protected override bool Init()
     {
@@ -28,8 +29,20 @@ public class UI_ItemGainPopup : UI_Popup
         {
             _clearItems.ForEach(item => item.gameObject.SetActive(false));
             _relicItems.ForEach(item => item.gameObject.SetActive(false));
-            ClosePopupUI();
 
+            if (_itemDic.ContainsKey(EItemType.Dia))
+            {
+                UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+                itemIcon.SetItemIconAtCanvasPosition(EItemType.Dia, Vector2.zero);
+            }
+            if (_itemDic.ContainsKey(EItemType.Gold))
+            {
+                UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+                itemIcon.SetItemIconAtCanvasPosition(EItemType.Gold, Vector2.zero);
+            }
+
+
+            ClosePopupUI();
         });
         for (int i = 0; i < 30; i++)
         {
@@ -48,33 +61,16 @@ public class UI_ItemGainPopup : UI_Popup
         return true;
     }
 
-  public void ShowCreateRelicItem(Dictionary<EHeroRelicType, int> relicDic)
-{
-    // Content_Item 애니메이션 시작
-    var contentItem = GetObject((int)GameObjects.Content_Item).transform;
-    contentItem.localScale = new Vector3(0.9f, 0.9f, 1f); // 살짝 축소된 상태에서 시작
-    contentItem.DOScale(Vector3.one, 0.1f).SetEase(Ease.Linear) // 부드러운 확장
-        .OnComplete(() =>
-        {
-            // 애니메이션이 완료된 후 아이템 생성 시작
-            StartCoroutine(CreateRelicItems(relicDic));
-        });
-}
+    public void ShowCreateRelicItem(Dictionary<EHeroRelicType, int> relicDic)
+    {
+        StartCoroutine(CreateRelicItems(relicDic));
+    }
 
-public void ShowCreateClearItem(Dictionary<EItemType, int> itemDic)
-{
-    // Content_Item 애니메이션 시작
-    var contentItem = GetObject((int)GameObjects.Content_Item).transform;
-    contentItem.localScale = new Vector3(0.9f, 0.9f, 1f); // 살짝 축소된 상태에서 시작
-    contentItem.DOScale(Vector3.one, 0.1f).SetEase(Ease.Linear) // 부드러운 확장
-        .OnComplete(() =>
-        {
-            // 애니메이션이 완료된 후 아이템 생성 시작
-            StartCoroutine(CreateClearItems(itemDic));
-        });
-}
-
-
+    public void ShowCreateClearItem(Dictionary<EItemType, int> itemDic)
+    {
+        _itemDic = itemDic;
+        StartCoroutine(CreateClearItems(itemDic));
+    }
 
     private IEnumerator CreateRelicItems(Dictionary<EHeroRelicType, int> relicDic)
     {
