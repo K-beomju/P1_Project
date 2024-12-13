@@ -11,7 +11,7 @@ public class UI_GameScene : UI_Scene
 {
     enum Buttons
     {
-        ShopButton,
+        PetButton,
         CharacterButton,
         EquipmentButton,
         SkillButton,
@@ -74,7 +74,7 @@ public class UI_GameScene : UI_Scene
         Skill,
         Dungeon,
         Draw,
-        Shop,
+        Pet,
         Rank
     }
 
@@ -126,7 +126,7 @@ public class UI_GameScene : UI_Scene
         Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
 
         // Main_Content
-        GetButton((int)Buttons.ShopButton).onClick.AddListener(() => ShowTab(PlayTab.Shop));
+        GetButton((int)Buttons.PetButton).onClick.AddListener(() => ShowTab(PlayTab.Pet));
         GetButton((int)Buttons.CharacterButton).onClick.AddListener(() => ShowTab(PlayTab.Character));
         GetButton((int)Buttons.EquipmentButton).onClick.AddListener(() => ShowTab(PlayTab.Equipment));
         GetButton((int)Buttons.SkillButton).onClick.AddListener(() => ShowTab(PlayTab.Skill));
@@ -412,8 +412,8 @@ public class UI_GameScene : UI_Scene
                 case PlayTab.Draw:
                     Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();
                     break;
-                case PlayTab.Shop:
-                    Managers.UI.ShowPopupUI<UI_ShopPopup>();
+                case PlayTab.Pet:
+                    Managers.UI.ShowPopupUI<UI_PetPopup>();
                     break;
                 case PlayTab.Rank:
                     var popupUI = Managers.UI.ShowPopupUI<UI_RankingPopup>();
@@ -445,7 +445,7 @@ public class UI_GameScene : UI_Scene
                     break;
                 case PlayTab.Draw:
                     break;
-                case PlayTab.Shop:
+                case PlayTab.Pet:
                     break;
             }
         }
