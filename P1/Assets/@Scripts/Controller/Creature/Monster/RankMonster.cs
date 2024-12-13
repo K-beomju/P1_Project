@@ -28,8 +28,8 @@ public class RankMonster : Monster
         Sprite.DOFade(1, 1f).SetDelay(2);
 
         MoveSpeed = 1.5f;
-        MoveRange = 5;
-        IdleWaitTime = 2;
+        patrolRange = 5;
+        idleWaitTime = 2;
 
         Target = Managers.Object.Hero;
         CancelWait();
@@ -73,7 +73,7 @@ public class RankMonster : Monster
         {
             if (Vector2.Distance(transform.position, Target.transform.position) < 5f)
             {
-                _isPatrol = false;
+                isPatrolling = false;
 
                 LookAt(dir);
                 float moveDist = Mathf.Min(dir.magnitude, MoveSpeed * Time.deltaTime);
@@ -82,13 +82,13 @@ public class RankMonster : Monster
             else
             {
                 // 추적 범위를 벗어나면 패트롤 실행
-                if (!_isPatrol)
+                if (!isPatrolling)
                 {
                     SetNewPatrolTarget();
-                    _isPatrol = true;
+                    isPatrolling = true;
                 }
 
-                Vector3 patrolDir = _targetPosition - transform.position;
+                Vector3 patrolDir = patrolTargetPosition - transform.position;
                 float patrolDistance = patrolDir.magnitude;
 
                 if (patrolDistance < 0.1f)

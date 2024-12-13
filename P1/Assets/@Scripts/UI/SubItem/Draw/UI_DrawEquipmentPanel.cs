@@ -115,12 +115,36 @@ public class UI_DrawEquipmentPanel : UI_Base
                 ShowAlertUI("광고 시청 횟수가 모두 소진되었습니다");
             }
         });
-        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawEquipment(10));
-        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawEquipment(30));
+        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() =>
+        {
+            int price = 500;
+            if(CanUpgrade(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                OnDrawEquipment(10);
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
+        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => 
+        {
+            int price = 1500;
+            if(CanUpgrade(1500))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                OnDrawEquipment(30);
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
 
         GetButton((int)Buttons.Btn_Sword).onClick.AddListener(() => OnClickButton(EDrawType.Weapon, EAdRewardType.DrawWeapon));
         GetButton((int)Buttons.Btn_Armor).onClick.AddListener(() => OnClickButton(EDrawType.Armor, EAdRewardType.DrawArmor));
-        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => OnClickButton(EDrawType.Ring, EAdRewardType.DrawRing));
+        GetButton((int)Buttons.Btn_Ring).onClick.AddListener(() => 
+        {
+            ShowAlertUI("컨텐츠 준비중입니다");
+            //OnClickButton(EDrawType.Ring, EAdRewardType.DrawRing);
+        });
 
         // 버튼 클릭 시 Toggle의 값을 변경합니다.
         Toggle drawDirectionToggle = Get<Toggle>((int)Toggles.Toggle_DrawDirection);
@@ -220,6 +244,14 @@ public class UI_DrawEquipmentPanel : UI_Base
         Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
         popupUI.RefreshUI(_drawType);
 
+    }
+
+    bool CanUpgrade(float cost)
+    {
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
+            return false;
+
+        return amount >= cost;
     }
 
     #endregion

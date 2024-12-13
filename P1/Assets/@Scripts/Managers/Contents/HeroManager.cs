@@ -121,6 +121,15 @@ public class HeroInfo
         float totalGoldRate = GoldRateRelic + GoldRateBuff;
         float totalExpRate = ExpRateRelic + ExpRateBuff;
 
+        // 계산 전 Base Stat 저장
+        float baseAtk = Atk;
+        float baseMaxHp = MaxHp;
+        float baseRecovery = Recovery;
+        float baseCriRate = CriRate;
+        float baseCriDmg = CriDmg;
+        float baseGoldIncreaseRate = GoldIncreaseRate; // 기본값은 1
+        float baseExpIncreaseRate = ExpIncreaseRate; // 기본값은 1
+
         // 최종 스탯 계산
         Atk = Atk * (1 + totalAtkPer / 100f);
         MaxHp = MaxHp * (1 + totalMaxHpPer / 100f);
@@ -129,11 +138,11 @@ public class HeroInfo
         CriDmg = CriDmg * (1 + totalCriDmgPer / 100f);
         GoldIncreaseRate = 1 + totalGoldRate / 100f;
         ExpIncreaseRate = 1 + totalExpRate / 100f;
-        
+
         // 디버그 정보 요약
         string debugMessage =
         $"<color=yellow>[Hero Stats Summary]</color>\n" +
-        $"<color=cyan>Base Stats:</color> Atk: {Atk}, MaxHp: {MaxHp}, Recovery: {Recovery}, CriRate: {CriRate}, CriDmg: {CriDmg}\n" +
+        $"<color=cyan>Base Stats:</color> Atk: {baseAtk}, MaxHp: {baseMaxHp}, Recovery: {baseRecovery}, CriRate: {baseCriRate}, CriDmg: {baseCriDmg}\n" +
         $"<color=green>Attribute Stats:</color> AtkAttr: {AtkAttr}, MaxHpAttr: {MaxHpAttr}, CriRateAttr: {CriRateAttr}, CriDmgAttr: {CriDmgAttr}, SkillTimeAttr: {SkillTimeAttr}, SkillDmgAttr: {SkillDmgAttr}\n" +
         $"<color=blue>Relic Stats:</color> AtkRelic: {AtkRelic}, MaxHpRelic: {MaxHpRelic}, RecoveryRelic: {RecoveryRelic}, MonsterDmgRelic: {MonsterDmgRelic}, BossMonsterDmgRelic: {BossMonsterDmgRelic}, ExpRateRelic: {ExpRateRelic}, GoldRateRelic: {GoldRateRelic}\n" +
         $"<color=magenta>RankUp Stats:</color> Atk: {AtkRankUp}, MaxHp: {MaxHpRankUp}, Recovery: {RecoveryRankUp}, CriDmg: {CriDmgRankUp}, GoldRate: {GoldRateRankUp}, ExpRate: {ExpRateRankUp}\n" +
@@ -147,8 +156,7 @@ public class HeroInfo
         AttackDelay = Data.AttackDelay;
 
         if (Managers.Object.Hero != null)
-            Managers.Object.Hero.ReSetStats();
-
+            Managers.Object.Hero.ReSetStats(false);
 
 
         // 전투력 변화 계산

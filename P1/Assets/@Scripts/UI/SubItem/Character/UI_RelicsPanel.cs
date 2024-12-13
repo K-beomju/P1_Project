@@ -23,6 +23,8 @@ public class UI_RelicsPanel : UI_Base
         UI_RelicGrowInvenSlot_GoldRate
     }
 
+    private bool isTotalPowerUpdated = false;
+
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -31,8 +33,29 @@ public class UI_RelicsPanel : UI_Base
         Bind<UI_RelicGrowInvenSlot>(typeof(UI_RelicGrowthSlots));
         BindButtons(typeof(Buttons));
 
-        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawRelic(10));
-        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawRelic(30));
+        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => 
+        {
+            int price = 500;
+            if(CanUpgrade(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                OnDrawRelic(10);
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+
+        });
+        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => 
+        {
+            int price = 1500;
+            if(CanUpgrade(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                OnDrawRelic(30);
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
 
         Get<UI_RelicGrowInvenSlot>((int)UI_RelicGrowthSlots.UI_RelicGrowInvenSlot_Atk).SetInfo(EHeroRelicType.Relic_Atk);
         Get<UI_RelicGrowInvenSlot>((int)UI_RelicGrowthSlots.UI_RelicGrowInvenSlot_MaxHp).SetInfo(EHeroRelicType.Relic_MaxHp);
@@ -108,6 +131,12 @@ public class UI_RelicsPanel : UI_Base
             {
                 drawRelicDic.Add(selectedRelic, 1);
             }
+
+            if(selectedRelic == EHeroRelicType.Relic_Atk|| selectedRelic == EHeroRelicType.Relic_MaxHp)
+            {
+                isTotalPowerUpdated = true;
+            }
+
             Managers.Backend.GameData.CharacterData.AddRelic(selectedRelic, 1);
 
             // 유물이 최대치에 도달했는지 다시 확인
@@ -118,6 +147,13 @@ public class UI_RelicsPanel : UI_Base
             }
 
             i++; // 뽑기 횟수 증가
+        }
+
+        if(isTotalPowerUpdated)
+        {
+            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);
+            Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            isTotalPowerUpdated = false;
         }
 
 
@@ -145,4 +181,11 @@ public class UI_RelicsPanel : UI_Base
         // 실제 UI 팝업 호출 코드 추가
     }
 
+    bool CanUpgrade(float cost)
+    {
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
+            return false;
+
+        return amount >= cost;
+    }
 }

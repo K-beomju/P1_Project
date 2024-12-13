@@ -59,7 +59,6 @@ public class UI_RankUpPanel : UI_Base
         UI_RankChallengeItem_GrandMaster
     }
 
-    private Coroutine _coolTime;
     private bool _bestOption;
 
     protected override bool Init()
@@ -90,9 +89,7 @@ public class UI_RankUpPanel : UI_Base
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_Master).SetInfo(ERankType.Master);
         Get<UI_RankChallengeItem>((int)RankChallenge.UI_RankChallengeItem_GrandMaster).SetInfo(ERankType.GrandMaster);
 
-        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnClickButton, EUIEvent.Pressed);
-        GetButton((int)Buttons.Btn_ChangeAbility).gameObject.BindEvent(OnPointerUp, EUIEvent.PointerUp);
-
+        GetButton((int)Buttons.Btn_ChangeAbility).onClick.AddListener(OnClickButton);
         // Rest Option
         GetObject((int)GameObjects.BestOptionAlert).gameObject.SetActive(false);
         GetButton((int)Buttons.Btn_RestAbility).gameObject.BindEvent(() =>
@@ -144,11 +141,6 @@ public class UI_RankUpPanel : UI_Base
 
     private void OnClickButton()
     {
-        if (_coolTime != null)
-        {
-            return;
-        }
-        
         bool containHighest = ContainsHighestRankAbility();
         if (containHighest)
         {
@@ -160,7 +152,6 @@ public class UI_RankUpPanel : UI_Base
         ProcessAbilityChange((abilityData, rankKey) =>
         {
             AssignRandomAbility(rankKey, abilityData);
-            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.2f));
         });
     }
 
@@ -204,16 +195,6 @@ public class UI_RankUpPanel : UI_Base
         else
         {
             Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("어빌리티 포인트가 부족합니다.");
-        }
-    }
-
-
-    private void OnPointerUp()
-    {
-        if (_coolTime != null)
-        {
-            StopCoroutine(_coolTime);
-            _coolTime = null;
         }
     }
 
@@ -369,9 +350,4 @@ public class UI_RankUpPanel : UI_Base
                abilityData.RankAbilityState != ERankAbilityState.Restricted;
     }
 
-    private IEnumerator CoStartUpgradeCoolTime(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        _coolTime = null;
-    }
 }

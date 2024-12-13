@@ -61,7 +61,7 @@ namespace BackendData.GameData
         public override string Name => Data.Name;
         public override string SpriteKey => Data.SpriteKey;
         public override ERareType RareType => Data.RareType;
-        
+
         public SkillInfoData(int dataTemplateID, EOwningState owningState, int level, int count, bool isEquipped)
             : base(dataTemplateID, owningState, level, count, isEquipped)
         {
@@ -78,6 +78,9 @@ namespace BackendData.GameData
         private Dictionary<int, SkillInfoData> _skillInventoryDic = new();
         // Skill 각 스킬 슬롯을 담는 List
         private List<SkillSlot> _skillSlotList = new();
+        // Skill 각 슬롯 잠금 해제 스테이지 배열
+        private int[] _unlockStages = { 3, 5, 10, 20, 25, 30 };
+
 
         public bool IsAutoSkill { get; private set; }
 
@@ -104,7 +107,7 @@ namespace BackendData.GameData
         protected override void SetServerDataToLocal(JsonData Data)
         {
             IsAutoSkill = bool.Parse(Data["IsAutoSkill"].ToString());
-            
+
             foreach (var column in Data["SkillInventory"].Keys)
             {
                 int dataId = int.Parse(Data["SkillInventory"][column]["DataTemplateID"].ToString());
@@ -134,9 +137,8 @@ namespace BackendData.GameData
 
                 _skillSlotList.Add(new SkillSlot(index, skillSlotType, skillInfoData));
             }
-            
-            _skillSlotList.ForEach(x => x.EmptySlot());
-            
+
+            //_skillSlotList.ForEach(x => x.EmptySlot());
 
         }
 
@@ -206,7 +208,7 @@ namespace BackendData.GameData
 
                     skillInfoData.IsEquipped = true;
                     skillSlot.EquipSkill(skillInfoData);
-                    onEquipResult?.Invoke(i); 
+                    onEquipResult?.Invoke(i);
                     return;
 
                 }
@@ -215,7 +217,6 @@ namespace BackendData.GameData
             Debug.LogWarning("스킬을 장착할 수 있는 빈 슬롯이 없습니다.");
             onEquipResult?.Invoke(-1);
         }
-
 
         public void UnEquipSkill(int dataTemplateID, Action<int> onEquipResult = null)
         {
@@ -246,7 +247,7 @@ namespace BackendData.GameData
                         Debug.LogWarning($"{i + 1}번째 슬롯의 <color=#FF0000>{skillInfoData.Name}</color> 스킬이 해제되었습니다.");
                         skillInfoData.IsEquipped = false;
                         skillSlot.UnEquipSkill();
-                        onEquipResult?.Invoke(i); 
+                        onEquipResult?.Invoke(i);
                         return;
 
                     }
@@ -254,5 +255,26 @@ namespace BackendData.GameData
             }
         }
 
+        public void UnLockSkill(int stageNumber)
+        {
+            Debug.Log(stageNumber + "스킬 해제 스테이지 체크");
+            // 단계별 잠금 해제 조건을 배열로 정의
+
+            // 배열을 순회하며 조건 확인
+            for (int i = 0; i < _unlockStages.Length; i++)
+            {
+                if (stageNumber == _unlockStages[i] && _skillSlotList[i].SlotType == ESkillSlotType.Lock)
+                {
+                    IsChangedData = true;
+                    _skillSlotList[i].EmptySlot();
+                    (Managers.UI.SceneUI as UI_GameScene)._equipSkillSlotList[i].RefreshUI();
+                }
+            }
+        }
+
+        public string GetSkillUnlockStageMessage(int pressSlotIndex)
+        {
+            return $"스테이지 {_unlockStages[pressSlotIndex]}에서 잠금 해제";
+        }
     }
 }

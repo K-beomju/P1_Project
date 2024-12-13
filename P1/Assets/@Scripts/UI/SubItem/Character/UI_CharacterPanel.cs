@@ -21,7 +21,6 @@ public class UI_CharacterPanel : UI_Base
 
     public enum EquipmentItems
     {
-        UI_EquipmentItem_Ring,
         UI_EquipmentItem_Armor,
         UI_EquipmentItem_Weapon
     }
@@ -50,7 +49,6 @@ public class UI_CharacterPanel : UI_Base
         Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_CriRate).SetInfo(EHeroUpgradeType.Growth_CriRate);
         Get<UI_CharacterGrowthInvenSlot>((int)UI_CharacterGrowthSlots.UI_CharacterGrowthInvenSlot_CriDmg).SetInfo(EHeroUpgradeType.Growth_CriDmg);
 
-        GetButton((int)Buttons.Btn_RingSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Ring));
         GetButton((int)Buttons.Btn_ArmorSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Armor));
         GetButton((int)Buttons.Btn_WeaponSlot).onClick.AddListener(() => HandleEquipmentPopup(EEquipmentType.Weapon));
 
@@ -99,7 +97,6 @@ public class UI_CharacterPanel : UI_Base
     {
         UpdateEquipmentUI(EEquipmentType.Weapon, EquipmentItems.UI_EquipmentItem_Weapon);
         UpdateEquipmentUI(EEquipmentType.Armor, EquipmentItems.UI_EquipmentItem_Armor);
-        UpdateEquipmentUI(EEquipmentType.Ring, EquipmentItems.UI_EquipmentItem_Ring);
     }
 
     private void UpdateEquipmentUI(EEquipmentType type, EquipmentItems uiItem)

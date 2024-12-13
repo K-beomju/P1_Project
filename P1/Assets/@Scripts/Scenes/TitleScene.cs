@@ -74,6 +74,7 @@ public class TitleScene : BaseScene
         {
             Debug.LogError("뒤끝 초기화가 안됌");
         }
+        //Backend.Android.AgreeNightPushNotification(true);
 
         // 광고와 엑셀 데이터 
         Managers.Data.Init();

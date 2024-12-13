@@ -257,7 +257,6 @@ namespace BackendData.GameData
             }
 
             Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
-            Managers.Event.TriggerEvent(EEventType.HeroUpgradeUpdated);
         }
 
         public void LevelUpHeroAttribute(EHeroAttrType attrType)

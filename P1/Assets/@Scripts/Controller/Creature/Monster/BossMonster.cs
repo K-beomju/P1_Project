@@ -27,7 +27,7 @@ public class BossMonster : Monster
             Atk = stageInfo.BossMonsterAtk;
             MaxHp = stageInfo.BossMonsterMaxHp;
             Hp = MaxHp;
-            AttackRange = 1f;
+            AttackRange = 1.5f;
             MoveSpeed = 1.5f;
 
             Target = Managers.Object.Hero;
@@ -103,6 +103,7 @@ public class BossMonster : Monster
 
     public override void OnDead()
     {
+        CancelWait();
         // Clear 보상 재화 연출 
         for (int i = 0; i < 10; i++)
         {

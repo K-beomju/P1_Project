@@ -4,20 +4,18 @@ using System;
 using System.Collections;
 using UnityEngine;
 using static Define;
-using Random = UnityEngine.Random;
 
 public class Monster : Creature, IDamageable
 {
-    private Coroutine _damageCoroutine; // 플레이어에게 데미지를 입히는 코루틴
-    private Coroutine _idleCoroutine; // Idle 상태에서 대기 시간을 처리할 코루틴
+    private Coroutine idleCoroutine; // Idle 상태에서 대기 시간을 처리할 코루틴
+    private Vector3 initialPosition; // 패트롤 시작 위치
+    protected Vector3 patrolTargetPosition; // 패트롤 목표 위치
 
-    private Vector3 _initialPosition; // 패트롤 시작 위치
-    private bool _isDamaged; // 공격을 받은 상태인지 여부
-
-    protected Vector3 _targetPosition; // 패트롤 목표 위치
-    protected bool _isPatrol; // 목표 지점으로 이동 중인지 여부
-    protected float IdleWaitTime; // Idle 상태에서 대기하는 시간
-    protected float MoveRange; // 패트롤 범위
+    protected bool isPatrolling; // 패트롤 중인지 여부
+    protected float idleWaitTime = 1f; // Idle 상태에서 대기 시간
+    protected float patrolRange = 5f; // 패트롤 범위
+    private float traceRange = 3f; // 추적 범위
+    private float attackRange = 0.5f; // 공격 범위
 
     protected override bool Init()
     {
@@ -43,13 +41,11 @@ public class Monster : Creature, IDamageable
 
         if (currnetScene is GameScene gameScene)
         {
-            _isDamaged = false;
-            SetNewPatrolTarget(); // 첫 번째 목표 지점 설정
-
             StageInfoData stageInfo = Managers.Data.StageChart[gameScene.StageInfo.StageNumber];
             Atk = stageInfo.MonsterAtk;
             MaxHp = stageInfo.MonsterMaxHp;
             Hp = MaxHp;
+            AttackRange = 0.5f;
         }
         else if (currnetScene is DungeonScene dungeonScene)
         {
@@ -73,12 +69,13 @@ public class Monster : Creature, IDamageable
         }
 
 
-        MoveSpeed = 1;
-        MoveRange = 5f;
-        IdleWaitTime = 1;
+        MoveSpeed = 1f;
+        initialPosition = transform.position; // 초기 위치 저장
+        Target = Managers.Object.Hero;
 
-        Sprite.DOFade(0, 0);
-        Sprite.DOFade(1, 1f);
+        SetNewPatrolTarget(); // 첫 번째 목표 지점 설정
+        Sprite.DOFade(0, 0).OnComplete(() => Sprite.DOFade(1, 1f));
+
 
         if (HpBar == null)
         {
@@ -87,9 +84,6 @@ public class Monster : Creature, IDamageable
             HpBar.SetSliderInfo(this);
             HpBar.gameObject.SetActive(false);
         }
-
-
-        _initialPosition = transform.position; // 몬스터의 초기 위치 저장
     }
 
     protected void SetNewPatrolTarget()
@@ -102,36 +96,25 @@ public class Monster : Creature, IDamageable
         }
 
         // 맵 안에서 이동 가능한 랜덤 위치 설정
-        _targetPosition = Util.GetRandomPositionWithinMap(Managers.Game.TileMap, _initialPosition, MoveRange, 2);
-        _isPatrol = true;
+        patrolTargetPosition = Util.GetRandomPositionWithinMap(Managers.Game.TileMap, initialPosition, patrolRange, 2);
+        isPatrolling = true;
     }
 
     #region AI
     protected override void UpdateIdle()
     {
-        if (!isActionEnabled)
+        if (!isActionEnabled || idleCoroutine != null)
             return;
 
-        if (_idleCoroutine == null && !_isDamaged) // 공격을 받지 않았을 때만 대기
-        {
-            // Idle 상태에서 3초 대기 후 다음 패트롤 지점으로 이동
-            _idleCoroutine = StartCoroutine(WaitInIdle());
-        }
+        idleCoroutine = StartCoroutine(IdleRoutine());
     }
 
-    private IEnumerator WaitInIdle()
+    private IEnumerator IdleRoutine()
     {
-        // 3초 대기
-        yield return new WaitForSeconds(IdleWaitTime);
-
-        // 대기 후 다음 패트롤 지점 설정 (공격받지 않은 경우에만)
-        if (!_isDamaged)
-        {
-            SetNewPatrolTarget();
-            CreatureState = ECreatureState.Move;
-        }
-
-        _idleCoroutine = null; // 코루틴이 종료되었으므로 다시 사용할 수 있도록 null로 설정
+        yield return new WaitForSeconds(idleWaitTime);
+        SetNewPatrolTarget();
+        CreatureState = ECreatureState.Move;
+        idleCoroutine = null;
     }
 
     protected override void UpdateMove()
@@ -139,34 +122,101 @@ public class Monster : Creature, IDamageable
         if (!isActionEnabled)
             return;
 
-        if (_isDamaged) // 공격을 받았다면 이동하지 않음
+        Vector3 directionToTarget = Target.CenterPosition - CenterPosition;
+        float distanceToTargetSqr = directionToTarget.sqrMagnitude;
+
+        if (IsInAttackRange(distanceToTargetSqr))
         {
-            CreatureState = ECreatureState.Idle;
-            Anim.SetBool(AnimName.HashMove, false);
+            TransitionToState(ECreatureState.Attack);
+        }
+        else if (IsInTraceRange(distanceToTargetSqr))
+        {
+            TraceTarget(directionToTarget);
+        }
+        else if (isPatrolling)
+        {
+            Patrol();
+        }
+        else
+        {
+            TransitionToState(ECreatureState.Idle);
+        }
+    }
+
+    protected override void UpdateAttack()
+    {
+        if (!isActionEnabled)
+            return;
+
+        Vector3 directionToTarget = Target.CenterPosition - CenterPosition;
+        float distanceToTargetSqr = directionToTarget.sqrMagnitude;
+
+        if (!IsInAttackRange(distanceToTargetSqr))
+        {
+            TransitionToState(ECreatureState.Move);
             return;
         }
 
-        if (_isPatrol)
-        {
-            // 목표 지점까지의 방향 계산
-            Vector3 direction = _targetPosition - transform.position;
-            float distanceToTarget = direction.magnitude;
+        LookAt(directionToTarget);
 
-            // 목표 지점에 가까워지면 이동 멈추고 Idle 상태로 전환
-            if (distanceToTarget < 0.1f)
-            {
-                _isPatrol = false;
-                CreatureState = ECreatureState.Idle;
-                Anim.SetBool(AnimName.HashMove, false);
-            }
-            else
-            {
-                // 목표 지점을 향해 이동
-                Vector3 moveDir = direction.normalized;
-                transform.Translate(moveDir * MoveSpeed * Time.deltaTime);
-                LookAt(moveDir);
-                Anim.SetBool(AnimName.HashMove, true);
-            }
+        if (_coWait == null)
+        {
+            StartWait(2f); // 공격 대기 시간
+            if (Target.IsValid() && CreatureState != ECreatureState.Dead)
+                Target.GetComponent<IDamageable>().OnDamaged(this);
+        }
+    }
+
+
+    #endregion
+
+    #region State Transitions
+
+    private bool IsInAttackRange(float distanceToTargetSqr)
+    {
+        return distanceToTargetSqr <= attackRange * attackRange;
+    }
+
+    private bool IsInTraceRange(float distanceToTargetSqr)
+    {
+        return distanceToTargetSqr <= traceRange * traceRange;
+    }
+
+    private void TraceTarget(Vector3 directionToTarget)
+    {
+        isPatrolling = false;
+        LookAt(directionToTarget);
+        float moveDistance = Mathf.Min(directionToTarget.magnitude, MoveSpeed * Time.deltaTime);
+        transform.Translate(directionToTarget.normalized * moveDistance);
+        Anim.SetBool(AnimName.HashMove, true);
+    }
+
+    private void Patrol()
+    {
+        Vector3 directionToPatrolTarget = patrolTargetPosition - transform.position;
+        float distanceToPatrolTarget = directionToPatrolTarget.magnitude;
+
+        if (distanceToPatrolTarget < 0.1f)
+        {
+            isPatrolling = false;
+            TransitionToState(ECreatureState.Idle);
+            Anim.SetBool(AnimName.HashMove, false);
+        }
+        else
+        {
+            LookAt(directionToPatrolTarget);
+            float moveDistance = Mathf.Min(distanceToPatrolTarget, MoveSpeed * Time.deltaTime);
+            transform.Translate(directionToPatrolTarget.normalized * moveDistance);
+            Anim.SetBool(AnimName.HashMove, true);
+        }
+    }
+
+    private void TransitionToState(ECreatureState newState)
+    {
+        CreatureState = newState;
+        if (newState == ECreatureState.Idle)
+        {
+            Anim.SetBool(AnimName.HashMove, false);
         }
     }
 
@@ -174,17 +224,6 @@ public class Monster : Creature, IDamageable
 
     #region  Battle
 
-
-    private IEnumerator DealDamageToPlayer()
-    {
-        yield return new WaitForSeconds(1f);
-        if (Managers.Object.Hero != null && Managers.Object.Hero.CreatureState != ECreatureState.Dead)
-        {
-            Managers.Object.Hero.OnDamaged(this);
-        }
-
-        _damageCoroutine = null;
-    }
 
     public override void OnDamaged(Creature attacker, EffectBase effect = null)
     {
@@ -195,12 +234,6 @@ public class Monster : Creature, IDamageable
 
         Vector2 direction = attacker.transform.position - transform.position;
         LookAt(direction);
-
-        _isDamaged = true;
-        if (_damageCoroutine == null && gameObject.activeInHierarchy && direction.magnitude < 1)
-        {
-            _damageCoroutine = StartCoroutine(DealDamageToPlayer());
-        }
     }
 
     public override void OnDead()
@@ -208,7 +241,11 @@ public class Monster : Creature, IDamageable
         try
         {
             // 공통 로직: 코루틴 중지 및 기본 처리
-            StopCoroutines();
+            if (idleCoroutine != null)
+            {
+                StopCoroutine(idleCoroutine);
+                idleCoroutine = null;
+            }
 
             switch (Managers.Scene.GetCurrentScene<BaseScene>())
             {
@@ -230,20 +267,6 @@ public class Monster : Creature, IDamageable
         }
     }
 
-    private void StopCoroutines()
-    {
-        if (_damageCoroutine != null)
-        {
-            StopCoroutine(_damageCoroutine);
-            _damageCoroutine = null;
-        }
-        if (_idleCoroutine != null)
-        {
-            StopCoroutine(_idleCoroutine);
-            _idleCoroutine = null;
-        }
-    }
-
     // 공통 처리: 게임 씬에서 몬스터가 죽었을 때
     private void HandleGameSceneDeath(GameScene gameScene)
     {
@@ -252,7 +275,7 @@ public class Monster : Creature, IDamageable
         if (ObjectType == EObjectType.Monster)
         {
             UI_ItemIconBase itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
-            itemIcon.SetItemIconAtPosition(EItemType.Gold,transform.position, () =>
+            itemIcon.SetItemIconAtPosition(EItemType.Gold, transform.position, () =>
             {
                 try
                 {

@@ -53,6 +53,7 @@ public class MyCustomEditorWindow : EditorWindow
         {
             Managers.Backend.UpdateRankScore();
         }
+        GUILayout.Space(50); // 필드 아래 간격 추가
 
         // 재화 충전 입력 필드
         GUILayout.Label("충전할 재화 수량 입력:", GUILayout.Width(position.width));
@@ -75,7 +76,7 @@ public class MyCustomEditorWindow : EditorWindow
             }
         }
 
-        if (GUILayout.Button("경험치 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        if (GUILayout.Button("경험치포인트 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
         {
             if (int.TryParse(currencyInputValue, out int expAmount))
             {
@@ -88,7 +89,7 @@ public class MyCustomEditorWindow : EditorWindow
             }
         }
 
-        if (GUILayout.Button("Dia 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
+        if (GUILayout.Button("다이아 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
         {
             if (int.TryParse(currencyInputValue, out int diaAmount))
             {
@@ -103,7 +104,7 @@ public class MyCustomEditorWindow : EditorWindow
         GUILayout.EndHorizontal(); // 수평 정렬 종료
         GUILayout.EndVertical(); // 세로 정렬 종료
 
-            // 버튼을 수평으로 배치
+        // 버튼을 수평으로 배치
         GUILayout.BeginVertical(); // 세로 정렬 시작
         GUILayout.BeginHorizontal(); // 수평 정렬 시작
         if (GUILayout.Button("골드 던전 열쇠 충전", GUILayout.Width(position.width / 3), GUILayout.Height(50)))
@@ -135,6 +136,17 @@ public class MyCustomEditorWindow : EditorWindow
         }
         GUILayout.EndHorizontal(); // 수평 정렬 종료
         GUILayout.EndVertical(); // 세로 정렬 종료
+
+        if (GUILayout.Button("어빌리티포인트 충전", GUILayout.Width(position.width), GUILayout.Height(50)))
+        {
+            if (int.TryParse(currencyInputValue, out int value))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(Define.EItemType.AbilityPoint, value);
+            }
+        }
+
+        GUILayout.Space(50); // 필드 아래 간격 추가
+
         if (GUILayout.Button("플레이어 사망", GUILayout.Width(position.width), GUILayout.Height(50)))
         {
             Managers.Object.Hero.OnDead();

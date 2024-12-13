@@ -117,7 +117,6 @@ public class ObjectManager
     {
         if (typeof(T) == typeof(Monster))
         {
-            Debug.LogWarning("몬스터 삭제");
             Monster monster = obj.GetComponent<Monster>();
             Monsters.Remove(monster);
         }

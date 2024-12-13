@@ -23,8 +23,12 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
     }
 
     private EHeroUpgradeType _heroUpgradeType;
-    private Coroutine _coolTime;
-    private bool isUpgraded = false;
+    private Coroutine _upgradeCoroutine;
+
+    private float _minUpgradeDelay = 0.05f; // 최대 업그레이드 속도값
+    private float _initialUpgradeDelay = 0.2f; // 초기 업그레이드 속도값
+    private float _speedIncreaseFactor = 0.2f; // 속도 증가 비율 (1보다 작아야 속도가 빨라짐) -> 점점 줄어들게
+    private bool isTotalPowerUpdated = false;
 
     protected override bool Init()
     {
@@ -44,15 +48,12 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
     private void OnEnable()
     {
         Managers.Event.AddEvent(EEventType.CurrencyUpdated, new Action(CheckUpgradeInteractive));
-        Managers.Event.AddEvent(EEventType.HeroUpgradeUpdated, new Action(UpdateSlotInfoUI));
-
         UpdateSlotInfoUI();
     }
 
     private void OnDisable()
     {
         Managers.Event.RemoveEvent(EEventType.CurrencyUpdated, new Action(CheckUpgradeInteractive));
-        Managers.Event.RemoveEvent(EEventType.HeroUpgradeUpdated, new Action(UpdateSlotInfoUI));
     }
 
     public void SetInfo(EHeroUpgradeType statType)
@@ -90,59 +91,73 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         GetTMPText((int)Texts.Text_Amount).text = amountText;
     }
 
+
+
     private void OnPressUpgradeButton()
     {
-        if (_coolTime != null)
+        if (_upgradeCoroutine != null)
             return;
 
-        try
-        {
-
-            if (Managers.Backend.GameData.CharacterData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
-            {
-                int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
-                if (CanUpgrade(price))
-                {
-                    Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, -price);
-                    Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(_heroUpgradeType);
-
-                    if (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp)
-                    {
-                        var questType = _heroUpgradeType == EHeroUpgradeType.Growth_Atk
-                            ? EQuestType.UpgradeAtk
-                            : EQuestType.UpgradeMaxHp;
-                        Managers.Backend.GameData.QuestData.UpdateQuest(questType);
-                        isUpgraded = true;
-                    }
-                }
-            }
-            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.1f));
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"OnPressUpgradeButton({EItemType.Gold}) 중 에러가 발생하였습니다\n{e}");
-        }
-
-
+        _upgradeCoroutine = StartCoroutine(CoHoldUpgrade());
     }
 
     private void OnPointerUp()
     {
-        if (_coolTime != null)
+        if (_upgradeCoroutine != null)
         {
-            StopCoroutine(_coolTime);
-            _coolTime = null;
+            StopCoroutine(_upgradeCoroutine);
+            _upgradeCoroutine = null;
         }
 
-        // 한번이라도 업그레이드 했을 때
-        if (isUpgraded && (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp))
+        if (isTotalPowerUpdated && (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp))
         {
             Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);
             Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
-            isUpgraded = false;
+            isTotalPowerUpdated = false;
         }
-
     }
+
+    private IEnumerator CoHoldUpgrade()
+    {
+        float currentDelay = _initialUpgradeDelay;
+
+        while (true)
+        {
+            TryUpgrade(); // 업그레이드 시도
+
+            yield return new WaitForSeconds(currentDelay);
+
+            // 업그레이드 속도를 점차적으로 증가
+            currentDelay = Mathf.Max(currentDelay * _speedIncreaseFactor, _minUpgradeDelay);
+        }
+    }
+
+    private void TryUpgrade()
+    {
+        if (Managers.Backend.GameData.CharacterData.UpgradeStatDic.TryGetValue(_heroUpgradeType.ToString(), out int level))
+        {
+            int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
+            if (CanUpgrade(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, -price);
+                Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(_heroUpgradeType);
+
+                if (_heroUpgradeType == EHeroUpgradeType.Growth_Atk || _heroUpgradeType == EHeroUpgradeType.Growth_Hp)
+                {
+                    var questType = _heroUpgradeType == EHeroUpgradeType.Growth_Atk
+                        ? EQuestType.UpgradeAtk
+                        : EQuestType.UpgradeMaxHp;
+                    Managers.Backend.GameData.QuestData.UpdateQuest(questType);
+                    isTotalPowerUpdated = true;
+                }
+
+                UpdateSlotInfoUI();
+            }
+            else
+                ShowAlertUI("골드가 부족합니다");
+        }
+    }
+
 
     private void CheckUpgradeInteractive()
     {
@@ -161,9 +176,4 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         return amount >= cost;
     }
 
-    private IEnumerator CoStartUpgradeCoolTime(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        _coolTime = null;
-    }
 }

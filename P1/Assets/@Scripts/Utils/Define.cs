@@ -93,9 +93,6 @@ public static class Define
         /// <summary>플레이어 경험치 정보가 갱신될 때 호출</summary>
         ExperienceUpdated,
 
-        /// <summary>영웅 성장 및 업그레이드 정보 갱신</summary>
-        HeroUpgradeUpdated,
-
         /// <summary>플레이어 레벨업 시 호출</summary>
         PlayerLevelUp,
 

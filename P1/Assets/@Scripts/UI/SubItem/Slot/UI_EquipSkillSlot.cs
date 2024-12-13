@@ -106,6 +106,12 @@ public class UI_EquipSkillSlot : UI_Base
 
     public void OnUseSkill()
     {
+        if(_skillSlot.SlotType == ESkillSlotType.Lock)
+        {
+            ShowAlertUI(Managers.Backend.GameData.SkillInventory.GetSkillUnlockStageMessage(_index));
+            return; 
+        }
+
         if (IsSkillReady())
         {
             Managers.Object.Hero.Skills.UseSkill(_index);

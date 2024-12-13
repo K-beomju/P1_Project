@@ -59,17 +59,6 @@ public class Hero : Creature
         return true;
     }
 
-    private void OnEnable()
-    {
-        Managers.Event.AddEvent(EEventType.HeroUpgradeUpdated, new Action(ReSetStats));
-    }
-
-    private void OnDisable()
-    {
-        Managers.Event.RemoveEvent(EEventType.HeroUpgradeUpdated, new Action(ReSetStats));
-    }
-
-
     public override void SetCreatureInfo(int dataTemplateID)
     {
         HeroInfo = Managers.Hero.PlayerHeroInfo;
@@ -96,18 +85,8 @@ public class Hero : Creature
         HpBar._offset = new Vector3(0.0f, -0.2f, 0.0f);
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(true);
-
-       //ChangeAnimController(Managers.Backend.GameData.EquipmentInventory.EquipCheckEquipment()); 
-
     }
 
-    // 레벨업 시 스탯을 다시 계산하는 함수
-    public override void ReSetStats()
-    {
-        Atk = HeroInfo.Atk;
-        MaxHp = HeroInfo.MaxHp;
-        Hp = MaxHp;
-    }
 
     #region Anim
     protected override void UpdateAnimation()
@@ -323,8 +302,9 @@ public class Hero : Creature
         weaponSprite.gameObject.SetActive(false);
         if(infoData != null)
         {
-            Debug.Log("ASDASD");
-            isMove = true;
+            Anim.Rebind();
+            CreatureState = ECreatureState.Idle;
+
             weaponSprite.gameObject.SetActive(true);
             weaponSprite.sprite = Managers.Resource.Load<Sprite>($"Sprites/{infoData.SpriteKey}");
         }
@@ -365,14 +345,30 @@ public class Hero : Creature
         }
     }
 
-    public void Rebirth()
+    // 업그레이드시 스탯을 다시 계산하는 함수
+    public void ReSetStats(bool fullHp)
+    {
+        Atk = HeroInfo.Atk;
+        MaxHp = HeroInfo.MaxHp;
+        Recovery = HeroInfo.Recovery;
+        CriRate = HeroInfo.CriRate;
+        CriDmg = HeroInfo.CriDmg;
+
+        // 체력을 리셋은 경우에 따라 : 보스전 끝난 후, 랭크전 시작전, 랭크전 끝난 후, 레벨업시, 
+        if(fullHp)
+        Hp = MaxHp;
+    }
+
+    // 죽고 다시 살아났을 때 실행되는 
+    public void Rebirth(bool fullHp)
     {
         EnableAction();
         transform.position = Vector2.zero;
         Skills.Clear();
         Anim.Rebind();
-        Hp = MaxHp;
         CreatureState = ECreatureState.Idle;
+
+        ReSetStats(fullHp);
     }
 
     private IEnumerator RecoveryCo()

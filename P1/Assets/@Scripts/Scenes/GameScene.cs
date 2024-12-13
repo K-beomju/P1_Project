@@ -60,7 +60,6 @@ public class GameScene : BaseScene
         {
             SetupStage();
         });
-        //Managers.Object.Spawn<Bot>(new Vector3(2,2), 0);
         return true;
     }
 
@@ -241,6 +240,7 @@ public class GameScene : BaseScene
         fadeOutCallBack: () =>
         {
             GameSceneState = EGameSceneState.Clear;
+            Managers.Object.Hero.Rebirth(true);
         });
     }
 
@@ -298,7 +298,7 @@ public class GameScene : BaseScene
         {
             Managers.Object.DeleteRankMonster();
             GameSceneState = EGameSceneState.Over;
-            Managers.Object.Hero.Rebirth();
+            Managers.Object.Hero.Rebirth(true);
         }, () =>
         {
             // 성공하면 풀링은 더이상 사용 안함 X 
@@ -312,7 +312,7 @@ public class GameScene : BaseScene
     {
         Managers.Object.KillAllMonsters();
         Hero hero = Managers.Object.Hero;
-        hero.Rebirth();
+        hero.Rebirth(GameSceneState == EGameSceneState.RankUp);
         hero.ForceMove(new Vector3(-3, 0, 0));
         hero.DisableAction();
     }
@@ -340,6 +340,7 @@ public class GameScene : BaseScene
     private IEnumerator CoStageClear()
     {
         MoveToNextStage(true);
+        Managers.Backend.GameData.SkillInventory.UnLockSkill(StageInfo.StageNumber);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.StageClear);
         yield return null;
     }
@@ -386,7 +387,7 @@ public class GameScene : BaseScene
         // 먼저 딜레이
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
         {
-            Managers.Object.Hero.Rebirth();
+            Managers.Object.Hero.Rebirth(true);
             GameSceneState = EGameSceneState.Over;
         }, () =>
         {

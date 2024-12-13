@@ -46,8 +46,11 @@ public class UI_AttributePanel : UI_Base
             }
         }
     }
+    private Coroutine _upgradeCoroutine;
 
-    private Coroutine _coolTime;
+    private float _minUpgradeDelay = 0.05f; // 최대 업그레이드 속도값
+    private float _initialUpgradeDelay = 0.2f; // 초기 업그레이드 속도값
+    private float _speedIncreaseFactor = 0.2f; // 속도 증가 비율 (1보다 작아야 속도가 빨라짐) -> 점점 줄어들게
     private bool isUpgraded = false;
 
 
@@ -111,48 +114,65 @@ public class UI_AttributePanel : UI_Base
 
     private void OnPressUpgradeButton()
     {
-        if (_coolTime != null)
+        if (_upgradeCoroutine != null)
             return;
 
-        try
-        {
-            if (Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
-            {
-                int price = Util.GetAttributeCost(SelectAttrType, level + 1);
-                if (CanUpgrade(price))
-                {
-                    Managers.Backend.GameData.CharacterData.AddAmount(EItemType.ExpPoint, -price);
-                    Managers.Backend.GameData.CharacterData.LevelUpHeroAttribute(SelectAttrType);
-                    ShowAttributeDetailUI(SelectAttrType);
+        _upgradeCoroutine = StartCoroutine(CoHoldUpgrade());
 
-                    if (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp)
-                        isUpgraded = true;
-                }
-            }
-            _coolTime = StartCoroutine(CoStartUpgradeCoolTime(0.3f));
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"OnPressUpgradeButton({EItemType.Gold}) 중 에러가 발생하였습니다\n{e}");
-        }
+
     }
 
     private void OnPointerUp()
     {
-        if (_coolTime != null)
+        if (_upgradeCoroutine != null)
         {
-            StopCoroutine(_coolTime);
-            _coolTime = null;
+            StopCoroutine(_upgradeCoroutine);
+            _upgradeCoroutine = null;
         }
 
         // 한번이라도 업그레이드 했을 때
         if (isUpgraded && (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp))
         {
-            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);    
+            Managers.Event.TriggerEvent(EEventType.HeroTotalPowerUpdated);
             Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
             isUpgraded = false;
         }
     }
+
+    private IEnumerator CoHoldUpgrade()
+    {
+        float currentDelay = _initialUpgradeDelay;
+
+        while (true)
+        {
+            TryUpgrade(); // 업그레이드 시도
+
+            yield return new WaitForSeconds(currentDelay);
+
+            // 업그레이드 속도를 점차적으로 증가
+            currentDelay = Mathf.Max(currentDelay * _speedIncreaseFactor, _minUpgradeDelay);
+        }
+    }
+
+    private void TryUpgrade()
+    {
+        if (Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
+        {
+            int price = Util.GetAttributeCost(SelectAttrType, level + 1);
+            if (CanUpgrade(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.ExpPoint, -price);
+                Managers.Backend.GameData.CharacterData.LevelUpHeroAttribute(SelectAttrType);
+                ShowAttributeDetailUI(SelectAttrType);
+
+                if (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp)
+                    isUpgraded = true;
+            }
+            else
+                ShowAlertUI("경험치포인트가 부족합니다");
+        }
+    }
+
 
     private void CheckUpgradeInteractive()
     {
@@ -169,11 +189,5 @@ public class UI_AttributePanel : UI_Base
             return false;
 
         return amount >= cost;
-    }
-
-    private IEnumerator CoStartUpgradeCoolTime(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        _coolTime = null;
     }
 }

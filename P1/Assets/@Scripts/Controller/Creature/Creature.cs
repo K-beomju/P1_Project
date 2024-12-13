@@ -83,11 +83,6 @@ public class Creature : BaseObject, IDamageable
     {
     }
 
-    public virtual void ReSetStats()
-    {
-        // TODO: Some Setting
-    }
-
     protected virtual void UpdateAnimation()
     {
 
