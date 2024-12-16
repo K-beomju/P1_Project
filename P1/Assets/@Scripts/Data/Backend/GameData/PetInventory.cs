@@ -13,11 +13,13 @@ namespace BackendData.GameData
     {
         public int Level { get; set; }
         public int Count { get; set; }
+        public EOwningState OwningState { get; set; }
 
-        public PetInfoData(int level, int count)
+        public PetInfoData(int level, int count, EOwningState owningState)
         {
             Level = level;
             Count = count;
+            OwningState = owningState;
         }
     }
     //===============================================================
@@ -42,7 +44,7 @@ namespace BackendData.GameData
             _petInventoryDic.Clear();
             foreach (EPetType petType in Enum.GetValues(typeof(EPetType)))
             {
-                _petInventoryDic.Add(petType.ToString(), new PetInfoData(1, 0));
+                _petInventoryDic.Add(petType.ToString(), new PetInfoData(1, 0, EOwningState.Unowned));
             }
         }
 
@@ -52,7 +54,9 @@ namespace BackendData.GameData
             {
                 int level = int.Parse(Data["PetInventory"][column]["Level"].ToString());
                 int count = int.Parse(Data["PetInventory"][column]["Count"].ToString());
-                _petInventoryDic.Add(column, new PetInfoData(level, count));
+                EOwningState owningState = (EOwningState)int.Parse(Data["PetInventory"][column]["OwningState"].ToString());
+
+                _petInventoryDic.Add(column, new PetInfoData(level, count, owningState));
 
             }
         }
@@ -82,7 +86,7 @@ namespace BackendData.GameData
 
             if (!_petInventoryDic.ContainsKey(key))
             {
-                _petInventoryDic.Add(key, new PetInfoData(0, 1));
+                _petInventoryDic.Add(key, new PetInfoData(0, 1, EOwningState.Unowned));
             }
             else
             {

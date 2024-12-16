@@ -876,14 +876,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_PetItem_Blue
       objectReference: {fileID: 0}
-    - target: {fileID: 3961418970613033211, guid: 63a7a5231be52de47a66435cc9e85099, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 989a5febb667541479fc341a07e6574e, type: 3}
-    - target: {fileID: 7641307367605238369, guid: 63a7a5231be52de47a66435cc9e85099, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: ec766a0ed060b4baf8e407c4b49065c0, type: 3}
     - target: {fileID: 8597820600945793256, guid: 63a7a5231be52de47a66435cc9e85099, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1713,6 +1705,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 21809da54f02c4479a0b1464a5385631, type: 3}
+    - target: {fileID: 7641307367605238369, guid: 63a7a5231be52de47a66435cc9e85099, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 968fa1e2467e04b41b4e343400ef3c38, type: 3}
     - target: {fileID: 8597820600945793256, guid: 63a7a5231be52de47a66435cc9e85099, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

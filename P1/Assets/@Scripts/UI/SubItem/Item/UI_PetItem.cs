@@ -12,14 +12,16 @@ public class UI_PetItem : UI_Base
     public enum Images
     {
         Image_PetIcon,
-        Image_EggCraftItemIcon
+        Image_EggCraftItemIcon,
+        Image_Lock
     }
 
     public enum Texts
     {
         Text_PetName,
         Text_PetLevel,
-        Text_Amount
+        Text_Amount,
+        Text_Lock
     }
 
     public enum Sliders
@@ -29,6 +31,9 @@ public class UI_PetItem : UI_Base
 
     private EPetType _petType;
     private Button _button;
+
+    private PetData _petData;
+    private PetInfoData _petInfoData;
 
     protected override bool Init()
     {
@@ -41,8 +46,15 @@ public class UI_PetItem : UI_Base
         _button = GetComponent<Button>();
         _button.onClick.AddListener(() => 
         {
-
+            if(_petData == null || _petInfoData == null)
+            {
+                Debug.LogWarning("Data is Null");
+                return;
+            }
+            Managers.UI.ShowPopupUI<UI_PetInfoPopup>().RefreshUI(_petData, _petInfoData);
         });
+
+        RefreshUI();
         return true;
 
     }
@@ -58,24 +70,33 @@ public class UI_PetItem : UI_Base
     public void SetInfo(EPetType petType)
     {
         _petType = petType;
+
+        if(Init() == false)
+        {
+            RefreshUI();
+        }
     }
 
     public void RefreshUI()
     {
-        PetData petData = Managers.Data.PetChart[_petType];
-        if(petData == null)
+        _petData = Managers.Data.PetChart[_petType];
+        if(_petData == null)
         {
             Debug.LogWarning("펫 데이터가 없음");
             return;
         }
+        // 챕터 검사
+        int currentChapter = Managers.Scene.GetCurrentScene<GameScene>().ChapterLevel;
+        GetImage((int)Images.Image_Lock).gameObject.SetActive(currentChapter != _petData.ChapterLevel);
+        GetTMPText((int)Texts.Text_Lock).text = $"챕터 {_petData.ChapterLevel}에서 획득가능";
 
         //TODO LEVEL
-        PetInfoData petInfoData = Managers.Backend.GameData.PetInventory.PetInventoryDic[petData.PetType.ToString()];
-        int currentCount = petInfoData.Count;
-        int maxCount = petInfoData.Level * petData.MaxCount;
+        _petInfoData = Managers.Backend.GameData.PetInventory.PetInventoryDic[_petData.PetType.ToString()];
+        int currentCount = _petInfoData.Count;
+        int maxCount = _petInfoData.Level * _petData.MaxCount;
 
-        GetTMPText((int)Texts.Text_PetLevel).text = $"Lv. {petInfoData.Level}";
-        GetTMPText((int)Texts.Text_PetName).text = petData.PetName;
+        GetTMPText((int)Texts.Text_PetLevel).text = $"Lv. {_petInfoData.Level}";
+        GetTMPText((int)Texts.Text_PetName).text = _petData.PetName;
         GetTMPText((int)Texts.Text_Amount).text = $"{currentCount} / {maxCount}";
         GetSlider((int)Sliders.Slider_Amount).maxValue = maxCount;
         GetSlider((int)Sliders.Slider_Amount).value = currentCount;

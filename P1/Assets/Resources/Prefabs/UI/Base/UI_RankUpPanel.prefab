@@ -228,7 +228,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5840088078668978827}
   m_HandleRect: {fileID: 8662997069773255193}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3860,6 +3860,10 @@ PrefabInstance:
     - target: {fileID: 2777323921890285897, guid: 4f09dcdc7065e3642be79652459305af, type: 3}
       propertyPath: m_Name
       value: UI_RankAbilityItem_Iron
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244318356206704086, guid: 4f09dcdc7065e3642be79652459305af, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7492190446954759918, guid: 4f09dcdc7065e3642be79652459305af, type: 3}
       propertyPath: m_Pivot.x
