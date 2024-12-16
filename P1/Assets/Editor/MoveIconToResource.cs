@@ -16,6 +16,13 @@ public class MoveIconToResource
         MoveToResource("Relic");
     }
 
+    [MenuItem("Assets/Move to Resource/Pet", false, 1)] // 우클릭 메뉴에 "Pet" 옵션 추가
+    private static void MoveToPet()
+    {
+        MoveToResource("Pet");
+    }
+
+
     private static void MoveToResource(string resourceType)
     {
         // 선택된 에셋 경로 가져오기
@@ -55,6 +62,12 @@ public class MoveIconToResource
 
     [MenuItem("Assets/Move to Resource/Relic", true)]
     private static bool ValidateMoveToRelic()
+    {
+        return ValidateMoveToResource();
+    }
+
+    [MenuItem("Assets/Move to Resource/Pet", true)]
+    private static bool ValidateMoveToPet()
     {
         return ValidateMoveToResource();
     }

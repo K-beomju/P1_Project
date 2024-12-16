@@ -510,5 +510,24 @@ public static class Define
 
     #endregion
 
+
+    #region Pet
+
+    public enum EPetType 
+    {
+        Silver,
+        Blue,
+        Emerald,
+        Scale,
+        Wood,
+        Gold,
+        Flame, 
+        Book,
+        Rune
+    }
+
+
+    #endregion
+
 }
 
