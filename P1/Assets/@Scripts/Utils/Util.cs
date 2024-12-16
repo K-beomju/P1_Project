@@ -571,4 +571,25 @@ public static class Util
 
     #endregion
 
+
+    #region Pet Probability
+
+    public static PetData GetPetCraftData(int currentChapterLevel)
+    {
+        var petChart = Managers.Data.PetChart;
+        foreach (var pet in petChart.Values)
+        {
+            if(pet.ChapterLevel == currentChapterLevel)
+            {
+                return pet;
+            }
+        }
+        
+        return null;
+    }
+
+
+
+    #endregion
+
 }

@@ -289,6 +289,26 @@ public class Monster : Creature, IDamageable
                 }
             });
 
+            // 펫 조각
+            PetData petData = Util.GetPetCraftData(gameScene.ChapterLevel);
+            if (petData != null)
+            {
+                bool isDropped = true;//Random.Range(0f, 1f) <= petData.DropCraftItemRate;
+
+                if (isDropped)
+                {
+                    Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification($"{petData.PetName} 조각 획득!");
+
+                    itemIcon = Managers.UI.ShowPooledUI<UI_ItemIconBase>();
+                    itemIcon.SetPetCraftItemAtPosition(petData.PetType, transform.position);
+
+                    // 펫 조각 지급
+                    Managers.Backend.GameData.PetInventory.AddPetCraft(petData.PetType, 1);
+                }
+            }
+
+
+
             Managers.Game.OnMonsterDestroyed();
             Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
 

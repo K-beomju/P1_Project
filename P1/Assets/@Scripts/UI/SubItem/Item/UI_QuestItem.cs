@@ -49,12 +49,12 @@ public class UI_QuestItem : UI_Base
 
     private void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.QuestItemUpdateed, new Action(RefreshUI));
+        Managers.Event.AddEvent(EEventType.QuestItemUpdated, new Action(RefreshUI));
     }
 
     private void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.QuestItemUpdateed, new Action(RefreshUI));
+        Managers.Event.RemoveEvent(EEventType.QuestItemUpdated, new Action(RefreshUI));
     }
 
     public void SetInfo(Data.QuestData questData)

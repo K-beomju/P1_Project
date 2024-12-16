@@ -65,6 +65,10 @@ public class ExcelTransformer : EditorWindow
         // [아이템]
         // ItemData: 아이템 정보 데이터
         ConvertExcelToCsv("Item");
+      
+        // [펫]
+        // PetData: 아이템 정보 데이터
+        ConvertExcelToCsv("Pet");
 
         // 남은거 : ShopData
     }

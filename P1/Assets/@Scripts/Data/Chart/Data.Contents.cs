@@ -662,5 +662,39 @@ namespace Data
     #endregion
 
 
+    #region Pet
+
+    [Serializable]
+    public class PetData
+    {
+        public EPetType PetType;
+        public string PetName;
+        public int ChapterLevel; 
+        public float DropCraftItemRate;
+        public EPetCraftType PetCraftType;
+        public string PetEggSpriteKey;
+        public string PetCraftSpriteKey;
+        public string PetObjectSpriteKey;
+        public int MaxCount; 
+        public int IncreaseCount;
+    }
+
+    [Serializable]
+    public class PetDataLoader : ILoader<EPetType, PetData>
+    {
+        public List<PetData> petDatas = new List<PetData>();
+        public Dictionary<EPetType, PetData> MakeDict()
+        {
+            Dictionary<EPetType, PetData> dict = new Dictionary<EPetType, PetData>();
+            foreach (PetData pet in petDatas)
+                dict.Add(pet.PetType, pet);
+            return dict;
+        }
+    }
+
+
+
+    #endregion
+
 
 }

@@ -413,7 +413,7 @@ public class UI_GameScene : UI_Scene
                     Managers.UI.ShowPopupUI<UI_DrawPopup>().RefreshUI();
                     break;
                 case PlayTab.Pet:
-                    Managers.UI.ShowPopupUI<UI_PetPopup>();
+                    Managers.UI.ShowPopupUI<UI_PetPopup>().RefreshUI();
                     break;
                 case PlayTab.Rank:
                     var popupUI = Managers.UI.ShowPopupUI<UI_RankingPopup>();
@@ -647,19 +647,6 @@ public class UI_GameScene : UI_Scene
     #region TOP 
 
 
-    public UI_GoodItem GetGoodItem(EItemType goodType)
-    {
-        return goodType switch
-        {
-            EItemType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
-            EItemType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
-            EItemType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
-            EItemType.AbilityPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_AbilityPoint),
-            _ => null,
-        };
-    }
-
-
     public void UpdateMyNickName()
     {
         // TOP - HeroInfo UI 
@@ -714,6 +701,39 @@ public class UI_GameScene : UI_Scene
             GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} (0%)";
         }
     }
+
+
+    #endregion
+
+
+    #region Get 
+
+    public UI_GoodItem GetGoodItem(EItemType goodType)
+    {
+        return goodType switch
+        {
+            EItemType.Gold => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold),
+            EItemType.Dia => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia),
+            EItemType.ExpPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_ExpPoint),
+            EItemType.AbilityPoint => Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_AbilityPoint),
+            _ => null,
+        };
+    }
+
+    public Vector2 GetPetButtonCanvasLocalPosition()
+    {
+        RectTransform rect = GetButton((int)Buttons.PetButton).GetComponent<RectTransform>();
+
+        Vector2 canvasLocalPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            Managers.UI.SceneUI.transform as RectTransform,                // 기준이 되는 캔버스의 RectTransform
+            RectTransformUtility.WorldToScreenPoint(Camera.main, rect.position), // 월드 좌표를 스크린 좌표로 변환
+            Camera.main,                                                  // 사용되는 카메라
+            out canvasLocalPos);                                          // 결과로 얻는 캔버스 기준 로컬 좌표
+
+        return canvasLocalPos;
+    } 
+
 
 
     #endregion

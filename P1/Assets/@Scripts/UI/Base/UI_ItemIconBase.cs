@@ -5,6 +5,7 @@ using DG.Tweening;
 using static Define;
 using System;
 using UnityEngine.UI;
+using System.Linq;
 
 public class UI_ItemIconBase : UI_Base
 {
@@ -30,13 +31,23 @@ public class UI_ItemIconBase : UI_Base
         return true;
     }
 
-    // 스크린 좌표 
+    // 골드, 다이아 아이템
     public void SetItemIconAtPosition(EItemType itemType, Vector3 startPosition, Action EndCallBack = null)
     {
         canvas.sortingOrder = SortingLayers.DAMAGE_FONT;
         itemImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{Managers.Data.ItemChart[itemType].SpriteKey}");
         _icon.position = Camera.main.WorldToScreenPoint(startPosition);
         Vector2 targetPosition = (Managers.UI.SceneUI as UI_GameScene).GetGoodItem(itemType).GetGoodIconWorldToCanvasLocalPosition();
+        Explosion(_icon.anchoredPosition, targetPosition, 100f, EndCallBack);
+    }
+
+    // 펫 조각 아이템  
+    public void SetPetCraftItemAtPosition(EPetType petType, Vector3 startPosition, Action EndCallBack = null)
+    {
+        canvas.sortingOrder = SortingLayers.DAMAGE_FONT;
+        itemImage.sprite = Managers.Resource.Load<Sprite>($"Sprites/{Managers.Data.PetChart[petType].PetCraftSpriteKey}");
+        _icon.position = Camera.main.WorldToScreenPoint(startPosition);
+        Vector2 targetPosition = (Managers.UI.SceneUI as UI_GameScene).GetPetButtonCanvasLocalPosition();
         Explosion(_icon.anchoredPosition, targetPosition, 100f, EndCallBack);
     }
 
@@ -59,4 +70,6 @@ public class UI_ItemIconBase : UI_Base
         sequence.AppendCallback(() => EndCallBack());
         sequence.AppendCallback(() => { Managers.Pool.Push(this.gameObject); });
     }
+
+    
 }

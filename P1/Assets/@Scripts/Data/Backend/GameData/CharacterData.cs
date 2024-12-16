@@ -50,7 +50,6 @@ namespace BackendData.GameData
         public IReadOnlyDictionary<string, int> UpgradeAttrDic => (IReadOnlyDictionary<string, int>)_upgradeAttrDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> OwnedRelicDic => (IReadOnlyDictionary<string, int>)_ownedRelicDic.AsReadOnlyCollection();
 
-
     }
 
     //===============================================================
@@ -71,8 +70,9 @@ namespace BackendData.GameData
             AttendanceLastLoginTime = initialLoginTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
             WorldBossCombatPower = 0;
 
-            // 재화 정보 초기화 
+            // 재화 정보 초기화, 펫 알 조각 보유 정보 초기화
             _purseDic.Clear();
+
             foreach (EItemType goodType in Enum.GetValues(typeof(EItemType)))
             {
                 _purseDic.Add(goodType.ToString(), 0);

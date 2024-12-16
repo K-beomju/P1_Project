@@ -133,10 +133,13 @@ public static class Define
         HeroRankChallenging,
 
         /// <summary>퀘스트 아이템 업데이트</summary>
-        QuestItemUpdateed,
+        QuestItemUpdated,
 
         /// <summary>퀘스트 아이템 업데이트</summary>
-        QuestCheckNotification
+        QuestCheckNotification,
+
+        /// <summary>펫 아이템 업데이트</summary>
+        PetItemUpdated
     }
 
     public enum EItemDisplayType
@@ -236,7 +239,7 @@ public static class Define
         Relic,
         GoldDungeonKey,
         DiaDungeonKey,
-        AbilityPoint
+        AbilityPoint,
     }
 
     public enum EHeroUpgradeType
@@ -524,6 +527,19 @@ public static class Define
         Flame, 
         Book,
         Rune
+    }
+
+    public enum EPetCraftType 
+    {
+        BlueFragment,
+        GoldFragment,
+        SilverFragment,
+        RuneFragment,
+        EmeraldFragment,
+        FlameFragment,
+        WoodFragment,
+        ScaleFragment,
+        BookFragment
     }
 
 

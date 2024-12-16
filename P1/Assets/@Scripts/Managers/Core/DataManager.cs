@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Data;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -45,9 +46,9 @@ public class DataManager
     public Dictionary<EItemType, ItemData> ItemChart { get; private set; } = new(); 
     public Dictionary<string, ShopData> ShopChart { get; private set; } = new();
     public Dictionary<int, QuestData> QuestChart { get; private set; } = new(); 
+	// [펫]
+    public Dictionary<EPetType, PetData> PetChart { get; private set; } = new(); 
 
-
-    
 
     public void Init()
     {
@@ -94,6 +95,8 @@ public class DataManager
         ShopChart = LoadJson<ShopDataLoader, string, ShopData>("ShopData").MakeDict();
         QuestChart = LoadJson<QuestDataLoader, int, QuestData>("QuestData").MakeDict();
 
+        // [펫]
+        PetChart = LoadJson<PetDataLoader, EPetType, PetData>("PetData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

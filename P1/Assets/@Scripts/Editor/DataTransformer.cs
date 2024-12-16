@@ -61,6 +61,8 @@ public class DataTransformer : EditorWindow
         ParseCsvDataToJson<ShopDataLoader, ShopData>("Shop");
         ParseCsvDataToJson<QuestDataLoader, QuestData>("Quest");
 
+		// [펫]
+        ParseCsvDataToJson<PetDataLoader, PetData>("Pet");
 	}
 
 	#region Helpers

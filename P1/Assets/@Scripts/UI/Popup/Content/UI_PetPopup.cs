@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class UI_PetPopup : UI_Popup
 {
@@ -24,6 +25,16 @@ public class UI_PetPopup : UI_Popup
             return false;
 
         Bind<UI_PetItem>(typeof(UI_PetItems));
+
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Silver).SetInfo(EPetType.Silver);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Blue).SetInfo(EPetType.Blue);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Emerald).SetInfo(EPetType.Emerald);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Scale).SetInfo(EPetType.Scale);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Wood).SetInfo(EPetType.Wood);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Gold).SetInfo(EPetType.Gold);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Flame).SetInfo(EPetType.Flame);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Book).SetInfo(EPetType.Book);
+        Get<UI_PetItem>((int)UI_PetItems.UI_PetItem_Rune).SetInfo(EPetType.Rune);
         return true;
     }
 

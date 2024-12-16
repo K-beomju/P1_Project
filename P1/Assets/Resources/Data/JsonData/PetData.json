@@ -1,0 +1,112 @@
+{
+  "petDatas": [
+    {
+      "PetType": 0,
+      "PetName": "실버",
+      "ChapterLevel": 1,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 2,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/SilverFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 1,
+      "PetName": "블루",
+      "ChapterLevel": 2,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 0,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/BlueFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 2,
+      "PetName": "에메랄드",
+      "ChapterLevel": 3,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 4,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/EmeraldFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 3,
+      "PetName": "비늘",
+      "ChapterLevel": 4,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 7,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/ScaleFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 4,
+      "PetName": "나무",
+      "ChapterLevel": 5,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 6,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/WoodFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 5,
+      "PetName": "골드",
+      "ChapterLevel": 6,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 1,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/GoldFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 6,
+      "PetName": "천",
+      "ChapterLevel": 7,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 5,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/FlameFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 7,
+      "PetName": "책",
+      "ChapterLevel": 8,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 8,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/BookFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    },
+    {
+      "PetType": 8,
+      "PetName": "문양",
+      "ChapterLevel": 9,
+      "DropCraftItemRate": 0.3,
+      "PetCraftType": 3,
+      "PetEggSpriteKey": null,
+      "PetCraftSpriteKey": "Pet/RuneFragment",
+      "PetObjectSpriteKey": null,
+      "MaxCount": 10,
+      "IncreaseCount": 5
+    }
+  ]
+}

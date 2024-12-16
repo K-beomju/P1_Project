@@ -50,6 +50,7 @@ public class BackendManager
         public readonly BackendData.GameData.CharacterData CharacterData = new();
         public readonly BackendData.GameData.EquipmentInventory EquipmentInventory = new();
         public readonly BackendData.GameData.SkillInventory SkillInventory = new();
+        public readonly BackendData.GameData.PetInventory PetInventory = new();
         public readonly BackendData.GameData.DrawLevelData DrawLevelData = new();
         public readonly BackendData.GameData.DungeonData DungeonData = new();
         public readonly BackendData.GameData.RankUpData RankUpData = new();
@@ -67,6 +68,7 @@ public class BackendManager
             GameDataList.Add("내 던전 정보", DungeonData);
             GameDataList.Add("내 장비 정보", EquipmentInventory);
             GameDataList.Add("내 스킬 정보", SkillInventory);
+            GameDataList.Add("내 펫 정보", PetInventory);
             GameDataList.Add("내 뽑기 정보", DrawLevelData);
             GameDataList.Add("내 유저 정보", CharacterData);
         }
@@ -469,7 +471,7 @@ public class BackendManager
         while (!_isErrorOccured)
         {
             Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.PlayTime);
-            Managers.Event.TriggerEvent(EEventType.QuestItemUpdateed);
+            Managers.Event.TriggerEvent(EEventType.QuestItemUpdated);
             yield return seconds;
         }
     }
