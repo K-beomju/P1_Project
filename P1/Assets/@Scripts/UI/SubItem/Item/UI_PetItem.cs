@@ -13,7 +13,8 @@ public class UI_PetItem : UI_Base
     {
         Image_PetIcon,
         Image_EggCraftItemIcon,
-        Image_Lock
+        Image_Lock,
+        Image_Equip
     }
 
     public enum Texts
@@ -21,7 +22,8 @@ public class UI_PetItem : UI_Base
         Text_PetName,
         Text_PetLevel,
         Text_Amount,
-        Text_Lock
+        Text_Lock,
+        Text_CanMake
     }
 
     public enum Sliders
@@ -43,6 +45,8 @@ public class UI_PetItem : UI_Base
         BindImages(typeof(Images));
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
+
+        GetTMPText((int)Texts.Text_CanMake).gameObject.SetActive(false);
         _button = GetComponent<Button>();
         _button.onClick.AddListener(() => 
         {
@@ -101,5 +105,17 @@ public class UI_PetItem : UI_Base
         GetSlider((int)Sliders.Slider_Amount).maxValue = maxCount;
         GetSlider((int)Sliders.Slider_Amount).value = currentCount;
 
+        if(currentCount >= maxCount && _petInfoData.OwningState == EOwningState.Unowned)
+        {
+            GetTMPText((int)Texts.Text_CanMake).gameObject.SetActive(true);
+            GetTMPText((int)Texts.Text_Amount).gameObject.SetActive(false);
+        }
+        else
+        {
+            GetTMPText((int)Texts.Text_CanMake).gameObject.SetActive(false);
+            GetTMPText((int)Texts.Text_Amount).gameObject.SetActive(true);
+        }
+
+        GetImage((int)Images.Image_Equip).gameObject.SetActive(_petInfoData.IsEquipped);
     }
 }

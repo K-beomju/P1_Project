@@ -160,7 +160,7 @@ public class UIManager
 		return sceneUI;
 	}
 
-    // 딕셔너리에서 팝업을 찾음, 없으면 생성
+	// 딕셔너리에서 팝업을 찾음, 없으면 생성
 	public T ShowPopupUI<T>(string name = null) where T : UI_Popup
 	{
 		if (string.IsNullOrEmpty(name))
@@ -171,15 +171,29 @@ public class UIManager
 			GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}", Root.transform);
 			popup = Util.GetOrAddComponent<T>(go);
 
-        	// 새로 생성된 팝업을 딕셔너리에 저장
+			// 새로 생성된 팝업을 딕셔너리에 저장
 			_popups[name] = popup;
 		}
 
-    	// 스택에 푸시하여 팝업 관리
+		// 스택에 푸시하여 팝업 관리
 		_popupStack.Push(popup);
 		popup.gameObject.SetActive(true);
 
 		return popup as T;
+	}
+
+	public T GetOpenedPopup<T>(string name = null) where T : UI_Popup
+	{
+		if (string.IsNullOrEmpty(name))
+			name = typeof(T).Name;
+
+		if (_popups.TryGetValue(name, out UI_Popup popup))
+		{
+			if (popup.gameObject.activeSelf) // 활성화된 팝업인지 확인
+				return popup as T;
+		}
+
+		return null; // 활성화된 팝업이 없으면 null 반환
 	}
 
 	public void CachePopupUI(Type type)

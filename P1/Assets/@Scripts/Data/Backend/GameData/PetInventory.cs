@@ -14,12 +14,14 @@ namespace BackendData.GameData
         public int Level { get; set; }
         public int Count { get; set; }
         public EOwningState OwningState { get; set; }
+        public bool IsEquipped { get; set; }
 
-        public PetInfoData(int level, int count, EOwningState owningState)
+        public PetInfoData(int level, int count, EOwningState owningState,  bool isEquipped)
         {
             Level = level;
             Count = count;
             OwningState = owningState;
+            IsEquipped = isEquipped;
         }
     }
     //===============================================================
@@ -44,7 +46,7 @@ namespace BackendData.GameData
             _petInventoryDic.Clear();
             foreach (EPetType petType in Enum.GetValues(typeof(EPetType)))
             {
-                _petInventoryDic.Add(petType.ToString(), new PetInfoData(1, 0, EOwningState.Unowned));
+                _petInventoryDic.Add(petType.ToString(), new PetInfoData(1, 0, EOwningState.Unowned, false));
             }
         }
 
@@ -55,8 +57,9 @@ namespace BackendData.GameData
                 int level = int.Parse(Data["PetInventory"][column]["Level"].ToString());
                 int count = int.Parse(Data["PetInventory"][column]["Count"].ToString());
                 EOwningState owningState = (EOwningState)int.Parse(Data["PetInventory"][column]["OwningState"].ToString());
+                bool isEquipped = Boolean.Parse(Data["PetInventory"][column]["IsEquipped"].ToString());
 
-                _petInventoryDic.Add(column, new PetInfoData(level, count, owningState));
+                _petInventoryDic.Add(column, new PetInfoData(level, count, owningState, false));
 
             }
         }
@@ -86,7 +89,7 @@ namespace BackendData.GameData
 
             if (!_petInventoryDic.ContainsKey(key))
             {
-                _petInventoryDic.Add(key, new PetInfoData(0, 1, EOwningState.Unowned));
+                _petInventoryDic.Add(key, new PetInfoData(0, 1, EOwningState.Unowned, false));
             }
             else
             {
@@ -96,6 +99,58 @@ namespace BackendData.GameData
             Managers.Event.TriggerEvent(EEventType.PetItemUpdated);
         }
 
+        public void EquipPet(EPetType petType)
+        {
+            string key = petType.ToString();
+
+            if(_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
+            {
+                if(petInfoData.OwningState == EOwningState.Owned && !petInfoData.IsEquipped)
+                {
+                    IsChangedData = true;
+                    petInfoData.IsEquipped = true;
+                }
+            }
+        }
+
+        public void UnEquipPet(EPetType petType)
+        {
+            string key = petType.ToString();
+
+            if(_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
+            {
+                if(petInfoData.OwningState == EOwningState.Owned && petInfoData.IsEquipped)
+                {
+                    IsChangedData = true;
+                    petInfoData.IsEquipped = false;
+                }
+            }
+        }
+
+        public void PetLevelUp(EPetType petType, int maxCount)
+        {
+            IsChangedData = true;
+            string key = petType.ToString();
+
+            _petInventoryDic[key].Level += 1;
+            _petInventoryDic[key].Count -= maxCount;
+        }
+
+        public void MakePet(EPetType petType)
+        {
+            IsChangedData = true;
+            string key = petType.ToString();
+
+            if(_petInventoryDic.ContainsKey(key))
+            {
+                _petInventoryDic[key].OwningState = EOwningState.Owned;   
+            }
+        }
+
+        public bool IsEquipPet(EPetType petType)
+        {
+            return _petInventoryDic[petType.ToString()].IsEquipped;
+        }
 
     }
 
