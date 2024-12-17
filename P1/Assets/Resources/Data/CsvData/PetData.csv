@@ -1,10 +1,10 @@
-PetType,PetName,ChapterLevel,DropCraftItemRate,ItemType,PetEggSpriteKey,PetCraftSpriteKey,PetObjectSpriteKey,MaxCount,IncreaseCount
-Silver,실버,1,0.3,SilverFragment,Pet/Silver,Pet/SilverFragment,,10,5
-Blue,블루,2,0.3,BlueFragment,Pet/Blue,Pet/BlueFragment,,10,5
-Emerald,에메랄드,3,0.3,EmeraldFragment,Pet/Emerald,Pet/EmeraldFragment,,10,5
-Scale,비늘,4,0.3,ScaleFragment,Pet/Scale,Pet/ScaleFragment,,10,5
-Wood,나무,5,0.3,WoodFragment,Pet/Wood,Pet/WoodFragment,,10,5
-Gold,골드,6,0.3,GoldFragment,Pet/Gold,Pet/GoldFragment,,10,5
-Flame,천,7,0.3,FlameFragment,Pet/Flame,Pet/FlameFragment,,10,5
-Book,책,8,0.3,BookFragment,Pet/Book,Pet/BookFragment,,10,5
-Rune,문양,9,0.3,RuneFragment,Pet/Rune,Pet/RuneFragment,,10,5
+PetType,PetName,PetDesc,ChapterLevel,DropCraftItemRate,ItemType,PetSpriteKey,PetCraftSpriteKey,PetObjectSpriteKey,MaxCount,OwnedAtkPercent,OwnedAtkIncreasePercent,EquippedAtkValue,EquippedAtkIncreaseRate,EquippedHpValue,EquippedHpIncreaseRate
+Silver,선봉기사,전장의 최전방에서 싸우며 아군을 지켜낸 강인한 기사였다.,1,0.3,SilverFragment,Pet/Handrick,Pet/SilverFragment,,10,10,24,10,24,10,24
+Blue,바람 궁수,바람처럼 움직이며 적을 꿰뚫은 숲의 수호자였다.,2,0.3,BlueFragment,Pet/Islil,Pet/BlueFragment,,10,10,24,10,24,10,24
+Emerald,룬 수색자,고대의 룬과 마력을 찾아 떠돌던 탐사자였다.,3,0.3,EmeraldFragment,Pet/Kimu,Pet/EmeraldFragment,,10,10,24,10,24,10,24
+Scale,어둠 마법사,어둠의 힘으로 적을 공포에 빠뜨리던 마법사였다.,4,0.3,ScaleFragment,Pet/Romes,Pet/ScaleFragment,,10,10,24,10,24,10,24
+Wood,유랑 창병,세상을 떠돌며 날렵한 창술로 전투를 지배하던 전사였다.,5,0.3,WoodFragment,Pet/Greg,Pet/WoodFragment,,10,10,24,10,24,10,24
+Gold,마법 사제,성스러운 마력으로 아군을 치유하며 희망을 전한 사제였다.,6,0.3,GoldFragment,Pet/Torome,Pet/GoldFragment,,10,10,24,10,24,10,24
+Flame,달빛 검술사,달빛 아래에서 우아하게 검을 휘두르던 전설의 검술사였다.,7,0.3,FlameFragment,Pet/Asha,Pet/FlameFragment,,10,10,24,10,24,10,24
+Book,심연 마법사,심연의 마법으로 적을 끝없는 어둠에 가두던 자였다.,8,0.3,BookFragment,Pet/Kar,Pet/BookFragment,,10,10,24,10,24,10,24
+Rune,암흑 기사,무거운 갑옷과 검으로 전장을 지배하던 어둠의 기사였다.,9,0.3,RuneFragment,Pet/Ext,Pet/RuneFragment,,10,10,24,10,24,10,24

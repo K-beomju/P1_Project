@@ -669,14 +669,27 @@ namespace Data
     {
         public EPetType PetType;
         public string PetName;
+        public string PetDesc;
+        
         public int ChapterLevel; 
         public float DropCraftItemRate;
         public EPetCraftType PetCraftType;
-        public string PetEggSpriteKey;
+
+        public string PetSpriteKey;
         public string PetCraftSpriteKey;
         public string PetObjectSpriteKey;
+
         public int MaxCount; 
-        public int IncreaseCount;
+
+        // 보유 효과는 % 
+        public float OwnedAtkPercent;
+        public float OwnedAtkIncreasePercent; 
+
+        // 장착 효과는 합연산
+        public float EquippedAtkValue;
+        public float EquippedAtkIncreaseRate;
+        public float EquippedHpValue;
+        public float EquippedHpIncreaseRate;
     }
 
     [Serializable]

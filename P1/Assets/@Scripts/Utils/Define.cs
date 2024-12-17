@@ -139,7 +139,10 @@ public static class Define
         QuestCheckNotification,
 
         /// <summary>펫 아이템 업데이트</summary>
-        PetItemUpdated
+        PetItemUpdated,
+
+        /// <summary>펫 아이템 클릭할 때 호출</summary>
+        PetItemClick,
     }
 
     public enum EItemDisplayType

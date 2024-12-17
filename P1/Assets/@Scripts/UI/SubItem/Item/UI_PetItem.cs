@@ -23,7 +23,7 @@ public class UI_PetItem : UI_Base
         Text_PetLevel,
         Text_Amount,
         Text_Lock,
-        Text_CanMake
+        Text_CanSpawn
     }
 
     public enum Sliders
@@ -46,7 +46,7 @@ public class UI_PetItem : UI_Base
         BindTMPTexts(typeof(Texts));
         BindSliders(typeof(Sliders));
 
-        GetTMPText((int)Texts.Text_CanMake).gameObject.SetActive(false);
+        GetTMPText((int)Texts.Text_CanSpawn).gameObject.SetActive(false);
         _button = GetComponent<Button>();
         _button.onClick.AddListener(() => 
         {
@@ -55,7 +55,8 @@ public class UI_PetItem : UI_Base
                 Debug.LogWarning("Data is Null");
                 return;
             }
-            Managers.UI.ShowPopupUI<UI_PetInfoPopup>().RefreshUI(_petData, _petInfoData);
+            Managers.Event.TriggerEvent(EEventType.PetItemClick, _petData);
+            
         });
 
         RefreshUI();
@@ -107,12 +108,12 @@ public class UI_PetItem : UI_Base
 
         if(currentCount >= maxCount && _petInfoData.OwningState == EOwningState.Unowned)
         {
-            GetTMPText((int)Texts.Text_CanMake).gameObject.SetActive(true);
+            GetTMPText((int)Texts.Text_CanSpawn).gameObject.SetActive(true);
             GetTMPText((int)Texts.Text_Amount).gameObject.SetActive(false);
         }
         else
         {
-            GetTMPText((int)Texts.Text_CanMake).gameObject.SetActive(false);
+            GetTMPText((int)Texts.Text_CanSpawn).gameObject.SetActive(false);
             GetTMPText((int)Texts.Text_Amount).gameObject.SetActive(true);
         }
 
