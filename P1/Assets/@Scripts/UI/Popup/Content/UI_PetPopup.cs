@@ -43,7 +43,6 @@ public class UI_PetPopup : UI_Popup
         Btn_UnEquip,
         Btn_Enhance,
         Btn_Make,
-        Btn_Exit
     }
 
     public enum Sliders
@@ -147,6 +146,7 @@ public class UI_PetPopup : UI_Popup
         }
 
         Managers.Backend.GameData.PetInventory.EquipPet(_petData.PetType);
+        Managers.Object.SpawnGameObject(Vector2.zero, "Object/Pet/Handrick");
         RefreshUI();
     }
 
@@ -198,7 +198,6 @@ public class UI_PetPopup : UI_Popup
         float totalEqAtk = petData.EquippedAtkValue * increaseAtkRate;
         float totalEqHp = petData.EquippedHpValue * increaseHpRate;
         float totalOwnedAtk = petData.OwnedAtkPercent + (_petInfoData.Level * petData.OwnedAtkIncreasePercent);
-        Debug.Log($"[공격력 증가율] 1 + ({petData.EquippedAtkIncreaseRate} / 100) * {_petInfoData.Level} = {increaseAtkRate}");
 
         GetTMPText((int)Texts.Text_EquippedAtk).text = $"{Util.ConvertToTotalCurrency((long)totalEqAtk)}";
         GetTMPText((int)Texts.Text_EquippedHp).text = $"{Util.ConvertToTotalCurrency((long)totalEqHp)}";
