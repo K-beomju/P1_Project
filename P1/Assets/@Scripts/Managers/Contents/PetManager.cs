@@ -6,6 +6,16 @@ using static Define;
 
 public class PetManager
 {
+    public void Init()
+    {
+        PetData petData = Managers.Backend.GameData.PetInventory.EquipCheckPet();
+        if (petData != null)
+        {
+            Managers.Object.SpawnPet(Vector2.zero, petData);
+        }
+    }
+
+
     // 소유 중인 펫의 공격력 퍼센트 합산
     public float GetOwnedPetAtkPercentage()
     {

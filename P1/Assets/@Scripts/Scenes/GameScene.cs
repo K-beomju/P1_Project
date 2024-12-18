@@ -74,6 +74,7 @@ public class GameScene : BaseScene
         Managers.Hero.Init();
         Managers.Equipment.Init();
         Managers.Skill.Init();
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat();
     }
 
     private void InitializeScene()
@@ -85,6 +86,8 @@ public class GameScene : BaseScene
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cameraController.Target = hero.transform;
 
+
+        Managers.Pet.Init();
         Managers.Ad.LoadBannerAd();
     }
 

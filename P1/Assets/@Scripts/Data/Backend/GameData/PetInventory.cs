@@ -1,4 +1,5 @@
 using BackEnd;
+using Data;
 using LitJson;
 using System;
 using System.Collections;
@@ -59,7 +60,7 @@ namespace BackendData.GameData
                 EOwningState owningState = (EOwningState)int.Parse(Data["PetInventory"][column]["OwningState"].ToString());
                 bool isEquipped = Boolean.Parse(Data["PetInventory"][column]["IsEquipped"].ToString());
 
-                _petInventoryDic.Add(column, new PetInfoData(level, count, owningState, false));
+                _petInventoryDic.Add(column, new PetInfoData(level, count, owningState, isEquipped));
 
             }
 
@@ -112,6 +113,7 @@ namespace BackendData.GameData
 
         public void EquipPet(EPetType petType)
         {
+            IsChangedData = true;
             string key = petType.ToString();
 
             // 펫이 인벤토리에 존재하는지 확인
@@ -133,7 +135,6 @@ namespace BackendData.GameData
 
                     // 새 펫을 장착
                     petInfoData.IsEquipped = true;
-                    IsChangedData = true; // 데이터 변경 표시
                 }
             }
             else
@@ -144,13 +145,13 @@ namespace BackendData.GameData
 
         public void UnEquipPet(EPetType petType)
         {
+            IsChangedData = true;
             string key = petType.ToString();
 
             if (_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
             {
                 if (petInfoData.OwningState == EOwningState.Owned && petInfoData.IsEquipped)
                 {
-                    IsChangedData = true;
                     petInfoData.IsEquipped = false;
                 }
             }
@@ -179,6 +180,18 @@ namespace BackendData.GameData
         public bool IsEquipPet(EPetType petType)
         {
             return _petInventoryDic[petType.ToString()].IsEquipped;
+        }
+
+        public PetData EquipCheckPet()
+        {
+            foreach (var pet in _petInventoryDic)
+            {
+                if(pet.Value.IsEquipped)
+                {
+                    return Managers.Data.PetChart[Util.ParseEnum<EPetType>(pet.Key)];
+                }
+            }
+            return null;
         }
 
     }
