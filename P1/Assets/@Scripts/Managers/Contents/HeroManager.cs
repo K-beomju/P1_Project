@@ -112,8 +112,14 @@ public class HeroInfo
         float AtkEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Weapon);
         float MaxHpEquipmentPer = GetTotalEquipmentBonusPercentage(EEquipmentType.Armor);
 
-        // 총 보너스 퍼센트 합산 (장비 + 특성)
-        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic + AtkBuff;
+        // 펫 보너스 퍼센트 합산 
+        float AtkPetPer = GetPetOwnedPercentage();
+        (float AtkPetValue, float HpPetValue) = GetPetEquipValue(); 
+        Atk += AtkPetValue;
+        MaxHp += HpPetValue;
+
+        // 총 보너스 퍼센트 합산 (장비 + 특성 + 유물 + 광고버프 + 펫)
+        float totalAtkPer = AtkEquipmentPer + AtkAttr + AtkRelic + AtkBuff + AtkPetPer;
         float totalMaxHpPer = MaxHpEquipmentPer + MaxHpAttr + MaxHpRelic;
         float totalRecoveryPer = RecoveryRelic;
         float totalCriRatePer = CriRateAttr;
@@ -147,6 +153,7 @@ public class HeroInfo
         $"<color=blue>Relic Stats:</color> AtkRelic: {AtkRelic}, MaxHpRelic: {MaxHpRelic}, RecoveryRelic: {RecoveryRelic}, MonsterDmgRelic: {MonsterDmgRelic}, BossMonsterDmgRelic: {BossMonsterDmgRelic}, ExpRateRelic: {ExpRateRelic}, GoldRateRelic: {GoldRateRelic}\n" +
         $"<color=magenta>RankUp Stats:</color> Atk: {AtkRankUp}, MaxHp: {MaxHpRankUp}, Recovery: {RecoveryRankUp}, CriDmg: {CriDmgRankUp}, GoldRate: {GoldRateRankUp}, ExpRate: {ExpRateRankUp}\n" +
         $"<color=orange>Equipment Bonus:</color> AtkEquipmentPer: {AtkEquipmentPer}, MaxHpEquipmentPer: {MaxHpEquipmentPer}\n" +
+        $"<color=black>Pet Bonus:</color> AtkPetPer: {AtkPetPer}, AtkPetValue: {AtkPetValue}, HpPetValue: {HpPetValue}\n" +
         $"<color=red>Final Stats:</color> Atk: {Atk}, MaxHp: {MaxHp}, Recovery: {Recovery}, CriRate: {CriRate}, CriDmg: {CriDmg}, GoldIncreaseRate: {GoldIncreaseRate}, ExpIncreaseRate: {ExpIncreaseRate}";
 
         Debug.Log(debugMessage);
@@ -267,6 +274,20 @@ public class HeroInfo
         }
 
         return totalValue;
+    }
+
+    // 펫 보유 효과
+    private float GetPetOwnedPercentage()
+    {
+        float ownedValues = Managers.Pet.GetOwnedPetAtkPercentage();
+        return ownedValues;
+    }
+
+    // 펫 장착 효과 (공, 체)
+    private (float, float) GetPetEquipValue()
+    {
+        (float totalEqAtk, float totalEqHp) = Managers.Pet.GetEquippedPetStats();
+        return (totalEqAtk, totalEqHp);
     }
 
 

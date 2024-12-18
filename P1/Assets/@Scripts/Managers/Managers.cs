@@ -19,6 +19,7 @@ public class Managers : MonoBehaviour
     private EquipmentManager _equipment = new EquipmentManager();
     private SkillManager _skill = new SkillManager();
     private BuffManager _buff = new BuffManager();
+    private PetManager _pet = new PetManager();
 
     public static ObjectManager Object { get { return Instance?._object; } }
     public static GameManager Game { get { return Instance?._game; } }
@@ -27,6 +28,7 @@ public class Managers : MonoBehaviour
     public static EquipmentManager Equipment { get { return Instance?._equipment; } }
     public static SkillManager Skill { get { return Instance?._skill; } }
     public static BuffManager Buff { get { return Instance?._buff; } }
+    public static PetManager Pet { get { return Instance?._pet; } }
     #endregion
 
     #region Core

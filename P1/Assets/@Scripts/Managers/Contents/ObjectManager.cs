@@ -10,6 +10,7 @@ public class ObjectManager
     public RankMonster RankMonster { get; private set; }
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
+
     public Hero Hero { get; private set; }
     public Bot Bot { get; private set; }
 
@@ -79,6 +80,17 @@ public class ObjectManager
         return rankMonster;
     }
 
+    public GameObject SpawnPet(Vector3 position, string prefabName)
+    {
+        GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
+        go.transform.position = position;
+        Pet pet = go.GetComponent<Pet>();
+
+        go.transform.position = position;
+        return go;
+    }
+
+
 
     public T Spawn<T>(Vector3 position, int dataTemplateID) where T : BaseObject
     {
@@ -128,7 +140,6 @@ public class ObjectManager
         {
             RankMonster = null;
         }
-
         Managers.Pool.Push(obj.gameObject);
     }
 

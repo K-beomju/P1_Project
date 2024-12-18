@@ -113,6 +113,19 @@ public class UI_PetPopup : UI_Popup
         Managers.Backend.GameData.PetInventory.MakePet(_petData.PetType);
         Managers.Backend.GameData.PetInventory.AddPetCraft(_petData.PetType, -_petData.MaxCount);
         RefreshUI();
+
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
+           {
+               if (changed)
+               {
+                   Debug.LogWarning("전투력 변경 있음.");
+                   Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+               }
+               else
+               {
+                   Debug.LogWarning("전투력 변경 없음.");
+               }
+           });
     }
 
     private void OnClickEnhanceButton()
@@ -125,6 +138,19 @@ public class UI_PetPopup : UI_Popup
         int maxCount = _petInfoData.Level * _petData.MaxCount;
         Managers.Backend.GameData.PetInventory.PetLevelUp(_petData.PetType, maxCount);
         RefreshUI();
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
+        {
+            if (changed)
+            {
+                Debug.LogWarning("전투력 변경 있음.");
+                Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+            }
+            else
+            {
+                Debug.LogWarning("전투력 변경 없음.");
+            }
+        });
+
     }
 
     private void OnClickUnEquipButton()
@@ -136,6 +162,19 @@ public class UI_PetPopup : UI_Popup
 
         Managers.Backend.GameData.PetInventory.UnEquipPet(_petData.PetType);
         RefreshUI();
+
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
+           {
+               if (changed)
+               {
+                   Debug.LogWarning("전투력 변경 있음.");
+                   Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+               }
+               else
+               {
+                   Debug.LogWarning("전투력 변경 없음.");
+               }
+           });
     }
 
     private void OnClickEquipButton()
@@ -146,8 +185,21 @@ public class UI_PetPopup : UI_Popup
         }
 
         Managers.Backend.GameData.PetInventory.EquipPet(_petData.PetType);
-        Managers.Object.SpawnGameObject(Vector2.zero, "Object/Pet/Handrick");
+        Managers.Object.SpawnPet(Vector2.zero, "Object/Pet/Handrick");
         RefreshUI();
+
+        Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
+           {
+               if (changed)
+               {
+                   Debug.LogWarning("전투력 변경 있음.");
+                   Managers.UI.ShowBaseUI<UI_TotalPowerBase>().ShowTotalPowerUI();
+               }
+               else
+               {
+                   Debug.LogWarning("전투력 변경 없음.");
+               }
+           });
     }
 
     public void RefreshUI()

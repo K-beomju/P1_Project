@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6514795120455679325}
   - component: {fileID: 1118350861739662350}
   - component: {fileID: 8056568716888115367}
+  - component: {fileID: 6546752133429787606}
   m_Layer: 0
   m_Name: Handrick
   m_TagString: Untagged
@@ -98,6 +99,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33d43f44b2e8a4c14a15c982dd411d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  baseSpeed: 2
+  distanceFactor: 1
+  followDistance: 1
+  smoothTime: 0.3
+--- !u!95 &6546752133429787606
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425101587896965055}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 12665f3529bc844d7bd1347db70bed17, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7771362167043275524
 GameObject:
   m_ObjectHideFlags: 0
