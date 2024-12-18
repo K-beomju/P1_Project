@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ public class ObjectManager
     public RankMonster RankMonster { get; private set; }
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
+    public List<Pet> Pets { get; set; } = new List<Pet>();
 
     public Hero Hero { get; private set; }
     public Bot Bot { get; private set; }
@@ -80,15 +82,34 @@ public class ObjectManager
         return rankMonster;
     }
 
-    public GameObject SpawnPet(Vector3 position, string prefabName)
-    {
-        GameObject go = Managers.Resource.Instantiate(prefabName, pooling: true);
-        go.transform.position = position;
-        Pet pet = go.GetComponent<Pet>();
+    #region  Pet
 
+    public GameObject SpawnPet(Vector3 position, PetData petData)
+    {
+        GameObject go = Managers.Resource.Instantiate(petData.PetObjectPrefabKey, pooling: false);
         go.transform.position = position;
+        go.name = petData.Remark;
+        Pet pet = go.GetComponent<Pet>();
+        Pets.Add(pet);
         return go;
     }
+
+    public void DespawnPet(string petName)
+    {
+        Pet petToRemove = Pets.FirstOrDefault(p => p.name == petName);
+        if (petToRemove != null)
+        {
+            Managers.Resource.Destroy(petToRemove.gameObject);
+            Pets.Remove(petToRemove);
+        }
+    }
+
+    public Pet FindPetByName(string petName)
+    {
+        return Pets.FirstOrDefault(p => p.name == petName);
+    }
+
+    #endregion
 
 
 
@@ -147,7 +168,7 @@ public class ObjectManager
     {
         if (RankMonster == null)
             return;
-        
+
         Transform poolTrm = GetRootTransform($"@{RankMonster.name}Pool");
         Managers.Resource.Destroy(poolTrm.gameObject);
     }

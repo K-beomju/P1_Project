@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static Define;
+using System;
+using System.Security.Cryptography;
 
 public class Pet : BaseObject
 {
@@ -22,6 +25,7 @@ public class Pet : BaseObject
     private float smoothTime = 0.3f;
     private Vector2 currentVelocity = Vector2.zero;
 
+    private int index = 0;
 
     protected override bool Init()
     {
@@ -30,9 +34,9 @@ public class Pet : BaseObject
 
         Sprite.sortingOrder = SortingLayers.CREATURE;
         Owner = Managers.Object.Hero;
+
         if (coroutine != null)
             StopCoroutine(coroutine);
-
         coroutine = StartCoroutine(FollowMoveToHeroCO());
         return true;
     }
@@ -41,6 +45,9 @@ public class Pet : BaseObject
     {
         if (Owner == null)
             Owner = Managers.Object.Hero;
+        
+        index = Managers.Object.Pets.Count;
+        Vector2 offset = new Vector2(index * 0.5f, 0); // 예시로 x축 방향으로 0.5 단위 오프셋
 
         while (true)
         {
@@ -48,7 +55,7 @@ public class Pet : BaseObject
                 yield return null;
 
             Vector2 currentPos = transform.position;
-            Vector2 targetPos = Owner.transform.position;
+            Vector2 targetPos = (Vector2)Owner.transform.position + offset;
             float distance = Vector2.Distance(currentPos, targetPos);
 
             // followDistance보다 멀리 떨어진 경우에만 이동

@@ -161,6 +161,8 @@ public class UI_PetPopup : UI_Popup
         }
 
         Managers.Backend.GameData.PetInventory.UnEquipPet(_petData.PetType);
+        Managers.Object.DespawnPet(_petData.Remark);
+
         RefreshUI();
 
         Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
@@ -185,7 +187,7 @@ public class UI_PetPopup : UI_Popup
         }
 
         Managers.Backend.GameData.PetInventory.EquipPet(_petData.PetType);
-        Managers.Object.SpawnPet(Vector2.zero, "Object/Pet/Handrick");
+        Managers.Object.SpawnPet(Vector2.zero, _petData);
         RefreshUI();
 
         Managers.Hero.PlayerHeroInfo.CalculateInfoStat((changed) =>
@@ -236,7 +238,7 @@ public class UI_PetPopup : UI_Popup
         int maxCount = _petInfoData.Level * petData.MaxCount;
 
         // 정보, 갯수 표시 
-        GetImage((int)Images.Image_PetIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{Managers.Data.PetChart[petData.PetType].PetSpriteKey}");
+        GetImage((int)Images.Image_PetIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{Managers.Data.PetChart[petData.PetType].PetObjectSpriteKey}");
         GetTMPText((int)Texts.Text_PetLevel).text = $"Lv. {_petInfoData.Level}";
         GetTMPText((int)Texts.Text_PetName).text = petData.PetName;
         GetTMPText((int)Texts.Text_Amount).text = $"{currentCount} / {maxCount}";

@@ -669,6 +669,7 @@ namespace Data
     {
         public EPetType PetType;
         public string PetName;
+        public string Remark;
         public string PetDesc;
         
         public int ChapterLevel; 
@@ -678,6 +679,7 @@ namespace Data
         public string PetSpriteKey;
         public string PetCraftSpriteKey;
         public string PetObjectSpriteKey;
+        public string PetObjectPrefabKey;
 
         public int MaxCount; 
 
