@@ -110,6 +110,10 @@ public class UI_PetPopup : UI_Popup
             return;
         }
 
+        var popupUI = Managers.UI.ShowPopupUI<UI_NewPetPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        popupUI.RefreshUI(_petData);
+
         Managers.Backend.GameData.PetInventory.MakePet(_petData.PetType);
         Managers.Backend.GameData.PetInventory.AddPetCraft(_petData.PetType, -_petData.MaxCount);
         RefreshUI();

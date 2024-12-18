@@ -323,6 +323,7 @@ public class HeroManager
             Managers.UI.ShowBaseUI<UI_LevelUpBase>().ShowLevelUpUI(level);
         }));
 
+        // 히어로가 생성되고 첫번째 검사 
         PlayerHeroInfo.CalculateInfoStat();
     }
 

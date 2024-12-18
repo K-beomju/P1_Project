@@ -85,6 +85,9 @@ public class Hero : Creature
         HpBar._offset = new Vector3(0.0f, -0.2f, 0.0f);
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(true);
+
+
+        Managers.Object.Hero.ChangeAnimController(Managers.Backend.GameData.EquipmentInventory.EquipCheckEquipment());
     }
 
 
@@ -312,6 +315,7 @@ public class Hero : Creature
         weaponSprite.gameObject.SetActive(false);
         if(infoData != null)
         {
+            isMove = true;
             Anim.Rebind();
             CreatureState = ECreatureState.Idle;
 
