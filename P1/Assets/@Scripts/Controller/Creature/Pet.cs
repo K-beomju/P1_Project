@@ -25,8 +25,6 @@ public class Pet : BaseObject
     private float smoothTime = 0.3f;
     private Vector2 currentVelocity = Vector2.zero;
 
-    private int index = 0;
-
     protected override bool Init()
     {
         if (base.Init() == false)
@@ -46,16 +44,13 @@ public class Pet : BaseObject
         if (Owner == null)
             Owner = Managers.Object.Hero;
         
-        index = Managers.Object.Pets.Count;
-        Vector2 offset = new Vector2(index * 0.5f, 0); // 예시로 x축 방향으로 0.5 단위 오프셋
-
         while (true)
         {
             if (Owner == null)
                 yield return null;
 
             Vector2 currentPos = transform.position;
-            Vector2 targetPos = (Vector2)Owner.transform.position + offset;
+            Vector2 targetPos = (Vector2)Owner.transform.position;
             float distance = Vector2.Distance(currentPos, targetPos);
 
             // followDistance보다 멀리 떨어진 경우에만 이동

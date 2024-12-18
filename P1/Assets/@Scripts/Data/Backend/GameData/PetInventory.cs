@@ -9,14 +9,14 @@ using static Define;
 
 namespace BackendData.GameData
 {
-    public class PetInfoData 
+    public class PetInfoData
     {
         public int Level { get; set; }
         public int Count { get; set; }
         public EOwningState OwningState { get; set; }
         public bool IsEquipped { get; set; }
 
-        public PetInfoData(int level, int count, EOwningState owningState,  bool isEquipped)
+        public PetInfoData(int level, int count, EOwningState owningState, bool isEquipped)
         {
             Level = level;
             Count = count;
@@ -114,13 +114,31 @@ namespace BackendData.GameData
         {
             string key = petType.ToString();
 
-            if(_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
+            // 펫이 인벤토리에 존재하는지 확인
+            if (_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
             {
-                if(petInfoData.OwningState == EOwningState.Owned && !petInfoData.IsEquipped)
+                // 펫이 소유되어 있고, 이미 장착된 펫이 있다면 먼저 해제
+                if (petInfoData.OwningState == EOwningState.Owned && !petInfoData.IsEquipped)
                 {
-                    IsChangedData = true;
+                    // 기존에 장착된 펫을 찾아서 해제
+                    foreach (var existingPet in _petInventoryDic.Values)
+                    {
+                        if (existingPet.IsEquipped)
+                        {
+                            Managers.Object.DespawnPet();
+                            existingPet.IsEquipped = false;
+                            break;  // 하나만 찾으면 되므로 루프 종료
+                        }
+                    }
+
+                    // 새 펫을 장착
                     petInfoData.IsEquipped = true;
+                    IsChangedData = true; // 데이터 변경 표시
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"펫 인벤토리에 {petType} 펫이 없습니다.");
             }
         }
 
@@ -128,9 +146,9 @@ namespace BackendData.GameData
         {
             string key = petType.ToString();
 
-            if(_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
+            if (_petInventoryDic.TryGetValue(key, out PetInfoData petInfoData))
             {
-                if(petInfoData.OwningState == EOwningState.Owned && petInfoData.IsEquipped)
+                if (petInfoData.OwningState == EOwningState.Owned && petInfoData.IsEquipped)
                 {
                     IsChangedData = true;
                     petInfoData.IsEquipped = false;
@@ -152,9 +170,9 @@ namespace BackendData.GameData
             IsChangedData = true;
             string key = petType.ToString();
 
-            if(_petInventoryDic.ContainsKey(key))
+            if (_petInventoryDic.ContainsKey(key))
             {
-                _petInventoryDic[key].OwningState = EOwningState.Owned;   
+                _petInventoryDic[key].OwningState = EOwningState.Owned;
             }
         }
 

@@ -161,7 +161,7 @@ public class UI_PetPopup : UI_Popup
         }
 
         Managers.Backend.GameData.PetInventory.UnEquipPet(_petData.PetType);
-        Managers.Object.DespawnPet(_petData.Remark);
+        Managers.Object.DespawnPet();
 
         RefreshUI();
 

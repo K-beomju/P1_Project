@@ -11,7 +11,7 @@ public class ObjectManager
     public RankMonster RankMonster { get; private set; }
     public BossMonster BossMonster { get; private set; }
     public HashSet<Monster> Monsters { get; set; } = new HashSet<Monster>();
-    public List<Pet> Pets { get; set; } = new List<Pet>();
+    public Pet Pet { get; private set; }
 
     public Hero Hero { get; private set; }
     public Bot Bot { get; private set; }
@@ -90,24 +90,19 @@ public class ObjectManager
         go.transform.position = position;
         go.name = petData.Remark;
         Pet pet = go.GetComponent<Pet>();
-        Pets.Add(pet);
+        Pet = pet;
         return go;
     }
 
-    public void DespawnPet(string petName)
+    public void DespawnPet()
     {
-        Pet petToRemove = Pets.FirstOrDefault(p => p.name == petName);
-        if (petToRemove != null)
+        if (Pet != null)
         {
-            Managers.Resource.Destroy(petToRemove.gameObject);
-            Pets.Remove(petToRemove);
+            Managers.Resource.Destroy(Pet.gameObject);
+            Pet = null; 
         }
     }
 
-    public Pet FindPetByName(string petName)
-    {
-        return Pets.FirstOrDefault(p => p.name == petName);
-    }
 
     #endregion
 
