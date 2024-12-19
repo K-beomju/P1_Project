@@ -30,6 +30,9 @@ public abstract class ProjectileBase : EffectBase
         if (Managers.Object.BossMonster.IsValid())
             return Managers.Object.BossMonster;
 
+        if (Managers.Object.RankMonster.IsValid())
+            return Managers.Object.RankMonster;
+
         if (!objs.Any())
             return null;
 
