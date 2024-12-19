@@ -24,7 +24,8 @@ public class UI_GameScene : UI_Scene
         Btn_Logout,
         Btn_Setting,
         Btn_Menu,
-        Btn_Quest
+        Btn_Quest,
+        Btn_Stage
     }
 
     enum Sliders
@@ -200,6 +201,14 @@ public class UI_GameScene : UI_Scene
             popupUI.RefreshUI();
         });
 
+        GetButton((int)Buttons.Btn_Stage).onClick.AddListener(() =>
+        {
+            var popupUI = Managers.UI.ShowPopupUI<UI_StagePopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
+        });
+
+
         // Good
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Gold).SetInfo(EItemType.Gold);
         Get<UI_GoodItem>((int)UI_GoodItems.UI_GoodItem_Dia).SetInfo(EItemType.Dia);
@@ -322,12 +331,14 @@ public class UI_GameScene : UI_Scene
     {
         GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play);
         GetTMPText((int)Texts.Text_StageInfo).gameObject.
-        SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss || sceneState == EGameSceneState.RankUp);
+        SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss 
+        || sceneState == EGameSceneState.RankUp || sceneState == EGameSceneState.Stay);
         GetObject((int)GameObjects.RankUpStage).SetActive(sceneState == EGameSceneState.RankUp);
 
         switch (sceneState)
         {
             case EGameSceneState.Play:
+            case EGameSceneState.Stay:
                 GetTMPText((int)Texts.Text_StageInfo).text = $"푸른 초원 {Managers.Scene.GetCurrentScene<GameScene>().GetCurrentStage()}";
                 break;
             case EGameSceneState.RankUp:

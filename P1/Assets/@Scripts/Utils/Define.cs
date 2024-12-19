@@ -21,6 +21,7 @@ public static class Define
         Pause,
         Boss,
         RankUp,
+        Stay,
         Over,
         Clear,
     }

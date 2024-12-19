@@ -33,6 +33,7 @@ public class GameScene : BaseScene
     public int ChapterLevel { get; private set; }
     public float BossBattleTimer { get; private set; }
     public float BossBattleTimeLimit { get; private set; }
+    private bool isStaying = false;
 
     public StageInfoData StageInfo { get; private set; }
     private BackendData.GameData.CharacterData CharacterData;
@@ -143,10 +144,13 @@ public class GameScene : BaseScene
             { EGameSceneState.Pause, CoPauseStage },
             { EGameSceneState.Boss, CoBossStage },
             { EGameSceneState.RankUp, CoRankUpStage },
+            { EGameSceneState.Stay, CoStayStage },
             { EGameSceneState.Over, CoStageOver },
             { EGameSceneState.Clear, CoStageClear }
         };
     }
+
+    #region Normal Stage
 
     private void SetupStage()
     {
@@ -162,7 +166,17 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(CharacterData.StageLevel);
     }
 
-    #region GameSceneState
+    // 스테이지 이동할 때 그 스테이지만 머물게 
+    public void StayStage(int stageLevel)
+    {
+        isStaying = true;
+        sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
+        Managers.Object.KillAllMonsters();
+
+        StageInfo = Managers.Data.StageChart[stageLevel];
+        GameSceneState = EGameSceneState.Stay;
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(stageLevel);
+    }
 
     private IEnumerator CoPlayStage()
     {
@@ -183,7 +197,6 @@ public class GameScene : BaseScene
         yield return null;
     }
 
-    #region Boss
 
     private IEnumerator CoBossStage()
     {
@@ -193,7 +206,7 @@ public class GameScene : BaseScene
         fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplay("보스를 처치하세요!");
 
-    
+
         Managers.Game.SpawnStageMonster(StageInfo, true);
         var bossMonster = Managers.Object.BossMonster;
         bossMonster.DisableAction();
@@ -333,6 +346,40 @@ public class GameScene : BaseScene
 
     #endregion
 
+    #region Stay 
+
+    private IEnumerator CoStayStage()
+    {
+        Managers.Game.SetMonsterCount(1, 1); // 몬스터 카운트 초기화
+        while (true) // 스테이지를 무한 반복
+        {
+
+            yield return StartWait; // 스테이지 시작 대기
+            Managers.Game.SpawnStageMonster(StageInfo); // 몬스터 스폰
+
+            int initialMonsterCount = Managers.Object.Monsters.Count;
+            while (true)
+            {
+                // 남은 몬스터가 초기 수의 절반 이하일 경우 새로운 몬스터 소환
+                if (Managers.Object.Monsters.Count <= initialMonsterCount / 2)
+                {
+                    Managers.Game.SpawnStageMonster(StageInfo); // 새로운 몬스터 소환
+                    initialMonsterCount = Managers.Object.Monsters.Count; // 초기 몬스터 수 업데이트
+                }
+
+                // 몬스터가 다시 절반 이하가 될 때까지 대기
+                yield return FrameWait;
+            }
+        }
+
+    }
+
+
+    #endregion
+
+
+    #region Over & Clear
+
     private IEnumerator CoStageOver()
     {
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
@@ -360,7 +407,6 @@ public class GameScene : BaseScene
         CharacterData.UpdateStageLevel(stageDelta);
         Debug.LogWarning($"다음 스테이지 {CharacterData.StageLevel} 입니다!");
         SetupStage();
-        GameSceneState = EGameSceneState.Play;
     }
 
     #endregion
@@ -401,7 +447,7 @@ public class GameScene : BaseScene
 
     public string GetCurrentStage()
     {
-        return $"{ChapterLevel}-{CharacterData.StageLevel}";
+        return $"{ChapterLevel}-{StageInfo.StageNumber}";
     }
 
     public override void Clear()
