@@ -43,6 +43,7 @@ public class UI_PetPopup : UI_Popup
         Btn_UnEquip,
         Btn_Enhance,
         Btn_Make,
+        Btn_PetDesc
     }
 
     public enum Sliders
@@ -85,6 +86,12 @@ public class UI_PetPopup : UI_Popup
         GetButton((int)Buttons.Btn_UnEquip).onClick.AddListener(OnClickUnEquipButton);
         GetButton((int)Buttons.Btn_Enhance).onClick.AddListener(OnClickEnhanceButton);
         GetButton((int)Buttons.Btn_Make).onClick.AddListener(OnClickMakeButton);
+        GetButton((int)Buttons.Btn_PetDesc).onClick.AddListener(() => 
+        {
+            UI_PetProbabilityPopup popupUI = Managers.UI.ShowPopupUI<UI_PetProbabilityPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
+        });
 
         _petData = Managers.Data.PetChart[EPetType.Silver];
         return true;

@@ -39,7 +39,8 @@ public class UIManager
 		{
 			typeof(UI_PrologPopup),
 			typeof(UI_PolicyPopup),
-			typeof(UI_UpdatePopup)
+			typeof(UI_UpdatePopup),
+			typeof(UI_DialoguePopup)
 		};
 		var list = AppDomain.CurrentDomain.GetAssemblies()
 				  .SelectMany(assembly => assembly.GetTypes())

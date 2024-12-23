@@ -12,7 +12,6 @@ public class UI_PetItem : UI_Base
     public enum Images
     {
         Image_PetIcon,
-        Image_EggCraftItemIcon,
         Image_Lock,
         Image_Equip
     }
