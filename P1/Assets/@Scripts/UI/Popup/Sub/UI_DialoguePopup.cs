@@ -35,7 +35,9 @@ public class UI_DialoguePopup : UI_Popup
         BindTMPTexts(typeof(Texts));
         BindImages(typeof(Images));
 
-        currentText = GetTMPText((int)Texts.Text_Desc);
+        currentText = GetTMPText((int)Texts.Text_Desc);            
+
+        currentText.text = string.Empty;
         textQueue.Enqueue("마을이 위험해! 내가 나서지 않으면 모두 위험해질 거야.");
         textQueue.Enqueue("몬스터들을 막아야 해! 한 발짝도 더는 허락하지 않겠다!!");
 
@@ -60,6 +62,7 @@ public class UI_DialoguePopup : UI_Popup
         else
         {
             // 모든 텍스트가 출력되면 팝업 닫기
+            Managers.Scene.GetCurrentScene<GameScene>().SetupStage();
             ClosePopupUI();
         }
     }

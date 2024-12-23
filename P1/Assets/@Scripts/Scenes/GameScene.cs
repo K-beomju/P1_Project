@@ -59,10 +59,15 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
         fadeInCallBack: () =>
         {
-            var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-            popupUI.RefreshUI();
-            //SetupStage();
+            if(PlayerPrefs.GetInt("ShowDialogue", 0) == 0)
+            {
+                PlayerPrefs.SetInt("ShowDialogue", 1);
+                var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
+                Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+                popupUI.RefreshUI();
+            }
+            else
+                SetupStage();
         });
         return true;
     }
@@ -155,7 +160,7 @@ public class GameScene : BaseScene
 
     #region Normal Stage
 
-    private void SetupStage()
+    public void SetupStage()
     {
         ChapterLevel = 1;
         StageInfo = Managers.Data.StageChart[CharacterData.StageLevel];
