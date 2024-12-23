@@ -59,7 +59,10 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
         fadeInCallBack: () =>
         {
-            SetupStage();
+            var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.RefreshUI();
+            //SetupStage();
         });
         return true;
     }
