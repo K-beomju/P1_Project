@@ -34,14 +34,22 @@ public class UIManager
 
 	public void CacheAllPopups()
 	{
+		// 제외할 팝업 타입들을 HashSet에 저장
+		HashSet<Type> excludedPopups = new HashSet<Type>
+		{
+			typeof(UI_PrologPopup),
+			typeof(UI_PolicyPopup),
+			typeof(UI_UpdatePopup)
+		};
 		var list = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(assembly => assembly.GetTypes())
-				.Where(type => type.IsSubclassOf(typeof(UI_Popup)));
+				  .SelectMany(assembly => assembly.GetTypes())
+				  .Where(type => type.IsSubclassOf(typeof(UI_Popup)) && !excludedPopups.Contains(type));
 
 		foreach (Type type in list)
 		{
 			CachePopupUI(type);
 		}
+
 		CloseAllPopupUI();
 	}
 

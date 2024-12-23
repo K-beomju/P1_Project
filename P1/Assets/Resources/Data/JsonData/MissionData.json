@@ -1,0 +1,193 @@
+{
+  "missionDatas": [
+    {
+      "DataId": 1,
+      "Remark": "적 처치",
+      "MissionType": 1,
+      "CompleteValue": 1,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 2,
+      "Remark": "공격력 강화",
+      "MissionType": 2,
+      "CompleteValue": 5,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 3,
+      "Remark": "체력 강화",
+      "MissionType": 3,
+      "CompleteValue": 5,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 4,
+      "Remark": "체력 회복 강화",
+      "MissionType": 4,
+      "CompleteValue": 5,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 5,
+      "Remark": "치명타 확률 강화",
+      "MissionType": 5,
+      "CompleteValue": 5,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 6,
+      "Remark": "치명텨 피해 강화",
+      "MissionType": 6,
+      "CompleteValue": 5,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 7,
+      "Remark": "1-2 스테이지 도전",
+      "MissionType": 7,
+      "CompleteValue": 2,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 8,
+      "Remark": "공격력 강화",
+      "MissionType": 2,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 9,
+      "Remark": "체력 강화",
+      "MissionType": 3,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 10,
+      "Remark": "체력 회복 강화",
+      "MissionType": 4,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 11,
+      "Remark": "치명타 확률 강화",
+      "MissionType": 5,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 12,
+      "Remark": "치명타 피해 강화",
+      "MissionType": 6,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 13,
+      "Remark": "1-3 스테이지 도전",
+      "MissionType": 7,
+      "CompleteValue": 3,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 14,
+      "Remark": "특성 공격력 강화",
+      "MissionType": 8,
+      "CompleteValue": 3,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 15,
+      "Remark": "특성 최대체력 강화",
+      "MissionType": 9,
+      "CompleteValue": 3,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 16,
+      "Remark": "무기 소환",
+      "MissionType": 10,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 17,
+      "Remark": "무기 장착",
+      "MissionType": 11,
+      "CompleteValue": 1,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 18,
+      "Remark": "무기 강화",
+      "MissionType": 12,
+      "CompleteValue": 1,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 19,
+      "Remark": "스킬 소환",
+      "MissionType": 13,
+      "CompleteValue": 10,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 20,
+      "Remark": "스킬 장착",
+      "MissionType": 14,
+      "CompleteValue": 1,
+      "RewardItem": {
+        "Dia": 200
+      }
+    },
+    {
+      "DataId": 21,
+      "Remark": "적 처치",
+      "MissionType": 1,
+      "CompleteValue": 30,
+      "RewardItem": {
+        "Dia": 200
+      }
+    }
+  ]
+}

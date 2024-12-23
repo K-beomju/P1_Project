@@ -311,6 +311,7 @@ public class Monster : Creature, IDamageable
 
             Managers.Game.OnMonsterDestroyed();
             Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.KillMonster);
+            Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.EnemyDefeat);
 
             // 폭발 효과 생성
             HpBar.gameObject.SetActive(false);

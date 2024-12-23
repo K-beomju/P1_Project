@@ -144,6 +144,9 @@ public static class Define
 
         /// <summary>펫 아이템 클릭할 때 호출</summary>
         PetItemClick,
+
+        /// <summary>미션 아이템 업데이트</summary>
+        MissionItemUpdated,
     }
 
     public enum EItemDisplayType
@@ -313,7 +316,7 @@ public static class Define
 
     public const float DASH_DISTANCE_THRESHOLD = 9f;
     public const float LERP_SPEED = 0.1f;
-    
+
     public static class AnimName
     {
         public readonly static int HashCombo = Animator.StringToHash("IsCombo");
@@ -520,7 +523,7 @@ public static class Define
 
     #region Pet
 
-    public enum EPetType 
+    public enum EPetType
     {
         Silver,
         Blue,
@@ -528,12 +531,12 @@ public static class Define
         Scale,
         Wood,
         Gold,
-        Flame, 
+        Flame,
         Book,
         Rune
     }
 
-    public enum EPetCraftType 
+    public enum EPetCraftType
     {
         BlueFragment,
         GoldFragment,
@@ -549,5 +552,27 @@ public static class Define
 
     #endregion
 
+
+    #region Mission
+
+    public enum EMissionType
+    {
+        EnemyDefeat = 1,           // 적 처치
+        AttackPowerUpgrade,    // 공격력 강화
+        MaxHealthUpgrade,      // 체력 강화
+        HealthRegenUpgrade,    // 체력 회복 강화
+        CriticalRateUpgrade,   // 치명타 확률 강화
+        CriticalDamageUpgrade, // 치명타 피해 강화
+        StageChallenge,        // 스테이지 도전
+        AttributeAtkUpgrade,   // 특성 공격력 강화
+        AttributeHpUpgrade,    // 특성 최대체력 강화
+        WeaponSummon,          // 무기 소환
+        WeaponEquip,           // 무기 장착
+        WeaponUpgrade,         // 무기 강화
+        SkillSummon,           // 스킬 소환
+        SkillEquip             // 스킬 장착
+    }
+
+    #endregion
 }
 

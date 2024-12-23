@@ -114,7 +114,8 @@ namespace BackendData.GameData
 
                 _dailyQuestDic.Add(column, new QuestInfoData(currentCount, targetCount, currentLevel, questState));
             }
-        
+
+            DailyQuestTimeCheck();
         }
 
         public override string GetTableName()
@@ -152,7 +153,7 @@ namespace BackendData.GameData
             return null;
         }
 
-        public void DailyQuestTimeCheck()
+        private void DailyQuestTimeCheck()
         {
             TimeSpan timeSinceLastLogin = DateTime.UtcNow - DateTime.Parse(DailyQuestResetTime);
             Debug.Log($"경과 시간: {timeSinceLastLogin.TotalHours:F2}시간");

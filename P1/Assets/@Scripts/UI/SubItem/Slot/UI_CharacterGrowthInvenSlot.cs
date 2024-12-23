@@ -151,6 +151,17 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
                     isTotalPowerUpdated = true;
                 }
 
+                var missionType =  _heroUpgradeType switch
+                {
+                    EHeroUpgradeType.Growth_Atk => EMissionType.AttackPowerUpgrade,
+                    EHeroUpgradeType.Growth_Hp => EMissionType.MaxHealthUpgrade,
+                    EHeroUpgradeType.Growth_Recovery => EMissionType.HealthRegenUpgrade,
+                    EHeroUpgradeType.Growth_CriRate => EMissionType.CriticalRateUpgrade,
+                    EHeroUpgradeType.Growth_CriDmg =>  EMissionType.CriticalDamageUpgrade,
+                    _ => throw new ArgumentException($"Unknown rare type String: {_heroUpgradeType}")
+                };
+                Managers.Backend.GameData.MissionData.UpdateMission(missionType);
+
                 UpdateSlotInfoUI();
             }
             else

@@ -48,6 +48,8 @@ public class DataManager
     public Dictionary<int, QuestData> QuestChart { get; private set; } = new(); 
 	// [펫]
     public Dictionary<EPetType, PetData> PetChart { get; private set; } = new(); 
+	// [미션]
+    public Dictionary<int, MissionData> MissionChart { get; private set; } = new(); 
 
 
     public void Init()
@@ -97,6 +99,9 @@ public class DataManager
 
         // [펫]
         PetChart = LoadJson<PetDataLoader, EPetType, PetData>("PetData").MakeDict();
+
+        // [미션]
+        MissionChart = LoadJson<MissionDataLoader, int, MissionData>("MissionData").MakeDict();
     }
 
     private Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

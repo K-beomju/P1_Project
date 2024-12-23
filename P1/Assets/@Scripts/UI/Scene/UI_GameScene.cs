@@ -25,7 +25,8 @@ public class UI_GameScene : UI_Scene
         Btn_Setting,
         Btn_Menu,
         Btn_Quest,
-        Btn_Stage
+        Btn_Stage,
+        Btn_Mission
     }
 
     enum Sliders
@@ -110,6 +111,7 @@ public class UI_GameScene : UI_Scene
     public List<UI_DisplayAdBuffItem> _displayAdBuffList { get; set; } = new List<UI_DisplayAdBuffItem>();
 
     private Coroutine[] _autoSkillCheckCoroutines = new Coroutine[6];
+    private InGameScene_Mission missionItem;
 
     protected override bool Init()
     {
@@ -133,6 +135,8 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.SkillButton).onClick.AddListener(() => ShowTab(PlayTab.Skill));
         GetButton((int)Buttons.DungeonButton).onClick.AddListener(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).onClick.AddListener(() => ShowTab(PlayTab.Draw));
+
+        missionItem = GetButton((int)Buttons.Btn_Mission).gameObject.GetOrAddComponent<InGameScene_Mission>();
 
         GetButton((int)Buttons.Btn_Setting).onClick.AddListener(() =>
         {
@@ -246,7 +250,6 @@ public class UI_GameScene : UI_Scene
             else
                 GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
         }));
-
     }
 
     private void OnDisable()

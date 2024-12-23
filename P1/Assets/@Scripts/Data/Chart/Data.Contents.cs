@@ -707,9 +707,35 @@ namespace Data
         }
     }
 
+    #endregion
 
+    #region Mission
+
+    [Serializable]
+    public class MissionData
+    {
+        public int DataId;
+        public string Remark;
+        public EMissionType MissionType;
+        public int CompleteValue;
+        public Dictionary<EItemType, int> RewardItem = new Dictionary<EItemType, int>();
+    }
+
+    [Serializable]
+    public class MissionDataLoader : ILoader<int, MissionData>
+    {
+        public List<MissionData> missionDatas = new List<MissionData>();
+        public Dictionary<int, MissionData> MakeDict()
+        {
+            Dictionary<int, MissionData> dict = new Dictionary<int, MissionData>();
+            foreach (MissionData mission in missionDatas)
+                dict.Add(mission.DataId, mission);
+            return dict;
+        }
+    }
 
     #endregion
+
 
 
 }

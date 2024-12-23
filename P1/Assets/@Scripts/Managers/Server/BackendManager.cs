@@ -56,12 +56,14 @@ public class BackendManager
         public readonly BackendData.GameData.RankUpData RankUpData = new();
         public readonly BackendData.GameData.ShopData ShopData = new();
         public readonly BackendData.GameData.QuestData QuestData = new();
+        public readonly BackendData.GameData.MissionData MissionData = new();
 
         public readonly Dictionary<string, GameData>
             GameDataList = new Dictionary<string, GameData>();
 
         public BackendGameData()
         {
+            GameDataList.Add("내 미션 정보", MissionData);
             GameDataList.Add("내 퀘스트 정보", QuestData);
             GameDataList.Add("내 상점 정보", ShopData);
             GameDataList.Add("내 랭크 정보", RankUpData);

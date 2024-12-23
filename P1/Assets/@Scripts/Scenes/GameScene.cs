@@ -106,12 +106,12 @@ public class GameScene : BaseScene
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         }
-        // 일일퀘스트 로직 
-        Managers.Backend.GameData.QuestData.DailyQuestTimeCheck();
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
         Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
+        Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
+        Managers.Event.TriggerEvent(EEventType.MissionItemUpdated);
 
     }
 

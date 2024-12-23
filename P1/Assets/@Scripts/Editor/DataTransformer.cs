@@ -63,6 +63,9 @@ public class DataTransformer : EditorWindow
 
 		// [펫]
         ParseCsvDataToJson<PetDataLoader, PetData>("Pet");
+
+		// [미션]
+        ParseCsvDataToJson<MissionDataLoader, MissionData>("Mission");
 	}
 
 	#region Helpers

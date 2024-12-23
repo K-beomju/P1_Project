@@ -588,8 +588,24 @@ public static class Util
         return null;
     }
 
+    #endregion
+
+    #region UI
+
+    public static Vector2 GetCanvasPosition(Vector3 rectTransform)
+    {
+        Vector2 canvasLocalPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            Managers.UI.SceneUI.transform as RectTransform,                // 기준이 되는 캔버스의 RectTransform
+            RectTransformUtility.WorldToScreenPoint(Camera.main, rectTransform), // 월드 좌표를 스크린 좌표로 변환
+            Camera.main,                                                  // 사용되는 카메라
+            out canvasLocalPos);                                          // 결과로 얻는 캔버스 기준 로컬 좌표
+
+        return canvasLocalPos;
+    }
+
+
 
 
     #endregion
-
 }
