@@ -59,7 +59,7 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
         fadeInCallBack: () =>
         {
-            if(PlayerPrefs.GetInt("ShowDialogue", 0) == 0)
+            if (PlayerPrefs.GetInt("ShowDialogue", 0) == 0)
             {
                 PlayerPrefs.SetInt("ShowDialogue", 1);
                 var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
@@ -106,20 +106,27 @@ public class GameScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
-        // 출석체크 로직
-        if (CharacterData.AttendanceCheck() == true)
+        // 다이얼을 다 봤을 때 활성화 
+        if (PlayerPrefs.GetInt("ShowDialogue", 0) == 1)
         {
-            Debug.Log("하루가 지나 출석체크 팝업 On");
-            var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-            popupUI.RefreshUI();
+            // 출석체크 로직
+            if (CharacterData.AttendanceCheck() == true)
+            {
+                Debug.Log("하루가 지나 출석체크 팝업 On");
+                var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
+                Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
+                popupUI.RefreshUI();
+            }
+
         }
+
 
         // 데이터 불러온 뒤 UI 표시 부분
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
         Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
         Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
         Managers.Event.TriggerEvent(EEventType.MissionItemUpdated);
+        Managers.Event.TriggerEvent(EEventType.MyRankingUpdated);
 
     }
 

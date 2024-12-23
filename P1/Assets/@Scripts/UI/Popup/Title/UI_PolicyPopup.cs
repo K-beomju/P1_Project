@@ -25,7 +25,7 @@ public class UI_PolicyPopup : UI_Popup
             return str;
         }
     }
-    
+
     public enum GameObjects
     {
         MainGroup
@@ -47,7 +47,7 @@ public class UI_PolicyPopup : UI_Popup
         Button_Personal
     }
 
-    public enum PolicyType 
+    public enum PolicyType
     {
         Service,
         Personal
@@ -59,7 +59,7 @@ public class UI_PolicyPopup : UI_Popup
     {
         if (base.Init() == false)
             return false;
-        
+
         BindObjects(typeof(GameObjects));
         BindToggles(typeof(Toggles));
         BindButtons(typeof(Buttons));
@@ -70,7 +70,7 @@ public class UI_PolicyPopup : UI_Popup
             // 이용약관
             Application.OpenURL("https://storage.thebackend.io/98b106d62906bad2c8416462d83b8b90f151ab550fd19a5fa04d0607a5bb99d5/terms.html");
         });
-        GetButton((int)Buttons.Button_Personal).onClick.AddListener(() => 
+        GetButton((int)Buttons.Button_Personal).onClick.AddListener(() =>
         {
             // 개인정보처리방침
             Application.OpenURL("https://storage.thebackend.io/98b106d62906bad2c8416462d83b8b90f151ab550fd19a5fa04d0607a5bb99d5/privacy.html");
@@ -82,7 +82,7 @@ public class UI_PolicyPopup : UI_Popup
         GetButton((int)Buttons.Btn_Accept).interactable = false;
 
         // Toggle
-        GetToggle((int)Toggles.Toggle_AllCheck).onValueChanged.AddListener((isChecked) => 
+        GetToggle((int)Toggles.Toggle_AllCheck).onValueChanged.AddListener((isChecked) =>
         {
             GetToggle((int)Toggles.Toggle_PersonalCheck).isOn = isChecked;
             GetToggle((int)Toggles.Toggle_ServiceCheck).isOn = isChecked;
@@ -98,11 +98,13 @@ public class UI_PolicyPopup : UI_Popup
         {
             GetButton((int)Buttons.Btn_Accept).interactable = EssentialPolicy();
         });
-        
-        
+
+
         return true;
     }
-    void Start() {
+    void Start()
+    {
+#if UNITY_ANDROID
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             var dependencyStatus = task.Result;
@@ -118,6 +120,8 @@ public class UI_PolicyPopup : UI_Popup
                 Debug.Log($"Could not resolve all Firebase dependencies: {dependencyStatus}");
             }
         });
+#endif
+
     }
 
     void GetToken()
@@ -148,7 +152,7 @@ public class UI_PolicyPopup : UI_Popup
 
     private bool EssentialPolicy()
     {
-        if(GetToggle((int)Toggles.Toggle_PersonalCheck).isOn && GetToggle((int)Toggles.Toggle_ServiceCheck).isOn)
+        if (GetToggle((int)Toggles.Toggle_PersonalCheck).isOn && GetToggle((int)Toggles.Toggle_ServiceCheck).isOn)
         {
             return true;
         }
@@ -161,14 +165,17 @@ public class UI_PolicyPopup : UI_Popup
     private void OnClickAccpetButton()
     {
         // 푸시알림에 동의했을 경우
-        if(GetToggle((int)Toggles.Toggle_PushCheck).isOn)
+        if (GetToggle((int)Toggles.Toggle_PushCheck).isOn)
         {
-            SendQueue.Enqueue(Backend.Android.PutDeviceToken, token, (callback) => 
+            SendQueue.Enqueue(Backend.Android.PutDeviceToken, token, (callback) =>
             {
-                if (IsBackendError(callback)) {
+                if (IsBackendError(callback))
+                {
+
                     ShowAlertUI("푸시 알람 미처리 안내");
                 }
-                else {
+                else
+                {
                     ClosePopupUI();
                     Managers.UI.ShowPopupUI<UI_NicknamePopup>();
                 }
@@ -180,7 +187,7 @@ public class UI_PolicyPopup : UI_Popup
             Managers.UI.ShowPopupUI<UI_NicknamePopup>();
         }
     }
-    
+
 
     private void OnClickExitButton()
     {

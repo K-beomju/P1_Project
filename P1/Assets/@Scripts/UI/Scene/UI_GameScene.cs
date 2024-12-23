@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using static Define;
@@ -43,7 +44,8 @@ public class UI_GameScene : UI_Scene
         Text_StageInfo,
         Text_AutoSkill,
         RankUpDescText,
-        Text_NickName
+        Text_NickName,
+        Text_MyRank
     }
 
     enum Images
@@ -250,6 +252,7 @@ public class UI_GameScene : UI_Scene
             else
                 GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
         }));
+        Managers.Event.AddEvent(EEventType.MyRankingUpdated, new Action(UpdateMyRanking));
     }
 
     private void OnDisable()
@@ -261,6 +264,7 @@ public class UI_GameScene : UI_Scene
             else
                 GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
         }));
+        Managers.Event.RemoveEvent(EEventType.MyRankingUpdated, new Action(UpdateMyRanking));
 
     }
 
@@ -334,7 +338,7 @@ public class UI_GameScene : UI_Scene
     {
         GetObject((int)GameObjects.RemainMonster).SetActive(sceneState == EGameSceneState.Play);
         GetTMPText((int)Texts.Text_StageInfo).gameObject.
-        SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss 
+        SetActive(sceneState == EGameSceneState.Play || sceneState == EGameSceneState.Boss
         || sceneState == EGameSceneState.RankUp || sceneState == EGameSceneState.Stay);
         GetObject((int)GameObjects.RankUpStage).SetActive(sceneState == EGameSceneState.RankUp);
 
@@ -658,7 +662,7 @@ public class UI_GameScene : UI_Scene
     }
 
 
-    #region TOP 
+    #region HeroInfo
 
 
     public void UpdateMyNickName()
@@ -688,6 +692,29 @@ public class UI_GameScene : UI_Scene
         {
             GetImage((int)Images.Image_MyRankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/Unranked");
         }
+
+    }
+
+    public void UpdateMyRanking()
+    {
+        Managers.Backend.Rank.List[0].GetMyRank((isSuccess, myRank) =>
+        {
+            if (isSuccess)
+            {
+                if (myRank != null)
+                {
+                    GetTMPText((int)Texts.Text_MyRank).text = Managers.Backend.GameData.CharacterData.WorldBossCombatPower == 0 ? $"-" : $"{myRank.rank}위";
+                }
+                else
+                {
+                    Managers.Backend.SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), "myRank is null");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("랭킹이 정상적으로 로드되지 않았습니다.");
+            }
+        });
     }
 
     #endregion
@@ -746,7 +773,7 @@ public class UI_GameScene : UI_Scene
             out canvasLocalPos);                                          // 결과로 얻는 캔버스 기준 로컬 좌표
 
         return canvasLocalPos;
-    } 
+    }
 
 
 

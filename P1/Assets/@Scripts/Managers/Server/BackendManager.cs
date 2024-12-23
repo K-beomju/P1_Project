@@ -371,6 +371,7 @@ public class BackendManager
                         if (callback.IsSuccess())
                         {
                             Debug.Log("랭킹 성공, 랭킹에 성공했습니다.");
+                            Managers.Event.TriggerEvent(EEventType.MyRankingUpdated);
                         }
                         else
                         {

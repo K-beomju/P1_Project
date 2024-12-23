@@ -49,10 +49,6 @@ public class MyCustomEditorWindow : EditorWindow
 
             });
         }
-        if (GUILayout.Button("랭킹 데이터 저장", GUILayout.Width(position.width), GUILayout.Height(50)))
-        {
-            Managers.Backend.UpdateRankScore();
-        }
         GUILayout.Space(50); // 필드 아래 간격 추가
 
         // 재화 충전 입력 필드

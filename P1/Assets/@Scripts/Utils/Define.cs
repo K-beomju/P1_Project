@@ -147,6 +147,9 @@ public static class Define
 
         /// <summary>미션 아이템 업데이트</summary>
         MissionItemUpdated,
+
+        /// <summary>히어로 영웅 랭킹 업데이트</summary>
+        MyRankingUpdated,
     }
 
     public enum EItemDisplayType

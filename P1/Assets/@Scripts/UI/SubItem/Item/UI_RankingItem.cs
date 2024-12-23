@@ -32,7 +32,7 @@ public class UI_RankingItem : UI_Base
     {
         GetTMPText((int)Texts.Text_Rank).text = rankUserItem.rank;
         GetTMPText((int)Texts.Text_NickName).text = rankUserItem.nickname;
-        GetTMPText((int)Texts.Text_TotalDamage).text = Util.ConvertToTotalCurrency(long.Parse(rankUserItem.score));
+        GetTMPText((int)Texts.Text_TotalDamage).text = rankUserItem.score == "0" ?  "-" : Util.ConvertToTotalCurrency(long.Parse(rankUserItem.score));
 
         // 3위권이라면 
         switch (int.Parse(rankUserItem.rank))

@@ -293,7 +293,7 @@ public class Monster : Creature, IDamageable
             PetData petData = Util.GetPetCraftData(gameScene.ChapterLevel);
             if (petData != null)
             {
-                bool isDropped = true;//Random.Range(0f, 1f) <= petData.DropCraftItemRate;
+                bool isDropped = UnityEngine.Random.Range(0f, 1f) <= petData.DropCraftItemRate;
 
                 if (isDropped)
                 {

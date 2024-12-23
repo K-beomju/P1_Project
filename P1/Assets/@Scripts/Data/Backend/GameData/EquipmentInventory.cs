@@ -190,11 +190,15 @@ namespace BackendData.GameData
 
         public EquipmentInfoData EquipCheckEquipment()
         {
-            if (EquipmentEquipDic[EEquipmentType.Weapon.ToString()].IsEquipped)
-                return EquipmentEquipDic[EEquipmentType.Weapon.ToString()];
-
+            var weaponKey = EEquipmentType.Weapon.ToString();
+            if (EquipmentEquipDic.ContainsKey(weaponKey))
+            {
+                if (EquipmentEquipDic[weaponKey].IsEquipped)
+                    return EquipmentEquipDic[weaponKey];
+            }
             return null;
         }
+
 
         #endregion
     }

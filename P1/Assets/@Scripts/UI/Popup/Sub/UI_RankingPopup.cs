@@ -12,12 +12,12 @@ public class UI_RankingPopup : UI_Popup
         BG
     }
 
-    public enum Buttons 
+    public enum Buttons
     {
         Btn_Exit
     }
 
-    public enum Texts 
+    public enum Texts
     {
         Text_MyRank
     }
@@ -56,7 +56,8 @@ public class UI_RankingPopup : UI_Popup
     private void ChangeRankList(int index)
     {
         // n분이 지날경우 서버 불러온 후 callback 함수 실행, 지나지 않았을 경우 캐싱된 데이터 리턴
-        Managers.Backend.Rank.List[index].GetRankList((isSuccess, list) => {
+        Managers.Backend.Rank.List[index].GetRankList((isSuccess, list) =>
+        {
             if (isSuccess)
             {
                 for (int i = 0; i < list.Count; i++)
@@ -64,7 +65,7 @@ public class UI_RankingPopup : UI_Popup
                     _userRankingItemList[i].gameObject.SetActive(true);
                     _userRankingItemList[i].RefreshUI(list[i]);
 
-                    if(i > _userRankingItemList.Count)
+                    if (i > _userRankingItemList.Count)
                     {
                         break;
                     }
@@ -87,20 +88,20 @@ public class UI_RankingPopup : UI_Popup
 
     // 내 랭킹 불러오기 함수 
     // 만약 랭킹에 없을 경우, Update 시도 
-    private void UpdateMyRank(int index) 
+    private void UpdateMyRank(int index)
     {
-        Managers.Backend.Rank.List[index].GetMyRank((isSuccess, myRank) => 
+        Managers.Backend.Rank.List[index].GetMyRank((isSuccess, myRank) =>
         {
-            if(isSuccess)
+            if (isSuccess)
             {
-                if(myRank != null)
+                if (myRank != null)
                 {
                     _myRankItem.RefreshUI(myRank);
-                    GetTMPText((int)Texts.Text_MyRank).text = $"개인 순위 {myRank.rank}";
+                    GetTMPText((int)Texts.Text_MyRank).text = Managers.Backend.GameData.CharacterData.WorldBossCombatPower == 0 ?  $"개인 순위 -" : $"개인 순위 {myRank.rank}";
                 }
                 else
                 {
-                    Managers.Backend.SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(),"myRank is null");
+                    Managers.Backend.SendBugReport(GetType().Name, MethodBase.GetCurrentMethod()?.ToString(), "myRank is null");
                 }
             }
             else
