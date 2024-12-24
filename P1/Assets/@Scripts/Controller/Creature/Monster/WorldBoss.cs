@@ -24,21 +24,50 @@ public class WorldBoss : Monster
         MaxHp = data.BossMaxHp;
         Hp = MaxHp;
 
+        AttackRange = 3f;
         worldBossTotalDamage = 0;
+        Target = Managers.Object.Hero;
     }
 
 
     #region AI
     protected override void UpdateIdle()
     {
-        //base.UpdateIdle();
+        Vector3 dir = Target.CenterPosition - CenterPosition;
+        float distToTargetSqr = dir.sqrMagnitude;
+        float attackDistanceSqr = AttackRange * AttackRange;
+
+        if (distToTargetSqr <= attackDistanceSqr)
+        {
+            CreatureState = ECreatureState.Attack;
+            return;
+        }
     }
 
-    protected override void UpdateMove()
+    public void OnAnimEventHandler()
     {
-        //base.UpdateMove();
-
+        if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
+            return;
+        
+        Target.GetComponent<IDamageable>().OnDamaged(this);
     }
+
+
+    protected override void UpdateAttack()
+    {
+        if (!isActionEnabled)
+            return;
+
+        if (_coWait == null)
+        {
+            StartWait(2);
+            if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
+                return;
+
+            Anim.SetTrigger(AnimName.HashAttack);
+        }
+    }
+
 
     #endregion
 

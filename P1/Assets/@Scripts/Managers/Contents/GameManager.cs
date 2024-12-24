@@ -98,7 +98,7 @@ public class GameManager
         }
         else
         {
-            Managers.Object.Spawn<WorldBoss>(new Vector3(0, 2, 0), 0);
+            Managers.Object.Spawn<WorldBoss>(new Vector3(3, 0, 0), 0);
         }
     }
 
