@@ -80,6 +80,7 @@ public class UI_AttendancePopup : UI_Popup
         }
         // 버튼 상태 갱신
         RefreshUI();
+        Managers.Sound.Play(ESound.Effect, "Sounds/SuccessReward", 0.5f);
     }
 
 

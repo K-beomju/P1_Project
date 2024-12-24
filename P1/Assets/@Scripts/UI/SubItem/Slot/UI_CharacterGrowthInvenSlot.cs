@@ -124,6 +124,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         while (true)
         {
             TryUpgrade(); // 업그레이드 시도
+            Managers.Sound.Play(ESound.Effect, "Sounds/Button", 0.5f);
 
             yield return new WaitForSeconds(currentDelay);
 

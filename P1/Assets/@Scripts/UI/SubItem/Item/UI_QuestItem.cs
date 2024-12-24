@@ -78,6 +78,8 @@ public class UI_QuestItem : UI_Base
         GetImage((int)Images.Image_Complete).gameObject.SetActive(_questData.QuestCategory == EQuestCategory.Daily);
 
         Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
+        Managers.Sound.Play(ESound.Effect, "Sounds/SuccessReward", 0.5f);
+
     }
 
     public void RefreshUI()

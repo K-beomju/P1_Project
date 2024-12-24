@@ -42,5 +42,7 @@ public class UI_RankUpClearPopup : UI_Popup
         ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Current);
         GetTMPText((int)Texts.Text_MyRank).text = Managers.Data.RankUpChart[rankType].Name;
         GetImage((int)Images.Image_RankIcon).sprite = Managers.Resource.Load<Sprite>($"Sprites/Class/{rankType}");
+        Managers.Sound.Play(ESound.Effect, "Sounds/SuccessRankUp", 0.5f);
+
     }
 }

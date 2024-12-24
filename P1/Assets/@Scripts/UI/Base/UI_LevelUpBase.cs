@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using static Define;
 
 public class UI_LevelUpBase : UI_Base
 {
@@ -42,6 +43,7 @@ public class UI_LevelUpBase : UI_Base
             _sequence.Kill();
         }
 
+        Managers.Sound.Play(ESound.Effect, "Sounds/LevelUp", 0.5f);
 
         // 시작 위치 초기화 
         _rectTransform.anchoredPosition = new Vector2(_originalPosition.x, _originalPosition.y - 50);

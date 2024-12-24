@@ -73,6 +73,8 @@ public class InGameScene_Mission : UI_Base
         Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, rewardItem[EItemType.Dia]);
 
         _isCompleted = false;
+        Managers.Sound.Play(ESound.Effect, "Sounds/SuccessReward", 0.5f);
+
     }
 
     public void RefreshUI()

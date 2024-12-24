@@ -77,6 +77,8 @@ public class UI_CharacterPopup : UI_Popup
 
         _characterSection = section;
         RefreshUI();
+        Managers.Sound.Play(ESound.Effect, "Sounds/OffPopup", 0.5f);
+
     }
 
 

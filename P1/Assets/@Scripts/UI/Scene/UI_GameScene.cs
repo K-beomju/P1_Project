@@ -232,7 +232,7 @@ public class UI_GameScene : UI_Scene
 
         RefreshUI();
 
-        //Managers.Sound.Play(ESound.Bgm, "Sounds/GameBGM", 0.3f);
+        Managers.Sound.Play(ESound.Bgm, "Sounds/GameBGM", 0.3f);
 
         return true;
     }
@@ -441,11 +441,14 @@ public class UI_GameScene : UI_Scene
 
             }
             ShowPopupActiveGameUI(false);
+            Managers.Sound.Play(ESound.Effect, "Sounds/OnPopup", 0.5f);
+
         }
         else
         {
             Managers.UI.ClosePopupUI();
             ShowPopupActiveGameUI(true);
+            Managers.Sound.Play(ESound.Effect, "Sounds/OffPopup", 0.5f);
 
             switch (tab)
             {

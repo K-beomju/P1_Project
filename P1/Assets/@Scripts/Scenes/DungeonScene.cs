@@ -29,6 +29,8 @@ public class DungeonScene : BaseScene
     private UI_DungeonScene sceneUI;
 
     public DungeonInfoData DungeonInfo { get; private set; }
+    private BackendData.GameData.CharacterData CharacterData;
+
     public WorldBossDungeonInfoData WorldDungeonInfo { get; private set; }
     private Dictionary<EItemType, int> clearRewardDic = new Dictionary<EItemType, int>();
 
@@ -44,8 +46,10 @@ public class DungeonScene : BaseScene
         DungeonType = Managers.Game.GetCurrentDungeon();
         Managers.Scene.SetCurrentScene(this);
 
+        CharacterData = Managers.Backend.GameData.CharacterData;
 
         InitializeScene();
+        InitializeUI();
         InitializeDungeon();
 
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
@@ -76,10 +80,15 @@ public class DungeonScene : BaseScene
         cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero.transform;
+    }
 
-        // UI 초기화
+    private void InitializeUI()
+    {
         sceneUI = Managers.UI.ShowSceneUI<UI_DungeonScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
+
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
+
     }
 
     private void InitializeDungeon()

@@ -49,8 +49,7 @@ public class GameScene : BaseScene
         SceneType = EScene.GameScene;
         Managers.Scene.SetCurrentScene(this);
 
-        // Server
-        InitailizeBackend();
+        CharacterData = Managers.Backend.GameData.CharacterData;
         // Data
         InitializeGameComponents();
         InitializeScene();
@@ -70,12 +69,6 @@ public class GameScene : BaseScene
                 SetupStage();
         });
         return true;
-    }
-
-
-    private void InitailizeBackend()
-    {
-        CharacterData = Managers.Backend.GameData.CharacterData;
     }
 
     private void InitializeGameComponents()
