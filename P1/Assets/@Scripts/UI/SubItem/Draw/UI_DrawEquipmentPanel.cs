@@ -118,7 +118,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() =>
         {
             int price = 500;
-            if(CanUpgrade(price))
+            if(CanDraw(price))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
                 OnDrawEquipment(10);
@@ -129,7 +129,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => 
         {
             int price = 1500;
-            if(CanUpgrade(1500))
+            if(CanDraw(1500))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
                 OnDrawEquipment(30);
@@ -246,7 +246,7 @@ public class UI_DrawEquipmentPanel : UI_Base
 
     }
 
-    bool CanUpgrade(float cost)
+    bool CanDraw(float cost)
     {
         if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
             return false;

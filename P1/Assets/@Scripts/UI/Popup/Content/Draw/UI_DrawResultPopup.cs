@@ -54,8 +54,28 @@ public class UI_DrawResultPopup : UI_Popup
             if (_type == EDrawType.Skill)
                 Managers.Event.TriggerEvent(EEventType.DrawSkillUIUpdated);
         });
-        GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => RetryDrawItem());
-        GetButton((int)Buttons.Btn_AutoDraw).onClick.AddListener(() => AutoDrawItem());
+        GetButton((int)Buttons.Btn_RetryDraw).onClick.AddListener(() => 
+        {
+            int price = _drawCount == 10 ? 500 : 1500;
+            if(CanDraw(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                RetryDrawItem();
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
+        GetButton((int)Buttons.Btn_AutoDraw).onClick.AddListener(() => 
+        {
+            int price = _drawCount == 10 ? 500 : 1500;
+            if(CanDraw(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                AutoDrawItem();
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
         
         for (int i = 0; i < 30; i++)
         {
@@ -215,8 +235,18 @@ public class UI_DrawResultPopup : UI_Popup
 
         if(_autoDraw)
         {
-            List<int> autoDrawList = Util.GetDrawSystemResults(_type, _drawCount, _level);
-            RefreshUI(_type, _drawCount, autoDrawList, _drawDirection);
+            int price = _drawCount == 10 ? 500 : 1500;
+            if(CanDraw(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                List<int> autoDrawList = Util.GetDrawSystemResults(_type, _drawCount, _level);
+                RefreshUI(_type, _drawCount, autoDrawList, _drawDirection);
+            }
+            else
+            {
+                ShowAlertUI("다이아가 부족합니다");
+                yield break;
+            }
             yield break;
         }
         InteractiveButtons(true);
@@ -231,5 +261,12 @@ public class UI_DrawResultPopup : UI_Popup
         }
     }
 
+    bool CanDraw(float cost)
+    {
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
+            return false;
+
+        return amount >= cost;
+    }
 
 }

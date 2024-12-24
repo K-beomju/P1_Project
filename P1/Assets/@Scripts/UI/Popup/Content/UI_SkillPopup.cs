@@ -191,14 +191,14 @@ public class UI_SkillPopup : UI_Popup
         // 모든 슬롯이 잠금 상태인 경우
         if (AreAllSlotsLocked())
         {
-            Debug.LogWarning("모든 슬롯이 잠겨 있어 스킬을 장착할 수 없습니다.");
+            ShowAlertUI("모든 슬롯이 잠겨 있어 스킬을 장착할 수 없습니다.");
             return;
         }
 
         // 현재 선택된 스킬이 인벤토리에 없는 경우
         if (!IsSkillOwned(SelectSkillInfo))
         {
-            Debug.LogWarning("선택된 스킬이 인벤토리에 없습니다.");
+            ShowAlertUI("선택된 스킬이 인벤토리에 없습니다.");
             return;
         }
 
