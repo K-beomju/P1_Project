@@ -10,7 +10,35 @@ using static Define;
 
 public class GameScene : BaseScene
 {
+    #region Fields
+
+    // - - - 상태 관련 - - -
     private EGameSceneState _gameSceneState = EGameSceneState.None;
+    private Dictionary<EGameSceneState, Func<IEnumerator>> _stateCoroutines;
+    private IEnumerator CurrentCoroutine = null;
+
+    // - - - 대기시간 캐시 - - -
+    private readonly WaitForSeconds FrameWait = new WaitForSeconds(0.2f);
+    private readonly WaitForSeconds StartWait = new WaitForSeconds(1f);
+
+    // - - - UI & Scene - - -
+    private UI_GameScene sceneUI;
+    private CameraController cameraController;
+
+    // - - - 스테이지 정보 - - -
+    public int ChapterLevel { get; private set; }
+    public float BossBattleTimer { get; private set; }
+    public float BossBattleTimeLimit { get; private set; }
+    private bool isStaying = false;
+
+    public StageInfoData StageInfo { get; private set; }
+    private BackendData.GameData.CharacterData CharacterData;
+
+    #endregion
+
+
+    #region Properties
+
     public EGameSceneState GameSceneState
     {
         get => _gameSceneState;
@@ -24,52 +52,57 @@ public class GameScene : BaseScene
         }
     }
 
-    private Dictionary<EGameSceneState, Func<IEnumerator>> _stateCoroutines;
-    private IEnumerator CurrentCoroutine = null;
-    private WaitForSeconds FrameWait = new WaitForSeconds(0.2f);
-    private WaitForSeconds StartWait = new WaitForSeconds(1f);
-    private UI_GameScene sceneUI;
+    #endregion
 
-    public int ChapterLevel { get; private set; }
-    public float BossBattleTimer { get; private set; }
-    public float BossBattleTimeLimit { get; private set; }
-    private bool isStaying = false;
 
-    public StageInfoData StageInfo { get; private set; }
-    private BackendData.GameData.CharacterData CharacterData;
-
-    private CameraController cameraController;
+    #region Unity Lifecycle
 
     protected override bool Init()
     {
-        if (base.Init() == false)
+        if (!base.Init())
             return false;
 
         // Scene
         SceneType = EScene.GameScene;
         Managers.Scene.SetCurrentScene(this);
 
-        CharacterData = Managers.Backend.GameData.CharacterData;
         // Data
+        CharacterData = Managers.Backend.GameData.CharacterData;
         InitializeGameComponents();
         InitializeScene();
         InitializeUI();
 
+        // 페이드 인 후 처리
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
-        fadeInCallBack: () =>
-        {
-            if (PlayerPrefs.GetInt("ShowDialogue", 0) == 0)
+            fadeInCallBack: () =>
             {
-                PlayerPrefs.SetInt("ShowDialogue", 1);
-                var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
-                Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-                popupUI.RefreshUI();
+                if (PlayerPrefs.GetInt("ShowDialogue", 0) == 0)
+                {
+                    // 최초 대화창 한 번만
+                    PlayerPrefs.SetInt("ShowDialogue", 1);
+                    var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
+                    Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+                    popupUI.RefreshUI();
+                }
+                else
+                {
+                    SetupStage();
+                }
             }
-            else
-                SetupStage();
-        });
+        );
+
         return true;
     }
+
+    public override void Clear()
+    {
+        Managers.Object.KillAllMonsters();
+    }
+
+    #endregion
+
+
+    #region Initialize Methods
 
     private void InitializeGameComponents()
     {
@@ -83,12 +116,15 @@ public class GameScene : BaseScene
     {
         GameObject map = Managers.Resource.Instantiate("BaseMap");
         PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
+
         cameraController = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         cameraController.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
+
+        // 영웅 스폰
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cameraController.Target = hero.transform;
 
-
+        // 펫, 광고 등
         Managers.Pet.Init();
         Managers.Ad.LoadBannerAd();
     }
@@ -99,30 +135,33 @@ public class GameScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
-        // 다이얼을 다 봤을 때 활성화 
+        // 대화 본 뒤 출석체크
         if (PlayerPrefs.GetInt("ShowDialogue", 0) == 1)
         {
-            // 출석체크 로직
-            if (CharacterData.AttendanceCheck() == true)
+            if (CharacterData.AttendanceCheck())
             {
                 Debug.Log("하루가 지나 출석체크 팝업 On");
                 var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
                 Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
                 popupUI.RefreshUI();
             }
-
         }
 
-
-        // 데이터 불러온 뒤 UI 표시 부분
+        // UI 갱신
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
-        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, 
+                                   CharacterData.Level, 
+                                   CharacterData.Exp, 
+                                   CharacterData.MaxExp);
         Managers.Event.TriggerEvent(EEventType.QuestCheckNotification);
         Managers.Event.TriggerEvent(EEventType.MissionItemUpdated);
         Managers.Event.TriggerEvent(EEventType.MyRankingUpdated);
-
     }
 
+    #endregion
+
+
+    #region State Coroutines
 
     private void SwitchCoroutine()
     {
@@ -131,15 +170,16 @@ public class GameScene : BaseScene
 
         if (_stateCoroutines.TryGetValue(GameSceneState, out var coroutineFunc))
         {
+            // 이미 돌고있던 코루틴 중지
             if (CurrentCoroutine != null)
-            {
                 StopCoroutine(CurrentCoroutine);
-            }
+
             CurrentCoroutine = coroutineFunc();
 
-            // State 변경시 변경되는 UI 로직 
+            // 상태 변경 시, UI 로직 갱신
             sceneUI.UpdateStageUI(GameSceneState);
 
+            // 새 코루틴 실행
             StartCoroutine(CurrentCoroutine);
         }
     }
@@ -148,18 +188,22 @@ public class GameScene : BaseScene
     {
         _stateCoroutines = new Dictionary<EGameSceneState, Func<IEnumerator>>
         {
-            { EGameSceneState.Play, CoPlayStage },
-            { EGameSceneState.Pause, CoPauseStage },
-            { EGameSceneState.Boss, CoBossStage },
+            { EGameSceneState.Play,   CoPlayStage },
+            { EGameSceneState.Pause,  CoPauseStage },
+            { EGameSceneState.Boss,   CoBossStage },
             { EGameSceneState.RankUp, CoRankUpStage },
-            { EGameSceneState.Stay, CoStayStage },
-            { EGameSceneState.Over, CoStageOver },
-            { EGameSceneState.Clear, CoStageClear }
+            { EGameSceneState.Stay,   CoStayStage },
+            { EGameSceneState.Over,   CoStageOver },
+            { EGameSceneState.Clear,  CoStageClear }
         };
     }
 
+    #endregion
+
+
     #region Normal Stage
 
+    /// <summary> 스테이지 세팅 (일반 스테이지 진입) </summary>
     public void SetupStage()
     {
         ChapterLevel = 1;
@@ -170,11 +214,10 @@ public class GameScene : BaseScene
         BossBattleTimer = BossBattleTimeLimit;
 
         GameSceneState = EGameSceneState.Play;
-
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(CharacterData.StageLevel);
     }
 
-    // 스테이지 이동할 때 그 스테이지만 머물게 
+    /// <summary> 특정 스테이지에 머무는 모드 (무한 리스폰 등) </summary>
     public void StayStage(int stageLevel)
     {
         isStaying = true;
@@ -183,6 +226,7 @@ public class GameScene : BaseScene
 
         StageInfo = Managers.Data.StageChart[stageLevel];
         GameSceneState = EGameSceneState.Stay;
+
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(stageLevel);
     }
 
@@ -192,30 +236,38 @@ public class GameScene : BaseScene
 
         yield return StartWait;
         Managers.Game.SpawnStageMonster(StageInfo);
-        while (!Managers.Game.ClearStage())
-        {
-            yield return FrameWait;
-        }
 
+        // 몬스터를 다 잡을 때까지 대기
+        while (!Managers.Game.ClearStage())
+            yield return FrameWait;
+
+        // 스테이지 클리어 -> 보스 스테이트로
         GameSceneState = EGameSceneState.Boss;
     }
 
     private IEnumerator CoPauseStage()
     {
+        // 일시정지 상태 (필요시 처리)
         yield return null;
     }
 
+    #endregion
+
+
+    #region Boss Stage
 
     private IEnumerator CoBossStage()
     {
         ResetStageAndHero();
+
         var fadeUI = Managers.UI.ShowBaseUI<UI_FadeInBase>();
         Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_POPUP - 1);
         fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
+
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplay("보스를 처치하세요!");
 
-
-        Managers.Game.SpawnStageMonster(StageInfo, true);
+        // 보스 몬스터 소환
+        Managers.Game.SpawnStageMonster(StageInfo, isBoss: true);
         var bossMonster = Managers.Object.BossMonster;
         bossMonster.DisableAction();
 
@@ -223,122 +275,120 @@ public class GameScene : BaseScene
         Managers.Object.Hero.LookAt(bossMonster.transform.position);
         cameraController.Target = bossMonster.transform;
 
+        // 보스 스테이지 표시
         Managers.UI.ShowBaseUI<UI_BossStageDisplayBase>().ShowDisplay();
         yield return new WaitForSeconds(2);
 
-        // 연출 제작 
+        // 전투 연출 후 본격 전투
         cameraController.Target = Managers.Object.Hero.transform;
-
-        // Battle Start
         bossMonster.EnableAction();
         Managers.Object.Hero.EnableAction();
+
         yield return MonitorBossMonsterBattle();
     }
 
     private IEnumerator MonitorBossMonsterBattle()
     {
-        // 몬스터 살아있는지 검사
+        // 보스가 살아있는지 검사
         while (Managers.Object.BossMonster.IsValid())
         {
-
-            if (UpdateBossBattleTimer()) // 타이머 상태를 확인
+            if (UpdateBossBattleTimer())
             {
-                // 못움직이게 함.
+                // 시간 만료 -> 움직이지 못하도록
                 Managers.Object.BossMonster.DisableAction();
                 Managers.Object.Hero.DisableAction();
-                yield break; // 타이머가 종료되면 코루틴 중단
+                yield break;
             }
-            yield return null; // 다음 프레임 대기
+            yield return null;
         }
 
-        // 보스전 성공___________________
+        // 보스 처치 성공
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
 
-        Camera mainCamera = Camera.main;
+        var mainCamera = Camera.main;
         Vector3 screenCenter = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane));
-        Managers.Object.SpawnGameObject(screenCenter, "Object/ConfettiBurst").GetComponent<ParticleSystem>().Play();
+        Managers.Object.SpawnGameObject(screenCenter, "Object/ConfettiBurst")
+                      .GetComponent<ParticleSystem>().Play();
+
         Managers.UI.ShowBaseUI<UI_StageClearBase>().ShowStageClearUI();
 
         yield return new WaitForSeconds(1);
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1f,
-        fadeOutCallBack: () =>
-        {
-            GameSceneState = EGameSceneState.Clear;
-            Managers.Object.Hero.Rebirth(true);
-        });
+
+        // 페이드 아웃 후 Clear 상태
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(
+            EFadeType.FadeInOut, 1f, 1f, 1f,
+            fadeOutCallBack: () =>
+            {
+                GameSceneState = EGameSceneState.Clear;
+                Managers.Object.Hero.Rebirth(true);
+            }
+        );
     }
 
     #endregion
 
-    #region RankUp
+
+    #region RankUp Stage
 
     private IEnumerator CoRankUpStage()
     {
         ResetStageAndHero();
 
-        // Rank Up 데이터 설정 및 몬스터 스폰
+        // RankUp 몬스터 생성
         ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
         var rankUpInfo = Managers.Data.RankUpChart[rankType];
-
-        // 보스 몬스터 생성 및 UI 초기화
         SetupRankUpStage(rankUpInfo);
+
         yield return new WaitForSeconds(2);
 
-        // 연출 제작 
+        // 연출
         cameraController.Target = Managers.Object.RankMonster.transform;
-        Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayRankUp(Managers.Data.RankUpMonsterChart[rankUpInfo.MonsterDataId].Name);
-
+        Managers.UI.ShowBaseUI<UI_StageDisplayBase>()
+                  .ShowDisplayRankUp(Managers.Data.RankUpMonsterChart[rankUpInfo.MonsterDataId].Name);
 
         yield return new WaitForSeconds(3);
-        cameraController.Target = Managers.Object.Hero.transform;
 
-        // Battle Start
+        cameraController.Target = Managers.Object.Hero.transform;
         Managers.Object.Hero.EnableAction();
+
         yield return MonitorRankUpMonsterBattle();
     }
 
     private IEnumerator MonitorRankUpMonsterBattle()
     {
-        // 몬스터 살아있는지 검사
         while (Managers.Object.RankMonster.CreatureState != ECreatureState.Dead)
         {
-            if (UpdateBossBattleTimer()) // 타이머 상태를 확인
+            if (UpdateBossBattleTimer())
             {
-                // 못움직이게 함.
+                // 시간 만료 -> 전투 중단
                 Managers.Object.RankMonster.DisableAction();
                 Managers.Object.Hero.DisableAction();
-                yield break; // 타이머가 종료되면 코루틴 중단
+                yield break;
             }
-
-            yield return null; // 다음 프레임 대기
+            yield return null;
         }
 
-        // 랭크전 성공___________________
+        // 랭크업 보스 처치 성공
         ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
         Managers.Backend.GameData.RankUpData.UpdateRankUp(rankType);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroRankUp);
 
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
-        {
-            Managers.Object.DeleteRankMonster();
-            GameSceneState = EGameSceneState.Over;
-            Managers.Object.Hero.Rebirth(true);
-        }, () =>
-        {
-            // 성공하면 풀링은 더이상 사용 안함 X 
-            (Managers.UI.SceneUI as UI_GameScene).UpdateMyRank();
-            Managers.UI.ShowPopupUI<UI_RankUpClearPopup>().RefreshUI();
-            Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
-        });
-    }
-
-    private void ResetStageAndHero()
-    {
-        Managers.Object.KillAllMonsters();
-        Hero hero = Managers.Object.Hero;
-        hero.Rebirth(GameSceneState == EGameSceneState.RankUp);
-        hero.ForceMove(new Vector3(-3, 0, 0));
-        hero.DisableAction();
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(
+            EFadeType.FadeInOut, 1f, 1f, 1,
+            () =>
+            {
+                Managers.Object.DeleteRankMonster();
+                GameSceneState = EGameSceneState.Over;
+                Managers.Object.Hero.Rebirth(true);
+            },
+            () =>
+            {
+                // UI 처리
+                (Managers.UI.SceneUI as UI_GameScene)?.UpdateMyRank();
+                Managers.UI.ShowPopupUI<UI_RankUpClearPopup>().RefreshUI();
+                Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
+            }
+        );
     }
 
     private void SetupRankUpStage(RankUpInfoData rankUpInfo)
@@ -347,6 +397,7 @@ public class GameScene : BaseScene
         BossBattleTimer = BossBattleTimeLimit;
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
+        // 몬스터 스폰
         RankMonster monster = Managers.Object.SpawnRankMonster(new Vector3(3, 0, 0), rankUpInfo.MonsterDataId);
         Managers.Object.Hero.LookAt(monster.transform.position);
         sceneUI.RefreshBossMonsterHp(Managers.Object.RankMonster);
@@ -354,39 +405,38 @@ public class GameScene : BaseScene
 
     #endregion
 
-    #region Stay 
+
+    #region Stay Stage
 
     private IEnumerator CoStayStage()
     {
-        Managers.Game.SetMonsterCount(1, 1); // 몬스터 카운트 초기화
-        while (true) // 스테이지를 무한 반복
-        {
+        // 무한 몬스터 스폰 스테이지
+        Managers.Game.SetMonsterCount(1, 1);
 
-            yield return StartWait; // 스테이지 시작 대기
-            Managers.Game.SpawnStageMonster(StageInfo); // 몬스터 스폰
+        while (true)
+        {
+            // 스테이지 시작 대기
+            yield return StartWait;
+            Managers.Game.SpawnStageMonster(StageInfo);
 
             int initialMonsterCount = Managers.Object.Monsters.Count;
             while (true)
             {
-                // 남은 몬스터가 초기 수의 절반 이하일 경우 새로운 몬스터 소환
+                // 현재 몬스터 수가 초반 절반 이하가 되면 새 몬스터 소환
                 if (Managers.Object.Monsters.Count <= initialMonsterCount / 2)
                 {
-                    Managers.Game.SpawnStageMonster(StageInfo); // 새로운 몬스터 소환
-                    initialMonsterCount = Managers.Object.Monsters.Count; // 초기 몬스터 수 업데이트
+                    Managers.Game.SpawnStageMonster(StageInfo);
+                    initialMonsterCount = Managers.Object.Monsters.Count;
                 }
-
-                // 몬스터가 다시 절반 이하가 될 때까지 대기
                 yield return FrameWait;
             }
         }
-
     }
-
 
     #endregion
 
 
-    #region Over & Clear
+    #region Over & Clear Stage
 
     private IEnumerator CoStageOver()
     {
@@ -398,6 +448,8 @@ public class GameScene : BaseScene
     private IEnumerator CoStageClear()
     {
         MoveToNextStage(true);
+
+        // 스킬 해금 & 퀘스트 갱신
         Managers.Backend.GameData.SkillInventory.UnLockSkill(StageInfo.StageNumber);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.StageClear);
         yield return null;
@@ -419,38 +471,54 @@ public class GameScene : BaseScene
 
     #endregion
 
+
+    #region Helpers
+
+    private void ResetStageAndHero()
+    {
+        Managers.Object.KillAllMonsters();
+        Hero hero = Managers.Object.Hero;
+
+        // RankUp 상태면 다른 조건으로 Rebirth
+        hero.Rebirth(GameSceneState == EGameSceneState.RankUp);
+        hero.ForceMove(new Vector3(-3, 0, 0));
+        hero.DisableAction();
+    }
+
     private bool UpdateBossBattleTimer()
     {
         if (GameSceneState == EGameSceneState.Pause || GameSceneState == EGameSceneState.Over)
             return true; // 이미 종료 상태
 
-        BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0.0f, BossBattleTimeLimit);
+        BossBattleTimer = Mathf.Clamp(BossBattleTimer - Time.deltaTime, 0f, BossBattleTimeLimit);
         sceneUI.RefreshBossStageTimer(BossBattleTimer, BossBattleTimeLimit);
 
         if (BossBattleTimer <= 0)
         {
             HandleBattleFailure();
-            return true; // 타이머 종료
+            return true;
         }
-
-        return false; // 타이머 진행 중
+        return false;
     }
 
-    // 전투 실패 시 실행하는 함수 : 히어로가 죽었을 때, 타이머가 끝났을 때 
+    /// <summary> 전투 실패 시(히어로 사망, 타이머 종료 등) 실행하는 함수 </summary>
     public void HandleBattleFailure()
     {
         GameSceneState = EGameSceneState.Pause;
 
-        // 먼저 딜레이
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeInOut, 1f, 1f, 1, () =>
-        {
-            Managers.Object.Hero.Rebirth(true);
-            GameSceneState = EGameSceneState.Over;
-        }, () =>
-        {
-            Managers.UI.ShowPopupUI<UI_StageFailPopup>();
-            Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
-        });
+        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(
+            EFadeType.FadeInOut, 1f, 1f, 1,
+            () =>
+            {
+                Managers.Object.Hero.Rebirth(true);
+                GameSceneState = EGameSceneState.Over;
+            },
+            () =>
+            {
+                Managers.UI.ShowPopupUI<UI_StageFailPopup>();
+                Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
+            }
+        );
     }
 
     public string GetCurrentStage()
@@ -458,8 +526,5 @@ public class GameScene : BaseScene
         return $"{ChapterLevel}-{StageInfo.StageNumber}";
     }
 
-    public override void Clear()
-    {
-        Managers.Object.KillAllMonsters();
-    }
+    #endregion
 }

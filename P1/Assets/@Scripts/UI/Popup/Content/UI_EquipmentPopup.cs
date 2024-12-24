@@ -329,7 +329,7 @@ public class UI_EquipmentPopup : UI_Popup
         }
         else
         {
-            Debug.Log("착용할 장비가 없습니다.");
+            ShowAlertUI("착용할 장비가 없습니다");
         }
     }
 

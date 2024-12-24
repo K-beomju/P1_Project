@@ -117,7 +117,7 @@ public class UI_DrawEquipmentPanel : UI_Base
         });
         GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() =>
         {
-            int price = 500;
+            int price = DrawPrice.DrawTenPrice;
             if(CanDraw(price))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
@@ -128,8 +128,8 @@ public class UI_DrawEquipmentPanel : UI_Base
         });
         GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => 
         {
-            int price = 1500;
-            if(CanDraw(1500))
+            int price = DrawPrice.DrawThirtyPrice;
+            if(CanDraw(price))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
                 OnDrawEquipment(30);

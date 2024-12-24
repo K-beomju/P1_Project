@@ -81,8 +81,28 @@ public class UI_DrawSkillPanel : UI_Base
                 ShowAlertUI("광고 시청 횟수가 모두 소진되었습니다");
             }
         });
-        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => OnDrawSkill(10));
-        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => OnDrawSkill(30));
+        GetButton((int)Buttons.Btn_DrawTen).onClick.AddListener(() => 
+        {
+            int price = DrawPrice.DrawTenPrice;
+            if(CanDraw(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                OnDrawSkill(10);
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
+        GetButton((int)Buttons.Btn_DrawThirty).onClick.AddListener(() => 
+        {
+            int price = DrawPrice.DrawThirtyPrice;
+            if(CanDraw(price))
+            {
+                Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);
+                OnDrawSkill(30);
+            }
+            else
+            ShowAlertUI("다이아가 부족합니다");
+        });
 
         // 버튼 클릭 시 Toggle의 값을 변경합니다.
         Toggle drawDirectionToggle = Get<Toggle>((int)Toggles.Toggle_DrawDirection);
@@ -155,5 +175,13 @@ public class UI_DrawSkillPanel : UI_Base
         Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_drawType);
     }
 
+
+    bool CanDraw(float cost)
+    {
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
+            return false;
+
+        return amount >= cost;
+    }
     #endregion
 }

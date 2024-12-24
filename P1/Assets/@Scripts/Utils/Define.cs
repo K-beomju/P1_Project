@@ -329,14 +329,20 @@ public static class Define
 
     }
 
+    public static class DrawPrice
+    {
+        public readonly static int DrawTenPrice = 500;
+        public readonly static int DrawThirtyPrice = 1500;
+    }
+
     public static class SortingLayers
     {
         public const int AURA = 299;
         public const int UI_HPBAR = 299;
         public const int CREATURE = 300;
         public const int HERO = 310;
-        public const int PROJECTILE = 310;
-        public const int SKILL_EFFECT = 310;
+        public const int PROJECTILE = 312;
+        public const int SKILL_EFFECT = 315;
         public const int DAMAGE_FONT = 410;
         public const int UI_POPUP = 450;
         public const int UI_SCENE = 500;

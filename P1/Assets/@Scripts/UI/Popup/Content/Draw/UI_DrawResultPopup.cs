@@ -235,7 +235,7 @@ public class UI_DrawResultPopup : UI_Popup
 
         if(_autoDraw)
         {
-            int price = _drawCount == 10 ? 500 : 1500;
+            int price = _drawCount == 10 ? DrawPrice.DrawTenPrice : DrawPrice.DrawThirtyPrice;
             if(CanDraw(price))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Dia, -price);

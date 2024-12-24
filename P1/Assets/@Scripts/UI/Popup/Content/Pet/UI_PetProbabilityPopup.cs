@@ -16,7 +16,6 @@ public class UI_PetProbabilityPopup : UI_Popup
     }
 
     private List<UI_PetProbabilityItem> items = new();
-    private bool _init = false;
 
     protected override bool Init()
     {
@@ -42,10 +41,6 @@ public class UI_PetProbabilityPopup : UI_Popup
 
     public void RefreshUI()
     {
-        if (_init)
-            return;
-
         items.ForEach(item => item.RefreshUI());
-        _init = true;
     }
 }

@@ -33,6 +33,9 @@ public class WorldBoss : Monster
     #region AI
     protected override void UpdateIdle()
     {
+        if (!isActionEnabled)
+            return;
+
         Vector3 dir = Target.CenterPosition - CenterPosition;
         float distToTargetSqr = dir.sqrMagnitude;
         float attackDistanceSqr = AttackRange * AttackRange;
@@ -49,6 +52,7 @@ public class WorldBoss : Monster
         if (Target.IsValid() == false || CreatureState == ECreatureState.Dead)
             return;
         
+        Managers.Object.SpawnGameObject(Target.transform.position + new Vector3(0, -1, 0), "Object/Effect/Explosion/WorldBossAttackEffect");
         Target.GetComponent<IDamageable>().OnDamaged(this);
     }
 

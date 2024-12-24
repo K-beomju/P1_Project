@@ -1,3 +1,4 @@
+using BackendData.GameData;
 using Cinemachine;
 using Data;
 using System;
@@ -23,19 +24,27 @@ public class DungeonScene : BaseScene
         }
     }
 
+    // ★ 추가: 던전 전용 핸들러 인터페이스
+    private IDungeonHandler _dungeonHandler;
+
     private Dictionary<EGameSceneState, Func<IEnumerator>> _stateCoroutines;
     private IEnumerator _currentCoroutine = null;
-    private EDungeonType DungeonType;
-    private UI_DungeonScene sceneUI;
+    
+    private EDungeonType _dungeonType;
+    public EDungeonType DungeonType => _dungeonType;
 
-    public DungeonInfoData DungeonInfo { get; private set; }
-    private BackendData.GameData.CharacterData CharacterData;
+    // UI
+    public UI_DungeonScene sceneUI;
 
-    public WorldBossDungeonInfoData WorldDungeonInfo { get; private set; }
-    private Dictionary<EItemType, int> clearRewardDic = new Dictionary<EItemType, int>();
+    // 공통적으로 쓰이는 정보들
+    public DungeonInfoData DungeonInfo { get; set; }
+    public WorldBossDungeonInfoData WorldDungeonInfo { get; set; }
 
-    public float DungeonTimer { get; private set; }
-    public float DungeonTimeLimit { get; private set; }
+    public float DungeonTimer { get; set; }
+    public float DungeonTimeLimit { get; set; }
+
+    // 보상 임시 딕셔너리
+    public Dictionary<EItemType, int> clearRewardDic = new Dictionary<EItemType, int>();
 
     protected override bool Init()
     {
@@ -43,22 +52,34 @@ public class DungeonScene : BaseScene
             return false;
 
         SceneType = EScene.DungeonScene;
-        DungeonType = Managers.Game.GetCurrentDungeon();
+      
+        // 던전 타입을 가져온다
+        _dungeonType = Managers.Game.GetCurrentDungeon();
         Managers.Scene.SetCurrentScene(this);
 
-        CharacterData = Managers.Backend.GameData.CharacterData;
+        // 던전 핸들러 주입
+        if (_dungeonType == EDungeonType.WorldBoss)
+            _dungeonHandler = new WorldBossDungeonHandler();
+        else
+            _dungeonHandler = new NormalDungeonHandler();
 
         InitializeScene();
         InitializeUI();
-        InitializeDungeon();
 
-        Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
-        fadeInCallBack: () =>
-        {
-            int dungeonLevel = DungeonType == EDungeonType.WorldBoss ? 0 : DungeonInfo.DungeonLevel;
-            Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayDungeon(DungeonType, dungeonLevel);
-            GameSceneState = EGameSceneState.Play;
-        });
+        //InitializeDungeon();
+        // 핸들러에 던전 초기화 위임
+        _dungeonHandler.InitializeDungeon(this);
+
+        // 페이드 인 이후에 스테이지 플레이로 전환
+        Managers.UI.ShowBaseUI<UI_FadeInBase>()?.ShowFadeInOut(
+            EFadeType.FadeIn, 1f, 1f,
+            fadeInCallBack: () =>
+            {
+                int dungeonLevel = (_dungeonType == EDungeonType.WorldBoss) ? 0 : DungeonInfo.DungeonLevel;
+                Managers.UI.ShowBaseUI<UI_StageDisplayBase>()?.ShowDisplayDungeon(_dungeonType, dungeonLevel);
+                GameSceneState = EGameSceneState.Play;
+            }
+        );
 
         return true;
     }
@@ -78,6 +99,7 @@ public class DungeonScene : BaseScene
         PolygonCollider2D polygon = Util.FindChild(map, "Terrain_Tile").GetComponent<PolygonCollider2D>();
         CameraController cc = Managers.Resource.Instantiate("MainCam").GetComponent<CameraController>();
         cc.GetComponent<CinemachineConfiner>().m_BoundingShape2D = polygon;
+        
         Hero hero = Managers.Object.Spawn<Hero>(Vector2.zero, 0);
         cc.Target = hero.transform;
     }
@@ -87,42 +109,14 @@ public class DungeonScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_DungeonScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
-        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, CharacterData.Level, CharacterData.Exp, CharacterData.MaxExp); // 경험치 갱신 이벤트
+        // 경험치 갱신 이벤트
+        var charData = Managers.Backend.GameData.CharacterData;
+        Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, 
+                                   charData.Level, 
+                                   charData.Exp, 
+                                   charData.MaxExp);
 
     }
-
-    private void InitializeDungeon()
-    {
-        int dungeonLevel = Managers.Backend.GameData.DungeonData.DungeonLevelDic[DungeonType.ToString()];
-
-        if (DungeonType != EDungeonType.WorldBoss)
-        {
-            DungeonInfo = DungeonType switch
-            {
-                EDungeonType.Gold => Managers.Data.GoldDungeonChart[dungeonLevel],
-                EDungeonType.Dia => Managers.Data.DiaDungeonChart[dungeonLevel],
-                _ => throw new ArgumentException($"Unknown DungeonType: {DungeonType}")
-            };
-
-            sceneUI.UpdateStageUI(DungeonType, DungeonInfo.DungeonLevel);
-            Managers.Game.SetMonsterCount(0, DungeonInfo.KillMonsterCount);
-
-            DungeonTimeLimit = DungeonInfo.DungeonTimeLimit;
-            DungeonTimer = DungeonTimeLimit;
-            UpdateDungeonTimer();
-        }
-        else
-        {
-            WorldDungeonInfo = Managers.Data.WorldBossDungeonChart[1];
-            sceneUI.UpdateStageUI(DungeonType, 0);
-            Managers.Game.SetMonsterCount(0, 0);
-
-            DungeonTimeLimit = WorldDungeonInfo.DungeonTimeLimit;
-            DungeonTimer = WorldDungeonInfo.DungeonTimeLimit;
-            UpdateDungeonTimer();
-        }
-    }
-
 
     private void SwitchCoroutine()
     {
@@ -157,39 +151,29 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoPlayStage()
     {
-        yield return new WaitForSeconds(2f);
-        if (DungeonType == EDungeonType.WorldBoss)
+        // IDungeonHandler를 통해 몬스터(또는 월드보스) 스폰
+        yield return StartCoroutine(_dungeonHandler.SpawnMonsters(this));
+        
+        // 플레이 상태에서는 타이머가 동작
+        while (true)
         {
-            Managers.Game.SpawnDungeonMonster(isBoss: true);
-        }
-        else
-        {
-            Managers.Game.SpawnDungeonMonster(dungeonInfo: DungeonInfo);
-        }
+            _dungeonHandler.UpdateTimer(this);
 
-
-        // 몬스터가 스폰될 때 자동 스킬 조건을 다시 검사하도록 이벤트 트리거
-        if (Managers.Backend.GameData.SkillInventory.IsAutoSkill)
-            (Managers.UI.SceneUI as UI_DungeonScene).CheckUseSkillSlot(-1);
-
-        while (DungeonTimer > 0)
-        {
-            UpdateDungeonTimer(); // 보스 타이머 업데이트 메서드 호출
-
-            if (DungeonType != EDungeonType.WorldBoss)
+            // 월드보스가 아닌 경우, 클리어 체크 / 영웅 죽음 체크
+            if (_dungeonType != EDungeonType.WorldBoss)
             {
-                if (Managers.Game.ClearStage())
+                if (Managers.Game.ClearStage()) 
                 {
                     GameSceneState = EGameSceneState.Clear;
                 }
-                if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
+                else if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
                 {
                     GameSceneState = EGameSceneState.Over;
                 }
             }
-            else
+            else 
             {
-
+                // 월드보스 던전은 영웅 죽음 체크만
                 if (Managers.Object.Hero.CreatureState == ECreatureState.Dead)
                 {
                     GameSceneState = EGameSceneState.Over;
@@ -208,71 +192,16 @@ public class DungeonScene : BaseScene
 
     private IEnumerator CoStageOver()
     {
-        yield return new WaitForSeconds(1f);
-
-        sceneUI.RefreshDungeonTimer(0, 0);
-        if (DungeonType != EDungeonType.WorldBoss)
-        {
-            // 몬스터 멈추고 UI 팝업 켜주고 
-            Managers.Object.Monsters.ToList().ForEach(x => x.DisableAction());
-            var popupUI = Managers.UI.ShowPopupUI<UI_DungeonFailPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-
-            // 던전 키 다시 줌
-            Managers.Backend.GameData.DungeonData.AddKey(DungeonType, 1);
-        }
-        else
-        {
-            // 월드보스에게 넣은 데미지 팝업 표시 끝 .
-            // 랭킹 저장 
-            var userData = Managers.Backend.GameData.CharacterData;
-            int endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
-            int currentTotalWorldBossDmg = userData.WorldBossCombatPower;
-
-            if (currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
-            {
-                Managers.Backend.GameData.CharacterData.UpdateWorldBossCombatPower(endTotalWorldBossDmg);
-            }
-
-
-
-            var popupUI = Managers.UI.ShowPopupUI<UI_BattleResultPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-            popupUI.RefreshUI(Managers.Object.WorldBoss.worldBossTotalDamage);
-        }
-
-        yield return null;
+        yield return StartCoroutine(_dungeonHandler.OnStageOver(this));
     }
 
     private IEnumerator CoStageClear()
     {
-        var popupUI = Managers.UI.ShowPopupUI<UI_DungeonClearPopup>();
-        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-
-        clearRewardDic.Clear();
-        clearRewardDic.Add(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
-        popupUI.RefreshUI(DungeonType, clearRewardDic);
-
-        Debug.Log($"던전 클리어! {DungeonInfo.ItemType} {DungeonInfo.DungeonClearReward} 보상 지급");
-        Managers.Backend.GameData.CharacterData.AddAmount(DungeonInfo.ItemType, DungeonInfo.DungeonClearReward);
-        Managers.Backend.GameData.DungeonData.IncreaseDungeonLevel(DungeonType);
-        // 팝업 띄우고 보상 주고 다시 게임씬으로 
-        yield return null;
+        // 핸들러가 OnStageClear 처리
+        yield return StartCoroutine(_dungeonHandler.OnStageClear(this));
     }
 
     #endregion
-
-
-    private void UpdateDungeonTimer()
-    {
-        DungeonTimer = Mathf.Clamp(DungeonTimer - Time.deltaTime, 0.0f, DungeonTimeLimit);
-        sceneUI.RefreshDungeonTimer(DungeonTimer, DungeonTimeLimit);
-
-        if (DungeonTimer <= 0)
-        {
-            GameSceneState = EGameSceneState.Over;
-        }
-    }
 
     private void KillAllMonsters()
     {
