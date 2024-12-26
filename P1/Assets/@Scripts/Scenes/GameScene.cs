@@ -208,13 +208,8 @@ public class GameScene : BaseScene
     {
         ChapterLevel = 1;
         StageInfo = Managers.Data.StageChart[CharacterData.StageLevel];
-        Debug.Log($"{StageInfo.StageNumber} 스테이지 진입");
-
-        BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;
-        BossBattleTimer = BossBattleTimeLimit;
-
-        GameSceneState = EGameSceneState.Play;
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(CharacterData.StageLevel);
+        GameSceneState = EGameSceneState.Play;
     }
 
     /// <summary> 특정 스테이지에 머무는 모드 (무한 리스폰 등) </summary>
@@ -225,9 +220,8 @@ public class GameScene : BaseScene
         Managers.Object.KillAllMonsters();
 
         StageInfo = Managers.Data.StageChart[stageLevel];
-        GameSceneState = EGameSceneState.Stay;
-
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(stageLevel);
+        GameSceneState = EGameSceneState.Stay;
     }
 
     private IEnumerator CoPlayStage()
@@ -241,7 +235,9 @@ public class GameScene : BaseScene
         while (!Managers.Game.ClearStage())
             yield return FrameWait;
 
-        // 스테이지 클리어 -> 보스 스테이트로
+
+        // 다 잡았다면 보스 몬스터 로드 
+
         GameSceneState = EGameSceneState.Boss;
     }
 
@@ -259,31 +255,35 @@ public class GameScene : BaseScene
     private IEnumerator CoBossStage()
     {
         ResetStageAndHero();
-
-        var fadeUI = Managers.UI.ShowBaseUI<UI_FadeInBase>();
-        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_POPUP - 1);
-        fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f);
-
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplay("보스를 처치하세요!");
 
+        /////////////////////////////////////////////////////////////
         // 보스 몬스터 소환
+        BossBattleTimeLimit = StageInfo.BossBattleTimeLimit;
+        BossBattleTimer = BossBattleTimeLimit;
+        UpdateBossBattleTimer();
+
         Managers.Game.SpawnStageMonster(StageInfo, isBoss: true);
         var bossMonster = Managers.Object.BossMonster;
         bossMonster.DisableAction();
-
         sceneUI.RefreshBossMonsterHp(bossMonster);
-        Managers.Object.Hero.LookAt(bossMonster.transform.position);
+
+        var fadeUI = Managers.UI.ShowBaseUI<UI_FadeInBase>();
+        Managers.UI.SetCanvas(fadeUI.gameObject, false, SortingLayers.UI_POPUP - 1);
+        fadeUI.ShowFadeInOut(EFadeType.FadeIn, 1f, 1f, 1f, fadeInCallBack: () => 
+        {
+            // 전투 연출 후 본격 전투
+            cameraController.Target = Managers.Object.Hero.transform;
+            bossMonster.EnableAction();
+            Managers.Object.Hero.EnableAction();
+
+        });
         cameraController.Target = bossMonster.transform;
+        Managers.Object.Hero.LookAt(bossMonster.transform.position);
+        /////////////////////////////////////////////////////////////
 
         // 보스 스테이지 표시
         Managers.UI.ShowBaseUI<UI_BossStageDisplayBase>().ShowDisplay();
-        yield return new WaitForSeconds(2);
-
-        // 전투 연출 후 본격 전투
-        cameraController.Target = Managers.Object.Hero.transform;
-        bossMonster.EnableAction();
-        Managers.Object.Hero.EnableAction();
-
         yield return MonitorBossMonsterBattle();
     }
 
@@ -302,6 +302,12 @@ public class GameScene : BaseScene
             yield return null;
         }
 
+        // 보스 처치 성공
+        yield return ClearBossStage();
+    }
+
+    private IEnumerator ClearBossStage()
+    {
         // 보스 처치 성공
         sceneUI.RefreshBossStageTimer(0, BossBattleTimeLimit);
 
@@ -369,6 +375,11 @@ public class GameScene : BaseScene
         }
 
         // 랭크업 보스 처치 성공
+        ClearRankUpStage();
+    }
+    
+    private void ClearRankUpStage()
+    {
         ERankType rankType = Managers.Backend.GameData.RankUpData.GetRankType(ERankState.Pending);
         Managers.Backend.GameData.RankUpData.UpdateRankUp(rankType);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroRankUp);
@@ -390,6 +401,7 @@ public class GameScene : BaseScene
             }
         );
     }
+
 
     private void SetupRankUpStage(RankUpInfoData rankUpInfo)
     {

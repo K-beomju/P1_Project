@@ -66,7 +66,6 @@ public class DungeonScene : BaseScene
         InitializeScene();
         InitializeUI();
 
-        //InitializeDungeon();
         // 핸들러에 던전 초기화 위임
         _dungeonHandler.InitializeDungeon(this);
 
