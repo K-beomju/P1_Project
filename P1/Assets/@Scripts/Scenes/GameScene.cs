@@ -147,6 +147,9 @@ public class GameScene : BaseScene
             }
         }
 
+        // 방치한 시간 계산
+        Managers.Backend.GameData.CharacterData.UpdateIdleTime();
+
         // UI 갱신
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
         Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, 

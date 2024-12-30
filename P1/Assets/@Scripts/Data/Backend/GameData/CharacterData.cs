@@ -6,6 +6,7 @@ using static Define;
 using System;
 using UnityEngine;
 using System.Globalization;
+using Data;
 
 namespace BackendData.GameData
 {
@@ -137,6 +138,8 @@ namespace BackendData.GameData
             // AddAmount(EItemType.Dia, 1000000000);
             // AddAmount(EItemType.Gold, 185000);
             //AddAmount(EItemType.AbilityPoint, 185000);
+            DateTime initialLoginTime = DateTime.UtcNow.AddDays(-1); // 24시간 이전으로 설정
+            LastLoginTime = initialLoginTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
 
         public override string GetTableName()
@@ -202,29 +205,31 @@ namespace BackendData.GameData
 
             Exp += exp;
 
+            // 레벨업 처리 (한 번에 처리)
+            int levelUps = 0;
+
             // 레벨업 처리
             while (Exp >= MaxExp)
             {
-                LevelUp();
+                //LevelUp();
+                Exp -= MaxExp;
+                Level++;
+                levelUps++;
+                MaxExp = Util.CalculateRequiredExp(Level);
+            }
+
+            if(levelUps > 0)
+            {
+                // 레벨업 포인트 1씩 늘려줌 
+                AddAmount(EItemType.ExpPoint, 1);
+
+                // 퀘스트 및 이벤트 갱신
+                Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroLevelUp);
+                Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, Level); // 레벨업 이벤트 발생
+
             }
 
             Managers.Event.TriggerEvent(EEventType.ExperienceUpdated, Level, Exp, MaxExp); // 경험치 갱신 이벤트
-        }
-
-        // 유저의 레벨을 변경하는 함수
-        public void LevelUp()
-        {
-            // 레벨업 포인트 1씩 늘려줌 
-            AddAmount(EItemType.ExpPoint, 1);
-
-            Exp -= MaxExp;
-
-            MaxExp = Util.CalculateRequiredExp(Level);
-
-            Level++;
-
-            Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroLevelUp);
-            Managers.Event.TriggerEvent(EEventType.PlayerLevelUp, Level); // 레벨업 이벤트 발생
         }
 
         #endregion
@@ -304,6 +309,54 @@ namespace BackendData.GameData
         {
             TimeSpan timeSinceLastLogin = DateTime.UtcNow - DateTime.Parse(LastLoginTime);
             Debug.Log("방치한 시간:" + timeSinceLastLogin.TotalMinutes);
+
+            // 1시간 이하면 그냥 리턴
+            if (timeSinceLastLogin.TotalMinutes < 60)
+            {
+                return;
+            }
+
+            IsChangedData = true;
+            LastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+
+            var StageInfo = Managers.Data.StageChart[StageLevel];
+            double stageClearTimeInSeconds = 60.0;
+
+            // 최대 방치 시간: 600분(10시간)
+            double totalIdleSeconds = Math.Min(timeSinceLastLogin.TotalSeconds, 600 * 60);
+            int maxClearStages = (int)(totalIdleSeconds / stageClearTimeInSeconds);
+            Debug.Log(maxClearStages);
+
+            int totalGolds = StageInfo.RewardItem[EItemType.Gold] * maxClearStages;
+            int totalDias = StageInfo.RewardItem[EItemType.Dia] * maxClearStages;
+            int totalExp = StageInfo.MonsterExpReward * StageInfo.KillMonsterCount * maxClearStages;
+
+            int totalPetCrafts = 0;
+
+            // 펫 조각
+            PetData petData = Util.GetPetCraftData(1);
+            for (int i = 0; i < StageInfo.KillMonsterCount * maxClearStages; i++)
+            {
+                if (petData != null)
+                {
+                    bool isDropped = UnityEngine.Random.Range(0f, 100f) <= petData.DropCraftItemRate;
+
+                    if (isDropped)
+                    {
+                        // 펫 조각 지급
+                        totalPetCrafts++;
+                        //Managers.Backend.GameData.PetInventory.AddPetCraft(petData.PetType, 1);
+                    }
+                }
+            }
+
+            Debug.Log($"총 방치 경험치 보상 : {totalExp}");
+            Debug.Log($"총 방치 골드 보상 : {Util.ConvertToTotalCurrency(totalGolds)}");
+            Debug.Log($"총 방치 다이아 보상 : {Util.ConvertToTotalCurrency(totalDias)}");
+            Debug.Log($"총 방치 펫 조각 보상 : {totalPetCrafts}");
+
+            Managers.Backend.GameData.CharacterData.AddExp(totalExp);
+
         }
 
         #region Attendance 

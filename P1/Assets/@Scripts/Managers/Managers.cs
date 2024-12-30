@@ -79,8 +79,6 @@ public class Managers : MonoBehaviour
 
     public void UpdateBackendData()
     {
-        // 방치형 시간 계산
-        Backend.GameData.CharacterData.UpdateIdleTime();
         StartCoroutine(Backend.UpdateGameDataTransaction());
         StartCoroutine(Backend.GetAdminPostList());
         StartCoroutine(Backend.UpdateRankScore());
