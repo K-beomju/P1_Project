@@ -134,12 +134,6 @@ namespace BackendData.GameData
                 _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
 
-            // AddAmount(EItemType.ExpPoint, 1100);
-            // AddAmount(EItemType.Dia, 1000000000);
-            // AddAmount(EItemType.Gold, 185000);
-            //AddAmount(EItemType.AbilityPoint, 185000);
-            DateTime initialLoginTime = DateTime.UtcNow.AddDays(-1); // 24시간 이전으로 설정
-            LastLoginTime = initialLoginTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
 
         public override string GetTableName()
@@ -220,8 +214,8 @@ namespace BackendData.GameData
 
             if(levelUps > 0)
             {
-                // 레벨업 포인트 1씩 늘려줌 
-                AddAmount(EItemType.ExpPoint, 1);
+                // 레벨업 포인트 증가
+                AddAmount(EItemType.ExpPoint, levelUps);
 
                 // 퀘스트 및 이벤트 갱신
                 Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.HeroLevelUp);
@@ -323,40 +317,26 @@ namespace BackendData.GameData
             double stageClearTimeInSeconds = 60.0;
 
             // 최대 방치 시간: 600분(10시간)
-            double totalIdleSeconds = Math.Min(timeSinceLastLogin.TotalSeconds, 600 * 60);
+            int totalIdleTotalMinutes = (int)Math.Min(timeSinceLastLogin.TotalMinutes, 600);
+            int totalIdleSeconds = (int)Math.Min(timeSinceLastLogin.TotalSeconds, 600 * 60);
             int maxClearStages = (int)(totalIdleSeconds / stageClearTimeInSeconds);
-            Debug.Log(maxClearStages);
-
+            // 방치 재화 : 골드, 다이아, 경험치, 승급 포인트
             int totalGolds = StageInfo.RewardItem[EItemType.Gold] * maxClearStages;
             int totalDias = StageInfo.RewardItem[EItemType.Dia] * maxClearStages;
             int totalExp = StageInfo.MonsterExpReward * StageInfo.KillMonsterCount * maxClearStages;
+            int totalAbilityPoints = 5 * maxClearStages;
 
-            int totalPetCrafts = 0;
-
-            // 펫 조각
-            PetData petData = Util.GetPetCraftData(1);
-            for (int i = 0; i < StageInfo.KillMonsterCount * maxClearStages; i++)
+            Dictionary<EItemType, int> itemDic = new()
             {
-                if (petData != null)
-                {
-                    bool isDropped = UnityEngine.Random.Range(0f, 100f) <= petData.DropCraftItemRate;
+                { EItemType.Gold, totalGolds },
+                { EItemType.Dia, totalDias },
+                { EItemType.Exp, totalExp },
+                { EItemType.AbilityPoint, totalAbilityPoints }
+            };
 
-                    if (isDropped)
-                    {
-                        // 펫 조각 지급
-                        totalPetCrafts++;
-                        //Managers.Backend.GameData.PetInventory.AddPetCraft(petData.PetType, 1);
-                    }
-                }
-            }
-
-            Debug.Log($"총 방치 경험치 보상 : {totalExp}");
-            Debug.Log($"총 방치 골드 보상 : {Util.ConvertToTotalCurrency(totalGolds)}");
-            Debug.Log($"총 방치 다이아 보상 : {Util.ConvertToTotalCurrency(totalDias)}");
-            Debug.Log($"총 방치 펫 조각 보상 : {totalPetCrafts}");
-
-            Managers.Backend.GameData.CharacterData.AddExp(totalExp);
-
+            var popupUI = Managers.UI.ShowPopupUI<UI_IdleRewardPopup>();
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            popupUI.ShowIdleReward(itemDic, totalIdleTotalMinutes);
         }
 
         #region Attendance 

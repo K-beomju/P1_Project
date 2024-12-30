@@ -245,6 +245,7 @@ public static class Define
     {
         Gold = 1,
         Dia,
+        Exp,
         ExpPoint,
         Relic,
         GoldDungeonKey,
@@ -470,7 +471,7 @@ public static class Define
     #region Shop
     // 상점 아이템 타입 : 결제형, 광고형 
     public enum EShopItemType
-    {
+{
         Paid,
         AdWatched
     }

@@ -11,14 +11,24 @@
       "SpriteKey": "Item/Dia"
     },
     {
-      "ItemType": 5,
+      "ItemType": 6,
       "Remark": "골드 던전 키",
       "SpriteKey": "Item/GoldDungeonKey"
     },
     {
-      "ItemType": 6,
+      "ItemType": 7,
       "Remark": "다이아 던전 키",
       "SpriteKey": "Item/DiaDungeonKey"
+    },
+    {
+      "ItemType": 3,
+      "Remark": "경험치",
+      "SpriteKey": "Item/Exp"
+    },
+    {
+      "ItemType": 8,
+      "Remark": "승격 포인트",
+      "SpriteKey": "Item/AbilityPoint"
     }
   ]
 }

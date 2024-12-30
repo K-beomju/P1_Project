@@ -212,8 +212,6 @@ public class BackendManager
         onCoolDownComplete?.Invoke();
     }
 
-
-
     // 업데이트가 발생한 이후에 호출에 대한 응답을 반환해주는 대리자 함수
     public delegate void AfterUpdateFunc(BackendReturnObject callback);
 
