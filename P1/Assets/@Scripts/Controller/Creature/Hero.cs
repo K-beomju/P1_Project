@@ -143,6 +143,8 @@ public class Hero : Creature
             Managers.Object.SpawnGameObject(Target.CenterPosition, "Object/Effect/Explosion/HeroAttackEffect");
 
             Target.GetComponent<IDamageable>().OnDamaged(this);
+            Managers.Sound.Play(ESound.Effect, "Sounds/Sword", 0.4f);
+
         }
         CreatureState = ECreatureState.Move;
     }
