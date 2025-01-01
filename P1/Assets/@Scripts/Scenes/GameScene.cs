@@ -147,8 +147,8 @@ public class GameScene : BaseScene
             }
         }
 
-        // 방치한 시간 계산
-        Managers.Backend.GameData.CharacterData.UpdateIdleTime();
+        // 로그인 후 최초 1회 방치 시간 계산
+        Managers.Instance.CheckIdleTime();
 
         // UI 갱신
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);
@@ -467,6 +467,10 @@ public class GameScene : BaseScene
         // 스킬 해금 & 퀘스트 갱신
         Managers.Backend.GameData.SkillInventory.UnLockSkill(StageInfo.StageNumber);
         Managers.Backend.GameData.QuestData.UpdateQuest(EQuestType.StageClear);
+        
+        if(StageInfo.StageNumber == 2 || StageInfo.StageNumber == 3)
+        Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.StageChallenge);
+
         yield return null;
     }
 

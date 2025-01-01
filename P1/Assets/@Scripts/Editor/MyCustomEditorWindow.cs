@@ -50,6 +50,7 @@ public class MyCustomEditorWindow : EditorWindow
             });
         }
         GUILayout.Space(50); // 필드 아래 간격 추가
+        GUILayout.Label("82098000-c1a5-11ef-84d8-417159924806", GUILayout.Width(position.width));
 
         // 재화 충전 입력 필드
         GUILayout.Label("충전할 재화 수량 입력:", GUILayout.Width(position.width));

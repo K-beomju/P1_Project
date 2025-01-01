@@ -46,18 +46,21 @@ public class UI_AdBuffScrollItem : UI_Base
             {
                 if (onRewardEarned)
                 {
-                    string name = Util.GetAdBuffType(_buffType);
+                    StartCoroutine(Managers.Ad.ExecuteAfterFrame(() =>
+                    {
+                        string name = Util.GetAdBuffType(_buffType);
 
-                    ShowAlertUI($"{name} 버프를 사용합니다");
+                        ShowAlertUI($"{name} 버프를 사용합니다");
 
-                    // 광고 시청 처리
-                    Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
+                        // 광고 시청 처리
+                        Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
 
-                    // 보상 지급 
-                    (Managers.UI.SceneUI as UI_GameScene).UpdateAdBuffItem(_buffType, DurationTimeMinutes);
+                        // 보상 지급 
+                        (Managers.UI.SceneUI as UI_GameScene).UpdateAdBuffItem(_buffType, DurationTimeMinutes);
 
-                    // UI 업데이트 
-                    RefreshUI();
+                        // UI 업데이트 
+                        RefreshUI();
+                    }));
                 }
                 else
                 {
@@ -84,7 +87,7 @@ public class UI_AdBuffScrollItem : UI_Base
 
     public void RefreshUI()
     {
-        RewardAdData rewardData =  Managers.Backend.GameData.ShopData.RewardAdDic[_rewardType.ToString()];
+        RewardAdData rewardData = Managers.Backend.GameData.ShopData.RewardAdDic[_rewardType.ToString()];
         GetTMPText((int)Texts.Text_Amount).text =
         $"({rewardData.WatchedCount}/{rewardData.MaxCount})";
     }

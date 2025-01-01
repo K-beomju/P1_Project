@@ -92,6 +92,8 @@ namespace BackendData.GameData
                 {
                     DrawLevelUp(key);
                 }
+                Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.WeaponSummon);
+
             }
             if (drawType == EDrawType.Skill)
             {
@@ -99,8 +101,9 @@ namespace BackendData.GameData
                 {
                     DrawLevelUp(key);
                 }
-            }
+                Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.SkillSummon);
 
+            }
         }
 
         // 유저의 뽑기 레벨을 변경하는 함수

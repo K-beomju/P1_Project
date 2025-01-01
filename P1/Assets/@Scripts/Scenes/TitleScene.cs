@@ -231,7 +231,6 @@ public class TitleScene : BaseScene
 
         _initializeStep.Clear();
         Managers.Scene.LoadScene(EScene.GameScene);
-
     }
 
 }

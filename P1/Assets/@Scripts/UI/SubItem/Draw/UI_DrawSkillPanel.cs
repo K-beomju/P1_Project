@@ -61,14 +61,17 @@ public class UI_DrawSkillPanel : UI_Base
                 {
                     if (onRewardEarned)
                     {
-                        // 광고 시청 처리
-                        Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawSkill);
+                        StartCoroutine(Managers.Ad.ExecuteAfterFrame(() => 
+                        {
+                            // 광고 시청 처리
+                            Managers.Backend.GameData.ShopData.WatchAd(EAdRewardType.DrawSkill);
 
-                        // 보상 지급 
-                        OnDrawSkill(10);
+                            // 보상 지급 
+                            OnDrawSkill(10);
 
-                        // UI 업데이트 
-                        RefreshUI();
+                            // UI 업데이트 
+                            RefreshUI();
+                        }));
                     }
                     else
                     {

@@ -58,9 +58,6 @@ public class InGameScene_Mission : UI_Base
         if (_isCompleted == false)
             return;
 
-        Managers.Backend.GameData.MissionData.CompleteMission(MissionData.GetCurrentMission());
-        RefreshUI();
-
         // 완료 보상 지급
         for (int i = 0; i < 10; i++)
         {
@@ -74,7 +71,14 @@ public class InGameScene_Mission : UI_Base
 
         _isCompleted = false;
         Managers.Sound.Play(ESound.Effect, "Sounds/SuccessReward", 0.5f);
+        Managers.Backend.GameData.MissionData.CompleteMission(MissionData.GetCurrentMission());
+        
+        if(MissionData.GetCurrentMission() == null)
+        {
+            ShowAlertUI("모든 미션을 완료했습니다");
+        }
 
+        RefreshUI();
     }
 
     public void RefreshUI()
@@ -83,6 +87,8 @@ public class InGameScene_Mission : UI_Base
         if (missionInfoData == null)
         {
             Debug.LogWarning("모든 미션이 끝났습니다");
+            Managers.Event.RemoveEvent(EEventType.MissionItemUpdated, new Action(RefreshUI));
+            gameObject.SetActive(false);
             return;
         }
 
@@ -107,7 +113,7 @@ public class InGameScene_Mission : UI_Base
         {
             GetImage((int)Images.Mission_NotifiBadge).gameObject.SetActive(false);
             _missionBtn.interactable = false;
-            GetTMPText((int)Texts.Text_MissionTitle).text = $"퀘스트 {missionInfoData.Id}";
+            GetTMPText((int)Texts.Text_MissionTitle).text = $"미션 {missionInfoData.Id}";
         }
 
     }

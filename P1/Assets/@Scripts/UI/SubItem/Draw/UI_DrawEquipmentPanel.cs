@@ -95,14 +95,17 @@ public class UI_DrawEquipmentPanel : UI_Base
                 {
                     if (onRewardEarned)
                     {
-                        // 광고 시청 처리
-                        Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
+                        StartCoroutine(Managers.Ad.ExecuteAfterFrame(() => 
+                        {
+                            // 광고 시청 처리
+                            Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
 
-                        // 보상 지급 
-                        OnDrawEquipment(10);
+                            // 보상 지급 
+                            OnDrawEquipment(10);
 
-                        // UI 업데이트 
-                        RefreshUI();
+                            // UI 업데이트 
+                            RefreshUI();
+                        }));
                     }
                     else
                     {

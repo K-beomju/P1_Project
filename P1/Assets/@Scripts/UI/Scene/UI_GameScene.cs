@@ -61,7 +61,8 @@ public class UI_GameScene : UI_Scene
         RemainMonster,
         RankUpStage,
         MenuGroup,
-        Quest_NotifiBadge
+        Quest_NotifiBadge,
+        HeroInfo
     }
 
     enum CanvasGroups
@@ -680,6 +681,9 @@ public class UI_GameScene : UI_Scene
             }
             string nickname = callback.GetReturnValuetoJSON()["row"]["nickname"].ToString();
             GetTMPText((int)Texts.Text_NickName).text = nickname;
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(
+                GetObject((int)GameObjects.HeroInfo).GetComponent<RectTransform>());
         });
     }
 

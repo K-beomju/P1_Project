@@ -134,6 +134,7 @@ namespace BackendData.GameData
                 _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
 
+            //LastLoginTime = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
 
         public override string GetTableName()
@@ -335,7 +336,7 @@ namespace BackendData.GameData
             };
 
             var popupUI = Managers.UI.ShowPopupUI<UI_IdleRewardPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP + 1);
             popupUI.ShowIdleReward(itemDic, totalIdleTotalMinutes);
         }
 

@@ -167,6 +167,15 @@ public class UI_AttributePanel : UI_Base
 
                 if (SelectAttrType == EHeroAttrType.Attribute_Atk || SelectAttrType == EHeroAttrType.Attribute_MaxHp)
                     isUpgraded = true;
+
+
+                var missionType = SelectAttrType switch
+                {
+                    EHeroAttrType.Attribute_Atk => EMissionType.AttributeAtkUpgrade,
+                    EHeroAttrType.Attribute_MaxHp => EMissionType.AttributeHpUpgrade,
+                    _ => throw new ArgumentException($"Unknown rare type String: {SelectAttrType}")
+                };
+                Managers.Backend.GameData.MissionData.UpdateMission(missionType);
             }
             else
                 ShowAlertUI("경험치포인트가 부족합니다");

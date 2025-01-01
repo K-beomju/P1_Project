@@ -152,6 +152,7 @@ namespace BackendData.GameData
                         Debug.LogWarning("전투력 변경 없음.");
                     }
                 });
+                Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.WeaponEquip);
 
             }
             else
@@ -184,7 +185,8 @@ namespace BackendData.GameData
                  {
                      Debug.LogWarning("전투력 변경 없음.");
                  }
-             });
+            });
+            Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.WeaponUpgrade);
 
         }
 

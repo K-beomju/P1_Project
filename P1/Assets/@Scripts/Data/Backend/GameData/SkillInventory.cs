@@ -209,6 +209,8 @@ namespace BackendData.GameData
                     skillInfoData.IsEquipped = true;
                     skillSlot.EquipSkill(skillInfoData);
                     onEquipResult?.Invoke(i);
+
+                    Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.SkillEquip);
                     return;
 
                 }

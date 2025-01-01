@@ -7,22 +7,18 @@ using UnityEngine;
 public class AdManager
 {
     private bool _isInitialized;
-    private readonly TimeSpan TIMEOUT = TimeSpan.FromHours(4);
-    private DateTime _appOpenAdLoadTime;
 
     private AppOpenAd _appOpenAd;
     private RewardedInterstitialAd _rewardedInterstitialAd;
     private BannerView _bannerView;
 
-    private const string APP_OPEN_AD_TEST_ID = "ca-app-pub-3940256099942544/9257395921";
-    private const string REWARDED_AD_TEST_ID  = "ca-app-pub-3940256099942544/5354046379";
+    private const string REWARDED_AD_TEST_ID = "ca-app-pub-3940256099942544/5354046379";
     private const string BANNER_AD_TEST_ID = "ca-app-pub-3940256099942544/6300978111";
 
-    private const string APP_OPEN_AD_ID = ""; // 실제 앱 오프닝 광고 ID
-    private const string REWARDED_AD_ID = ""; // 실제 보상형 광고 ID
-    private const string BANNER_AD_ID = ""; // 실제 배너 광고 ID
+    private const string REWARDED_AD_ID = "ca-app-pub-1077488135922668/6986804114"; // 실제 보상형 광고 ID
+    private const string BANNER_AD_ID = "ca-app-pub-1077488135922668/8425080691"; // 실제 배너 광고 ID
 
-    public const bool TEST_MODE = true; // 테스트 모드 활성화 여부
+    private bool TEST_MODE = true; // 테스트 모드 활성화 여부
     private bool BLOCK_ADS = false; // 광고 차단 여부
 
     internal static List<string> TestDeviceIds = new List<string>()
@@ -39,8 +35,13 @@ public class AdManager
 
     public void Init()
     {
-        InitializeAds();
+#if UNITY_EDITOR
+        TEST_MODE = true;
+#elif UNITY_ANDROID
+        TEST_MODE = false;
+#endif
 
+        InitializeAds();
     }
 
     /// <summary>
@@ -62,63 +63,11 @@ public class AdManager
             Debug.Log("Google Mobile Ads 초기화 완료.");
             _isInitialized = true;
 
-            
-            LoadAppOpenAd();
             LoadRewardedInterstitialAd();
         });
-        //LoadBannerAd();
     }
 
 
-
-    #region App Open Ad
-    public bool IsAppOpenAdAvailable =>
-        _appOpenAd != null && (DateTime.UtcNow - _appOpenAdLoadTime) < TIMEOUT;
-
-    public void LoadAppOpenAd()
-    {
-        if (BLOCK_ADS || IsAppOpenAdAvailable) return;
-
-        Debug.Log("앱 오프닝 광고 로드 중...");
-        var adRequest = new AdRequest();
-
-        AppOpenAd.Load(GetAdUnitId(APP_OPEN_AD_TEST_ID, APP_OPEN_AD_ID), adRequest, (AppOpenAd ad, LoadAdError error) =>
-        {
-            if (error != null)
-            {
-                Debug.LogError($"앱 오프닝 광고 로드 실패: {error}");
-                return;
-            }
-
-            if (ad == null)
-            {
-                Debug.LogError("예기치 않은 오류: 보상형 전면 광고 로드 시 null 반환.");
-                return;
-            }
-
-            _appOpenAd = ad;
-            _appOpenAdLoadTime = DateTime.UtcNow;
-
-            _appOpenAd.OnAdFullScreenContentClosed += () =>
-            {
-                Debug.Log("앱 오프닝 광고 닫힘.");
-                LoadAppOpenAd(); // 닫힌 후 새로운 광고 로드
-            };
-        });
-    }
-
-    public void ShowAppOpenAd()
-    {
-        if (BLOCK_ADS || !IsAppOpenAdAvailable)
-        {
-            Debug.LogWarning("앱 오프닝 광고를 사용할 수 없습니다.");
-            return;
-        }
-
-        Debug.Log("앱 오프닝 광고 표시.");
-        _appOpenAd.Show();
-    }
-    #endregion
 
     #region Rewarded Interstitial Ad
     public void LoadRewardedInterstitialAd(Action<bool> onAdLoaded = null)
@@ -152,36 +101,55 @@ public class AdManager
                 Debug.Log($"보상형 전면 광고 로드 성공: {ad.GetResponseInfo()}");
                 _rewardedInterstitialAd = ad;
 
-                // 이벤트 핸들러 등록
-                RegisterRewardedInterstitialAdEventHandlers(_rewardedInterstitialAd);
+                // 이벤트 핸들러 등록 (Null 확인)
+                if (_rewardedInterstitialAd != null)
+                {
+                    RegisterRewardedInterstitialAdEventHandlers(_rewardedInterstitialAd);
+                }
 
                 onAdLoaded?.Invoke(true);
             });
     }
 
+
     public void ShowRewardedInterstitialAd(Action<bool> onRewardEarned = null)
     {
         if (BLOCK_ADS || _rewardedInterstitialAd == null || !_rewardedInterstitialAd.CanShowAd())
         {
-            LoadRewardedInterstitialAd((loaded) =>
+            Debug.LogWarning("광고를 표시할 수 없는 상태. 로드 시도 중...");
+            LoadRewardedInterstitialAd(loaded =>
             {
-                if(loaded)
+                if (loaded && _rewardedInterstitialAd.CanShowAd())
                 {
-                    Debug.Log("보상형 전면 광고 재로드");
-                    ShowRewardedInterstitialAd(onRewardEarned);
+                    Debug.Log("보상형 전면 광고 재로드 성공. 광고 표시 시도...");
+                    ShowRewardedInterstitialAd(onRewardEarned); // 재시도
+                }
+                else
+                {
+                    Debug.LogWarning("보상형 전면 광고 로드 실패 또는 표시 불가.");
+                    onRewardEarned?.Invoke(false);
                 }
             });
-            onRewardEarned?.Invoke(false);
             return;
         }
 
         Debug.Log("보상형 전면 광고 표시.");
-        _rewardedInterstitialAd.Show(reward =>
-        {       
-            Managers.Backend.GameData.QuestData.UpdateQuest(Define.EQuestType.WatchAds);     
-            onRewardEarned?.Invoke(true); // 보상 성공
-        });
+        try
+        {
+            _rewardedInterstitialAd.Show(reward =>
+            {
+                Debug.Log("광고 시청 완료. 보상 지급 처리...");
+                Managers.Backend.GameData.QuestData.UpdateQuest(Define.EQuestType.WatchAds);
+                onRewardEarned?.Invoke(true); // 보상 성공
+            });
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"광고 표시 중 예외 발생: {ex.Message}");
+            onRewardEarned?.Invoke(false); // 예외 발생 시 실패 처리
+        }
     }
+
 
     private void RegisterRewardedInterstitialAdEventHandlers(RewardedInterstitialAd ad)
     {
@@ -218,7 +186,7 @@ public class AdManager
     }
     #endregion
 
-     #region Banner Ad
+    #region Banner Ad
     public void LoadBannerAd()
     {
         if (BLOCK_ADS) return;
@@ -283,7 +251,7 @@ public class AdManager
             _appOpenAd = null;
         }
 
-       if (_rewardedInterstitialAd != null)
+        if (_rewardedInterstitialAd != null)
         {
             Debug.Log("Destroying rewarded interstitial ad.");
             _rewardedInterstitialAd.Destroy();
@@ -292,5 +260,11 @@ public class AdManager
 
         DestroyBannerAd();
 
+    }
+
+    public IEnumerator ExecuteAfterFrame(Action action)
+    {
+        yield return null; // 한 프레임 대기
+        action?.Invoke(); // 전달된 액션 실행
     }
 }

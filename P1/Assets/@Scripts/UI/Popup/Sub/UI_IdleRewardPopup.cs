@@ -17,7 +17,7 @@ public class UI_IdleRewardPopup : UI_Popup
         ContentItem
     }
 
-    public enum Texts 
+    public enum Texts
     {
         Text_IdleTime,
         Text_Gold
@@ -47,15 +47,18 @@ public class UI_IdleRewardPopup : UI_Popup
             {
                 if (onRewardEarned)
                 {
-                    foreach (var item in _itemDic)
-                    {
-                        if (item.Key != EItemType.Exp)
-                            Managers.Backend.GameData.CharacterData.AddAmount(item.Key, item.Value * 2);
-                        else
-                            Managers.Backend.GameData.CharacterData.AddExp(item.Value * 2);
-                    }
-                    ClosePopupUI();
-                    
+                    StartCoroutine(Managers.Ad.ExecuteAfterFrame(() =>
+                    {                           
+                        foreach (var item in _itemDic)
+                        {
+                           if (item.Key != EItemType.Exp)
+                               Managers.Backend.GameData.CharacterData.AddAmount(item.Key, item.Value * 2);
+                           else
+                               Managers.Backend.GameData.CharacterData.AddExp(item.Value * 2);
+                        }
+                        ClosePopupUI();
+                    }));
+
                 }
                 else
                 {
@@ -76,7 +79,7 @@ public class UI_IdleRewardPopup : UI_Popup
             }
         }
 
-        
+
     }
 
     public override void ClosePopupUI()
@@ -97,7 +100,7 @@ public class UI_IdleRewardPopup : UI_Popup
         }
 
         // 데이터 저장
-        Managers.Backend.UpdateAllGameData(callback => {});
+        Managers.Backend.UpdateAllGameData(callback => { });
     }
 
 
@@ -110,7 +113,7 @@ public class UI_IdleRewardPopup : UI_Popup
 
         foreach (var item in itemDic)
         {
-            if(item.Key == EItemType.Gold)
+            if (item.Key == EItemType.Gold)
                 continue;
 
             var clearItem = Managers.UI.MakeSubItem<UI_ClearItem>(GetObject((int)GameObjects.ContentItem).transform);

@@ -7,7 +7,7 @@ using static Define;
 public class Managers : MonoBehaviour
 {
     public static bool Initialized { get; set; } = false;
-
+    
     private static Managers s_instacne;
     public static Managers Instance { get { Init(); return s_instacne; } }
 
@@ -58,6 +58,9 @@ public class Managers : MonoBehaviour
     //public static IAPManager IAP { get { return Instance?._iap; } }
     #endregion
 
+    public static bool IsCheckIdleTime { get; set; } = false;
+
+
     public static void Init()
     {
         if (s_instacne == null && Initialized == false)
@@ -83,6 +86,25 @@ public class Managers : MonoBehaviour
         StartCoroutine(Backend.GetAdminPostList());
         StartCoroutine(Backend.UpdateRankScore());
         StartCoroutine(Backend.UpdateGamePlayTime());
+    }
+
+
+    // 게임 시작 후 최초 1회 호출 
+    // 조건 : 오프라인 1시간 이상 경과 시, 모든 미션 완료 시 지급
+    public void CheckIdleTime()
+    {
+        if(!IsCheckIdleTime)
+        {
+            bool completeMission = Backend.GameData.MissionData.GetCurrentMission() != null;
+            if(completeMission)
+            {
+                Debug.LogWarning("미션을 완료하지 않아 방치 보상 없음");
+                return;
+            }
+
+            Backend.GameData.CharacterData.UpdateIdleTime();
+            IsCheckIdleTime = true;
+        }
     }
 
 

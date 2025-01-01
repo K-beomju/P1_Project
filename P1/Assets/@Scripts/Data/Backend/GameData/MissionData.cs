@@ -115,7 +115,6 @@ namespace BackendData.GameData
             IsChangedData = true;
             if (_missionDic.ContainsKey(missionType))
             {
-                Debug.Log("ASDSAD");
                 _missionDic[missionType] += 1;
                 Managers.Event.TriggerEvent(EEventType.MissionItemUpdated);
             }
@@ -130,6 +129,8 @@ namespace BackendData.GameData
                 IsChangedData = true;
                 Debug.LogWarning($"{missionInfoData.MissionType} 미션 완료");
 
+                if(missionInfoData.MissionType == EMissionType.StageChallenge)
+                _missionDic[missionInfoData.MissionType] = 0;
             }
             else
             {

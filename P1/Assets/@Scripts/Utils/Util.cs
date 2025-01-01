@@ -243,7 +243,7 @@ public static class Util
     public static List<int> GetDrawSystemResults(EDrawType type, int drawCount, int initialLevel)
     {
         var resultEqList = new List<int>();
-        Data.DrawGachaData gachaData = null;
+        DrawGachaData gachaData = null;
 
         if (type.IsEquipmentType())
             gachaData = Managers.Data.DrawEquipmentChart[initialLevel];
