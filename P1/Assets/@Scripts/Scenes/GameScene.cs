@@ -76,7 +76,7 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
             fadeInCallBack: () =>
             {
-                if (PlayerPrefs.GetInt("ShowDialogue", 0) == 0)
+                if (PlayerPrefs.HasKey("ShowDialogue") == false)
                 {
                     // 최초 대화창 한 번만
                     PlayerPrefs.SetInt("ShowDialogue", 1);

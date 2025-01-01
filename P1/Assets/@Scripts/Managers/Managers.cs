@@ -120,5 +120,6 @@ public class Managers : MonoBehaviour
     private void OnApplicationQuit()
     {
         Buff.SaveBuffData();
+        PlayerPrefs.Save();
     }
 }

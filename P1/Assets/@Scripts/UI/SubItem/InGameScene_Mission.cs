@@ -76,6 +76,7 @@ public class InGameScene_Mission : UI_Base
         if(MissionData.GetCurrentMission() == null)
         {
             ShowAlertUI("모든 미션을 완료했습니다");
+            Managers.UI.ShowPopupUI<UI_ReviewPopup>();
         }
 
         RefreshUI();

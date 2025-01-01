@@ -133,8 +133,6 @@ namespace BackendData.GameData
             {
                 _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
-
-            //LastLoginTime = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
 
         public override string GetTableName()

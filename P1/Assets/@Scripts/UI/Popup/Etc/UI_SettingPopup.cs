@@ -68,12 +68,28 @@ public class UI_SettingPopup : UI_Popup
             Debug.Log("네이버 카페로 이동");
         });
         GetImage((int)Images.Image_SaveCoolTime).fillAmount = 0;
+        
+        GetSlider((int)Sliders.Slider_Bgm).maxValue = 1;
+        GetSlider((int)Sliders.Slider_Effect).maxValue = 1;
+        GetSlider((int)Sliders.Slider_Bgm).value = PlayerPrefs.GetFloat("BGM_Volume", 1);
+        GetSlider((int)Sliders.Slider_Effect).value = PlayerPrefs.GetFloat("EFFECT_Volume", 1);
+
+        GetSlider((int)Sliders.Slider_Bgm).onValueChanged.AddListener(OnValueChangedBgmSlider);
+        GetSlider((int)Sliders.Slider_Effect).onValueChanged.AddListener(OnValueChangedEffectSlider);
         return true;
     }
 
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
+    public void OnValueChangedBgmSlider(float value)
+    {
+        PlayerPrefs.SetFloat("BGM_Volume", value);
+        Managers.Sound.ChangedSound(ESound.Bgm);
+    }
+
+    public void OnValueChangedEffectSlider(float value)
+    {
+        PlayerPrefs.SetFloat("EFFECT_Volume", value);
+    }
+
     void OnEnable()
     {
         if (!Managers.Backend.IsSaveCoolTimeActive)
@@ -81,7 +97,6 @@ public class UI_SettingPopup : UI_Popup
             GetImage((int)Images.Image_SaveCoolTime).fillAmount = 0;
             GetButton((int)Buttons.Btn_SaveData).interactable = true;
         }
-
     }
 
     private void OnClickButtonSaveData()

@@ -50,6 +50,9 @@ public class UI_AdBuffScrollItem : UI_Base
                     {
                         string name = Util.GetAdBuffType(_buffType);
 
+                        if(_buffType == EAdBuffType.IncreaseGold)
+                        Managers.Backend.GameData.MissionData.UpdateMission(EMissionType.AdBuffGold);
+
                         ShowAlertUI($"{name} 버프를 사용합니다");
 
                         // 광고 시청 처리

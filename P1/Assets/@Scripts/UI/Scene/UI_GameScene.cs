@@ -22,7 +22,6 @@ public class UI_GameScene : UI_Scene
         Btn_Ranking,
         Btn_AdBuff,
         Btn_Post,
-        Btn_Logout,
         Btn_Setting,
         Btn_Menu,
         Btn_Quest,
@@ -184,22 +183,22 @@ public class UI_GameScene : UI_Scene
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         });
-        GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
-        {
-            SendQueue.Enqueue(Backend.BMember.Logout, callback =>
-            {
-                Debug.Log($"Backend.BMember.Logout : {callback}");
-#if UNITY_ANDROID
-                TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
-#endif
+//         GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
+//         {
+//             SendQueue.Enqueue(Backend.BMember.Logout, callback =>
+//             {
+//                 Debug.Log($"Backend.BMember.Logout : {callback}");
+// #if UNITY_ANDROID
+//                 TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
+// #endif
 
-                if (callback.IsSuccess())
-                {
-                    Debug.Log("로그아웃 성공");
-                    Managers.Scene.LoadScene(EScene.TitleScene);
-                }
-            });
-        });
+//                 if (callback.IsSuccess())
+//                 {
+//                     Debug.Log("로그아웃 성공");
+//                     Managers.Scene.LoadScene(EScene.TitleScene);
+//                 }
+//             });
+//         });
 
         GetButton((int)Buttons.Btn_Quest).onClick.AddListener(() =>
         {

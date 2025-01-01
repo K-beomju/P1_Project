@@ -574,6 +574,7 @@ public static class Define
         CriticalRateUpgrade,   // 치명타 확률 강화
         CriticalDamageUpgrade, // 치명타 피해 강화
         StageChallenge,        // 스테이지 도전
+        AdBuffGold,            // 광고 버프 보상 골드
         AttributeAtkUpgrade,   // 특성 공격력 강화
         AttributeHpUpgrade,    // 특성 최대체력 강화
         WeaponSummon,          // 무기 소환

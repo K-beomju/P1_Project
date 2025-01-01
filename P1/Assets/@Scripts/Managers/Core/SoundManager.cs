@@ -11,6 +11,13 @@ public class SoundManager
 
 	public void Init()
 	{
+		if (!PlayerPrefs.HasKey("BGM_Volume"))
+			PlayerPrefs.SetFloat("BGM_Volume", 1.0f);
+
+		if (!PlayerPrefs.HasKey("EFFECT_Volume"))
+			PlayerPrefs.SetFloat("EFFECT_Volume", 1.0f);
+
+
 		if (_soundRoot == null)
 		{
 			_soundRoot = GameObject.Find("@SoundRoot");
@@ -61,13 +68,14 @@ public class SoundManager
 					audioSource.Stop();
 					audioSource.volume = 0;
 
+					DOTween.To(() => audioSource.volume, value => audioSource.volume = value, PlayerPrefs.GetFloat("BGM_Volume"), 3f);
 					audioSource.clip = audioClip;
 					audioSource.Play();
-					DOTween.To(() => audioSource.volume, value => audioSource.volume = value, 1f, 3f);
-				
+
 				}
 				else
 				{
+					audioSource.volume = PlayerPrefs.GetFloat("BGM_Volume");
 					audioSource.clip = audioClip;
 					audioSource.Play();
 				}
@@ -77,6 +85,7 @@ public class SoundManager
 		{
 			LoadAudioClip(key, (audioClip) =>
 			{
+				audioSource.volume = PlayerPrefs.GetFloat("EFFECT_Volume");
 				audioSource.pitch = pitch;
 				audioSource.PlayOneShot(audioClip);
 			});
@@ -123,6 +132,11 @@ public class SoundManager
 			_audioClips.Add(key, audioClip);
 
 		callback?.Invoke(audioClip);
+	}
+
+	public void ChangedSound(Define.ESound type)
+	{
+		_audioSources[(int)type].volume = PlayerPrefs.GetFloat(type == Define.ESound.Bgm ? "BGM_Volume" : "EFFECT_Volume");
 	}
 
 }
