@@ -298,6 +298,12 @@ namespace BackendData.GameData
             WorldBossCombatPower = power;
         }
 
+        public void StartIdleTime()
+        {
+            IsChangedData = true;
+            LastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+        }
+
         public void UpdateIdleTime()
         {
             TimeSpan timeSinceLastLogin = DateTime.UtcNow - DateTime.Parse(LastLoginTime);

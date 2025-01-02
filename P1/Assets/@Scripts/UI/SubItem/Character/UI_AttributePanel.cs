@@ -142,12 +142,14 @@ public class UI_AttributePanel : UI_Base
     private IEnumerator CoHoldUpgrade()
     {
         float currentDelay = _initialUpgradeDelay;
+        WaitForSeconds delay = new WaitForSeconds(currentDelay);
+        yield return delay;
 
         while (true)
         {
             TryUpgrade(); // 업그레이드 시도
 
-            yield return new WaitForSeconds(currentDelay);
+            yield return delay;
 
             // 업그레이드 속도를 점차적으로 증가
             currentDelay = Mathf.Max(currentDelay * _speedIncreaseFactor, _minUpgradeDelay);

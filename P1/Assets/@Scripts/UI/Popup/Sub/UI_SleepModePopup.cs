@@ -97,9 +97,10 @@ public class UI_SleepModePopup : UI_Popup
 
     public void Clear()
     {
+
         OnDemandRendering.renderFrameInterval = 1; // 렌더링 프레임 간격 복원
         AudioListener.pause = false; // 오디오 활성화
-        ClosePopupUI();
+        Managers.UI.CloseAllPopupUI();
     }
 
 }

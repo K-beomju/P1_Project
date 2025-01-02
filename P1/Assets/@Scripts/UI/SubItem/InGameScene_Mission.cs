@@ -77,6 +77,9 @@ public class InGameScene_Mission : UI_Base
         {
             ShowAlertUI("모든 미션을 완료했습니다");
             Managers.UI.ShowPopupUI<UI_ReviewPopup>();
+            Managers.Backend.GameData.CharacterData.StartIdleTime();
+            // 데이터 저장
+            Managers.Backend.UpdateAllGameData(callback => { });
         }
 
         RefreshUI();

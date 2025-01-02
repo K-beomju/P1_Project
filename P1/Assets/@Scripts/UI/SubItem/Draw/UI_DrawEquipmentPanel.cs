@@ -244,7 +244,7 @@ public class UI_DrawEquipmentPanel : UI_Base
     private void ShowProbabilityPopup()
     {
         var popupUI = Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>();
-        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SUBPOPUP);
         popupUI.RefreshUI(_drawType);
 
     }

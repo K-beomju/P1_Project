@@ -51,7 +51,15 @@ public class UI_GameScene : UI_Scene
     {
         Image_RankUpIcon,
         Image_MyRankIcon,
-        Image_AdBuff
+        Image_AdBuff,
+
+        // PopupButton
+        Image_PetLock,
+        Image_CharacterLock,
+        Image_EquipmentLock,
+        Image_SkillLock,
+        Image_DungeonLock,
+        Image_DrawLock,
     }
 
     enum GameObjects
@@ -113,7 +121,6 @@ public class UI_GameScene : UI_Scene
     public List<UI_DisplayAdBuffItem> _displayAdBuffList { get; set; } = new List<UI_DisplayAdBuffItem>();
 
     private Coroutine[] _autoSkillCheckCoroutines = new Coroutine[6];
-    private InGameScene_Mission missionItem;
 
     protected override bool Init()
     {
@@ -137,8 +144,6 @@ public class UI_GameScene : UI_Scene
         GetButton((int)Buttons.SkillButton).onClick.AddListener(() => ShowTab(PlayTab.Skill));
         GetButton((int)Buttons.DungeonButton).onClick.AddListener(() => ShowTab(PlayTab.Dungeon));
         GetButton((int)Buttons.DrawButton).onClick.AddListener(() => ShowTab(PlayTab.Draw));
-
-        missionItem = GetButton((int)Buttons.Btn_Mission).gameObject.GetOrAddComponent<InGameScene_Mission>();
 
         GetButton((int)Buttons.Btn_Setting).onClick.AddListener(() =>
         {
@@ -183,22 +188,22 @@ public class UI_GameScene : UI_Scene
             Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
             popupUI.RefreshUI();
         });
-//         GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
-//         {
-//             SendQueue.Enqueue(Backend.BMember.Logout, callback =>
-//             {
-//                 Debug.Log($"Backend.BMember.Logout : {callback}");
-// #if UNITY_ANDROID
-//                 TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
-// #endif
+        //         GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
+        //         {
+        //             SendQueue.Enqueue(Backend.BMember.Logout, callback =>
+        //             {
+        //                 Debug.Log($"Backend.BMember.Logout : {callback}");
+        // #if UNITY_ANDROID
+        //                 TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
+        // #endif
 
-//                 if (callback.IsSuccess())
-//                 {
-//                     Debug.Log("로그아웃 성공");
-//                     Managers.Scene.LoadScene(EScene.TitleScene);
-//                 }
-//             });
-//         });
+        //                 if (callback.IsSuccess())
+        //                 {
+        //                     Debug.Log("로그아웃 성공");
+        //                     Managers.Scene.LoadScene(EScene.TitleScene);
+        //                 }
+        //             });
+        //         });
 
         GetButton((int)Buttons.Btn_Quest).onClick.AddListener(() =>
         {
@@ -253,6 +258,10 @@ public class UI_GameScene : UI_Scene
                 GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
         }));
         Managers.Event.AddEvent(EEventType.MyRankingUpdated, new Action(UpdateMyRanking));
+
+        var missionData = Managers.Backend.GameData.MissionData.GetCurrentMission();
+        if (missionData != null)
+            Managers.Event.AddEvent(EEventType.MissionCompleted, new Action(CheckLockPopupMission));
     }
 
     private void OnDisable()
@@ -266,6 +275,9 @@ public class UI_GameScene : UI_Scene
         }));
         Managers.Event.RemoveEvent(EEventType.MyRankingUpdated, new Action(UpdateMyRanking));
 
+        var missionData = Managers.Backend.GameData.MissionData.GetCurrentMission();
+        if (missionData != null)
+            Managers.Event.RemoveEvent(EEventType.MissionCompleted, new Action(CheckLockPopupMission));
     }
 
     private void InitializeUIElements()
@@ -304,6 +316,8 @@ public class UI_GameScene : UI_Scene
         GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
+        CheckLockPopupMission();
+
     }
 
     private void RefreshUI()
@@ -356,6 +370,7 @@ public class UI_GameScene : UI_Scene
 
                 break;
         }
+
     }
 
     public void RefreshShowRemainMonster(int killMonster, int maxMonster)
@@ -729,6 +744,59 @@ public class UI_GameScene : UI_Scene
 
     #region Bottom
 
+    public void CheckLockPopupMission()
+    {
+        var missionData = Managers.Backend.GameData.MissionData.GetCurrentMission();
+        GetButton((int)Buttons.PetButton).interactable = false;
+        GetButton((int)Buttons.CharacterButton).interactable = false;
+        GetButton((int)Buttons.EquipmentButton).interactable = false;
+        GetButton((int)Buttons.SkillButton).interactable = false;
+        GetButton((int)Buttons.DungeonButton).interactable = false;
+        GetButton((int)Buttons.DrawButton).interactable = false;
+
+        // 다 깬거로 간주함. 
+        if (missionData == null)
+        {
+            UnlockUI(Buttons.PetButton, Images.Image_PetLock);
+            UnlockUI(Buttons.CharacterButton, Images.Image_CharacterLock);
+            UnlockUI(Buttons.EquipmentButton, Images.Image_EquipmentLock);
+            UnlockUI(Buttons.SkillButton, Images.Image_SkillLock);
+            UnlockUI(Buttons.DungeonButton, Images.Image_DungeonLock);
+            UnlockUI(Buttons.DrawButton, Images.Image_DrawLock);
+            Managers.Event.RemoveEvent(EEventType.MissionCompleted, new Action(CheckLockPopupMission));
+            return;
+        }
+
+        int missionID = missionData.Id;
+
+        // ID별 잠금 해제 조건
+        if (missionID >= 2)
+        {
+            UnlockUI(Buttons.CharacterButton, Images.Image_CharacterLock);
+            // Vector2 pointerPosition = Util.GetCanvasPosition(GetButton((int)Buttons.CharacterButton).GetComponent<RectTransform>().position - new Vector3(-100,0,0));
+            // var pointer = Managers.UI.ShowPooledUI<UI_PointerBase>();
+            // pointer.SetPosition(pointerPosition);
+        }
+        if (missionID >= 17)
+        {
+            UnlockUI(Buttons.DrawButton, Images.Image_DrawLock);
+        }
+        if (missionID >= 18)
+        {
+            UnlockUI(Buttons.EquipmentButton, Images.Image_EquipmentLock);
+        }
+        if (missionID >= 21)
+        {
+            UnlockUI(Buttons.SkillButton, Images.Image_SkillLock);
+        }
+    }
+
+    private void UnlockUI(Buttons button, Images lockImage)
+    {
+        GetButton((int)button).interactable = true;
+        GetImage((int)lockImage).gameObject.SetActive(false);
+    }
+
     public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
     {
         // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
@@ -770,15 +838,7 @@ public class UI_GameScene : UI_Scene
     public Vector2 GetPetButtonCanvasLocalPosition()
     {
         RectTransform rect = GetButton((int)Buttons.PetButton).GetComponent<RectTransform>();
-
-        Vector2 canvasLocalPos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            Managers.UI.SceneUI.transform as RectTransform,                // 기준이 되는 캔버스의 RectTransform
-            RectTransformUtility.WorldToScreenPoint(Camera.main, rect.position), // 월드 좌표를 스크린 좌표로 변환
-            Camera.main,                                                  // 사용되는 카메라
-            out canvasLocalPos);                                          // 결과로 얻는 캔버스 기준 로컬 좌표
-
-        return canvasLocalPos;
+        return Util.GetCanvasPosition(rect.position);
     }
 
 

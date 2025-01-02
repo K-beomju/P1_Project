@@ -228,8 +228,9 @@ public class TitleScene : BaseScene
     {
         // 코루틴을 통한 정기 데이터 업데이트 시작
         Managers.Instance.UpdateBackendData();
-
         _initializeStep.Clear();
+
+        Managers.Buff.Init();
         Managers.Scene.LoadScene(EScene.GameScene);
     }
 

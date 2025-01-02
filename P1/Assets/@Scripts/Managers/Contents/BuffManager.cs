@@ -14,16 +14,29 @@ public class BuffManager
 
     public void Init()
     {
+
+        bool missionClear = Managers.Backend.GameData.MissionData.GetCurrentMission() == null;
         foreach (EAdBuffType buffType in Enum.GetValues(typeof(EAdBuffType)))
         {
             // `PlayerPrefs`에서 저장된 남은 시간을 불러옵니다.
             int savedTime = PlayerPrefs.GetInt($"Buff_{buffType}", 0);
+            Debug.Log($"Buff_{buffType} : {savedTime}");
+
 
             if (savedTime > 0)
             {
-                // `savedTime`을 `Dictionary`에 설정
-                _buffRemainingTime[buffType] = savedTime;
+                if (missionClear)
+                {
+                    // `savedTime`을 `Dictionary`에 설정
+                    _buffRemainingTime[buffType] = savedTime;
+                }
+                else
+                {
+                    PlayerPrefs.DeleteKey($"Buff_{buffType}");
+                    Managers.Backend.GameData.ShopData.ResetAdData();
+                }
             }
+
         }
     }
 

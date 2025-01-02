@@ -131,11 +131,15 @@ namespace BackendData.GameData
 
                 if(missionInfoData.MissionType == EMissionType.StageChallenge)
                 _missionDic[missionInfoData.MissionType] = 0;
+
+                Managers.Event.TriggerEvent(EEventType.MissionCompleted);
             }
             else
             {
                 Debug.LogWarning("해당 미션을 찾을 수 없습니다.");
             }
+
+            
         }
 
         // 완료하지 않은 미션 찾기 

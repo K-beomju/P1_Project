@@ -175,7 +175,9 @@ public class UI_DrawSkillPanel : UI_Base
 
     private void ShowProbabilityPopup()
     {
-        Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>().RefreshUI(_drawType);
+        var popupUI = Managers.UI.ShowPopupUI<UI_DrawProbabilityPopup>();
+        Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SUBPOPUP);
+        popupUI.RefreshUI(_drawType);
     }
 
 

@@ -218,6 +218,12 @@ public class BackendManager
     // 값이 바뀐 데이터가 있는지 체크후 바뀐 데이터들은 바로 저장 혹은 트랜잭션에 묶어 저장을 진행하는 함수
     public void UpdateAllGameData(AfterUpdateFunc afterUpdateFunc)
     {
+        if(Managers.Backend.GameData.MissionData.GetCurrentMission() != null)
+        {
+            Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("튜토리얼을 완료한 후 저장이 가능합니다");
+            return;
+        }
+
         string info = string.Empty;
 
         // 바뀐 데이터가 몇개 있는지 체크

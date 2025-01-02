@@ -148,6 +148,9 @@ public static class Define
         /// <summary>미션 아이템 업데이트</summary>
         MissionItemUpdated,
 
+        /// <summary>미션 완료 업데이트</summary>
+        MissionCompleted,
+
         /// <summary>히어로 영웅 랭킹 업데이트</summary>
         MyRankingUpdated,
     }
@@ -346,6 +349,7 @@ public static class Define
         public const int SKILL_EFFECT = 315;
         public const int DAMAGE_FONT = 410;
         public const int UI_POPUP = 450;
+        public const int UI_SUBPOPUP = 480;
         public const int UI_SCENE = 500;
         public const int UI_SETTINGPOPUP = 510;
 

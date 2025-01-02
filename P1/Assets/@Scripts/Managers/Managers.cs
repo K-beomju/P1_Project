@@ -76,7 +76,6 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
 
             s_instacne = go.GetComponent<Managers>();
-            Buff.Init();
         }
     }
 

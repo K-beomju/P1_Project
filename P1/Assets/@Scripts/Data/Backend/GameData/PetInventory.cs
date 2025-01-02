@@ -64,15 +64,15 @@ namespace BackendData.GameData
 
             }
 
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Silver, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Blue, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Flame, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Scale, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Book, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Rune, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Emerald, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Wood, 100);
-            Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Gold, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Silver, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Blue, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Flame, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Scale, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Book, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Rune, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Emerald, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Wood, 100);
+            // Managers.Backend.GameData.PetInventory.AddPetCraft(EPetType.Gold, 100);
 
         }
 

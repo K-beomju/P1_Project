@@ -93,7 +93,7 @@ namespace BackendData.GameData
             }
         }
 
-        private void ResetAdData()
+        public void ResetAdData()
         {
             IsChangedData = true;
             foreach(var rewardAdData in _rewardAdDic.Values)
