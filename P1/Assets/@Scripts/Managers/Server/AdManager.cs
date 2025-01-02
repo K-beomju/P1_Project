@@ -36,8 +36,10 @@ public class AdManager
     public void Init()
     {
 #if UNITY_EDITOR
+Debug.Log("테스트 모드 활성화");
         TEST_MODE = true;
 #elif UNITY_ANDROID
+Debug.Log("테스트 모드 비활성화");
         TEST_MODE = false;
 #endif
 

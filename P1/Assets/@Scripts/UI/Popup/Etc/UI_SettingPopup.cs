@@ -16,7 +16,7 @@ public class UI_SettingPopup : UI_Popup
         Btn_SleepMode,
         Btn_SaveData,
         Btn_FeedBack,
-        Btn_NaverCafe,
+        Btn_Discord,
         Btn_Exit
     }
 
@@ -63,9 +63,9 @@ public class UI_SettingPopup : UI_Popup
         {
             Application.OpenURL("https://play.google.com/store/apps/details?id=com.LukeDogCompany.com.IdleGame");
         });
-        GetButton((int)Buttons.Btn_NaverCafe).onClick.AddListener(() =>
+        GetButton((int)Buttons.Btn_Discord).onClick.AddListener(() =>
         {
-            Debug.Log("네이버 카페로 이동");
+            Application.OpenURL("https://discord.gg/BqSHKXqS");
         });
         GetImage((int)Images.Image_SaveCoolTime).fillAmount = 0;
         

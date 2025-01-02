@@ -2294,7 +2294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uACF5\uC2DD \uCE74\uD398"
+  m_text: "\uACF5\uC2DD \uB514\uC2A4\uCF54\uB4DC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
   m_sharedMaterial: {fileID: -3629949962228583617, guid: b0cd6370cf75fc345b7232e29ea5664a, type: 2}
@@ -2984,7 +2984,7 @@ GameObject:
   - component: {fileID: 7401809367445477856}
   - component: {fileID: 3900162724371836663}
   m_Layer: 5
-  m_Name: Btn_NaverCafe
+  m_Name: Btn_Discord
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

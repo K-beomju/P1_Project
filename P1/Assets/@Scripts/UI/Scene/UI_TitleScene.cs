@@ -28,7 +28,8 @@ public class UI_TitleScene : UI_Scene
     public enum Texts
     {
         Text_Loading,
-        Text_TouchStart
+        Text_TouchStart,
+        Text_Version
     }
 
     protected override bool Init()
@@ -77,6 +78,8 @@ public class UI_TitleScene : UI_Scene
                 LoginWithBackendToken();
             }
         });
+        
+        GetTMPText((int)Texts.Text_Version).text = $"v{Application.version}";
     }
 
     #region Login
