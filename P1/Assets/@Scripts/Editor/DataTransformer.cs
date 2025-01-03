@@ -5,10 +5,38 @@ using UnityEngine;
 using System.Linq;
 using Unity.Plastic.Newtonsoft.Json;
 using System;
+using System.Numerics;
 using System.Reflection;
 using System.Collections;
 using System.ComponentModel;
 using Data;
+using System.Globalization;
+
+public class BigIntegerConverter : JsonConverter<BigInteger>
+{
+    public override void WriteJson(JsonWriter writer, BigInteger value, JsonSerializer serializer)
+    {
+        writer.WriteValue(value.ToString());
+    }
+
+    public override BigInteger ReadJson(JsonReader reader, Type objectType, BigInteger existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        return BigInteger.Parse(reader.Value.ToString(), CultureInfo.InvariantCulture);
+    }
+}
+
+public class DecimalConverter : JsonConverter<decimal>
+{
+    public override void WriteJson(JsonWriter writer, decimal value, JsonSerializer serializer)
+    {
+        writer.WriteValue(value.ToString(CultureInfo.InvariantCulture));
+    }
+
+    public override decimal ReadJson(JsonReader reader, Type objectType, decimal existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        return decimal.Parse(reader.Value.ToString(), CultureInfo.InvariantCulture);
+    }
+}
 
 public class DataTransformer : EditorWindow
 {
@@ -66,6 +94,9 @@ public class DataTransformer : EditorWindow
 
 		// [미션]
         ParseCsvDataToJson<MissionDataLoader, MissionData>("Mission");
+
+		//ParseCsvDataToJson<TestInfoDataLoader, TestInfoData>("TestInfo");
+
 	}
 
 	#region Helpers
@@ -75,7 +106,18 @@ public class DataTransformer : EditorWindow
 		FieldInfo field = loader.GetType().GetFields()[0];
 		field.SetValue(loader, ParseExcelDataToList<LoaderData>(filename));
 
-		string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
+		 // JSON 직렬화 설정
+    JsonSerializerSettings settings = new JsonSerializerSettings
+    {
+        Formatting = Formatting.Indented,
+        Converters = new List<JsonConverter>
+        {
+            new BigIntegerConverter(),
+            new DecimalConverter()
+        }
+    };
+
+    string jsonStr = JsonConvert.SerializeObject(loader, settings);
 		File.WriteAllText($"{Application.dataPath}/Resources/Data/JsonData/{filename}Data.json", jsonStr);
 		AssetDatabase.Refresh();
 	}
@@ -107,18 +149,25 @@ public class DataTransformer : EditorWindow
 }
 				Type type = field.FieldType;
 
-				if (type.IsGenericType)
-				{
-					//object value = ConvertList(row[f], type);
-					object value = ConvertListOrDictionary(row[f], type);
-
-					field.SetValue(loaderData, value);
-				}
-				else
-				{
-					object value = ConvertValue(row[f], field.FieldType);
-					field.SetValue(loaderData, value);
-				}
+				
+			
+                if (type == typeof(BigInteger))
+                {
+                    // BigInteger 변환 처리
+                    object value = ConvertBigInteger(row[f]);
+                    field.SetValue(loaderData, value);
+                }
+                else if (type.IsGenericType)
+                {
+                    object value = ConvertListOrDictionary(row[f], type);
+                    field.SetValue(loaderData, value);
+                }
+                else
+                {
+                    object value = ConvertValue(row[f], field.FieldType);
+                    field.SetValue(loaderData, value);
+                }
+				
 			}
 
 			loaderDatas.Add(loaderData);
@@ -126,6 +175,39 @@ public class DataTransformer : EditorWindow
 
 		return loaderDatas;
 	}
+private static object ConvertBigInteger(string value)
+{
+    if (string.IsNullOrEmpty(value))
+        return BigInteger.Zero; // 기본값으로 BigInteger.Zero 반환
+
+    value = value.Trim();
+
+    try
+    {
+        // 지수 표기법 처리
+        if (value.Contains("E") || value.Contains("e"))
+        {
+            // Double로 변환 후 정수형 문자열로 변환
+            double doubleValue = double.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
+            value = doubleValue.ToString("F0", System.Globalization.CultureInfo.InvariantCulture); // 소수점 제거
+        }
+
+        // BigInteger로 변환
+        if (BigInteger.TryParse(value, out BigInteger result))
+        {
+            return result;
+        }
+    }
+    catch (Exception ex)
+    {
+        Debug.LogError($"BigInteger 변환 실패: {value}, 에러: {ex.Message}");
+    }
+
+    Debug.LogError($"BigInteger 변환 실패: {value}");
+    return BigInteger.Zero;
+}
+
+
 
 	private static object ConvertValue(string value, Type type)
 	{

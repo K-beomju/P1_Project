@@ -25,8 +25,7 @@ public class UI_GameScene : UI_Scene
         Btn_Setting,
         Btn_Menu,
         Btn_Quest,
-        Btn_Stage,
-        Btn_Mission
+        Btn_Stage
     }
 
     enum Sliders
@@ -64,7 +63,6 @@ public class UI_GameScene : UI_Scene
 
     enum GameObjects
     {
-        TopStage,
         RemainMonster,
         RankUpStage,
         MenuGroup,
@@ -75,7 +73,8 @@ public class UI_GameScene : UI_Scene
     enum CanvasGroups
     {
         SkillSlotGroup,
-        BuffGroup
+        BuffGroup,
+        TopStageGroup
     }
 
     public enum PlayTab
@@ -671,7 +670,8 @@ public class UI_GameScene : UI_Scene
             GetObject((int)GameObjects.MenuGroup).SetActive(false);
         }
 
-        GetObject((int)GameObjects.TopStage).SetActive(active);
+        Get<CanvasGroup>((int)CanvasGroups.TopStageGroup).alpha = active ? 1 : 0;
+        Get<CanvasGroup>((int)CanvasGroups.TopStageGroup).blocksRaycasts = active;
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).alpha = active ? 1 : 0;
         Get<CanvasGroup>((int)CanvasGroups.SkillSlotGroup).blocksRaycasts = active;
         Get<CanvasGroup>((int)CanvasGroups.BuffGroup).alpha = active ? 1 : 0;

@@ -260,8 +260,6 @@ Debug.Log("테스트 모드 비활성화");
             _rewardedInterstitialAd = null;
         }
 
-        DestroyBannerAd();
-
     }
 
     public IEnumerator ExecuteAfterFrame(Action action)

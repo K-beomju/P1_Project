@@ -90,6 +90,12 @@ public class UI_SettingPopup : UI_Popup
         PlayerPrefs.SetFloat("EFFECT_Volume", value);
     }
 
+    public override void ClosePopupUI()
+    {
+        base.ClosePopupUI();
+        PlayerPrefs.Save();
+    }
+
     void OnEnable()
     {
         if (!Managers.Backend.IsSaveCoolTimeActive)

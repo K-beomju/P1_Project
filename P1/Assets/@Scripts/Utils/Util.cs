@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Define;
@@ -80,16 +81,16 @@ public static class Util
     /// <param name="currentPosition">현재 위치</param>
     /// <param name="moveRange">이동 범위</param>
     /// <returns>맵 안의 랜덤 위치</returns>
-    public static Vector3 GetRandomPositionWithinMap(Tilemap tileMap, Vector3 currentPosition, float moveRange, float padding)
+    public static UnityEngine.Vector3 GetRandomPositionWithinMap(Tilemap tileMap, UnityEngine.Vector3 currentPosition, float moveRange, float padding)
     {
         // 타일맵 경계 가져오기
         BoundsInt bounds = tileMap.cellBounds;
-        Vector3 minPosition = tileMap.CellToWorld(bounds.min);
-        Vector3 maxPosition = tileMap.CellToWorld(bounds.max);
+        UnityEngine.Vector3 minPosition = tileMap.CellToWorld(bounds.min);
+        UnityEngine.Vector3 maxPosition = tileMap.CellToWorld(bounds.max);
 
         // 보정값 적용
-        minPosition += new Vector3(padding, padding, 0);
-        maxPosition -= new Vector3(padding, padding, 0);
+        minPosition += new UnityEngine.Vector3(padding, padding, 0);
+        maxPosition -= new UnityEngine.Vector3(padding, padding, 0);
 
         // 이동 가능한 범위 내에서 랜덤 위치 생성
         float randomX = Mathf.Clamp(
@@ -103,7 +104,7 @@ public static class Util
             maxPosition.y
         );
 
-        return new Vector3(randomX, randomY, currentPosition.z); // Z 축은 그대로 유지
+        return new UnityEngine.Vector3(randomX, randomY, currentPosition.z); // Z 축은 그대로 유지
     }
 
     #region Exp System
@@ -411,7 +412,7 @@ public static class Util
 
     #region Convert Value 
 
-    public static string ConvertToTotalCurrency(long value)
+    public static string ConvertToTotalCurrency(BigInteger value)
     {
         // 10,000 미만일 경우 그대로 반환
         if (value < 10000)
@@ -421,7 +422,7 @@ public static class Util
 
         string[] koreanUnits = { "만", "억", "조", "경" };
         int unitIndex = -1;
-        long mainPart = value;
+        BigInteger mainPart = value;
 
         // 큰 단위로 나누면서 단위를 증가시킴
         while (mainPart >= 10000 && unitIndex < koreanUnits.Length - 1)
@@ -430,33 +431,31 @@ public static class Util
             mainPart /= 10000;
         }
 
-        // `mainPart` 이후의 값을 남은 단위별로 순차적으로 추가
+        // 결과 문자열 생성
         string result = $"{mainPart}{koreanUnits[unitIndex]}";
-        long remainder = value - mainPart * (long)Math.Pow(10000, unitIndex + 1);
+        BigInteger remainder = value % BigInteger.Pow(10000, unitIndex + 1);
 
         // 남은 부분을 단위별로 추가 표시
         for (int i = unitIndex - 1; i >= 0; i--)
         {
-            long unitValue = (long)Math.Pow(10000, i + 1);
-            long currentPart = remainder / unitValue;
+            BigInteger unitValue = BigInteger.Pow(10000, i + 1);
+            BigInteger currentPart = remainder / unitValue;
             remainder %= unitValue;
 
             if (currentPart > 0)
             {
-                result += $" {currentPart:D4}{koreanUnits[i]}";
+                result += $" {currentPart}{koreanUnits[i]}";
             }
         }
 
-        // 마지막 10000 미만 값이 남아 있으면 추가
+        // 마지막 10,000 미만 값이 남아 있으면 추가
         if (remainder > 0)
         {
-            result += $" {remainder:D4}";
+            result += $" {remainder}";
         }
 
         return result;
     }
-
-
 
     public static string GetHeroUpgradeString(EHeroUpgradeType type)
     {
@@ -556,7 +555,7 @@ public static class Util
 
     #region Ad Buff
 
-    
+
     public static string GetAdBuffType(EAdBuffType type)
     {
         return type switch
@@ -579,12 +578,12 @@ public static class Util
         var petChart = Managers.Data.PetChart;
         foreach (var pet in petChart.Values)
         {
-            if(pet.ChapterLevel == currentChapterLevel)
+            if (pet.ChapterLevel == currentChapterLevel)
             {
                 return pet;
             }
         }
-        
+
         return null;
     }
 
@@ -592,9 +591,9 @@ public static class Util
 
     #region UI
 
-    public static Vector2 GetCanvasPosition(Vector3 rectTransform)
+    public static UnityEngine.Vector2 GetCanvasPosition(UnityEngine.Vector3 rectTransform)
     {
-        Vector2 canvasLocalPos;
+        UnityEngine.Vector2 canvasLocalPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             Managers.UI.SceneUI.transform as RectTransform,                // 기준이 되는 캔버스의 RectTransform
             RectTransformUtility.WorldToScreenPoint(Camera.main, rectTransform), // 월드 좌표를 스크린 좌표로 변환

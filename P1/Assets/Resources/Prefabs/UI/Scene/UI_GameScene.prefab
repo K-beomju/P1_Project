@@ -6992,8 +6992,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8507109211498820864}
+  - component: {fileID: 4283404583853002481}
   m_Layer: 5
-  m_Name: TopStage
+  m_Name: TopStageGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7024,6 +7025,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -410}
   m_SizeDelta: {x: 0, y: 361.60132}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &4283404583853002481
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7093850493797617802}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7221020834845057142
 GameObject:
   m_ObjectHideFlags: 0

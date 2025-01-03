@@ -114,7 +114,6 @@ public class BuffManager
         {
             PlayerPrefs.SetInt($"Buff_{buff.Key}", buff.Value);
         }
-        PlayerPrefs.Save();
     }
 
     public bool IsAnyBuffActive()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using System.Numerics; // BigInteger를 사용하기 위해 추가
 
 namespace Data
 {
@@ -671,8 +672,8 @@ namespace Data
         public string PetName;
         public string Remark;
         public string PetDesc;
-        
-        public int ChapterLevel; 
+
+        public int ChapterLevel;
         public float DropCraftItemRate;
         public EPetCraftType PetCraftType;
 
@@ -681,11 +682,11 @@ namespace Data
         public string PetObjectSpriteKey;
         public string PetObjectPrefabKey;
 
-        public int MaxCount; 
+        public int MaxCount;
 
         // 보유 효과는 % 
         public float OwnedAtkPercent;
-        public float OwnedAtkIncreasePercent; 
+        public float OwnedAtkIncreasePercent;
 
         // 장착 효과는 합연산
         public float EquippedAtkValue;
@@ -737,5 +738,29 @@ namespace Data
     #endregion
 
 
+
+    [Serializable]
+    public class TestInfoData
+    {
+        public int ID;
+        public BigInteger  TestInt;
+        public BigInteger  TestFloat;
+        public BigInteger  TestLong;
+        public BigInteger  TestDouble;
+        public BigInteger TestDemical;
+    }
+
+    [Serializable]
+    public class TestInfoDataLoader : ILoader<int, TestInfoData>
+    {
+        public List<TestInfoData> tests = new List<TestInfoData>();
+        public Dictionary<int, TestInfoData> MakeDict()
+        {
+            Dictionary<int, TestInfoData> dict = new Dictionary<int, TestInfoData>();
+            foreach (TestInfoData test in tests)
+                dict.Add(test.ID, test);
+            return dict;
+        }
+    }
 
 }

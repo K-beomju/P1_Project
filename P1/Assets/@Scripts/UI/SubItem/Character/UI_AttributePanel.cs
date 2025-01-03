@@ -118,8 +118,6 @@ public class UI_AttributePanel : UI_Base
             return;
 
         _upgradeCoroutine = StartCoroutine(CoHoldUpgrade());
-
-
     }
 
     private void OnPointerUp()
@@ -141,17 +139,15 @@ public class UI_AttributePanel : UI_Base
 
     private IEnumerator CoHoldUpgrade()
     {
+        TryUpgrade(); // 업그레이드 시도
         float currentDelay = _initialUpgradeDelay;
-        WaitForSeconds delay = new WaitForSeconds(currentDelay);
-        yield return delay;
+        yield return new WaitForSeconds(0.5f);
+        
 
         while (true)
         {
             TryUpgrade(); // 업그레이드 시도
-
-            yield return delay;
-
-            // 업그레이드 속도를 점차적으로 증가
+            yield return new WaitForSeconds(currentDelay);
             currentDelay = Mathf.Max(currentDelay * _speedIncreaseFactor, _minUpgradeDelay);
         }
     }
@@ -180,8 +176,12 @@ public class UI_AttributePanel : UI_Base
                 Managers.Backend.GameData.MissionData.UpdateMission(missionType);
             }
             else
+            {
                 ShowAlertUI("경험치포인트가 부족합니다");
+            }
         }
+        Managers.Sound.Play(ESound.Effect, "Sounds/Button", 0.5f);
+
     }
 
 

@@ -76,10 +76,9 @@ public class GameScene : BaseScene
         Managers.UI.ShowBaseUI<UI_FadeInBase>().ShowFadeInOut(EFadeType.FadeIn, 1f, 1f,
             fadeInCallBack: () =>
             {
-                if (PlayerPrefs.HasKey("ShowDialogue") == false)
+                if (Managers.Backend.GameData.MissionData.GetCurrentMission() != null)
                 {
                     // 최초 대화창 한 번만
-                    PlayerPrefs.SetInt("ShowDialogue", 1);
                     var popupUI = Managers.UI.ShowPopupUI<UI_DialoguePopup>();
                     Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
                     popupUI.RefreshUI();
@@ -135,8 +134,8 @@ public class GameScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
-        // 대화 본 뒤 출석체크
-        if (PlayerPrefs.GetInt("ShowDialogue", 0) == 1)
+        
+        if (Managers.Backend.GameData.MissionData.GetCurrentMission() != null)
         {
             if (CharacterData.AttendanceCheck())
             {
@@ -211,6 +210,7 @@ public class GameScene : BaseScene
     {
         ChapterLevel = 1;
         StageInfo = Managers.Data.StageChart[CharacterData.StageLevel];
+        Debug.LogWarning(CharacterData.StageLevel);
         Managers.UI.ShowBaseUI<UI_StageDisplayBase>().ShowDisplayStage(CharacterData.StageLevel);
         GameSceneState = EGameSceneState.Play;
     }

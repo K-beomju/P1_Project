@@ -63,6 +63,8 @@ public class UI_AdBuffScrollItem : UI_Base
 
                         // UI 업데이트 
                         RefreshUI();
+
+                        PlayerPrefs.SetInt($"Buff_{_buffType}", 0);
                     }));
                 }
                 else

@@ -76,7 +76,14 @@ public class InGameScene_Mission : UI_Base
         if(MissionData.GetCurrentMission() == null)
         {
             ShowAlertUI("모든 미션을 완료했습니다");
-            Managers.UI.ShowPopupUI<UI_ReviewPopup>();
+            //Managers.UI.ShowPopupUI<UI_ReviewPopup>();
+            if (Managers.Backend.GameData.CharacterData.AttendanceCheck())
+            {
+                Debug.Log("하루가 지나 출석체크 팝업 On");
+                var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
+                Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
+                popupUI.RefreshUI();
+            }
             Managers.Backend.GameData.CharacterData.StartIdleTime();
             // 데이터 저장
             Managers.Backend.UpdateAllGameData(callback => { });

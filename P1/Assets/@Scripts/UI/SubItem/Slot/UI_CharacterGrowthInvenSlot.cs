@@ -91,8 +91,8 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         GetTMPText((int)Texts.Text_Amount).text = amountText;
     }
 
-
-
+    #region Button Event
+    
     private void OnPressUpgradeButton()
     {
         if (_upgradeCoroutine != null)
@@ -117,20 +117,19 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
         }
     }
 
+    #endregion
+
     private IEnumerator CoHoldUpgrade()
     {
+        TryUpgrade(); // 업그레이드 시도
+
         float currentDelay = _initialUpgradeDelay;
-        WaitForSeconds delay = new WaitForSeconds(currentDelay);
-        yield return delay;
+        yield return new WaitForSeconds(0.5f);
 
         while (true)
         {
             TryUpgrade(); // 업그레이드 시도
-            Managers.Sound.Play(ESound.Effect, "Sounds/Button", 0.5f);
-
-            yield return delay;
-
-            // 업그레이드 속도를 점차적으로 증가
+            yield return new WaitForSeconds(currentDelay);
             currentDelay = Mathf.Max(currentDelay * _speedIncreaseFactor, _minUpgradeDelay);
         }
     }
@@ -142,6 +141,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
             int price = Util.GetUpgradeCost(_heroUpgradeType, level + 1);
             if (CanUpgrade(price))
             {
+                Debug.Log(price);
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.Gold, -price);
                 Managers.Backend.GameData.CharacterData.LevelUpHeroUpgrade(_heroUpgradeType);
 
@@ -168,8 +168,11 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
                 UpdateSlotInfoUI();
             }
             else
+            {
                 ShowAlertUI("골드가 부족합니다");
+            }
         }
+        Managers.Sound.Play(ESound.Effect, "Sounds/Button", 0.5f);
     }
 
 

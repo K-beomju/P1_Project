@@ -85,7 +85,7 @@ public class Hero : Creature
         HpBar._offset = new Vector3(0.0f, -0.2f, 0.0f);
         HpBar.SetSliderInfo(this);
         HpBar.gameObject.SetActive(true);
-
+        HpBar.DoFadeSlider();
 
         Managers.Object.Hero.ChangeAnimController(Managers.Backend.GameData.EquipmentInventory.EquipCheckEquipment());
     }

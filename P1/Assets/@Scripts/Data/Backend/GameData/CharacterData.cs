@@ -7,6 +7,7 @@ using System;
 using UnityEngine;
 using System.Globalization;
 using Data;
+using System.Linq;
 
 namespace BackendData.GameData
 {
@@ -174,7 +175,7 @@ namespace BackendData.GameData
             string key = goodType.ToString();
 
             // 골드 증가율 적용 (만약 재화가 골드인 경우)
-            if (goodType == EItemType.Gold)
+            if (goodType == EItemType.Gold && amount > 0)
                 amount = (int)(amount * Managers.Hero.PlayerHeroInfo.GoldIncreaseRate);
 
             if (!_purseDic.ContainsKey(key))
@@ -233,6 +234,14 @@ namespace BackendData.GameData
         public void UpdateStageLevel(int stageLevel)
         {
             IsChangedData = true;
+
+            int lastStageLevel = Managers.Data.StageChart.Keys.Last();
+            if(StageLevel >= lastStageLevel)
+            {
+                Debug.Log("마지막 스테이지입니다.");
+                return;
+            }
+
             StageLevel += stageLevel;
             if (StageLevel == 0)
                 StageLevel = 1;
@@ -315,8 +324,7 @@ namespace BackendData.GameData
                 return;
             }
 
-            IsChangedData = true;
-            LastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            StartIdleTime();
 
             var StageInfo = Managers.Data.StageChart[StageLevel];
             double stageClearTimeInSeconds = 60.0;

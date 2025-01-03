@@ -73,7 +73,10 @@ public class ExcelTransformer : EditorWindow
         // [미션]
         // MissionData: 아이템 정보 데이터
         ConvertExcelToCsv("Mission");
-        // 남은거 : ShopData
+        // // 남은거 : ShopData
+
+        //ConvertExcelToCsv("Test");
+
     }
 
     private static void ConvertExcelToCsv(string filename)

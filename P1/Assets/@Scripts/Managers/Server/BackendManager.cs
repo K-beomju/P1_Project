@@ -317,6 +317,8 @@ public class BackendManager
                 }
             });
         }
+
+        PlayerPrefs.Save();
     }
 
     // 단일 게임 데이터를 저장하는 함수

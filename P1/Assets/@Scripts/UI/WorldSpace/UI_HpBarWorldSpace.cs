@@ -25,6 +25,7 @@ public class UI_HpBarWorldSpace : UI_Base
     private CanvasGroup _canvasGroup;
     public Vector3 _offset { get; set; }
     private float _smoothSpeed = 0.3f;
+    private bool _isHpBarVisible = false; // 슬라이더가 현재 보이는 상태인지 확인하는 플래그
 
     protected override bool Init()
     {
@@ -85,9 +86,17 @@ public class UI_HpBarWorldSpace : UI_Base
         if (_owner.ObjectType != EObjectType.Hero)
             return;
 
-        _canvasGroup.alpha = 1;
+        if (!_isHpBarVisible)
+        {
+            _canvasGroup.alpha = 1; // 슬라이더 보이게 설정
+            _isHpBarVisible = true; // 상태 플래그 업데이트
+        }
+
+        // 슬라이더 페이드 아웃 처리
+        _canvasGroup.DOKill(); // 기존 페이드 아웃 애니메이션 중단
         _canvasGroup.DOFade(0, 0.5f).SetDelay(1f).OnComplete(() =>
         {
+            _isHpBarVisible = false; // 슬라이더가 사라진 후 상태 플래그 업데이트
             CallBackAction?.Invoke();
         });
     }
