@@ -134,12 +134,12 @@ namespace Data
         public int BossDataId;
         public int BossBattleTimeLimit;
         public List<int> MonsterDataIdList = new List<int>();
-        public float MonsterAtk;
-        public float MonsterMaxHp;
-        public int MonsterGoldReward;
-        public int MonsterExpReward;
-        public float BossMonsterAtk;
-        public float BossMonsterMaxHp;
+        public double MonsterAtk;
+        public double MonsterMaxHp;
+        public double MonsterGoldReward;
+        public double MonsterExpReward;
+        public double BossMonsterAtk;
+        public double BossMonsterMaxHp;
         public Dictionary<EItemType, int> RewardItem = new Dictionary<EItemType, int>();
 
     }

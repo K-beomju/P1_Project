@@ -71,8 +71,8 @@ public class UI_HpBarWorldSpace : UI_Base
             transform.localScale = scale;
         }
 
-        float hpAmount = _owner.Hp / _owner.MaxHp;
-        _hpBarSlider.value = hpAmount;
+        double hpAmount = _owner.Hp / _owner.MaxHp;
+        _hpBarSlider.value = (float)hpAmount;
 
         // DamageSlider는 천천히 HpSlider를 따라가며 감소
         if (_damageSlider.value > _hpBarSlider.value)

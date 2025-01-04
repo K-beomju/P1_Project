@@ -42,8 +42,8 @@ public class UI_BattleResultPopup : UI_Popup
     }
 
 
-    public void RefreshUI(float worldBossTotalDamage)
+    public void RefreshUI(double worldBossTotalDamage)
     {
-        GetTMPText((int)Texts.Text_BattleResult).text = Util.ConvertToTotalCurrency((long)worldBossTotalDamage);
+        GetTMPText((int)Texts.Text_BattleResult).text = Util.ConvertToTotalCurrency(worldBossTotalDamage);
     }
 }

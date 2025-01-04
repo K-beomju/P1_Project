@@ -18,8 +18,8 @@ namespace BackendData.GameData
     public partial class CharacterData
     {
         public int Level { get; private set; }
-        public float Exp { get; private set; }
-        public float MaxExp { get; private set; }
+        public double Exp { get; private set; }
+        public double MaxExp { get; private set; }
 
         public string LastLoginTime { get; private set; }
 
@@ -31,11 +31,11 @@ namespace BackendData.GameData
         public int StageLevel { get; private set; }
 
         // 월드 보스 전투력 
-        public int WorldBossCombatPower { get; private set; }
+        public double WorldBossCombatPower { get; private set; }
 
 
         // 각 재화 담는 Dic
-        private Dictionary<string, float> _purseDic = new();
+        private Dictionary<string, double> _purseDic = new();
 
         // 각 스탯레벨 담는 Dic
         private Dictionary<string, int> _upgradeStatDic = new();
@@ -47,7 +47,7 @@ namespace BackendData.GameData
         private Dictionary<string, int> _ownedRelicDic = new();
 
         // 다른 클래스에서 Add, Delete등 수정이 불가능하도록 읽기 전용 Dictionary
-        public IReadOnlyDictionary<string, float> PurseDic => (IReadOnlyDictionary<string, float>)_purseDic.AsReadOnlyCollection();
+        public IReadOnlyDictionary<string, double> PurseDic => (IReadOnlyDictionary<string, double>)_purseDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeStatDic => (IReadOnlyDictionary<string, int>)_upgradeStatDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> UpgradeAttrDic => (IReadOnlyDictionary<string, int>)_upgradeAttrDic.AsReadOnlyCollection();
         public IReadOnlyDictionary<string, int> OwnedRelicDic => (IReadOnlyDictionary<string, int>)_ownedRelicDic.AsReadOnlyCollection();
@@ -107,13 +107,13 @@ namespace BackendData.GameData
         protected override void SetServerDataToLocal(JsonData Data)
         {
             Level = int.Parse(Data["Level"].ToString());
-            Exp = float.Parse(Data["Exp"].ToString());
-            MaxExp = float.Parse(Data["MaxExp"].ToString());
+            Exp = double.Parse(Data["Exp"].ToString());
+            MaxExp = double.Parse(Data["MaxExp"].ToString());
             LastLoginTime = Data["LastLoginTime"].ToString();
             AttendanceIndex = int.Parse(Data["AttendanceIndex"].ToString());
             AttendanceLastLoginTime = Data["AttendanceLastLoginTime"].ToString();
             StageLevel = int.Parse(Data["StageLevel"].ToString());
-            WorldBossCombatPower = int.Parse(Data["WorldBossCombatPower"].ToString());
+            WorldBossCombatPower = double.Parse(Data["WorldBossCombatPower"].ToString());
 
             foreach (var column in Data["Purse"].Keys)
             {
@@ -134,6 +134,9 @@ namespace BackendData.GameData
             {
                 _ownedRelicDic.Add(column, int.Parse(Data["OwnedRelic"][column].ToString()));
             }
+
+            StageLevel = 54;
+
         }
 
         public override string GetTableName()
@@ -169,14 +172,14 @@ namespace BackendData.GameData
         #region Good,Exp 
 
         // 유저의 재화를 변경하는 함수
-        public void AddAmount(EItemType goodType, float amount)
+        public void AddAmount(EItemType goodType, double amount)
         {
             IsChangedData = true;
             string key = goodType.ToString();
 
             // 골드 증가율 적용 (만약 재화가 골드인 경우)
             if (goodType == EItemType.Gold && amount > 0)
-                amount = (int)(amount * Managers.Hero.PlayerHeroInfo.GoldIncreaseRate);
+                amount = (amount * Managers.Hero.PlayerHeroInfo.GoldIncreaseRate);
 
             if (!_purseDic.ContainsKey(key))
             {
@@ -191,11 +194,11 @@ namespace BackendData.GameData
         }
 
         // 유저의 경험치를 변경하는 함수
-        public void AddExp(int exp)
+        public void AddExp(double exp)
         {
             IsChangedData = true;
 
-            exp = (int)(exp * Managers.Hero.PlayerHeroInfo.ExpIncreaseRate);
+            exp = (double)(exp * Managers.Hero.PlayerHeroInfo.ExpIncreaseRate);
 
             Exp += exp;
 
@@ -301,7 +304,7 @@ namespace BackendData.GameData
         #endregion
 
         // 월드보스전 갱신 
-        public void UpdateWorldBossCombatPower(int power)
+        public void UpdateWorldBossCombatPower(double power)
         {
             IsChangedData = true;
             WorldBossCombatPower = power;
@@ -336,10 +339,10 @@ namespace BackendData.GameData
             // 방치 재화 : 골드, 다이아, 경험치, 승급 포인트
             int totalGolds = StageInfo.RewardItem[EItemType.Gold] * maxClearStages;
             int totalDias = StageInfo.RewardItem[EItemType.Dia] * maxClearStages;
-            int totalExp = StageInfo.MonsterExpReward * StageInfo.KillMonsterCount * maxClearStages;
+            double totalExp = StageInfo.MonsterExpReward * StageInfo.KillMonsterCount * maxClearStages;
             int totalAbilityPoints = 5 * maxClearStages;
 
-            Dictionary<EItemType, int> itemDic = new()
+            Dictionary<EItemType, double> itemDic = new()
             {
                 { EItemType.Gold, totalGolds },
                 { EItemType.Dia, totalDias },
@@ -395,6 +398,24 @@ namespace BackendData.GameData
 
             // 현재 시간을 출석 마지막 로그인 시간으로 기록
             AttendanceLastLoginTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+
+            Managers.Backend.UpdateSingleGameData(this, callback =>
+            {
+                if (callback == null)
+                {
+                    Debug.LogWarning("저장 데이터 미존재, 저장할 데이터가 존재하지 않습니다.");
+                    return;
+                }
+
+                if (callback.IsSuccess())
+                {
+                    Debug.Log("저장 성공, 저장에 성공했습니다.");
+                }
+                else
+                {
+                    Debug.LogWarning($"수동 저장 실패, 수동 저장에 실패했습니다. {callback.ToString()}");
+                }
+            });
         }
         #endregion
     }

@@ -23,7 +23,7 @@ public class UI_IdleRewardPopup : UI_Popup
         Text_Gold
     }
 
-    private Dictionary<EItemType, int> _itemDic = new();
+    private Dictionary<EItemType, double> _itemDic = new();
 
     protected override bool Init()
     {
@@ -104,7 +104,7 @@ public class UI_IdleRewardPopup : UI_Popup
     }
 
 
-    public void ShowIdleReward(Dictionary<EItemType, int> itemDic, int idleMinutes)
+    public void ShowIdleReward(Dictionary<EItemType, double> itemDic, int idleMinutes)
     {
         GetTMPText((int)Texts.Text_IdleTime).text = $"{idleMinutes}분 동안 수집";
         GetTMPText((int)Texts.Text_Gold).text = $"{Util.ConvertToTotalCurrency(itemDic[EItemType.Gold])}";

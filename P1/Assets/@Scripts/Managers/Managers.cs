@@ -101,9 +101,6 @@ public class Managers : MonoBehaviour
                 return;
             }
 
-            Backend.GameData.CharacterData.UpdateIdleTime();
-
-
             if (Backend.GameData.CharacterData.AttendanceCheck())
             {
                 Debug.Log("하루가 지나 출석체크 팝업 On");
@@ -111,6 +108,9 @@ public class Managers : MonoBehaviour
                 UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
                 popupUI.RefreshUI();
             }
+
+            Backend.GameData.CharacterData.UpdateIdleTime();
+
 
             IsCheckIdleTime = true;
         }

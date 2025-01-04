@@ -263,7 +263,7 @@ public class UI_DrawResultPopup : UI_Popup
 
     bool CanDraw(float cost)
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out double amount))
             return false;
 
         return amount >= cost;

@@ -47,8 +47,8 @@ public class WorldBossDungeonHandler : IDungeonHandler
 
         // 월드보스 데미지 팝업 & 랭킹 등록 처리
         var userData = Managers.Backend.GameData.CharacterData;
-        int endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
-        int currentTotalWorldBossDmg = userData.WorldBossCombatPower;
+        double endTotalWorldBossDmg = Managers.Object.WorldBoss.worldBossTotalDamage;
+        double currentTotalWorldBossDmg = userData.WorldBossCombatPower;
 
         if (currentTotalWorldBossDmg < endTotalWorldBossDmg || currentTotalWorldBossDmg == 0)
         {

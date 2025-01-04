@@ -156,7 +156,7 @@ public class UI_AttributePanel : UI_Base
     {
         if (Managers.Backend.GameData.CharacterData.UpgradeAttrDic.TryGetValue(SelectAttrType.ToString(), out int level))
         {
-            int price = Util.GetAttributeCost(SelectAttrType, level + 1);
+            double price = Util.GetAttributeCost(SelectAttrType, level + 1);
             if (CanUpgrade(price))
             {
                 Managers.Backend.GameData.CharacterData.AddAmount(EItemType.ExpPoint, -price);
@@ -194,9 +194,9 @@ public class UI_AttributePanel : UI_Base
         }
     }
 
-    bool CanUpgrade(float cost)
+    bool CanUpgrade(double cost)
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.ExpPoint.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.ExpPoint.ToString(), out double amount))
             return false;
 
         return amount >= cost;

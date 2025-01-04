@@ -183,7 +183,7 @@ public class UI_RelicsPanel : UI_Base
 
     bool CanUpgrade(float cost)
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Dia.ToString(), out double amount))
             return false;
 
         return amount >= cost;

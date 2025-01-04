@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,9 +10,9 @@ public class Creature : BaseObject, IDamageable
 {
     #region Stat
     public int Level;
-    public float Atk { get; protected set; }
-    public float MaxHp { get; protected set; }
-    public float Hp { get; set; }
+    public double Atk { get; protected set; }
+    public double MaxHp { get; protected set; }
+    public double Hp { get; set; }
     public float Recovery { get; protected set; }
     public float CriRate { get; protected set; }
     public float CriDmg { get; protected set; }
@@ -131,7 +132,7 @@ public class Creature : BaseObject, IDamageable
             return;
         }
 
-        float finalDamage = 0;
+        double finalDamage = 0;
         bool isCriticalHit = false;
 
         if (effect == null)
@@ -139,7 +140,7 @@ public class Creature : BaseObject, IDamageable
             finalDamage = attacker.Atk;
 
             // 치명타 체크 (0~1000 범위에서 비교)
-            float randomValue = Random.Range(0.0f, 100.0f);
+            float randomValue = UnityEngine.Random.Range(0.0f, 100.0f);
             isCriticalHit = randomValue < attacker.CriRate; // 예: CriRate가 0.1일 경우 0.1% 확률로 치명타 발생
 
             if (isCriticalHit)
@@ -151,7 +152,7 @@ public class Creature : BaseObject, IDamageable
         }
         else
         {
-            float baseStat = attacker.Atk;
+            double baseStat = attacker.Atk;
             float ownedValue = effect.SkillData.DamageMultiplier;
             finalDamage = baseStat * (ownedValue / 100f);  // 공격력의 ownedValue%만큼 데미지 계산
 
@@ -194,7 +195,7 @@ public class Creature : BaseObject, IDamageable
             worldBossTotalDamage += (int)finalDamage;
         }
 
-        Hp = Mathf.Clamp(Hp - finalDamage, 0, MaxHp);
+        Hp = Math.Clamp(Hp - finalDamage, 0, MaxHp);
         GameObject go = Managers.Object.SpawnGameObject(CenterPosition,"UI/WorldSpace/UI_DamageTextWorldSpace");
         go.GetComponent<UI_DamageTextWorldSpace>().SetInfo(CenterPosition, (long)finalDamage, isCriticalHit, effect);
 

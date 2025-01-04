@@ -187,7 +187,7 @@ public class UI_CharacterGrowthInvenSlot : UI_Base
 
     bool CanUpgrade(float cost)
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Gold.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(EItemType.Gold.ToString(), out double amount))
             return false;
 
         return amount >= cost;

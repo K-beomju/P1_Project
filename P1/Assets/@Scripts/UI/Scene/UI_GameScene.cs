@@ -228,7 +228,7 @@ public class UI_GameScene : UI_Scene
         InitializeUIElements();
 
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
-        Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
+        Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, double, double>(RefreshShowExp));
 
         // BuffManager 이벤트 구독
         Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
@@ -382,14 +382,15 @@ public class UI_GameScene : UI_Scene
 
     public void RefreshBossMonsterHp(Creature monster)
     {
-        int currentHp = Mathf.FloorToInt(monster.Hp); // 소수점 버림
-        int maxHp = Mathf.FloorToInt(monster.MaxHp); // 소수점 버림
+        double currentHp = Math.Floor(monster.Hp); // 소수점 버림
+        double maxHp = Math.Floor(monster.MaxHp); // 소수점 버림
 
-        float hpAmount = (float)currentHp / maxHp;
+        double hpAmount = currentHp / maxHp; // 현재 HP 비율 계산
         GetSlider((int)Sliders.Slider_StageInfo).maxValue = 1;
-        GetSlider((int)Sliders.Slider_StageInfo).value = hpAmount;
-        GetTMPText((int)Texts.Text_StageInfo).text = $"{currentHp} / {maxHp}";
+        GetSlider((int)Sliders.Slider_StageInfo).value = (float)hpAmount;  // hpAmount를 float로 변환하여 설정
+        GetTMPText((int)Texts.Text_StageInfo).text = $"{currentHp} / {maxHp}"; // 소수점 없이 출력
     }
+
 
     public void RefreshBossStageTimer(float currentTime, float maxTime)
     {
@@ -797,15 +798,15 @@ public class UI_GameScene : UI_Scene
         GetImage((int)lockImage).gameObject.SetActive(false);
     }
 
-    public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
+    public void RefreshShowExp(int currentLevel, double currentExp, double maxExp)
     {
         // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
         if (maxExp > 0)
         {
             // 경험치 슬라이더와 텍스트 갱신
-            GetSlider((int)Sliders.Slider_Exp).value = currentExp / maxExp;
+            GetSlider((int)Sliders.Slider_Exp).value = (float)(currentExp / maxExp);
 
-            float expPercentage = (currentExp / maxExp) * 100;
+            double expPercentage = (currentExp / maxExp) * 100;
             // 텍스트에 반영 (소수점 2자리로 표시)
             GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
         }

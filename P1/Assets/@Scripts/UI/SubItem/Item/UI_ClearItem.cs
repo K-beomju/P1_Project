@@ -24,7 +24,7 @@ public class UI_ClearItem : UI_Base
         return true;
     }
 
-    public void DisplayItem(Data.ItemData itemData, BigInteger count)
+    public void DisplayItem(Data.ItemData itemData,double count)
     {
         GetImage((int)Images.Image_Icon).sprite = Managers.Resource.Load<Sprite>($"Sprites/{itemData.SpriteKey}");
         GetTMPText((int)Texts.Text_ItemCount).text = Util.ConvertToTotalCurrency(count);

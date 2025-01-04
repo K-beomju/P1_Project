@@ -412,17 +412,17 @@ public static class Util
 
     #region Convert Value 
 
-    public static string ConvertToTotalCurrency(BigInteger value)
+    public static string ConvertToTotalCurrency(double value)
     {
         // 10,000 미만일 경우 그대로 반환
         if (value < 10000)
         {
-            return value.ToString();
+            return value.ToString("F0"); // 소수점 없이 반환
         }
 
         string[] koreanUnits = { "만", "억", "조", "경" };
         int unitIndex = -1;
-        BigInteger mainPart = value;
+        double mainPart = value;
 
         // 큰 단위로 나누면서 단위를 증가시킴
         while (mainPart >= 10000 && unitIndex < koreanUnits.Length - 1)
@@ -431,31 +431,23 @@ public static class Util
             mainPart /= 10000;
         }
 
-        // 결과 문자열 생성
-        string result = $"{mainPart}{koreanUnits[unitIndex]}";
-        BigInteger remainder = value % BigInteger.Pow(10000, unitIndex + 1);
+        // 결과 문자열 생성 (mainPart는 정수 부분만 표시)
+        string result = $"{(int)mainPart}{koreanUnits[unitIndex]}";
 
-        // 남은 부분을 단위별로 추가 표시
-        for (int i = unitIndex - 1; i >= 0; i--)
-        {
-            BigInteger unitValue = BigInteger.Pow(10000, i + 1);
-            BigInteger currentPart = remainder / unitValue;
-            remainder %= unitValue;
+        // 10,000 미만의 나머지 값을 구함
+        double remainder = value % Math.Pow(10000, unitIndex + 1);
 
-            if (currentPart > 0)
-            {
-                result += $" {currentPart}{koreanUnits[i]}";
-            }
-        }
-
-        // 마지막 10,000 미만 값이 남아 있으면 추가
+        // 나머지 값이 10,000 미만일 경우 mainPart와 결합하여 표시
         if (remainder > 0)
         {
-            result += $" {remainder}";
+            result += $"{(int)remainder}"; // 소수점 없이 정수 부분만 표시
         }
 
         return result;
     }
+
+
+
 
     public static string GetHeroUpgradeString(EHeroUpgradeType type)
     {

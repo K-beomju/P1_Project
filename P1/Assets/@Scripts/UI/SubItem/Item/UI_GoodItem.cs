@@ -45,10 +45,10 @@ public class UI_GoodItem : UI_Base
 
     public void RefreshGoodDisplayUI()
     {
-        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(goodType.ToString(), out float amount))
+        if (!Managers.Backend.GameData.CharacterData.PurseDic.TryGetValue(goodType.ToString(), out double amount))
             return;
 
-        GetTMPText((int)Texts.GoodText).text = Util.ConvertToTotalCurrency((long)amount);
+        GetTMPText((int)Texts.GoodText).text = Util.ConvertToTotalCurrency(amount);
     }
 
     public RectTransform GetGoodIcon()
