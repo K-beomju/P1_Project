@@ -134,20 +134,8 @@ public class GameScene : BaseScene
         sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
         Managers.UI.SetCanvas(sceneUI.gameObject, false, SortingLayers.UI_SCENE);
 
-        
-        if (Managers.Backend.GameData.MissionData.GetCurrentMission() != null)
-        {
-            if (CharacterData.AttendanceCheck())
-            {
-                Debug.Log("하루가 지나 출석체크 팝업 On");
-                var popupUI = Managers.UI.ShowPopupUI<UI_AttendancePopup>();
-                Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
-                popupUI.RefreshUI();
-            }
-        }
-
         // 로그인 후 최초 1회 방치 시간 계산
-        Managers.Instance.CheckIdleTime();
+        Managers.Instance.ProcessLoginReward();
 
         // UI 갱신
         Managers.Event.TriggerEvent(EEventType.CurrencyUpdated);

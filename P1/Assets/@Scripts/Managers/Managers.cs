@@ -90,7 +90,7 @@ public class Managers : MonoBehaviour
 
     // 게임 시작 후 최초 1회 호출 
     // 조건 : 오프라인 1시간 이상 경과 시, 모든 미션 완료 시 지급
-    public void CheckIdleTime()
+    public void ProcessLoginReward()
     {
         if(!IsCheckIdleTime)
         {
@@ -102,6 +102,16 @@ public class Managers : MonoBehaviour
             }
 
             Backend.GameData.CharacterData.UpdateIdleTime();
+
+
+            if (Backend.GameData.CharacterData.AttendanceCheck())
+            {
+                Debug.Log("하루가 지나 출석체크 팝업 On");
+                var popupUI = UI.ShowPopupUI<UI_AttendancePopup>();
+                UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SETTING_CONTENT_POPUP);
+                popupUI.RefreshUI();
+            }
+
             IsCheckIdleTime = true;
         }
     }
