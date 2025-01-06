@@ -136,7 +136,7 @@ public static class Define
         /// <summary>퀘스트 아이템 업데이트</summary>
         QuestItemUpdated,
 
-        /// <summary>퀘스트 아이템 업데이트</summary>
+        /// <summary>퀘스트 알림 업데이트</summary>
         QuestCheckNotification,
 
         /// <summary>펫 아이템 업데이트</summary>
@@ -153,6 +153,9 @@ public static class Define
 
         /// <summary>히어로 영웅 랭킹 업데이트</summary>
         MyRankingUpdated,
+
+        /// <summary>우편함 알림 업데이트</summary>
+        PostCheckNotification,
     }
 
     public enum EItemDisplayType
