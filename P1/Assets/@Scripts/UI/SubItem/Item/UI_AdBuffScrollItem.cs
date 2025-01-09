@@ -59,7 +59,7 @@ public class UI_AdBuffScrollItem : UI_Base
                         Managers.Backend.GameData.ShopData.WatchAd(_rewardType);
 
                         // 보상 지급 
-                        (Managers.UI.SceneUI as UI_GameScene).UpdateAdBuffItem(_buffType, DurationTimeMinutes);
+                        Managers.Event.TriggerEvent(EEventType.UpdateAdBuffItem, _buffType, DurationTimeMinutes);
 
                         // UI 업데이트 
                         RefreshUI();

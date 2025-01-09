@@ -156,6 +156,8 @@ public static class Define
 
         /// <summary>우편함 알림 업데이트</summary>
         PostCheckNotification,
+
+        UpdateAdBuffItem
     }
 
     public enum EItemDisplayType

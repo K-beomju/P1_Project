@@ -74,5 +74,8 @@ public class UI_PostPopup : UI_Popup
             Destroy(_postItemDictionary[inDate]);
             _postItemDictionary.Remove(inDate);
         }
+
+        GetObject((int)GameObjects.Text_NoPostAlert).SetActive(Managers.Backend.Post.Dictionary.Count <= 0);
+        Managers.Event.TriggerEvent(Define.EEventType.PostCheckNotification);
     }
 }

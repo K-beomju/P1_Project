@@ -19,12 +19,9 @@ public class UI_GameScene : UI_Scene
         DungeonButton,
         DrawButton,
         Btn_AutoSkill,
-        Btn_Ranking,
         Btn_AdBuff,
-        Btn_Post,
         Btn_Setting,
         Btn_Menu,
-        Btn_Quest,
         Btn_Stage
     }
 
@@ -50,7 +47,7 @@ public class UI_GameScene : UI_Scene
     {
         Image_RankUpIcon,
         Image_MyRankIcon,
-        Image_AdBuff,
+        //Image_AdBuff,
 
         // PopupButton
         Image_PetLock,
@@ -66,8 +63,7 @@ public class UI_GameScene : UI_Scene
         RemainMonster,
         RankUpStage,
         MenuGroup,
-        Quest_NotifiBadge,
-        HeroInfo
+        HeroInfo,
     }
 
     enum CanvasGroups
@@ -97,12 +93,12 @@ public class UI_GameScene : UI_Scene
         UI_GoodItem_AbilityPoint
     }
 
-    public enum DisplayAdBuffItems
-    {
-        UI_DisplayAdBuffItem_1,
-        UI_DisplayAdBuffItem_2,
-        UI_DisplayAdBuffItem_3
-    }
+    // public enum DisplayAdBuffItems
+    // {
+    //     UI_DisplayAdBuffItem_1,
+    //     UI_DisplayAdBuffItem_2,
+    //     UI_DisplayAdBuffItem_3
+    // }
 
     public enum EquipSkillSlots
     {
@@ -134,7 +130,7 @@ public class UI_GameScene : UI_Scene
         Bind<CanvasGroup>(typeof(CanvasGroups));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
-        Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
+       // Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
 
         // Main_Content
         GetButton((int)Buttons.PetButton).onClick.AddListener(() => ShowTab(PlayTab.Pet));
@@ -172,44 +168,6 @@ public class UI_GameScene : UI_Scene
             buttonImage.sprite = Managers.Resource.Load<Sprite>(spritePath);
         });
 
-        GetButton((int)Buttons.Btn_Ranking).onClick.AddListener(() =>
-        {
-            if (Managers.Backend.Rank.List.Count <= 0)
-            {
-                Managers.UI.ShowBaseUI<UI_NotificationBase>().ShowNotification("랭킹 미존재 오류 " + "랭킹이 존재하지 않습니다.\n랭킹을 생성해주세요.");
-                return;
-            }
-            ShowTab(PlayTab.Rank);
-        });
-        GetButton((int)Buttons.Btn_Post).onClick.AddListener(() =>
-        {
-            var popupUI = Managers.UI.ShowPopupUI<UI_PostPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-            popupUI.RefreshUI();
-        });
-        //         GetButton((int)Buttons.Btn_Logout).onClick.AddListener(() =>
-        //         {
-        //             SendQueue.Enqueue(Backend.BMember.Logout, callback =>
-        //             {
-        //                 Debug.Log($"Backend.BMember.Logout : {callback}");
-        // #if UNITY_ANDROID
-        //                 TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, GoogleSignOutCallback);
-        // #endif
-
-        //                 if (callback.IsSuccess())
-        //                 {
-        //                     Debug.Log("로그아웃 성공");
-        //                     Managers.Scene.LoadScene(EScene.TitleScene);
-        //                 }
-        //             });
-        //         });
-
-        GetButton((int)Buttons.Btn_Quest).onClick.AddListener(() =>
-        {
-            var popupUI = Managers.UI.ShowPopupUI<UI_QuestPopup>();
-            Managers.UI.SetCanvas(popupUI.gameObject, false, SortingLayers.UI_SCENE + 1);
-            popupUI.RefreshUI();
-        });
 
         GetButton((int)Buttons.Btn_Stage).onClick.AddListener(() =>
         {
@@ -231,8 +189,8 @@ public class UI_GameScene : UI_Scene
         Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, double, double>(RefreshShowExp));
 
         // BuffManager 이벤트 구독
-        Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
-        Managers.Buff.OnBuffExpired += RemoveBuffUI;
+        // Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
+        // Managers.Buff.OnBuffExpired += RemoveBuffUI;
 
         RefreshUI();
 
@@ -241,21 +199,15 @@ public class UI_GameScene : UI_Scene
         return true;
     }
 
-    private void OnDestroy()
-    {
-        Managers.Buff.OnBuffTimeUpdated -= UpdateBuffUI;
-        Managers.Buff.OnBuffExpired -= RemoveBuffUI;
-    }
+    // private void OnDestroy()
+    // {
+    //     Managers.Buff.OnBuffTimeUpdated -= UpdateBuffUI;
+    //     Managers.Buff.OnBuffExpired -= RemoveBuffUI;
+    // }
 
     private void OnEnable()
     {
-        Managers.Event.AddEvent(EEventType.QuestCheckNotification, new Action(() =>
-        {
-            if (Managers.Backend.GameData.QuestData.IsReadyToClaimQuest())
-                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(true);
-            else
-                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
-        }));
+        
         Managers.Event.AddEvent(EEventType.MyRankingUpdated, new Action(UpdateMyRanking));
 
         var missionData = Managers.Backend.GameData.MissionData.GetCurrentMission();
@@ -265,13 +217,7 @@ public class UI_GameScene : UI_Scene
 
     private void OnDisable()
     {
-        Managers.Event.RemoveEvent(EEventType.QuestCheckNotification, new Action(() =>
-        {
-            if (Managers.Backend.GameData.QuestData.IsReadyToClaimQuest())
-                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(true);
-            else
-                GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
-        }));
+     
         Managers.Event.RemoveEvent(EEventType.MyRankingUpdated, new Action(UpdateMyRanking));
 
         var missionData = Managers.Backend.GameData.MissionData.GetCurrentMission();
@@ -289,14 +235,14 @@ public class UI_GameScene : UI_Scene
             _equipSkillSlotList[i].SetInfo(index);
         }
 
-        for (int i = 0; i < 3; i++)
-        {
-            _displayAdBuffList.Add(Get<UI_DisplayAdBuffItem>(i));
-            _displayAdBuffList[i].gameObject.SetActive(false);
-        }
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     _displayAdBuffList.Add(Get<UI_DisplayAdBuffItem>(i));
+        //     _displayAdBuffList[i].gameObject.SetActive(false);
+        // }
 
         // 광고형 버프 시간 체크 
-        LoadExistingBuffs();
+        //LoadExistingBuffs();
         UpdateMyNickName();
         UpdateMyRank();
 
@@ -312,7 +258,6 @@ public class UI_GameScene : UI_Scene
         GetGoodItem(EItemType.AbilityPoint).gameObject.SetActive(false);
         GetObject((int)GameObjects.RankUpStage).SetActive(false);
         GetObject((int)GameObjects.MenuGroup).SetActive(false);
-        GetObject((int)GameObjects.Quest_NotifiBadge).SetActive(false);
 
         UpdateAutoSkillUI(Managers.Backend.GameData.SkillInventory.IsAutoSkill);
         CheckLockPopupMission();
@@ -586,76 +531,76 @@ public class UI_GameScene : UI_Scene
 
     #region AdBuff
 
-    private void LoadExistingBuffs()
-    {
-        foreach (EAdBuffType buffType in Enum.GetValues(typeof(EAdBuffType)))
-        {
-            int remainingTime = Managers.Buff.GetRemainingTime(buffType);
-            if (remainingTime > 0)
-            {
-                UpdateAdBuffItem(buffType, remainingTime);
-            }
-        }
-    }
+    // private void LoadExistingBuffs()
+    // {
+    //     foreach (EAdBuffType buffType in Enum.GetValues(typeof(EAdBuffType)))
+    //     {
+    //         int remainingTime = Managers.Buff.GetRemainingTime(buffType);
+    //         if (remainingTime > 0)
+    //         {
+    //             UpdateAdBuffItem(buffType, remainingTime);
+    //         }
+    //     }
+    // }
 
-    public void UpdateAdBuffItem(EAdBuffType buffType, int durationMinutes)
-    {
-        foreach (var buffUI in _displayAdBuffList)
-        {
-            if (!buffUI.gameObject.activeSelf)
-            {
-                buffUI.gameObject.SetActive(true);
-                buffUI.SetInfo(buffType, durationMinutes);
-                break;
-            }
-        }
-        RotateAdBuffIcon();
-    }
+    // public void UpdateAdBuffItem(EAdBuffType buffType, int durationMinutes)
+    // {
+    //     foreach (var buffUI in _displayAdBuffList)
+    //     {
+    //         if (!buffUI.gameObject.activeSelf)
+    //         {
+    //             buffUI.gameObject.SetActive(true);
+    //             buffUI.SetInfo(buffType, durationMinutes);
+    //             break;
+    //         }
+    //     }
+    //     RotateAdBuffIcon();
+    // }
 
-    public void RotateAdBuffIcon()
-    {
-        if (Managers.Buff.IsAnyBuffActive())
-        {
-            GetImage((int)Images.Image_AdBuff).transform.DORotate(
-                new Vector3(0, 0, -360), // Z축을 기준으로 360도 회전
-                1f,                     // 1초 동안 회전
-                RotateMode.FastBeyond360 // 빠르게 연속 회전
-            )
-            .SetEase(Ease.InOutSine)        // 일정한 속도로 회전
-            .SetLoops(-1);               // 무한 루프
-        }
-        else
-        {
-            // 애니메이션을 멈추거나 초기화
-            GetImage((int)Images.Image_AdBuff).transform.DOKill(); // DOTween 애니메이션 중지
-            GetImage((int)Images.Image_AdBuff).transform.rotation = Quaternion.identity; // 초기화
-        }
-    }
+    // public void RotateAdBuffIcon()
+    // {
+    //     if (Managers.Buff.IsAnyBuffActive())
+    //     {
+    //         GetImage((int)Images.Image_AdBuff).transform.DORotate(
+    //             new Vector3(0, 0, -360), // Z축을 기준으로 360도 회전
+    //             1f,                     // 1초 동안 회전
+    //             RotateMode.FastBeyond360 // 빠르게 연속 회전
+    //         )
+    //         .SetEase(Ease.InOutSine)        // 일정한 속도로 회전
+    //         .SetLoops(-1);               // 무한 루프
+    //     }
+    //     else
+    //     {
+    //         // 애니메이션을 멈추거나 초기화
+    //         GetImage((int)Images.Image_AdBuff).transform.DOKill(); // DOTween 애니메이션 중지
+    //         GetImage((int)Images.Image_AdBuff).transform.rotation = Quaternion.identity; // 초기화
+    //     }
+    // }
 
-    private void UpdateBuffUI(EAdBuffType buffType)
-    {
-        foreach (var buffUI in _displayAdBuffList)
-        {
-            if (buffUI.BuffType == buffType)
-            {
-                buffUI.UpdateRemainingTimeText();
-                break;
-            }
-        }
-    }
+    // private void UpdateBuffUI(EAdBuffType buffType)
+    // {
+    //     foreach (var buffUI in _displayAdBuffList)
+    //     {
+    //         if (buffUI.BuffType == buffType)
+    //         {
+    //             buffUI.UpdateRemainingTimeText();
+    //             break;
+    //         }
+    //     }
+    // }
 
-    private void RemoveBuffUI(EAdBuffType buffType)
-    {
-        foreach (var buffUI in _displayAdBuffList)
-        {
-            if (buffUI.gameObject.activeSelf && buffUI.BuffType == buffType)
-            {
-                buffUI.gameObject.SetActive(false);
-                break;
-            }
-        }
-        RotateAdBuffIcon();
-    }
+    // private void RemoveBuffUI(EAdBuffType buffType)
+    // {
+    //     foreach (var buffUI in _displayAdBuffList)
+    //     {
+    //         if (buffUI.gameObject.activeSelf && buffUI.BuffType == buffType)
+    //         {
+    //             buffUI.gameObject.SetActive(false);
+    //             break;
+    //         }
+    //     }
+    //     RotateAdBuffIcon();
+    // }
 
     #endregion
 
