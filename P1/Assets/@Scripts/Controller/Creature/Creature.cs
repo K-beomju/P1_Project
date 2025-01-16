@@ -193,6 +193,7 @@ public class Creature : BaseObject, IDamageable
         {
             Debug.Log("월드 보스 데미지 누적 계산");
             worldBossTotalDamage += (int)finalDamage;
+            return;
         }
 
         Hp = Math.Clamp(Hp - finalDamage, 0, MaxHp);

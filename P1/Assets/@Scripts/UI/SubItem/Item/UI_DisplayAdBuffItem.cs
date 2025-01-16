@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
 using static Define;
 
 public class UI_DisplayAdBuffItem : UI_Base

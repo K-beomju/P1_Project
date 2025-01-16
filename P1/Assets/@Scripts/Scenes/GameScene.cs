@@ -522,6 +522,8 @@ public class GameScene : BaseScene
             },
             () =>
             {
+                
+                if(Managers.UI.GetPopupCount() == 0)
                 Managers.UI.ShowPopupUI<UI_StageFailPopup>();
                 Managers.Event.TriggerEvent(EEventType.HeroRankChallenging, false);
             }

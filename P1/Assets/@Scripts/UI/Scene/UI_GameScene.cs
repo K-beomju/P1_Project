@@ -93,13 +93,6 @@ public class UI_GameScene : UI_Scene
         UI_GoodItem_AbilityPoint
     }
 
-    // public enum DisplayAdBuffItems
-    // {
-    //     UI_DisplayAdBuffItem_1,
-    //     UI_DisplayAdBuffItem_2,
-    //     UI_DisplayAdBuffItem_3
-    // }
-
     public enum EquipSkillSlots
     {
         UI_EquipSkillSlot_1,
@@ -130,7 +123,6 @@ public class UI_GameScene : UI_Scene
         Bind<CanvasGroup>(typeof(CanvasGroups));
         Bind<UI_GoodItem>(typeof(UI_GoodItems));
         Bind<UI_EquipSkillSlot>(typeof(EquipSkillSlots));
-       // Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
 
         // Main_Content
         GetButton((int)Buttons.PetButton).onClick.AddListener(() => ShowTab(PlayTab.Pet));

@@ -15,7 +15,7 @@ public class InGameScene_BuffGroup : UI_Base
         UI_DisplayAdBuffItem_3
     }
 
-    private Image adBuffImage;
+    public Image adBuffImage;
     public List<UI_DisplayAdBuffItem> _displayAdBuffList { get; set; } = new List<UI_DisplayAdBuffItem>();
 
     protected override bool Init()
@@ -23,18 +23,17 @@ public class InGameScene_BuffGroup : UI_Base
         if (base.Init() == false)
             return false;
 
-        adBuffImage = Util.FindChild((Managers.UI.SceneUI as UI_GameScene).gameObject, "Image_AdBuff", true).GetComponent<Image>();
         Bind<UI_DisplayAdBuffItem>(typeof(DisplayAdBuffItems));
-        // for (int i = 0; i < 3; i++)
-        // {
-        //     _displayAdBuffList.Add(Get<UI_DisplayAdBuffItem>(i));
-        //     _displayAdBuffList[i].gameObject.SetActive(false);
-        // }
+        for (int i = 0; i < 3; i++)
+        {
+            _displayAdBuffList.Add(Get<UI_DisplayAdBuffItem>(i));
+            _displayAdBuffList[i].gameObject.SetActive(false);
+        }
 
 
-        // LoadExistingBuffs();
-        // Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
-        // Managers.Buff.OnBuffExpired += RemoveBuffUI;
+        LoadExistingBuffs();
+        Managers.Buff.OnBuffTimeUpdated += UpdateBuffUI;
+        Managers.Buff.OnBuffExpired += RemoveBuffUI;
         return true;
     }
 

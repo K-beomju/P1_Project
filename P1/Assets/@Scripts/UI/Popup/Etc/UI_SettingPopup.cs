@@ -65,7 +65,7 @@ public class UI_SettingPopup : UI_Popup
         });
         GetButton((int)Buttons.Btn_Discord).onClick.AddListener(() =>
         {
-            Application.OpenURL("https://discord.gg/BqSHKXqS");
+            Application.OpenURL("https://discord.gg/3BM52vUt");
         });
         GetImage((int)Images.Image_SaveCoolTime).fillAmount = 0;
         

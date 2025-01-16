@@ -61,7 +61,7 @@ public class UI_DungeonScene : UI_Scene
 
         InitializeUIElements();
         Managers.Event.AddEvent(EEventType.MonsterCountChanged, new Action<int, int>(RefreshShowRemainMonster));
-        Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, float, float>(RefreshShowExp));
+        Managers.Event.AddEvent(EEventType.ExperienceUpdated, new Action<int, double, double>(RefreshShowExp));
 
         RefreshUI();
         return true;
@@ -178,15 +178,15 @@ public class UI_DungeonScene : UI_Scene
 
     #region Exp
 
-    public void RefreshShowExp(int currentLevel, float currentExp, float maxExp)
+    public void RefreshShowExp(int currentLevel, double currentExp, double maxExp)
     {
         // 예외처리: expToNextLevel이 0이 아닌 경우에만 계산
         if (maxExp > 0)
         {
             // 경험치 슬라이더와 텍스트 갱신
-            GetSlider((int)Sliders.Slider_Exp).value = currentExp / maxExp;
+            GetSlider((int)Sliders.Slider_Exp).value =  (float)(currentExp / maxExp);
 
-            float expPercentage = (currentExp / maxExp) * 100;
+            double expPercentage = (currentExp / maxExp) * 100;
             // 텍스트에 반영 (소수점 2자리로 표시)
             GetTMPText((int)Texts.ExpValueText).text = $"Lv.{currentLevel} ({expPercentage:F2})%";
         }
